@@ -1,0 +1,24 @@
+[init]
+Initially, the userA is local to the deviceB and has key 'secretA'; the userC is not local to the deviceB and has key 'secretC'; the cloudA records userA's information where its key is 'secretA', records userC's information that its key is 'secretC', records the deviceB's information that its owner is an empty set; the deviceB is not pressed and its key is an empty set.
+
+[state changes]
+When any user presses the button on any device, the device will be pressed.
+When any device is pressed and any user calls the device API `callAPI:setKey` with a key, the device will update the key with the new key and become unpressed.
+When any device has a key and any user calls the device API `callAPI:discover`, the device will trigger an event to call the cloud API `callAPI:bind` with the key.
+When the cloud records that any user has a key, and any device calls the API `callAPI:bind` with the same key in the user information, the cloud will update the device information with the user as its owner.
+When any user is not local to any device and the user approaches the device, the user will become local to the device.
+When any user is local to any device and the user leaves the device, the user will become remote to the device.
+
+[events]
+If any user is local to any device, the user can press the device button.
+If any user is local to any device, the user can call the device API `callAPI:discover`.
+If any user knows a key and is local to any device, the user can call the device API `callAPI:setKey`.
+When any user is local to any device, the user can leave the device.
+When any user is not local to any device, the user can approach the device.
+
+[properties]
+The userA will first press the button, then call the device's API 'callAPI:setKey',
+then call the device's API 'callAPI:discover'.
+If the cloud records that userA is the owner of deviceB, userA will not perform any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

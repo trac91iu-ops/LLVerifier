@@ -1,0 +1,65 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' : nils
+    > < deviceB | 'key' : nils, 'pressed' : false >, 'rev5} {$ userC
+    'approaches' deviceB @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' :
+    deviceB > < deviceB | 'key' : nils, 'pressed' : false >, 'rev1} {$ userC
+    'pressButton' deviceB @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' :
+    deviceB > < deviceB | 'key' : nils, 'pressed' : true >, 'rev2} {$ userC
+    'callAPI:discover' deviceB @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' :
+    deviceB > < deviceB | 'key' : nils, 'pressed' : true >, 'rev3} {$ userC
+    'callAPI:setKey' deviceB | 'secretC' @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretC', 'pressed' : true >, 'rev3} {$
+    userC 'callAPI:setKey' deviceB | 'secretC' @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretC', 'pressed' : true >, 'rev4} {$
+    userC 'leaves' deviceB @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : nils > < userA | 'localTo' : deviceB > < userC | 'localTo' : nils
+    > < deviceB | 'key' : 'secretC', 'pressed' : true >, 'rev2} {$ userA
+    'callAPI:discover' deviceB @
+< cloudA | userA : 'key' : 'secretA', userC : 'key' : 'secretC', deviceB :
+    'owner' : userC > < userA | 'localTo' : deviceB > < userC | 'localTo' :
+    nils > < deviceB | 'key' : 'secretC', 'pressed' : true >, 'rev5}
+idle
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:setKey' deviceB | 'secretC'
+$ userC 'pressButton' deviceB
+$ userC 'leaves' deviceB
+$ userA 'callAPI:discover' deviceB
+rewrites: 3471 in 7ms cpu (7ms real) (479155 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userC 'approaches' deviceB ^ ($
+    userC 'pressButton' deviceB ^ ($ userC 'callAPI:setKey' deviceB | 'secretC'
+    ^ ($ userC 'pressButton' deviceB ^ ($ userC 'leaves' deviceB ^ ($ userA
+    'callAPI:discover' deviceB ^ nile))))))
+Bye.

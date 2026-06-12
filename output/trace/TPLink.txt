@@ -1,0 +1,8 @@
+idle
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:setKey' deviceB | 'secretC'
+$ userC 'pressButton' deviceB
+$ userC 'leaves' deviceB
+$ userA 'callAPI:discover' deviceB
+

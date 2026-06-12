@@ -1,0 +1,8 @@
+pydantic==2.11.3
+openai
+pyperclip
+pyyaml
+pyparsing
+lark
+mypy
+types-PyYAML

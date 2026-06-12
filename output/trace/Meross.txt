@@ -1,0 +1,12 @@
+idle
+$ userA 'pressButton' deviceB
+$ userA 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userA 'leaves' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | ('secret' ; 'UIDC')
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+

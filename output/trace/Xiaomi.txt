@@ -1,0 +1,10 @@
+idle
+$ userA 'callAPI:getKey' cloudA | deviceB
+$ userA 'callAPI:invite' cloudA | userC
+$ userC 'callAPI:getKey' cloudA | deviceB
+$ userC 'callAPI:invite' cloudA | userA
+$ userA 'callAPI:kick' cloudA | userC
+$ userC 'callAPI:toggle' deviceB | 'secret'
+$ userA 'callAPI:invite' cloudA | userC
+$ userC 'callAPI:kick' cloudA | userA
+

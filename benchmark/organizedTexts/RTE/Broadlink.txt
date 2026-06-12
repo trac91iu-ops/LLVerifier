@@ -1,0 +1,29 @@
+[init]
+Initially, the userA is local to the deviceB and has no key; The userC is not local and has no key; The cloud records userA's information that its devices are empty and members are empty, and records the userC's information that its devices are empty and its members are empty, and records that deviceB's owner is empty; The deviceB has a key 'secret' and is unlocked.
+
+[state changes]
+When any user who is not local to a device approaches it, they become local to that device.
+When any user is local to a device and then leaves, they become remote to that device.
+When any user presses the button on any device and the device has a key, then the device will update its key with a fresh random string.
+When any device is unlocked and a user without keys calls the API 'callAPI:getKey', the user will update their knowledge with the device's key.
+When any device with a key is unlocked and a user calls the API 'callAPI:lock' with the same key, the device will become locked.
+When the cloudA has recorded a user and the user calls the API 'callAPI:invite' with another user as an argument, the cloud will add the invited user to the member list.
+When the cloudA records that any user has a member, and the user calls 'callAPI:kick' with that member as an argument, the cloud will remove the member from the member list.
+When the cloudA records that any device has a key, any user has a member, and the member calls `cloudAPI:getKey` with the device as an argument, the member will update their knowledge with the new key.
+When any device has a key, and any user calls API 'callAPI:bind' with the device and the same key as arguments, the cloudA will add the user to the device's owner.
+
+[events]
+If any user is local to any device, the user can press the device button.
+If any user is local to any device, they can call the deviceB's API 'callAPI:getKey'.
+If any user has some key and is local to any device, they can call the deviceB's API`callAPI:lock` with the key.
+If any user has some key, they can call the cloud API 'callAPI:bind' using the key.
+At any time, any user with a key can call the cloud API 'cloudAPI:getKey'.
+At any time, userC can call the cloud API 'callAPI:invite' or 'callAPI:kick' with userA as an argument.
+When any user is local to any device, the user can leave the device.
+When any user is not local to any device, the user can approach the deviceB.
+
+[properties]
+The userA will first press the button, call deviceB's API 'callAPI:getKey', then call cloud's API 'callApi:Bind' sequencely.
+If the cloud records that userA is the owner of deviceB, userA will not perform any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

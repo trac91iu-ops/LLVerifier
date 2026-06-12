@@ -1,0 +1,250 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:17 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : nils
+    > < userC | 'key' : nils > < deviceB | 'key' : nils, 'on' : false,
+    'trustSet' : cloudA >, 'rev2} {$ userA 'callAPI:toggle' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : nils
+    > < userC | 'key' : nils > < deviceB | 'key' : nils, 'on' : false,
+    'trustSet' : cloudA >, 'rev2} {$ userC 'callAPI:toggle' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : nils
+    > < userC | 'key' : nils > < deviceB | 'key' : nils, 'on' : false,
+    'trustSet' : cloudA >, 'rev3} {$ userC 'cloudAPI:toggle' cloudA @
+< system | 'counter' : 0 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : nils
+    > < userC | 'key' : nils > < deviceB | 'key' : nils, 'on' : false,
+    'trustSet' : cloudA >, 'rev4} {$ userC 'callAPI:openWindow' cloudA |
+    deviceB @
+< system | 'counter' : 0 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : nils
+    > < userC | 'key' : nils > < deviceB | 'key' : nils, 'on' : false,
+    'trustSet' : cloudA >, 'rev5} {$ userA 'callAPI:invite' cloudA | userC @
+< system | 'counter' : 0 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : nils) > < userA | 'key' :
+    nils > < userC | 'key' : nils > < deviceB | 'key' : nils, 'on' : false,
+    'trustSet' : cloudA >, 'rev2} {$ userC 'callAPI:toggle' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : nils) > < userA | 'key' :
+    nils > < userC | 'key' : nils > < deviceB | 'key' : nils, 'on' : false,
+    'trustSet' : cloudA >, 'rev4} {$ userC 'callAPI:openWindow' cloudA |
+    deviceB @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : nils) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : cloudA >, 'rev1} {$ userC
+    'callAPI:bind' deviceB | 'KeyA'2357136044 @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : nils) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userC 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : nils) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev5} {$
+    userC 'callAPI:invite' cloudA | userA @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userC 'callAPI:bind' deviceB | 'KeyA'2357136044 @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userC 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev6} {$
+    userA 'callAPI:kick' cloudA | userA @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userC 'callAPI:bind' deviceB | 'KeyA'2357136044 @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev2} {$
+    userA 'callAPI:toggle' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    nils > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userA 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userA 'callAPI:bind' deviceB | 'KeyA'2546248239 @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userC 'callAPI:bind' deviceB | 'KeyA'2357136044 @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev2} {$
+    userA 'callAPI:toggle' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userC 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev5} {$
+    userA 'callAPI:invite' cloudA | userC @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userC 'callAPI:bind' deviceB | 'KeyA'2357136044 @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userC 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev5} {$
+    userC 'callAPI:invite' cloudA | userA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev6} {$
+    userA 'callAPI:kick' cloudA | userA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev5} {$
+    userC 'callAPI:invite' cloudA | userA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev6} {$
+    userA 'callAPI:kick' cloudA | userC @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : false, 'trustSet' : (cloudA, userC) >, 'rev2} {$
+    userC 'callAPI:toggle' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userA 'callAPI:bind' deviceB | 'KeyA'2546248239 @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userC 'callAPI:bind' deviceB | 'KeyA'2357136044 @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev2} {$
+    userA 'callAPI:toggle' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev2} {$
+    userC 'callAPI:toggle' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev3} {$
+    userA 'cloudAPI:toggle' cloudA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev3} {$
+    userC 'cloudAPI:toggle' cloudA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userA 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userC 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev5} {$
+    userA 'callAPI:invite' cloudA | userC @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev1} {$
+    userC 'callAPI:bind' deviceB | 'KeyA'2357136044 @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev2} {$
+    userC 'callAPI:toggle' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev3} {$
+    userC 'cloudAPI:toggle' cloudA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev4} {$
+    userC 'callAPI:openWindow' cloudA | deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev5} {$
+    userC 'callAPI:invite' cloudA | userA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : deviceB, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev6} {$
+    userC 'callAPI:kick' cloudA | userA @
+< system | 'counter' : 2 > < cloudA | userA : ('device' : nils, 'members' :
+    userC), userC : ('device' : deviceB, 'members' : nils) > < userA | 'key' :
+    'KeyA'2546248239 > < userC | 'key' : 'KeyA'2357136044 > < deviceB | 'key' :
+    'KeyA'2357136044, 'on' : true, 'trustSet' : (cloudA, userC) >, 'rev1}
+idle
+$ userA 'callAPI:invite' cloudA | userC
+$ userC 'callAPI:openWindow' cloudA | deviceB
+$ userC 'callAPI:bind' deviceB | 'KeyA'2357136044
+$ userC 'callAPI:invite' cloudA | userA
+$ userA 'callAPI:openWindow' cloudA | deviceB
+$ userA 'callAPI:kick' cloudA | userC
+$ userC 'callAPI:toggle' deviceB
+$ userA 'callAPI:invite' cloudA | userC
+$ userC 'callAPI:kick' cloudA | userA
+rewrites: 71863 in 250ms cpu (257ms real) (287389 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'callAPI:invite' cloudA |
+    userC ^ ($ userC 'callAPI:openWindow' cloudA | deviceB ^ ($ userC
+    'callAPI:bind' deviceB | 'KeyA'2357136044 ^ ($ userC 'callAPI:invite'
+    cloudA | userA ^ ($ userA 'callAPI:openWindow' cloudA | deviceB ^ ($ userA
+    'callAPI:kick' cloudA | userC ^ ($ userC 'callAPI:toggle' deviceB ^ ($
+    userA 'callAPI:invite' cloudA | userC ^ ($ userC 'callAPI:kick' cloudA |
+    userA ^ nile)))))))))
+Bye.

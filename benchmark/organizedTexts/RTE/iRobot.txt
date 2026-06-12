@@ -1,0 +1,33 @@
+[init]
+Initially, the userA is local to the deviceB and has key 'secretA'; the userC is not local to the deviceB and has key 'secretC'; the cloudA records deviceB's information where its binding key is '' and owner is empty set; the deviceB is not pressed and its key is empty set.
+
+[state changes]
+If any user is not local to any device and the user approaches the device, the user will be local to the device.
+If any user is local to any device and the user leaves any device, the user will be remote to the device.
+If any user presses the button on any device, then the device records that it is pressed.
+When any device is pressed with no key before, and any user calls device API 'callAPI:setKey', then the device will change its state to be not pressed, record the new key, and call the cloudA' s API 'callAPI:setKey' with the new binding key as an argument, change the device's state to record it has a key now.
+When any device which already has a key is pressed, and any user calls device API 'callAPI:setKey', then the device will change its state to be not pressed, record the new key, and call the cloudA' s API 'callAPI:setKey' with the new binding key.
+When the cloudA receives a 'callAPI:setKey' event from any device, the cloudA will update its binding key record for that device.
+When the user calls 'callAPI:bind' with the device and the binding key as arguments to cloudA, and the binding key matches the record in the cloudA, then the cloudA will update the owner from empty set to the user.
+When any device is pressed and already has a key, and any user calls the device API 'callAPI:getKey', then the device will change its state to be not pressed and trigger an event to send its key to the user. 
+When any device sends any user a key and the user already knows some key, the user will update the key with the new key.
+When any device has an owner, any user can call 'callAPI:reset' of cloudA with the device and binding key which matches that in cloudA's record, and then the cloudA will reset the owner to empty set and set the bind key to empty.
+
+[events]
+If any user is local to any device, the user can :
+1. press the device button ;
+2. call the device's API 'callAPI:getKey' ;
+3. use his key to call any device's API 'callAPI:setKey'.
+If the user has some key, the user can:
+1. use the key to call cloudA 's API 'callAPI:bind' ;
+2. use the key to call cloudA 's API 'callAPI:reset'.
+When any user is local to any device, the user can leave the device. 
+When any user is not local to any device, the user can approach the device.
+
+[properties]
+The userA will always take operations in the order (press button, call device's API 'callAPI:setKey', and call cloud's 'callAPI:bind') until reset. 
+If the userA is the owner of deviceB, userA will not take any operations in the next time point.
+If in the next point, userA reset the deviceB, the userA calls 'callAPI:bind' and is not the owner of deviceB.
+If reset happens, the userA will eventually press the button of deviceB.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a time point that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and the owner of deviceB.

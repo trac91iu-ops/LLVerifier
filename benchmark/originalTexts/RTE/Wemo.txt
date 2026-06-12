@@ -1,0 +1,12 @@
+Initially, userA is local to deviceB and has the key 'secretA'. UserC is not local to deviceB and has the key 'secretC'. The cloudA records userA's information with the key 'secretA', records userC's information with the key 'secretC', and records deviceB's information with its owner as an empty set. DeviceB is not pressed and its key is an empty set.
+
+When any user presses the button on any device, the device will become pressed. If a device is pressed and a user calls the device API `callAPI:setKey` with a key, the device will update its key with the new value and become unpressed. If a device has a key and a user calls the device API `callAPI:discover`, the device will trigger an event that calls the cloud API `callAPI:bind` with the key. If the cloud records that a user has a key and a device calls the API `callAPI:bind` with the same key as the user information, the cloud will update the device information to indicate the user as its owner. If a user is not local to a device and approaches the device, the user will become local to the device. Conversely, if a user is local to a device and leaves it, the user will become remote to the device.
+
+A user who is local to a device can press the device button, call the device API `callAPI:discover`, or leave the device. If the user knows a key and is local to a device, they can call the device API `callAPI:setKey`. When a user is not local to a device, they can approach the device.
+
+[properties]
+The userA will first press the button, then call the device's API 'callAPI:setKey',
+then call the device's API 'callAPI:discover'.
+If the cloud records that userA is the owner of deviceB, userA will not perform any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

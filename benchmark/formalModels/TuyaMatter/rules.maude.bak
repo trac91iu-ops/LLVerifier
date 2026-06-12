@@ -1,0 +1,79 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('counter' : 0) > < deviceB | ('trustSet' : cloudA , 'on' : false , 'key' : nils) > < cloudA | (userA : ('device' : deviceB , 'members' : nils) , userC : ('device' : nils , 'members' : nils)) > < userA | ('key' : nils) > < userC | ('key' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars UserX : User .
+vars PrincipalX : Principal .
+vars SetA : Set .
+vars DeviceX : Device .
+vars KeyA : Qid .
+vars UserY : User .
+vars FreshKeyA : Qid .
+*** policy
+eq < DeviceX | ('key' : nils , ..) > $ cloudA 'callAPI:openWindow' DeviceX | (KeyA) 
+= < DeviceX | ('key' : KeyA , ..) > .
+eq < DeviceX | ('key' : KeyA , 'trustSet' : SetA , ..) > $ UserX 'callAPI:bind' DeviceX | (KeyA) 
+= < DeviceX | ('key' : KeyA , 'trustSet' : (SetA , UserX) , ..) > .
+eq < DeviceX | ('on' : false , ..) > < DeviceX | ('trustSet' : (SetA , PrincipalX) , ...) > $ PrincipalX 'callAPI:toggle' DeviceX 
+= < DeviceX | ('on' : true , ...) > < DeviceX | ('trustSet' : (SetA , PrincipalX) , ...) > .
+eq < cloudA | (UserX : ('device' : DeviceX , ..) , ...) > $ UserX 'cloudAPI:toggle' cloudA 
+= < cloudA | (UserX : ('device' : DeviceX , ..) , ...) > $ cloudA 'callAPI:toggle' DeviceX .
+eq < cloudA | (UserX : ('members' : SetA , ..) , ...) > $ UserX 'callAPI:invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : (SetA , UserY) , ..) , ...) > .
+eq < cloudA | (UserX : ('members' : (SetA , UserY) , 'device' : DeviceX , ..) , UserY : ('device' : DeviceX , ...) , ....) > $ UserX 'callAPI:kick' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : SetA , 'device' : DeviceX , ..) , UserY : ('device' : nils , ...) , ....) > .
+eq < cloudA | (UserX : ('device' : DeviceX , 'members' : (SetA , UserY) , ..) , UserY : ('device' : nils , ...) , ....) > 
+= < cloudA | (UserX : ('device' : DeviceX , 'members' : (SetA , UserY) , ..) , UserY : ('device' : DeviceX , ...) , ....) > .
+eq < system | ('counter' : N , ..) > < UserX | ('key' : nils , ...) > < cloudA | (UserX : ('device' : DeviceX , ....) , .....) > $ UserX 'callAPI:openWindow' cloudA | (DeviceX) 
+= < system | ('counter' : N + 1 , ..) > < UserX | ('key' : randomStr('KeyA', N) , ...) > < cloudA | (UserX : ('device' : DeviceX , ....) , .....) > $ cloudA 'callAPI:openWindow' DeviceX | (randomStr('KeyA', N)) .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars UserX : User .
+vars PrincipalX : Principal .
+vars SetA : Set .
+vars DeviceX : Device .
+vars KeyA : Qid .
+vars UserY : User .
+vars FreshKeyA : Qid .
+*** events type declaration
+ops ev1 : User Device Qid -> Event .
+ops ev2 : Principal Device -> Event .
+ops ev3 : User -> Event .
+ops ev4 : User Device -> Event .
+ops ev5 : User User -> Event .
+ops ev6 : User User -> Event .
+*** events
+eq ev1(UserX, DeviceX, KeyA) = $ UserX 'callAPI:bind' DeviceX | (KeyA) .
+eq ev2(PrincipalX, DeviceX) = $ PrincipalX 'callAPI:toggle' DeviceX .
+eq ev3(UserX) = $ UserX 'cloudAPI:toggle' cloudA .
+eq ev4(UserX, DeviceX) = $ UserX 'callAPI:openWindow' cloudA | (DeviceX) .
+eq ev5(UserX, UserY) = $ UserX 'callAPI:invite' cloudA | (UserY) .
+eq ev6(UserX, UserY) = $ UserX 'callAPI:kick' cloudA | (UserY) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('key' : KeyA , ..) > < DeviceX | ... > 
+=> ep: ev1(UserX, DeviceX, KeyA) @ S < UserX | ('key' : KeyA , ..) > < DeviceX | ... > .
+rl [rev2]: E @ S < PrincipalX | .. > < DeviceX | ... > 
+=> ep: ev2(PrincipalX, DeviceX) @ S < PrincipalX | .. > < DeviceX | ... > .
+rl [rev3]: E @ S < UserX | .. > 
+=> ep: ev3(UserX) @ S < UserX | .. > .
+rl [rev4]: E @ S < UserX | .. > < DeviceX | ... > 
+=> ep: ev4(UserX, DeviceX) @ S < UserX | .. > < DeviceX | ... > .
+rl [rev5]: E @ S  
+=> ep: ev5(userA, userC) @ S  .
+rl [rev5]: E @ S  
+=> ep: ev5(userC, userA) @ S  .
+rl [rev6]: E @ S < cloudA | (UserX : ('members' : .. , ...) , ....) > < UserY | ..... > 
+=> ep: ev6(UserX, UserY) @ S < cloudA | (UserX : ('members' : .. , ...) , ....) > < UserY | ..... > .
+
+endm

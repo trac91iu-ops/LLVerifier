@@ -1,0 +1,125 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils >
+    < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev2} {$ userC
+    'cloudAPI:toggle' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils >
+    < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev3} {$ userA
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev2} {$ userC
+    'cloudAPI:toggle' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev3} {$ userC
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev4} {$ userA
+    'callAPI:invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev3} {$ userC
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev4} {$ userC
+    'callAPI:invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev3} {$
+    userC 'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev5} {$
+    userA 'callAPI:kick' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'off' >, 'rev1} {$ userC
+    'callAPI:toggle' deviceB | 'secret' @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev1} {$ userA
+    'callAPI:toggle' deviceB | 'secret' @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev1} {$ userC
+    'callAPI:toggle' deviceB | 'secret' @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev2} {$ userA
+    'cloudAPI:toggle' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev2} {$ userC
+    'cloudAPI:toggle' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev3} {$ userA
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev3} {$ userC
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev4} {$ userA
+    'callAPI:invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev1} {$
+    userC 'callAPI:toggle' deviceB | 'secret' @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev2} {$
+    userC 'cloudAPI:toggle' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev3} {$
+    userC 'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev4} {$
+    userC 'callAPI:invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev5} {$
+    userC 'callAPI:kick' cloudA | userA @
+< cloudA | userA : ('device' : nils, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'state' : 'on' >, 'rev1}
+idle
+$ userA 'callAPI:getKey' cloudA | deviceB
+$ userA 'callAPI:invite' cloudA | userC
+$ userC 'callAPI:getKey' cloudA | deviceB
+$ userC 'callAPI:invite' cloudA | userA
+$ userA 'callAPI:kick' cloudA | userC
+$ userC 'callAPI:toggle' deviceB | 'secret'
+$ userA 'callAPI:invite' cloudA | userC
+$ userC 'callAPI:kick' cloudA | userA
+rewrites: 14582 in 31ms cpu (31ms real) (468738 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'callAPI:getKey' cloudA |
+    deviceB ^ ($ userA 'callAPI:invite' cloudA | userC ^ ($ userC
+    'callAPI:getKey' cloudA | deviceB ^ ($ userC 'callAPI:invite' cloudA |
+    userA ^ ($ userA 'callAPI:kick' cloudA | userC ^ ($ userC 'callAPI:toggle'
+    deviceB | 'secret' ^ ($ userA 'callAPI:invite' cloudA | userC ^ ($ userC
+    'callAPI:kick' cloudA | userA ^ nile))))))))
+Bye.

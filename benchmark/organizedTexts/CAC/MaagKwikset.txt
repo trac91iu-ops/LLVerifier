@@ -1,0 +1,28 @@
+[init]
+Initially, the userA is local to deviceB, has no key, and has no signed key; the userC is not local to deviceB, has no key and signed key; the deviceB has key '' and trust userA; the cloudA has a cloud key 'secret' and records that deviceB trust userA.
+
+[state changes]
+when any device has a key and any user has no key, and the user calls the API 'callAPI:getKey', the device will update its key to a fresh random string, and the user will update their knowledge with the fresh random string.
+If the cloudA records that any user is in any device's trust set, and the user calls 'callAPI:signKey' with the device and a key as arguments, the cloud will encrypt its cloud key with the key and send it to the user.
+When any device has a key, and a user calls 'callAPI:bind' on the device with a signed key that encrypt the cloud key with the key, the device will add the user to its trust set.  
+When any cloud records that any user is in any device's trust set, and the user calls the API 'callAPI:share' to the cloud with a shared user and the device, the cloud will add the user to the device's trust set.
+If the cloudA has recorded two users in any device's trust set and the first users calls 'callAPI:revoke' with the second, the cloud will remove the second user from the trust set.  
+If the cloud sends any user any signed key, the user will know the signed key.
+If a user who is not local to a device approaches it, they become local to that device.
+If a user is local to a device and then leaves, they become remote to that device.
+
+[events]
+A local user can press the device's button.
+If any user is local to a device, the user can call the API 'callAPI:getKey' on that device.
+If any user has a signed key and is local to a device, the user can call the API 'callAPI:bind' on that device with the key.
+If any user has a key, the user can call the cloud API 'callAPI:sign' with the key.
+Any user can call the cloud API 'callAPI:share' with another user and the shared device.
+Any user can call the cloud API 'callAPI:revoke' with another user and the shared device.
+Any local user can leave the device.  
+Any remote user can approach a device.
+
+[properties]
+The userA will always first call API 'callAPI:share' to cloudA, then call API 'callAPI:revoke' to cloudA.
+After calling API 'callAPI:revoke', the next state userA will always not perform any operations.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that the deviceB does not trust userC and cloudA records that deviceB does not trust userC and , and the next state the deviceB trusts userC and cloudA records that deviceB does not trust userC.

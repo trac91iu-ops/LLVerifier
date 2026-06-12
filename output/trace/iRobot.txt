@@ -1,0 +1,10 @@
+idle
+$ userA 'pressButton' deviceB
+$ userC 'approaches' deviceB
+$ userC 'callAPI:setKey' deviceB | 'secretC'
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | (deviceB ; 'secretC')
+$ userC 'callAPI:reset' cloudA | (deviceB ; 'secretC')
+

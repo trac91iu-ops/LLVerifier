@@ -1,0 +1,82 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('time' : 0 , 'counter' : 0) > < userA | ('knowledge' : nils , 'localTo' : deviceB) > < userC | ('knowledge' : nils , 'localTo' : nils) > < deviceB | (nils) > < cloudA | (deviceB : ('tickets' : nils , 'owner' : nils)) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars DeviceY : Device .
+vars FreshSecret : Qid .
+vars SetX : Set .
+vars KeyA : Qid .
+vars UserX : User .
+vars CurrentTime : Nat .
+vars TimeA : Nat .
+*** policy
+eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY 
+= < UserX | ('localTo' : DeviceY , ..) > .
+eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY 
+= < UserX | ('localTo' : nils , ..) > .
+eq < system | ('counter' : N , ..) > < DeviceY | (...) > $ UserX 'pressButton' DeviceY 
+= < system | ('counter' : N + 1 , ..) > < DeviceY | (...) > $ DeviceY 'callAPI:setKey' cloudA | (randomStr('Secret', N)) .
+eq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : SetX , ...) , ....) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (SetX , ('key' : KeyA , 'time' : CurrentTime)) , ...) , ....) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > $ UserX 'callAPI:getKey' cloudA | (DeviceY) 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > $ cloudA 'send' UserX | (KeyA) if CurrentTime < TimeA + 1 .
+eq < cloudA | (DeviceY : ('owner' : nils , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) 
+= < cloudA | (DeviceY : ('owner' : (UserX) , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > .
+eq < cloudA | (DeviceY : ('owner' : SetX , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > $ UserX 'callAPI:join' cloudA | (DeviceY ; KeyA) 
+= < cloudA | (DeviceY : ('owner' : (SetX , UserX) , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : nils , ....) , .....) > if CurrentTime > TimeA + 2 .
+eq < UserX | ('knowledge' : SetX , ..) > $ cloudA 'send' UserX | (KeyA) 
+= < UserX | ('knowledge' : (SetX , KeyA) , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars DeviceY : Device .
+vars FreshSecret : Qid .
+vars SetX : Set .
+vars KeyA : Qid .
+vars UserX : User .
+vars CurrentTime : Nat .
+vars TimeA : Nat .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device -> Event .
+ops ev3 : User Device Qid -> Event .
+ops ev4 : User Device Qid -> Event .
+ops ev5 : User Device -> Event .
+ops ev6 : User Device -> Event .
+*** events
+eq ev1(UserX, DeviceY) = $ UserX 'pressButton' DeviceY .
+eq ev2(UserX, DeviceY) = $ UserX 'callAPI:getKey' cloudA | (DeviceY) .
+eq ev3(UserX, DeviceY, KeyA) = $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) .
+eq ev4(UserX, DeviceY, KeyA) = $ UserX 'callAPI:join' cloudA | (DeviceY ; KeyA) .
+eq ev5(UserX, DeviceY) = $ UserX 'leaves' DeviceY .
+eq ev6(UserX, DeviceY) = $ UserX 'approaches' DeviceY .
+*** transitions
+rl [rev1]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev1(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev2]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev2(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev3]: E @ S < UserX | ('knowledge' : (KeyA) , ..) > < DeviceY | ... > 
+=> ep: ev3(UserX, DeviceY, KeyA) @ S < UserX | ('knowledge' : (KeyA) , ..) > < DeviceY | ... > .
+rl [rev4]: E @ S < UserX | ('knowledge' : (KeyA) , ..) > < DeviceY | ... > 
+=> ep: ev4(UserX, DeviceY, KeyA) @ S < UserX | ('knowledge' : (KeyA) , ..) > < DeviceY | ... > .
+rl [rev5]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev5(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev6]: E @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > 
+=> ep: ev6(UserX, DeviceY) @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > .
+rl [rtp]: E @ S < system | ('time' : N , .. ) >
+=> ep: timepass @ S < system | ('time' : (N + 1) , .. ) > .
+
+
+endm

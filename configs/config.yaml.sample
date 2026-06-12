@@ -1,0 +1,76 @@
+###test###
+PROVIDERS:
+  openrouter:
+    base_url: "https://openrouter.ai/api/v1/"
+    api_key: "sk-or-v1-XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    models: 
+      - "deepseek/deepseek-r1:free"
+      - "tngtech/deepseek-r1t-chimera:free" #164K
+      - "deepseek/deepseek-r1-zero:free" #164K
+      - "google/gemini-2.5-pro-exp-03-25" #1M
+      - "deepseek/deepseek-chat-v3-0324:free" #164K
+      - "google/gemma-3-12b-it:free" #131K
+      - "google/gemini-2.5-pro-preview" #1.05M
+      - "deepseek/deepseek-r1-0528" #164K
+      - "anthropic/claude-sonnet-4" #200K
+  ollama:
+    base_url: "http://localhost:11434/v1"
+    api_key: "unused"
+    models:
+      - "qwen2.5:7b-instruct"
+  Xai:
+    base_url: "https://api.x.ai/v1"
+    api_key: "xai-XXXXXXXXXXXXXXXXXXXXXXXXxxx"
+    models:
+      - "grok-3-mini-beta" #131K
+      - "grok-3-mini" #131K
+      - "grok-3" #131K
+    proxy: "http://127.0.0.1:20171" #optional
+  Cloudflare:
+    base_url: "https://api.cloudflare.com/client/v4/accounts/XXXXXXXXXXX/ai/v1"
+    api_key: "xxxxxxxxxxx"
+    models:
+      - "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+      - "@cf/meta/llama-4-scout-17b-16e-instruct"
+      - "@cf/meta/llama-3-8b-instruct"
+STRATEGIES:
+  preprocess: 
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+  genPolicy: 
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+  genPolicyVars:
+    provider: ["Xai", "grok-3-mini-beta"]
+  genEventVars:
+    provider: ["Xai", "grok-3-mini-beta"]
+  genPropVars:
+    provider: ["Xai", "grok-3-mini-beta"]
+  revise:  
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+    temperature: 1
+    top_p: 0.3
+  genRRLs:
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+  genAP:
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+  extractNAP:
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+  genFairness:
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+  default: 
+    provider: ["openrouter", "anthropic/claude-sonnet-4"]
+MODE: "useapi"
+LOG: true
+DEBUG: false
+TIMEOUT_RETRY: 2
+TOTAL_RETRY: 3
+ERROR_RETRY: 2
+VERBOSE: 5
+LOGDIR: "logs"
+LOGFILE: "log.txt"
+OUTDIR: "output"
+LIBDIR: "lib"
+TEST: false
+VERSION: "beta"
+RULES_NAME: "rules.maude"
+CHECKER_NAME: "checker.maude"
+N_CHOICES: 1

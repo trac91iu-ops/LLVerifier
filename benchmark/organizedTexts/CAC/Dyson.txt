@@ -1,0 +1,27 @@
+[init]
+Initially, the userA has no key; The userC has no key; The cloudA records that userA has device deviceB and has no members, and records that userC has no device and no members; The deviceB has key 'secret'.
+
+[state changes]
+When any device has any key and is off, and the owner user calls device API 'callAPI:toggle' with the same key as an argument, then the device will be on.
+When cloudA records any user information, and the user call cloudA API 'callAPI:invite' with any invited user as argument, the cloud will add the invited user to their members.
+When cloudA records that any user has any device and has any member user, and records that the member user has no device, the cloudA will add the device to the member user's device.
+When cloudA records that any user has a member set, and the user calls cloudA API 'callAPI:invite' with any invited user, the cloud will add the invited user to the members.
+When cloudA records that any user has any member user and the member user has any device, and the user calls cloudA API 'callAPI:kick' with the member user, the cloud will remove the member user from the members and remove the device from the member user's information.
+When any device has any key, cloudA records that any user has the device, and the user calls cloudA API 'callAPI:getKey' with the device, then cloudA will trigger an event that send the key to the user.
+When any device is off, cloudA records that any user has the device, and the user calls cloudA API 'cloudAPI:toggle', the device will be on.
+When the cloudA sends any user any keys, the user will add the key to his knowledge.
+
+[events]
+when any user knows any key, the user can call device API 'callAPI:toggle' with the key to any device.
+Any user can call cloud API 'cloudAPI:toggle' to cloudA.
+Any user can call cloud API 'callAPI:getKey' to cloudA.
+The userA can call cloudA API 'callAPI:invite' with userC.
+The userC can call cloudA API 'callAPI:invite' with userA.
+If any user has some members, any user can call cloudA API 'callAPI:kick' with the member user.
+
+
+[properties]
+The userA will always take first invite the userC, then kick userC out. 
+After that, in the next state userA will always not perform any operations.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that deviceB is off, and the cloudA records that userC has no device deviceB, and the next state userC performs some actions, deviceB is on and the cloudA records that userC has no device deviceB.

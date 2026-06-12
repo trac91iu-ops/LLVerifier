@@ -1,0 +1,78 @@
+load rules .
+load model-checker .
+mod PREDS is
+pr TRANSITION * (sort State to State') .
+including SATISFACTION .
+pr BOOL-OPS .
+
+subsort Vertex < State .
+
+vars N : Nat .
+vars KeyA : Qid .
+vars Act : Action .
+vars PrincipalA : Principal .
+var Vtx : Vertex .
+var P : Prop .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+
+ops boundReached : -> Prop .
+*** generated type declarations
+ops ap1  ap2  ap3  ap4  ap5  ap6  ap7  ap8  ap9  ap11  : -> Prop .
+
+*** proposition comment
+*** ap1 : userA press button
+*** ap2 : userA call device's API 'callAPI:setKey'
+*** ap3 : userA call cloud's 'callAPI:bind'
+*** ap4 : reset
+*** ap5 : userA is the owner of deviceB
+*** ap6 : userA take operations
+*** ap7 : userA reset deviceB
+*** ap8 : userC perform operations
+*** ap9 : userC is local to deviceB
+*** ap11 : userC is the owner of deviceB
+
+*** generated propositions
+ceq E @ S  |= ap1 = true if subject(E) == userA and action(E) == 'pressButton' and object(E) == deviceB .
+ceq E @ S  |= ap2 = true if subject(E) == userA and action(E) == 'callAPI:setKey' and object(E) == deviceB .
+ceq E @ S  |= ap3 = true if subject(E) == userA and action(E) == 'callAPI:bind' and object(E) == cloudA .
+ceq E @ S  |= ap4 = true if subject(E) == userA and action(E) == 'callAPI:reset' and object(E) == cloudA .
+eq E @ S < cloudA | (deviceB : ('owner' : userA , ..) , ...) > |= ap5 = true  .
+ceq E @ S  |= ap6 = true if subject(E) == userA .
+ceq E @ S  |= ap7 = true if subject(E) == userA and action(E) == 'callAPI:reset' and object(E) == cloudA .
+ceq E @ S  |= ap8 = true if subject(E) == userC .
+eq E @ S < userC | ('localTo' : deviceB , ..) > |= ap9 = true  .
+eq E @ S < cloudA | (deviceB : ('owner' : (userC, ..) , ...) , ....) > |= ap11 = true  .
+*** eq E @ S < cloudA | (deviceB : ('owner' : userC , ..) , ...) > |= ap11 = true  .
+
+*** predfeined
+ceq E @ S < system | 'counter' : N , ... >  |= boundReached = true if N >= 5 . *** Max turns number
+ceq E @ S < system | 'time' : N , ... >  |= boundReached = true if N >= 3 . *** time pass
+
+eq Vtx |= P = false [owise] .
+
+endm
+
+mod CHECK is
+pr PREDS .
+including MODEL-CHECKER .
+
+ops spec basic fairness : -> Prop .
+
+eq basic = [] (~ boundReached) .
+
+eq fairness = 
+[](ap1 -> O (ap8 W (ap2 \/ ap4)))
+/\ [](ap2 -> O (ap8 W (ap3 \/ ap4)))
+/\ [](ap4 -> O (ap8 W ap1))
+/\ [](ap5 -> ~ O ap6)
+/\ [](O ap7 -> (ap3 /\ ~ ap5))
+/\ [](ap4 -> <> ap1)
+/\ <> (~ ap9 /\ ~ ap11 /\ O (~ ap9 /\ ap11)) .
+
+*** security property specification
+eq spec = O ~ (fairness /\ basic) .
+endm
+
+load ../lib/postProcess .

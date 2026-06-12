@@ -1,0 +1,14 @@
+idle
+$ userA 'pressButton' deviceB
+$ userC 'callAPI:invite' cloudA | userA
+$ userC 'callAPI:kick' cloudA | userA
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userC 'callAPI:lock' deviceB | 'KeyB'362609376e
+$ userC 'callAPI:invite' cloudA | userA
+$ userC 'callAPI:kick' cloudA | userA
+$ userC 'leaves' deviceB
+

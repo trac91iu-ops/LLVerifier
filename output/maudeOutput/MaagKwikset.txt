@@ -1,0 +1,130 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0 > < cloudA | deviceB : 'trust' : userA > < userA |
+    'key' : nils, 'localTo' : deviceB, 'signedKey' : nils > < userC | 'key' :
+    nils, 'localTo' : nils, 'signedKey' : nils > < deviceB | 'key' : '',
+    'trust' : userA >, 'rev1} {$ userA 'callAPI:getKey' deviceB @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : userA > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : nils > < userC
+    | 'key' : nils, 'localTo' : nils, 'signedKey' : nils > < deviceB | 'key' :
+    'KeyA'2357136044, 'trust' : userA >, 'rev4} {$ userA 'callAPI:signKey'
+    cloudA | (deviceB ; 'KeyA'2357136044) @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : userA > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : nils, 'localTo' : nils,
+    'signedKey' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'trust' : userA
+    >, 'rev1} {$ userA 'callAPI:getKey' deviceB @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : userA > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : nils, 'localTo' : nils,
+    'signedKey' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'trust' : userA
+    >, 'rev2} {$ userA 'callAPI:bind' deviceB | encrypt('secret',
+    'KeyA'2357136044) @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : userA > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : nils, 'localTo' : nils,
+    'signedKey' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'trust' : userA
+    >, 'rev5} {$ userA 'callAPI:share' cloudA | (userC ; deviceB) @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : (userA, userC) > <
+    userA | 'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' :
+    encrypt('secret', 'KeyA'2357136044) > < userC | 'key' : nils, 'localTo' :
+    nils, 'signedKey' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'trust' :
+    userA >, 'rev5} {$ userC 'callAPI:share' cloudA | (userA ; deviceB) @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : (userA, userC) > <
+    userA | 'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' :
+    encrypt('secret', 'KeyA'2357136044) > < userC | 'key' : nils, 'localTo' :
+    nils, 'signedKey' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'trust' :
+    userA >, 'rev6} {$ userC 'callAPI:revoke' cloudA | userA @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : userC > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : nils, 'localTo' : nils,
+    'signedKey' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'trust' : userA
+    >, 'rev8} {$ userC 'approaches' deviceB @
+< system | 'counter' : 1 > < cloudA | deviceB : 'trust' : userC > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : nils, 'localTo' : deviceB,
+    'signedKey' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'trust' : userA
+    >, 'rev1} {$ userC 'callAPI:getKey' deviceB @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : userC > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239, 'localTo'
+    : deviceB, 'signedKey' : nils > < deviceB | 'key' : 'KeyA'2546248239,
+    'trust' : userA >, 'rev4} {$ userC 'callAPI:signKey' cloudA | (deviceB ;
+    'KeyA'2546248239) @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : userC > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239, 'localTo'
+    : deviceB, 'signedKey' : encrypt('secret', 'KeyA'2546248239) > < deviceB |
+    'key' : 'KeyA'2546248239, 'trust' : userA >, 'rev1} {$ userC
+    'callAPI:getKey' deviceB @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : userC > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239, 'localTo'
+    : deviceB, 'signedKey' : encrypt('secret', 'KeyA'2546248239) > < deviceB |
+    'key' : 'KeyA'2546248239, 'trust' : userA >, 'rev5} {$ userC
+    'callAPI:share' cloudA | (userA ; deviceB) @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : (userA, userC) > <
+    userA | 'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' :
+    encrypt('secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239,
+    'localTo' : deviceB, 'signedKey' : encrypt('secret', 'KeyA'2546248239) > <
+    deviceB | 'key' : 'KeyA'2546248239, 'trust' : userA >, 'rev1} {$ userC
+    'callAPI:getKey' deviceB @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : (userA, userC) > <
+    userA | 'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' :
+    encrypt('secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239,
+    'localTo' : deviceB, 'signedKey' : encrypt('secret', 'KeyA'2546248239) > <
+    deviceB | 'key' : 'KeyA'2546248239, 'trust' : userA >, 'rev4} {$ userC
+    'callAPI:signKey' cloudA | (deviceB ; 'KeyA'2546248239) @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : (userA, userC) > <
+    userA | 'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' :
+    encrypt('secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239,
+    'localTo' : deviceB, 'signedKey' : encrypt('secret', 'KeyA'2546248239) > <
+    deviceB | 'key' : 'KeyA'2546248239, 'trust' : userA >, 'rev6} {$ userA
+    'callAPI:revoke' cloudA | userC @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : userA > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239, 'localTo'
+    : deviceB, 'signedKey' : encrypt('secret', 'KeyA'2546248239) > < deviceB |
+    'key' : 'KeyA'2546248239, 'trust' : userA >, 'rev2} {$ userC 'callAPI:bind'
+    deviceB | encrypt('secret', 'KeyA'2546248239) @
+< system | 'counter' : 2 > < cloudA | deviceB : 'trust' : userA > < userA |
+    'key' : 'KeyA'2357136044, 'localTo' : deviceB, 'signedKey' : encrypt(
+    'secret', 'KeyA'2357136044) > < userC | 'key' : 'KeyA'2546248239, 'localTo'
+    : deviceB, 'signedKey' : encrypt('secret', 'KeyA'2546248239) > < deviceB |
+    'key' : 'KeyA'2546248239, 'trust' : (userA, userC) >, 'rev1}
+idle
+$ userA 'callAPI:getKey' deviceB
+$ userA 'callAPI:signKey' cloudA | (deviceB ; 'KeyA'2357136044)
+$ userA 'callAPI:share' cloudA | (userC ; deviceB)
+$ userC 'callAPI:revoke' cloudA | userA
+$ userC 'approaches' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userC 'callAPI:signKey' cloudA | (deviceB ; 'KeyA'2546248239)
+$ userC 'callAPI:share' cloudA | (userA ; deviceB)
+$ userA 'callAPI:revoke' cloudA | userC
+$ userC 'callAPI:bind' deviceB | encrypt('secret', 'KeyA'2546248239)
+rewrites: 7985 in 14ms cpu (15ms real) (540915 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'callAPI:getKey' deviceB ^
+    ($ userA 'callAPI:signKey' cloudA | (deviceB ; 'KeyA'2357136044) ^ ($ userA
+    'callAPI:share' cloudA | (userC ; deviceB) ^ ($ userC 'callAPI:revoke'
+    cloudA | userA ^ ($ userC 'approaches' deviceB ^ ($ userC 'callAPI:getKey'
+    deviceB ^ ($ userC 'callAPI:signKey' cloudA | (deviceB ; 'KeyA'2546248239)
+    ^ ($ userC 'callAPI:share' cloudA | (userA ; deviceB) ^ ($ userA
+    'callAPI:revoke' cloudA | userC ^ ($ userC 'callAPI:bind' deviceB |
+    encrypt('secret', 'KeyA'2546248239) ^ nile))))))))))
+Bye.

@@ -1,0 +1,62 @@
+load rules .
+load model-checker .
+mod PREDS is
+pr TRANSITION * (sort State to State') .
+including SATISFACTION .
+pr BOOL-OPS .
+
+subsort Vertex < State .
+
+vars N : Nat .
+vars Act : Action .
+vars PrincipalA : Principal .
+var Vtx : Vertex .
+var P : Prop .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+
+ops boundReached : -> Prop .
+*** generated type declarations
+ops ap1  ap2  ap3  ap4  ap5  : -> Prop .
+
+*** proposition comment
+*** ap1 : userA takes operations
+*** ap2 : userA is the owner of deviceB
+*** ap3 : userC performs operations
+*** ap4 : userC is local to deviceB
+*** ap5 : userC is the owner of deviceB
+
+*** generated propositions
+ceq E @ S  |= ap1 = true if subject(E) == userA .
+eq E @ S < cloudA | (deviceB : ('owner' : (userA , ..) , ...) , ....) > |= ap2 = true  .
+ceq E @ S  |= ap3 = true if subject(E) == userC .
+eq E @ S < userC | ('localTo' : deviceB , ..) > |= ap4 = true  .
+eq E @ S < cloudA | (deviceB : ('owner' : (userC , ..) , ...) , ....) > |= ap5 = true  .
+
+*** predfeined
+ceq E @ S < system | 'counter' : N , ... >  |= boundReached = true if N >= 5 . *** Max turns number
+ceq E @ S < system | 'time' : N , ... >  |= boundReached = true if N >= 3 . *** time pass
+
+eq Vtx |= P = false [owise] .
+
+endm
+
+mod CHECK is
+pr PREDS .
+including MODEL-CHECKER .
+
+ops spec basic fairness : -> Prop .
+
+eq basic = [] (~ boundReached) .
+
+eq fairness = 
+[](ap1 -> O (ap3 W (ap1 /\ ap2)))
+/\ [](ap2 -> ~ O ap1)
+/\ <> (~ ap4 /\ ~ ap5 /\ O (~ ap4 /\ ap5)) .
+
+*** security property specification
+eq spec = O ~ (fairness /\ basic) .
+endm
+
+load ../lib/postProcess .

@@ -1,0 +1,72 @@
+load rules .
+load model-checker .
+mod PREDS is
+pr TRANSITION * (sort State to State') .
+including SATISFACTION .
+pr BOOL-OPS .
+
+subsort Vertex < State .
+
+vars N : Nat .
+vars PrincipalA : Principal .
+vars Act : Action .
+vars KeyA : Qid .
+var Vtx : Vertex .
+var P : Prop .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+
+ops boundReached : -> Prop .
+*** generated type declarations
+ops ap1  ap2  ap3  ap4  ap5  ap6  ap7  ap8  : -> Prop .
+
+*** proposition comment
+*** ap1 : userA presses the button of deviceB
+*** ap2 : userA calls 'callApi:Bind'
+*** ap3 : userA resets deviceB
+*** ap4 : userA is the owner of deviceB
+*** ap5 : userA takes operations
+*** ap6 : userC performs operations
+*** ap7 : userC is local to deviceB
+*** ap8 : userC is the owner of deviceB
+
+*** generated propositions
+ceq E @ S  |= ap1 = true if subject(E) == userA and action(E) == 'pressButton' and object(E) == deviceB .
+ceq E @ S  |= ap2 = true if subject(E) == userA and action(E) == 'callAPI:bind' and object(E) == cloudA .
+ceq E @ S  |= ap3 = true if subject(E) == userA and action(E) == 'callAPI:reset' and object(E) == cloudA .
+eq E @ S < cloudA | (deviceB : ('owner' : userA , ..) , ...) > |= ap4 = true  .
+ceq E @ S  |= ap5 = true if subject(E) == userA .
+ceq E @ S  |= ap6 = true if subject(E) == userC .
+eq E @ S < userC | ('localTo' : deviceB , ..) > |= ap7 = true  .
+eq E @ S < cloudA | (deviceB : ('owner' : userC , ..) , ...) > |= ap8 = true  .
+
+*** predfeined
+ceq E @ S < system | 'counter' : N , ... >  |= boundReached = true if N >= 5 . *** Max turns number
+ceq E @ S < system | 'time' : N , ... >  |= boundReached = true if N >= 3 . *** time pass
+
+eq Vtx |= P = false [owise] .
+
+endm
+
+mod CHECK is
+pr PREDS .
+including MODEL-CHECKER .
+
+ops spec basic fairness : -> Prop .
+
+eq basic = [] (~ boundReached) .
+
+eq fairness = 
+[](ap1 -> O (ap6 W (ap2 \/ ap3)))
+/\ [](ap2 -> O (ap6 W (ap2 \/ ap3)))
+/\ [](ap4 -> ~ O ap5)
+/\ [](O ap3 -> (ap2 /\ ~ ap4))
+/\ [](ap3 -> <> ap1)
+/\ <> (~ ap7 /\ ~ ap8 /\ O (~ ap7 /\ ap8)) .
+
+*** security property specification
+eq spec = O ~ (fairness /\ basic) .
+endm
+
+load ../lib/postProcess .

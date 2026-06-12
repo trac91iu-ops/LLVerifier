@@ -1,0 +1,9 @@
+idle
+$ userA 'pressButton' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | encrypt('RandomString'2546248239, 'secret')
+

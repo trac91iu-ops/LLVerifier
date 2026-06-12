@@ -1,0 +1,66 @@
+load rules .
+load model-checker .
+mod PREDS is
+pr TRANSITION * (sort State to State') .
+including SATISFACTION .
+pr BOOL-OPS .
+
+subsort Vertex < State .
+
+vars N : Nat .
+vars Act : Action .
+vars ArgumentsX : List .
+vars PrincipalX : Principal .
+var Vtx : Vertex .
+var P : Prop .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+
+ops boundReached sp : -> Prop .
+*** generated type declarations
+ops ap1  ap2  ap3  ap4  ap5  ap6  : -> Prop .
+
+*** proposition comment
+*** ap1 : userA invites userC
+*** ap2 : userA kicks userC out
+*** ap3 : userA performs operations
+*** ap4 : userC performs operations
+*** ap5 : deviceB is on
+*** ap6 : cloudA records userC has deviceB
+
+*** generated propositions
+ceq E @ S  |= ap1 = true if subject(E) == userA and action(E) == 'callAPI:invite' and object(E) == cloudA .
+ceq E @ S  |= ap2 = true if subject(E) == userA and action(E) == 'callAPI:kick' and object(E) == cloudA .
+ceq E @ S  |= ap3 = true if subject(E) == userA .
+ceq E @ S  |= ap4 = true if subject(E) == userC .
+eq E @ S < deviceB | ('state' : 'on' , ..) > |= ap5 = true  .
+eq E @ S < cloudA | (userC : ('device' : deviceB , ..) , ...) > |= ap6 = true  .
+
+*** predefined
+ceq E @ S  |= sp = true if subject(E) == system . *** system performs actions
+ceq E @ S < system | 'counter' : N , ... >  |= boundReached = true if N >= 5 . *** Max turns number
+ceq E @ S < system | 'time' : N , ... >  |= boundReached = true if N >= 3 . *** time pass
+
+eq Vtx |= P = false [owise] .
+
+endm
+
+mod CHECK is
+pr PREDS .
+including MODEL-CHECKER .
+
+ops spec basic fairness : -> Prop .
+
+eq basic = [] (~ boundReached /\ ~ sp) .
+
+eq fairness = <>(~ ap5 /\ ~ ap6 /\ O (ap4 /\ ap5 /\ ~ ap6)) .
+*** [](ap1 -> O (ap4 W ap2))
+*** /\ [](ap2 -> O ~ ap3)
+*** /\ <>(~ ap5 /\ ~ ap6 /\ O (ap4 /\ ap5 /\ ~ ap6)) .
+*** 
+*** security property specification
+eq spec = O ~ (fairness /\ basic) .
+endm
+
+load ../lib/postProcess .

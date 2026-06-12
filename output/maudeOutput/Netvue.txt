@@ -1,0 +1,72 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : nils > < userC |
+    'localTo' : nils, 'message' : nils > < deviceB | 'key' : 'secret' >, 'rev1}
+    {$ userA 'pressButton' deviceB @
+< system | 'counter' : 1 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev6} {$ userC 'approaches'
+    deviceB @
+< system | 'counter' : 1 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : nils > < deviceB | 'key' : 'secret' >, 'rev1} {$ userC
+    'pressButton' deviceB @
+< system | 'counter' : 2 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'2546248239, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev1} {$ userC 'pressButton' deviceB @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'2546248239, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev1} {$ userC 'pressButton' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'2546248239, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev5} {$ userC 'leaves' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : encrypt('RandomString'2546248239, 'secret') > < deviceB | 'key' :
+    'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA | encrypt(
+    'RandomString'2546248239, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userC) > < userA | 'localTo' : deviceB, 'message' :
+    encrypt('RandomString'2357136044, 'secret') > < userC | 'localTo' : nils,
+    'message' : encrypt('RandomString'2546248239, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev3}
+idle
+$ userA 'pressButton' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | encrypt('RandomString'2546248239, 'secret')
+rewrites: 3578 in 967ms cpu (11ms real) (3699 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userC 'approaches' deviceB ^ ($ userC 'pressButton' deviceB ^ ($ userC
+    'pressButton' deviceB ^ ($ userC 'pressButton' deviceB ^ ($ userC 'leaves'
+    deviceB ^ ($ userC 'callAPI:bind' cloudA | encrypt(
+    'RandomString'2546248239, 'secret') ^ nile)))))))
+Bye.

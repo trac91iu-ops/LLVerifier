@@ -1,0 +1,25 @@
+[init]
+Initially, the userA is local to the deviceB and has no key; The userC is not local and has no key; The cloud records that deviceB's key is 'secret' and the owner is empty; The deviceB has key 'secret'.
+
+[state changes]
+When a user is not local to any device and approaches one, they become local to that device.  
+When a user is local to a device and then leaves, they become remote from that device.  
+When a user presses the button on a device that has a key, the device will come online and send its key to the user.  
+When a device sends a key to a user, the user will record it.  
+If the cloud records that a device has no owner, the device is online, and a user calls `callAPI:bind` with a key that matches the one stored in the cloud, the cloud will add that user as the device’s owner.  
+If the cloud verifies that the user is the device's owner when `callAPI:reset` is called, it will reset the device owner to empty and the device will go offline.  
+
+[events]
+If a user is local to a device, they can press the device's button.  
+If a user has a key, they can call cloudA's API `callAPI:bind`, passing the target device and the key as arguments.  
+If a user is local to a device, they can call cloudA's API `callAPI:reset` with the target device as an argument.  
+A user who is local to a device can choose to leave it.  
+If a user is not local to any device, they can approach deviceB.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind' until reset.
+If the cloud records that userA is the owner of deviceB, userA will not take any operations in the next state.
+If in the next state, userA reset the deviceB, the userA calls 'callAPI:bind' and is not the owner of deviceB.
+If reset happens, the userA will eventually press the button of deviceB.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

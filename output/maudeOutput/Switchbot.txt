@@ -1,0 +1,82 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : nils), deviceB : ('bdKey' : 'secret', 'owner' : nils) > <
+    userA | 'key' : nils, 'localTo' : deviceB > < userC | 'key' : nils,
+    'localTo' : nils > < deviceB | 'key' : 'secret' >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : nils), deviceB : ('bdKey' : 'secret', 'owner' : nils) > <
+    userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' : nils,
+    'localTo' : nils > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC
+    'callAPI:invite' cloudA | userA @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : userA), deviceB : ('bdKey' : 'secret', 'owner' : nils) >
+    < userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' : nils,
+    'localTo' : nils > < deviceB | 'key' : 'secret' >, 'rev4} {$ userC
+    'callAPI:kick' cloudA | userA @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : nils), deviceB : ('bdKey' : 'secret', 'owner' : nils) > <
+    userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' : nils,
+    'localTo' : nils > < deviceB | 'key' : 'secret' >, 'rev6} {$ userC
+    'approaches' deviceB @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : nils), deviceB : ('bdKey' : 'secret', 'owner' : nils) > <
+    userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' : nils,
+    'localTo' : deviceB > < deviceB | 'key' : 'secret' >, 'rev1} {$ userC
+    'pressButton' deviceB @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : nils), deviceB : ('bdKey' : 'secret', 'owner' : nils) > <
+    userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' : 'secret',
+    'localTo' : deviceB > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC
+    'callAPI:invite' cloudA | userA @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : userA), deviceB : ('bdKey' : 'secret', 'owner' : nils) >
+    < userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' :
+    'secret', 'localTo' : deviceB > < deviceB | 'key' : 'secret' >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : userA), deviceB : ('bdKey' : 'secret', 'owner' : nils) >
+    < userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' :
+    'secret', 'localTo' : deviceB > < deviceB | 'key' : 'secret' >, 'rev4} {$
+    userC 'callAPI:kick' cloudA | userA @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : nils), deviceB : ('bdKey' : 'secret', 'owner' : nils) > <
+    userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' : 'secret',
+    'localTo' : deviceB > < deviceB | 'key' : 'secret' >, 'rev5} {$ userC
+    'leaves' deviceB @
+< cloudA | userA : ('devices' : nils, 'members' : nils), userC : ('devices' :
+    nils, 'members' : nils), deviceB : ('bdKey' : 'secret', 'owner' : nils) > <
+    userA | 'key' : 'secret', 'localTo' : deviceB > < userC | 'key' : 'secret',
+    'localTo' : nils > < deviceB | 'key' : 'secret' >, 'rev2}
+idle
+$ userA 'pressButton' deviceB
+$ userC 'callAPI:invite' cloudA | userA
+$ userC 'callAPI:kick' cloudA | userA
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:invite' cloudA | userA
+$ userC 'callAPI:kick' cloudA | userA
+$ userC 'leaves' deviceB
+rewrites: 1190 in 4ms cpu (4ms real) (281790 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userC 'callAPI:invite' cloudA | userA ^ ($ userC 'callAPI:kick' cloudA |
+    userA ^ ($ userC 'approaches' deviceB ^ ($ userC 'pressButton' deviceB ^ ($
+    userC 'callAPI:invite' cloudA | userA ^ ($ userC 'callAPI:kick' cloudA |
+    userA ^ ($ userC 'leaves' deviceB ^ nile))))))))
+Bye.

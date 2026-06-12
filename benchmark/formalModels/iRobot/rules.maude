@@ -1,0 +1,80 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | ('key' : 'secretA' , 'localTo' : deviceB) > < userC | ('key' : 'secretC' , 'localTo' : nils) > < deviceB | ('pressed' : false , 'key' : nils) > < cloudA | (deviceB : ('owner' : nils , 'bdKey' : '')) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars UserX : User .
+vars DeviceY : Device .
+vars KeyB : Qid .
+vars KeyA : Qid .
+*** policy
+eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY 
+= < UserX | ('localTo' : DeviceY , ..) > .
+eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY 
+= < UserX | ('localTo' : nils , ..) > .
+eq < DeviceY | ('pressed' : false , ..) > $ UserX 'pressButton' DeviceY 
+= < DeviceY | ('pressed' : true , ..) > .
+eq < DeviceY | ('pressed' : true , 'key' : nils , ..) > $ UserX 'callAPI:setKey' DeviceY | (KeyA) 
+= < DeviceY | ('pressed' : false , 'key' : KeyA , ..) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) .
+eq < DeviceY | ('pressed' : true , 'key' : KeyB , ..) > $ UserX 'callAPI:setKey' DeviceY | (KeyA) 
+= < DeviceY | ('pressed' : false , 'key' : KeyA , ..) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) .
+eq < cloudA | (DeviceY : ('bdKey' : KeyB , ..) , ...) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) 
+= < cloudA | (DeviceY : ('bdKey' : KeyA , ..) , ...) > .
+eq < cloudA | (DeviceY : ('bdKey' : KeyA , 'owner' : nils , ..) , ...) > $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) 
+= < cloudA | (DeviceY : ('bdKey' : KeyA , 'owner' : UserX , ..) , ...) > .
+eq < DeviceY | ('pressed' : true , 'key' : KeyA , ..) > $ UserX 'callAPI:getKey' DeviceY 
+= < DeviceY | ('pressed' : false , .. , 'key' : KeyA) > $ DeviceY 'sendKey' UserX | (KeyA) .
+eq < UserX | ('key' : KeyB , ..) > $ DeviceY 'sendKey' UserX | (KeyA) 
+= < UserX | ('key' : KeyA , ..) > .
+eq < cloudA | (DeviceY : ('bdKey' : KeyA , 'owner' : UserX , ..) , ...) > $ UserX 'callAPI:reset' cloudA | (DeviceY ; KeyA) 
+= < cloudA | (DeviceY : ('bdKey' : '' , 'owner' : nils , ..) , ...) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars UserX : User .
+vars DeviceY : Device .
+vars KeyB : Qid .
+vars KeyA : Qid .
+vars BoolX : Bool .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device -> Event .
+ops ev3 : User Device Qid -> Event .
+ops ev4 : User Device Qid -> Event .
+ops ev5 : User Device Qid -> Event .
+ops ev6 : User Device -> Event .
+ops ev7 : User Device -> Event .
+*** events
+eq ev1(UserX, DeviceY) = $ UserX 'pressButton' DeviceY .
+eq ev2(UserX, DeviceY) = $ UserX 'callAPI:getKey' DeviceY .
+eq ev3(UserX, DeviceY, KeyA) = $ UserX 'callAPI:setKey' DeviceY | (KeyA) .
+eq ev4(UserX, DeviceY, KeyA) = $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) .
+eq ev5(UserX, DeviceY, KeyA) = $ UserX 'callAPI:reset' cloudA | (DeviceY ; KeyA) .
+eq ev6(UserX, DeviceY) = $ UserX 'leaves' DeviceY .
+eq ev7(UserX, DeviceY) = $ UserX 'approaches' DeviceY .
+*** transitions
+rl [rev1]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev1(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev2]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev2(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev3]: E @ S < UserX | ('localTo' : DeviceY , 'key' : KeyA , ..) > 
+=> ep: ev3(UserX, DeviceY, KeyA) @ S < UserX | ('localTo' : DeviceY , 'key' : KeyA , ..) > .
+rl [rev4]: E @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... > 
+=> ep: ev4(UserX, DeviceY, KeyA) @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... > .
+rl [rev5]: E @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... > 
+=> ep: ev5(UserX, DeviceY, KeyA) @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... > .
+rl [rev6]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev6(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev7]: E @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > 
+=> ep: ev7(UserX, DeviceY) @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > .
+
+endm

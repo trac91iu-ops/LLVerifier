@@ -1,0 +1,28 @@
+[init]
+Initially, the userA is local to the deviceB and has no key; The userC is not local and has no key; The cloud records that deviceB's key is 'secret' and the owner is empty; The deviceB is not online, its key is 'secret', and its owner is empty.
+
+[state changes]
+When any user is not local to any device and the user approaches the device, the user will be local to the device.
+When any user is local to any device and the user leaves any device, the user will be remote to the device.
+When any user presses the button on any device, then the device will record that it is pressed, is online, and trigger an event to send the user its key.
+When any device sends any user its key and the user has no key, the user will know the key.
+When the cloudA records that the device has any key, the user calls 'callAPI:bind' with the device and the same key as arguments to cloudA, and the device is online, then the cloudA will update the owner from empty set to the user, and the device will update its owner from empty to the user.
+When cloud records that any device has an owner, the owner can call 'callAPI:reset' of cloudA with the device, and then the cloudA will reset the owner to empty set, and trigger an event to reset the device.
+When any device is online and cloudA wants to reset the device, the device will be offline and change its owner to empty.
+
+
+[events]
+If any user is local to any device, the user can press the device button.
+If any user has some key, the user can:
+1. use the key to call cloudA 's API 'callAPI:bind' ;
+2. use the key to call cloudA 's API 'callAPI:reset'.
+When any user is local to any device, the user can leave the device. 
+When any user is not local to any device, the user can approach the device.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind' until reset.
+If the cloud records that userA is the owner of deviceB, userA will not take any operations in the next state.
+If in the next state, userA reset the deviceB, the userA calls 'callAPI:bind' and is not the owner of deviceB.
+If reset happens, the userA will eventually press the button of deviceB.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

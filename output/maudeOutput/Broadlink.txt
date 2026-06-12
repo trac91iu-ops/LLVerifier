@@ -1,0 +1,148 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : nils, 'members' :
+    nils > < deviceB | 'key' : 'secret', 'unlocked' : true >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : nils, 'members' :
+    nils > < deviceB | 'key' : 'KeyB'2357136044, 'unlocked' : true >, 'rev6} {$
+    userC 'callAPI:invite' cloudA | userA @
+< system | 'counter' : 1 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : userA), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : nils, 'members' :
+    nils > < deviceB | 'key' : 'KeyB'2357136044, 'unlocked' : true >, 'rev7} {$
+    userC 'callAPI:kick' cloudA | userA @
+< system | 'counter' : 1 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : nils, 'members' :
+    nils > < deviceB | 'key' : 'KeyB'2357136044, 'unlocked' : true >, 'rev9} {$
+    userC 'approaches' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : deviceB, 'members' :
+    nils > < deviceB | 'key' : 'KeyB'2357136044, 'unlocked' : true >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : deviceB, 'members' :
+    nils > < deviceB | 'key' : 'KeyB'2546248239, 'unlocked' : true >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : deviceB, 'members' :
+    nils > < deviceB | 'key' : 'KeyB'3071714933, 'unlocked' : true >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : nils, 'localTo' : deviceB, 'members' :
+    nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : true >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : true
+    >, 'rev3} {$ userC 'callAPI:lock' deviceB | 'KeyB'362609376e @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev2} {$ userC 'callAPI:getKey' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev5} {$ userC 'cloudAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev6} {$ userC 'callAPI:invite' cloudA | userA @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : userA), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev2} {$ userC 'callAPI:getKey' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : userA), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev3} {$ userC 'callAPI:lock' deviceB | 'KeyB'362609376e @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : userA), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev5} {$ userC 'cloudAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : userA), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev7} {$ userC 'callAPI:kick' cloudA | userA @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : deviceB,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev8} {$ userC 'leaves' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : ('devices' : nils, 'members' :
+    nils), userC : ('devices' : nils, 'members' : nils), deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'key' : nils, 'localTo' : deviceB,
+    'members' : nils > < userC | 'key' : 'KeyB'362609376e, 'localTo' : nils,
+    'members' : nils > < deviceB | 'key' : 'KeyB'362609376e, 'unlocked' : false
+    >, 'rev4}
+idle
+$ userA 'pressButton' deviceB
+$ userC 'callAPI:invite' cloudA | userA
+$ userC 'callAPI:kick' cloudA | userA
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userC 'callAPI:lock' deviceB | 'KeyB'362609376e
+$ userC 'callAPI:invite' cloudA | userA
+$ userC 'callAPI:kick' cloudA | userA
+$ userC 'leaves' deviceB
+rewrites: 2497 in 9ms cpu (10ms real) (260022 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userC 'callAPI:invite' cloudA | userA ^ ($ userC 'callAPI:kick' cloudA |
+    userA ^ ($ userC 'approaches' deviceB ^ ($ userC 'pressButton' deviceB ^ ($
+    userC 'pressButton' deviceB ^ ($ userC 'pressButton' deviceB ^ ($ userC
+    'callAPI:getKey' deviceB ^ ($ userC 'callAPI:lock' deviceB |
+    'KeyB'362609376e ^ ($ userC 'callAPI:invite' cloudA | userA ^ ($ userC
+    'callAPI:kick' cloudA | userA ^ ($ userC 'leaves' deviceB ^
+    nile))))))))))))
+Bye.

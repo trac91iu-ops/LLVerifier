@@ -1,0 +1,15 @@
+Initially, userA and userC have no keys. The cloudSmartThing records that deviceSwitch has the key 'secret', trusts userA, and is bound to deviceLock. The cloudIFTTT records that deviceLock trusts cloudSmartThing and is off. The deviceLock trusts cloudIFTTT and is off, while deviceSwitch, with the key 'secret', is also off.
+
+If the deviceLock is off and records any principal in its trust set, and the principal calls the API 'toggle' on the deviceLock, the deviceLock will turn on. When any cloud records that a principal is in a device's trust set, the device is off, and the principal calls the API 'toggle' on the device, the cloud will update the device's status to on and trigger an event that calls API 'toggle' to the device. When the cloudSmartThing records that any device is bound to another device and the cloud calls API 'toggle' on the first device, it will also call API 'toggle' on the second device.
+
+If any user calls the API 'getKey' to any cloud, and the cloud records that the user is in a device's trust set and the device has a key, the cloud will transfer the key to the user. When any cloud sends a key to a user, the user will then know the key. When any cloud records that a user is in a device's trust set and the user calls the API 'delegate' to the cloud with a delegated user and the device, the cloud will add the delegated user to the device's trust set. If any cloud records that at least two users are in a device's trust set, and the first user calls the API 'revoke' to the cloud with the second user and the device, the cloud will remove the second user from the device's trust set.
+
+If the cloudSmartThing records that a device has a key and is off, and any user calls the API 'cloudAPI:toggle' to the cloud with the device and the key, the cloud will turn on the device and trigger an event that calls API 'toggle' to the device.
+
+Any user can call the SmartThings API's 'getKey' with any device, 'delegate' with another user and any device, or 'revoke' with another user and any device. If any user knows a key, they can call the SmartThings cloud API 'cloudAPI:toggle' with the device and the key. Any user can also call API 'toggle' on the deviceSwitch.
+
+[properties]
+The userA will always first call API 'delegate' to cloudSmartThing, then call API 'revoke' to cloudSmartThing.
+After calling API 'revoke', in the next state userA will always not perform any operations.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that deviceLock is off and the cloudSmartThing records that deviceSwitch does not trust userC, and the next state userC performs some actions, cloudSmartThing records that deviceSwitch does not trust userC, and the deviceLock is on.

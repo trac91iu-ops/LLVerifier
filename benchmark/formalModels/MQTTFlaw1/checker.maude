@@ -1,0 +1,56 @@
+load rules .
+load model-checker .
+mod PREDS is
+pr TRANSITION * (sort State to State') .
+including SATISFACTION .
+pr BOOL-OPS .
+
+subsort Vertex < State .
+
+vars N : Nat .
+vars Act : Action .
+vars PrincipalA : Principal .
+vars Message : Qid .
+var Vtx : Vertex .
+var P : Prop .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+
+ops boundReached sp : -> Prop .
+*** generated type declarations
+ops ap1  ap2  : -> Prop .
+
+*** proposition comment
+*** ap1 : the cloudB records that the userA has permission
+*** ap2 : the deviceB is on
+
+*** generated propositions
+eq E @ S < cloudB | (userA : ('permission' : true , ..) , ...) > |= ap1 = true  .
+eq E @ S < deviceB | ('status' : true , ..) > |= ap2 = true  .
+
+*** predefined
+ceq E @ S  |= sp = true if subject(E) == system . *** system performs actions
+ceq E @ S < system | 'counter' : N , ... >  |= boundReached = true if N >= 5 . *** Max turns number
+ceq E @ S < system | 'time' : N , ... >  |= boundReached = true if N >= 3 . *** time pass
+
+eq Vtx |= P = false [owise] .
+
+endm
+
+mod CHECK is
+pr PREDS .
+including MODEL-CHECKER .
+
+ops spec basic fairness : -> Prop .
+
+eq basic = [] (~ boundReached /\ ~ sp) .
+
+eq fairness = 
+<>(~ ap1 /\ ~ ap2 /\ O ap2) .
+
+*** security property specification
+eq spec = O ~ (fairness /\ basic) .
+endm
+
+load ../lib/postProcess .

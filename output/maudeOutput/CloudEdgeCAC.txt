@@ -1,0 +1,93 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : nils > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : false
+    > < deviceD | 'key' : nils, 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : nils > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : nils, 'pressed' : false >, 'rev1} {$ userC
+    'pressButton' deviceD @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : nils > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : nils, 'pressed' : true >, 'rev2} {$ userC
+    'callAPI:discover' deviceD @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : nils > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : nils, 'pressed' : true >, 'rev3} {$ userC
+    'callAPI:setKey' deviceD | 'phoneMacA' @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : nils > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : 'phoneMacA', 'pressed' : false >, 'rev1} {$ userC
+    'pressButton' deviceD @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : nils > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : 'phoneMacA', 'pressed' : true >, 'rev2} {$ userC
+    'callAPI:discover' deviceD @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : userA > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : 'phoneMacA', 'pressed' : true >, 'rev1} {$ userC
+    'pressButton' deviceD @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : userA > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : 'phoneMacA', 'pressed' : true >, 'rev3} {$ userC
+    'callAPI:setKey' deviceD | 'phoneMacA' @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : userA > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : nils, 'pressed' : true
+    > < deviceD | 'key' : 'phoneMacA', 'pressed' : true >, 'rev3} {$ userA
+    'callAPI:setKey' deviceB | 'phoneMacC' @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : nils, deviceD : 'owner' : userA > < userA | 'localTo' : deviceB >
+    < userC | 'localTo' : deviceD > < deviceB | 'key' : 'phoneMacC', 'pressed'
+    : false > < deviceD | 'key' : 'phoneMacA', 'pressed' : true >, 'rev2} {$
+    userA 'callAPI:discover' deviceB @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : userC, deviceD : 'owner' : userA > < userA | 'localTo' : deviceB
+    > < userC | 'localTo' : deviceD > < deviceB | 'key' : 'phoneMacC',
+    'pressed' : false > < deviceD | 'key' : 'phoneMacA', 'pressed' : true >,
+    'rev1} {$ userA 'pressButton' deviceB @
+< cloudA | userA : 'key' : 'phoneMacA', userC : 'key' : 'phoneMacC', deviceB :
+    'owner' : userC, deviceD : 'owner' : userA > < userA | 'localTo' : deviceB
+    > < userC | 'localTo' : deviceD > < deviceB | 'key' : 'phoneMacC',
+    'pressed' : true > < deviceD | 'key' : 'phoneMacA', 'pressed' : true >,
+    'rev1}
+idle
+$ userA 'pressButton' deviceB
+$ userC 'pressButton' deviceD
+$ userC 'callAPI:setKey' deviceD | 'phoneMacA'
+$ userC 'pressButton' deviceD
+$ userC 'callAPI:discover' deviceD
+$ userA 'callAPI:setKey' deviceB | 'phoneMacC'
+$ userA 'callAPI:discover' deviceB
+$ userA 'pressButton' deviceB
+rewrites: 69831 in 1086ms cpu (132ms real) (64285 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userC 'pressButton' deviceD ^ ($ userC 'callAPI:setKey' deviceD |
+    'phoneMacA' ^ ($ userC 'pressButton' deviceD ^ ($ userC 'callAPI:discover'
+    deviceD ^ ($ userA 'callAPI:setKey' deviceB | 'phoneMacC' ^ ($ userA
+    'callAPI:discover' deviceB ^ ($ userA 'pressButton' deviceB ^ nile))))))))
+Bye.

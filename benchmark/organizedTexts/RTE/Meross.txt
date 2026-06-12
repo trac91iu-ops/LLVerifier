@@ -1,0 +1,23 @@
+[init]
+Initially, the userA is local to the deviceB and has key 'UIDA'; The userC is not local and has key 'UIDC'; The cloud records userA's information that its key is 'UIDA', and records that userC has key 'UIDC', and records that deviceB has key 'secret' and its owner is empty; The deviceB has key 'secret' and has no owner.
+
+[state changes]
+When any user presses the button on any device and the device has a key, the device will send its key to the user.
+When any device sends a key to any user, and the user has some keys, the user will receive and add the key to their knowledge.
+When any device has a keyA and any user calls the device API `callAPI:bind` with a keyB, the device will call the cloud API `callAPI:bind` with keyA and keyB.
+If the cloud records that any device has a keyA and any user has a keyB, when anyone calls `callAPI:bind` with keyA and keyB, the cloud will add the user as the device's owner.
+When any user is not local to any device and the user approaches the device, the user will become local to the device.
+When any user is local to any device and the user leaves the device, the user will become remote to the device.
+
+[events]
+If any user is local to any device, the user can press the device button.
+If any user is local to any device and knows a key, the user can call the device API `callAPI:bind` with the key.
+If any user know two keys, the user can use these two keys to call the cloud API `callAPI:bind`.
+When any user is local to any device, the user can leave the device.
+When any user is not local to any device, the user can approach the device.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind'.
+If the cloud records that userA is the owner of deviceB, userA will not perform any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and the cloudA records that userC is not the owner of deviceB, and the next time userC is not local and cloudA records that userC is the owner of deviceB.

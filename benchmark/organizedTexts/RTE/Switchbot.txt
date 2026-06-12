@@ -1,0 +1,25 @@
+[init]
+Initially, the userA is local to the deviceB and has no key; The userC is not local and has no key; The cloud records userA's information that its devices is empty and members is empty, and records the userC's information that its devices is empty and its member is empty, and records that deviceB's key is 'secret' ; The deviceB has key 'secret'.
+
+[state changes]
+When any user is not local to any device and the user approaches the device, the user will be local to the device.
+When any user is local to any device and the user leaves any device, the user will be remote to the device.
+When any user presses the button on any device and the device has some key, then the device send its key to the user.
+If the cloud has recorded a user and the user calls `callAPI:invite` with another user as an argument, the cloud will add the invited user to the member list.
+If the cloud records that a user has a member, and the user calls `callAPI:kick` with that member as an argument, the cloud will remove the member from the member list.
+When any device sends any user a key and the user has no key, the user will know the key.
+When the cloud records that the device has any key, the user calls 'callAPI:bind' with the device and the same key as arguments to the cloud, then the cloud will add the user to the device's owner.
+
+[events]
+If any user is local to any device, the user can press the device button.
+If any user has some key, the user can use the key to call the cloud API 'callAPI:bind'.
+At any time, userA can call the cloud API `callAPI:invite` or `callAPI:kick` with userC as an argument.
+At any time, userC can call the cloud API `callAPI:invite` or `callAPI:kick` with userA as an argument.
+When any user is local to any device, the user can leave the device. 
+When any user is not local to any device, the user can approach the deviceB.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind'.
+If the cloud records that userA is the owner of deviceB, userA will not take any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

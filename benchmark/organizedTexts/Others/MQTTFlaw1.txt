@@ -1,0 +1,16 @@
+[init]
+Initially, the MQTT Broker cloudB has no stored messages, and records that the userA has permission and the deviceB has permission; the deviceB is off; the userA has device deviceB.
+
+[state changes]
+When the cloudBroker call 'device:publish' on any device with a message 'toggle', and the device is off, the device will be on.
+When any user call API 'cloud:publish' to cloudB with any message, and the cloudB records that the user has permission, the cloudB will save the message, then trigger an event 'user:pubrec' to the user.
+When any user call API 'cloud:pubrel' to the cloudB, and the cloudB stores some any message and records that any device has permission, the cloudB will remove the message and call 'device:publish' to the device with the message.
+When the cloudB call 'cloud:revoke' on itself with any user, and the cloudB records the user has permission, then the cloudB will revoke the user's permission.
+
+[events]
+When the cloudB has records any user has permission, the cloudB can call 'cloud:revoke' to itself with the user.
+At any time, any user can call 'cloud:publish' to the cloudB with message 'toggle'.
+At any time, any user can call 'cloud:pubrel' to the cloudB.
+
+[properties]
+Eventually, there is a state that the cloudB records that the userA has no permission and the deviceB is off, the next state the deviceB is on.

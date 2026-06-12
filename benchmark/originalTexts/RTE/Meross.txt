@@ -1,0 +1,11 @@
+Initially, userA is local to deviceB and has the key 'UIDA'. UserC is not local and has the key 'UIDC'. The cloud records userA's information, noting that their key is 'UIDA', records that userC has the key 'UIDC', and records that deviceB has the key 'secret' and no owner. Similarly, deviceB itself has the key 'secret' and no owner.
+
+When a user presses the button on any device and the device has a key, the device sends its key to the user. If a device sends a key to a user who already possesses some keys, the user will receive and add the key to their knowledge. If a device has a keyA and a user calls the device API `callAPI:bind` with a keyB, the device will invoke the cloud API `callAPI:bind` with keyA and keyB. If the cloud has recorded that a device possesses a keyA and a user possesses a keyB, and someone calls `callAPI:bind` with keyA and keyB, the cloud will assign the user as the device's owner. When a user is not local to a device and approaches the device, the user becomes local to the device. Conversely, when a user is local to a device and leaves it, the user becomes remote to the device.
+
+If a user is local to a device, they can press the device's button. If a user is local to a device and knows a key, they can call the device API `callAPI:bind` using the key. If a user knows two keys, they can use both keys to call the cloud API `callAPI:bind`. When a user is local to a device, they can leave the device. Similarly, if a user is not local to a device, they can approach the device.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind'.
+If the cloud records that userA is the owner of deviceB, userA will not perform any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and the cloudA records that userC is not the owner of deviceB, and the next time userC is not local and cloudA records that userC is the owner of deviceB.

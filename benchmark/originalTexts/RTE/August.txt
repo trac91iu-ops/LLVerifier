@@ -1,0 +1,13 @@
+Initially, userA is local to deviceB and has no key, while userC is not local and also has no key. The cloud records that deviceB's key is 'secret' and the owner is empty. DeviceB is not online, its key is 'secret,' and its owner is empty.
+
+When any user is not local to a device and approaches the device, the user becomes local to the device. If a user is local to a device and leaves, the user becomes remote to the device. When a user presses the button on a device, the device records that it is pressed, becomes online, and triggers an event to send its key to the user. If the device sends its key to a user who has no key, the user will acquire the key. When the cloud records that a device has a key, and the user calls 'callAPI:bind' with the device and the same key as arguments to the cloud, and the device is online, the cloud updates the owner from an empty set to the user, while the device also updates its owner from empty to the user. If the cloud records that a device has an owner, the owner can call 'callAPI:reset' on the cloud with the device, and the cloud will reset the owner to an empty set and trigger an event to reset the device. When a device is online and the cloud wants to reset it, the device will go offline and change its owner to empty.
+
+If a user is local to a device, the user can press the device button. If a user has a key, the user can use the key to call the cloud's API 'callAPI:bind' or 'callAPI:reset.' When a user is local to a device, the user can leave the device, and if the user is not local to a device, they can approach it.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind' until reset.
+If the cloud records that userA is the owner of deviceB, userA will not take any operations in the next state.
+If in the next state, userA reset the deviceB, the userA calls 'callAPI:bind' and is not the owner of deviceB.
+If reset happens, the userA will eventually press the button of deviceB.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

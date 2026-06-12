@@ -1,0 +1,62 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < deviceB | ('key' : nils , 'pressed' : false) > < cloudA | (userA : ('key' : 'secretA') , userC : ('key' : 'secretC') , deviceB : ('owner' : nils)) > < userA | ('localTo' : deviceB) > < userC | ('localTo' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars DeviceY : Device .
+vars UserX : User .
+vars KeyA : Qid .
+*** policy
+eq < DeviceY | ('pressed' : false , ..) > $ UserX 'press' DeviceY 
+= < DeviceY | ('pressed' : true , ..) > .
+eq < DeviceY | ('pressed' : true , 'key' : nils , ..) > $ UserX 'callAPI:setKey' DeviceY | (KeyA) 
+= < DeviceY | ('pressed' : false , 'key' : KeyA , ..) > .
+eq < DeviceY | ('key' : KeyA , ..) > $ UserX 'callAPI:discover' DeviceY 
+= < DeviceY | ('key' : KeyA , ..) > $ DeviceY 'callAPI:bind' cloudA | (KeyA) .
+eq < cloudA | (UserX : ('key' : KeyA , ..) , DeviceY : ('owner' : nils , ...) , ....) > $ DeviceY 'callAPI:bind' cloudA | (KeyA) 
+= < cloudA | (UserX : ('key' : KeyA , ..) , DeviceY : ('owner' : UserX , ...) , ....) > .
+eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY 
+= < UserX | ('localTo' : DeviceY , ..) > .
+eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY 
+= < UserX | ('localTo' : nils , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars DeviceY : Device .
+vars UserX : User .
+vars KeyA : Qid .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device -> Event .
+ops ev3 : User Device Qid -> Event .
+ops ev4 : User Device -> Event .
+ops ev5 : User Device -> Event .
+*** events
+eq ev1(UserX, DeviceY) = $ UserX 'press' DeviceY .
+eq ev2(UserX, DeviceY) = $ UserX 'callAPI:discover' DeviceY .
+eq ev3(UserX, DeviceY, KeyA) = $ UserX 'callAPI:setKey' DeviceY | (KeyA) .
+eq ev4(UserX, DeviceY) = $ UserX 'leaves' DeviceY .
+eq ev5(UserX, DeviceY) = $ UserX 'approaches' DeviceY .
+*** transitions
+rl [rev1]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev1(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev2]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev2(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev3]: E @ S < cloudA | (UserX : ('key' : KeyA , ..) , ...) > < UserX | ('localTo' : DeviceY , ....) > 
+=> ep: ev3(UserX, DeviceY, KeyA) @ S < cloudA | (UserX : ('key' : KeyA , ..) , ...) > < UserX | ('localTo' : DeviceY , ....) > .
+rl [rev4]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev4(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev5]: E @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > 
+=> ep: ev5(UserX, DeviceY) @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > .
+
+endm

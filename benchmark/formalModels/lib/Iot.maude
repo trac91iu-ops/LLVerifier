@@ -1,0 +1,106 @@
+load aux .
+
+fmod Iot is
+pr Container .
+pr CONVERSION .
+pr RANDOM .
+sorts Principal Action Attributes Arguments Event State Soup Vertex .
+sorts User Device Cloud Client Server App .
+subsort User Device Cloud Client Server App < Principal .
+subsort Principal Qid Nat Bool < Item .
+subsort Set < Attributes .
+subsort List < Arguments .
+subsort Qid < Action .
+subsort Principal < Key .
+subsort State Event < Soup .
+
+*** trace the operations sequance
+*** so we can restrict to some transitions according to action trace .
+op _@_ : Event Soup -> Vertex [ctor prec 41 format (y g! bn o)] . ***leading to
+op ep:_ : Vertex -> Vertex [ctor prec 50] . ***ephemeral
+op __ : Soup Soup -> Soup [ctor prec 41 assoc comm id: null] .  
+op null : -> Soup [ctor] .
+op init : -> Vertex .
+
+op user_ : Qid -> User [ctor prec 15] .
+op device_ : Qid -> Device [ctor prec 15] .
+
+*** | can be readed as "with"
+op <_|_> : Principal Attributes -> State [ctor prec 0] . 
+op $_ _ _ : Principal Action Principal -> Event [ctor prec 15] .
+op $_ _ _ | _ : Principal Action Principal Arguments -> Event [ctor prec 15] .
+
+op randomStr : Qid Nat -> Qid .
+op encrypt : Item Qid -> Qid .
+op decrypt : Item Qid -> Qid .
+op SET : Set -> Set .
+*** op encrypt : Qid Qid -> Qid .
+*** op decrypt : Qid Qid -> Qid .
+*** op encrypt : Item Qid -> Item .
+*** op decrypt : Item Qid -> Item .
+op pub : Qid -> Qid .
+
+***Some Primitives
+ops system : -> Principal .
+ops cloudA cloudB cloudC cloudD : -> Cloud [ctor] .
+ops userA userB userC userD : -> User [ctor] .
+ops deviceA deviceB deviceC deviceD : -> Device [ctor] .
+ops serverA serverB serverC serverD : -> Server [ctor] .
+ops clientA clientB clientC clientD : -> Client [ctor] .
+ops appA appB appC appD : -> App [ctor] .
+ops deviceLock deviceSwitch : -> Device [ctor] . *** adhoc patch
+ops cloudGoogle cloudSmartThing cloudIFTTT : -> Cloud [ctor] . *** adhoc patch
+
+***ops transfers alerts callAPI responds pressBtn : -> Action [ctor] .
+op idle : -> Event [ctor] .
+op timepass : -> Event [ctor] .
+
+vars PrincipalX PrincipalY : Principal .
+vars UserX : User .
+vars Key Secret : Qid .
+vars SetX  : Set .
+var ... : Set .
+var .... : List .
+var Act : Action .
+
+eq < PrincipalX | 'know' : SetX , ... > $ PrincipalY Act PrincipalX | Key
+ = < PrincipalX | 'know' : (Key , SetX) , ...  > .
+
+vars S : Soup .
+vars E E' : Event .
+vars St : State .
+vars N : Nat .
+
+eq St St  = St . ***every state is unique
+
+eq ep: E @ S = E @ S E .
+eq E @ S E' = E @ S [owise] . ***remove events in every end of turn
+
+
+***eq randomStr(N) = qid("key" + string(float(N))) .
+op fc : String -> String .
+vars Str : String . 
+eq fc(Str) = substr(Str , 0 , 1) + substr(Str , 2 , 9) .
+eq randomStr(Key , N) = qid(string(Key) + fc(string(float(random(N))))) .
+
+eq decrypt(Key , encrypt(pub(Key) , Secret) )  = Secret .
+eq decrypt(pub(Key) , encrypt(Key , Secret) )  = Secret .
+
+*** Aux for chekcer,  defined operator , getter setter 
+op subject : Event -> Principal .
+op object  : Event -> Principal .
+op action  : Event -> Action .
+op sd : Event -> Event .
+op getState : Vertex -> Soup . 
+
+eq subject($ PrincipalX Act PrincipalY) = PrincipalX .
+eq subject($ PrincipalX Act PrincipalY | .... ) = PrincipalX .
+eq object($ PrincipalX Act PrincipalY) = PrincipalY .
+eq object($ PrincipalX Act PrincipalY | .... ) = PrincipalY .
+eq action($ PrincipalX Act PrincipalY) = Act .
+eq action($ PrincipalX Act PrincipalY | .... ) = Act .
+eq sd($ PrincipalX Act PrincipalY | ....) = $ PrincipalX Act PrincipalY .
+eq sd( E ) = E [owise] . 
+
+eq getState(E @ S) = S .
+endfm

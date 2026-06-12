@@ -1,0 +1,6 @@
+idle
+$ userA 'pressButton' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'leaves' deviceB
+

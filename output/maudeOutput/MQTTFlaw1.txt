@@ -1,0 +1,38 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudB | 'storedMessages' : nils, userA : 'permission' : true, deviceB :
+    'permission' : true > < userA | 'device' : deviceB > < deviceB | 'status' :
+    false >, 'rev3} {$ userA 'cloud:publish' cloudB | 'toggle' @
+< cloudB | 'storedMessages' : 'toggle', userA : 'permission' : true, deviceB :
+    'permission' : true > < userA | 'device' : deviceB > < deviceB | 'status' :
+    false >, 'rev1} {$ cloudB 'cloud:revoke' cloudB | userA @
+< cloudB | 'storedMessages' : 'toggle', userA : 'permission' : false, deviceB :
+    'permission' : true > < userA | 'device' : deviceB > < deviceB | 'status' :
+    false >, 'rev2} {$ userA 'cloud:pubrel' cloudB @
+< cloudB | 'storedMessages' : nils, userA : 'permission' : false, deviceB :
+    'permission' : true > < userA | 'device' : deviceB > < deviceB | 'status' :
+    true >, 'rev3}
+idle
+$ userA 'cloud:publish' cloudB | 'toggle'
+$ cloudB 'cloud:revoke' cloudB | userA
+$ userA 'cloud:pubrel' cloudB
+rewrites: 135 in 0ms cpu (0ms real) (472027 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'cloud:publish' cloudB |
+    'toggle' ^ ($ cloudB 'cloud:revoke' cloudB | userA ^ ($ userA
+    'cloud:pubrel' cloudB ^ nile)))
+Bye.

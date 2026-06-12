@@ -1,0 +1,204 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:19 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< userA | 'key' : nils > < userC | 'key' : nils > < deviceLock | 'state' :
+    false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' : false > <
+    cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false, 'trust' :
+    userA) > < cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock, 'key'
+    : 'secret', 'state' : false, 'trust' : cloudGoogle) >, 'rev1} {$ userA
+    'callAPI:getKey' cloudGoogle @
+< userA | 'key' : 'secret' > < userC | 'key' : nils > < deviceLock | 'state' :
+    false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' : false > <
+    cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false, 'trust' :
+    userA) > < cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock, 'key'
+    : 'secret', 'state' : false, 'trust' : cloudGoogle) >, 'rev1} {$ userC
+    'callAPI:getKey' cloudGoogle @
+< userA | 'key' : 'secret' > < userC | 'key' : nils > < deviceLock | 'state' :
+    false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' : false > <
+    cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false, 'trust' :
+    userA) > < cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock, 'key'
+    : 'secret', 'state' : false, 'trust' : cloudGoogle) >, 'rev1} {$ userA
+    'callAPI:getKey' cloudSmartThing @
+< userA | 'key' : 'secret' > < userC | 'key' : nils > < deviceLock | 'state' :
+    false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' : false > <
+    cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false, 'trust' :
+    userA) > < cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock, 'key'
+    : 'secret', 'state' : false, 'trust' : cloudGoogle) >, 'rev1} {$ userC
+    'callAPI:getKey' cloudSmartThing @
+< userA | 'key' : 'secret' > < userC | 'key' : nils > < deviceLock | 'state' :
+    false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' : false > <
+    cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false, 'trust' :
+    userA) > < cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock, 'key'
+    : 'secret', 'state' : false, 'trust' : cloudGoogle) >, 'rev2} {$ userC
+    'callAPI:delegate' cloudGoogle | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : nils > < deviceLock | 'state' :
+    false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' : false > <
+    cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false, 'trust' :
+    userA) > < cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock, 'key'
+    : 'secret', 'state' : false, 'trust' : cloudGoogle) >, 'rev2} {$ userA
+    'callAPI:delegate' cloudGoogle | (userC ; deviceSwitch) @
+< userA | 'key' : 'secret' > < userC | 'key' : nils > < deviceLock | 'state' :
+    false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' : false > <
+    cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false, 'trust' :
+    (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev1} {$ userC 'callAPI:getKey' cloudGoogle @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev1} {$ userC 'callAPI:getKey' cloudSmartThing @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudGoogle | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudGoogle | (userA ; deviceSwitch) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudSmartThing | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudSmartThing | (userA ; deviceSwitch)
+    @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev3} {$ userC 'callAPI:revoke' cloudGoogle | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : (userA, userC)) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev3} {$ userA 'callAPI:revoke' cloudGoogle | (userC ; deviceSwitch) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev1} {$ userC 'callAPI:getKey' cloudGoogle @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev1} {$ userC 'callAPI:getKey' cloudSmartThing @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudGoogle | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudGoogle | (userA ; deviceSwitch) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudSmartThing | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudSmartThing | (userA ; deviceSwitch)
+    @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev3} {$ userC 'callAPI:revoke' cloudGoogle | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev3} {$ userC 'callAPI:revoke' cloudGoogle | (userA ; deviceSwitch) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev3} {$ userC 'callAPI:revoke' cloudSmartThing | (userA ; deviceLock) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev3} {$ userC 'callAPI:revoke' cloudSmartThing | (userA ; deviceSwitch) @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev4} {$ userC 'callAPI:provide' cloudSmartThing | (deviceLock ; 'secret')
+    @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : cloudGoogle) >,
+    'rev4} {$ userC 'callAPI:provide' cloudSmartThing | (deviceSwitch ;
+    'secret') @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : false, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trust' : (userC,
+    cloudGoogle)) >, 'rev5} {$ userC 'callAPI:toggle' deviceSwitch @
+< userA | 'key' : 'secret' > < userC | 'key' : 'secret' > < deviceLock |
+    'state' : true, 'trust' : cloudSmartThing > < deviceSwitch | 'state' :
+    false > < cloudGoogle | deviceSwitch : ('key' : 'secret', 'state' : false,
+    'trust' : userA) > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : true, 'trust' : (userC,
+    cloudGoogle)) >, 'rev1}
+idle
+$ userA 'callAPI:getKey' cloudGoogle
+$ userA 'callAPI:delegate' cloudGoogle | (userC ; deviceSwitch)
+$ userC 'callAPI:getKey' cloudGoogle
+$ userA 'callAPI:revoke' cloudGoogle | (userC ; deviceSwitch)
+$ userC 'callAPI:provide' cloudSmartThing | (deviceSwitch ; 'secret')
+$ userC 'callAPI:toggle' deviceSwitch
+rewrites: 28124 in 163ms cpu (166ms real) (171889 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'callAPI:getKey'
+    cloudGoogle ^ ($ userA 'callAPI:delegate' cloudGoogle | (userC ;
+    deviceSwitch) ^ ($ userC 'callAPI:getKey' cloudGoogle ^ ($ userA
+    'callAPI:revoke' cloudGoogle | (userC ; deviceSwitch) ^ ($ userC
+    'callAPI:provide' cloudSmartThing | (deviceSwitch ; 'secret') ^ ($ userC
+    'callAPI:toggle' deviceSwitch ^ nile))))))
+Bye.

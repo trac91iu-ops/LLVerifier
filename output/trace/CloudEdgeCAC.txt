@@ -1,0 +1,10 @@
+idle
+$ userA 'pressButton' deviceB
+$ userC 'pressButton' deviceD
+$ userC 'callAPI:setKey' deviceD | 'phoneMacA'
+$ userC 'pressButton' deviceD
+$ userC 'callAPI:discover' deviceD
+$ userA 'callAPI:setKey' deviceB | 'phoneMacC'
+$ userA 'callAPI:discover' deviceB
+$ userA 'pressButton' deviceB
+

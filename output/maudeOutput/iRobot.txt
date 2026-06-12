@@ -1,0 +1,93 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:19 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : nils, 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : nils, 'pressed' : true >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : nils, 'pressed' : true >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : nils, 'pressed' : true >, 'rev7} {$ userC
+    'approaches' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : nils, 'pressed' : true >, 'rev1} {$ userC
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : nils, 'pressed' : true >, 'rev2} {$ userC
+    'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : nils, 'pressed' : true >, 'rev3} {$ userC
+    'callAPI:setKey' deviceB | 'secretC' @
+< cloudA | deviceB : ('bdKey' : 'secretC', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretC', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretC', 'pressed' : true >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretC', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev5} {$
+    userC 'callAPI:reset' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : 'secretC', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev6} {$
+    userC 'leaves' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretC', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : 'secretC', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : 'secretC', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretC', 'pressed' : false >, 'rev4}
+idle
+$ userA 'pressButton' deviceB
+$ userC 'approaches' deviceB
+$ userC 'callAPI:setKey' deviceB | 'secretC'
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | (deviceB ; 'secretC')
+$ userC 'callAPI:reset' cloudA | (deviceB ; 'secretC')
+rewrites: 3943 in 64ms cpu (70ms real) (61459 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userC 'approaches' deviceB ^ ($ userC 'callAPI:setKey' deviceB | 'secretC'
+    ^ ($ userC 'pressButton' deviceB ^ ($ userC 'callAPI:getKey' deviceB ^ ($
+    userC 'leaves' deviceB ^ ($ userC 'callAPI:bind' cloudA | (deviceB ;
+    'secretC') ^ ($ userC 'callAPI:reset' cloudA | (deviceB ; 'secretC') ^
+    nile))))))))
+Bye.

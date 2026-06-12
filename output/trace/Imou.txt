@@ -1,0 +1,5 @@
+idle
+$ userA 'leaves' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:bind' cloudA | 'secret'
+

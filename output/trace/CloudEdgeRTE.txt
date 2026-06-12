@@ -1,0 +1,12 @@
+idle
+$ userA 'presses' deviceB
+$ userC 'presses' deviceD
+$ userC 'callAPI:setKey' deviceD | 'phoneMacA'
+$ userC 'callAPI:discover' deviceD
+$ userC 'presses' deviceD
+$ userC 'leaves' deviceD
+$ userC 'approaches' deviceB
+$ userC 'callAPI:setKey' deviceB | 'phoneMacA'
+$ userC 'presses' deviceB
+$ userC 'callAPI:discover' deviceB
+

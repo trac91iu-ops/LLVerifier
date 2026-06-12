@@ -1,0 +1,11 @@
+Initially, userA is local to deviceB and has no key, while userC is not local and also has no key. The cloud records that deviceB's key is 'secret' and the owner is empty, and deviceB itself has the key 'secret'.
+
+When a user is not local to a device and approaches the device, the user becomes local to the device. Conversely, when a user is local to a device and leaves it, the user becomes remote to the device. If a user presses the button on a device and the device has a key, the device will send its key to the user. When a device sends a key to a user who has no key, the user will learn the key. If the cloud records that a device has a key and the user calls 'callAPI:bind' with the device and the same key as arguments to the cloud, the cloud will add the user as the device's owner.
+
+A user can press a device button if they are local to the device. If a user has a key, whether local or remote, they can use the key to call the cloud's API 'callAPI:bind'. A user can leave a device if they are local to it, and a user who is not local to any device can approach deviceB.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind'.
+If the cloud records that userA is the owner of deviceB, userA will not take any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

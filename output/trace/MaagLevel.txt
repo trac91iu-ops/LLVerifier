@@ -1,0 +1,15 @@
+idle
+$ userA 'approaches' deviceB
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userA 'leaves' deviceB
+$ userC 'approaches' deviceB
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ; 'share' ; userC)
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userA 'callAPI:share' cloudA | userC
+$ userC 'callAPI:revoke' cloudA | userA
+$ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ; 'share' ; userC)
+

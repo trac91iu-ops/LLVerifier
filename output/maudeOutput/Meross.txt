@@ -1,0 +1,158 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Tue Jun  9 00:19:18 2026
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook
+    MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator
+    metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one
+    or more errors that could not be patched up and thus it cannot be used or
+    imported.
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : 'UIDA', 'localTo' : deviceB
+    > < userC | 'keys' : 'UIDC', 'localTo' : nils > < deviceB | 'key' :
+    'secret' >, 'rev1} {$ userA 'pressButton' deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : 'UIDC', 'localTo' : nils > <
+    deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind' cloudA | (
+    'UIDA' ; 'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : 'UIDC', 'localTo' : nils > <
+    deviceB | 'key' : 'secret' >, 'rev4} {$ userA 'leaves' deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : 'UIDC', 'localTo' : nils > < deviceB
+    | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind' cloudA | ('UIDA' ;
+    'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : 'UIDC', 'localTo' : nils > < deviceB
+    | 'key' : 'secret' >, 'rev5} {$ userA 'approaches' deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : 'UIDC', 'localTo' : nils > <
+    deviceB | 'key' : 'secret' >, 'rev5} {$ userC 'approaches' deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : 'UIDC', 'localTo' : deviceB > <
+    deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton' deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : 'UIDC', 'localTo' : deviceB > <
+    deviceB | 'key' : 'secret' >, 'rev1} {$ userC 'pressButton' deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton'
+    deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind'
+    cloudA | ('UIDA' ; 'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev1} {$ userC 'pressButton'
+    deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind'
+    cloudA | ('UIDC' ; 'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev4} {$ userA 'leaves' deviceB
+    @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev1} {$ userC 'pressButton'
+    deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind'
+    cloudA | ('UIDA' ; 'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind'
+    cloudA | ('UIDC' ; 'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev4} {$ userC 'leaves' deviceB
+    @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : nils) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' : nils
+    > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA | (
+    'secret' ; 'UIDC') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' : nils
+    > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind' cloudA | (
+    'UIDA' ; 'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' : nils
+    > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind' cloudA | (
+    'secret' ; 'UIDA') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' : nils
+    > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA | (
+    'UIDC' ; 'secret') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' : nils
+    > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA | (
+    'secret' ; 'UIDC') @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : nils > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' : nils
+    > < deviceB | 'key' : 'secret' >, 'rev5} {$ userA 'approaches' deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    nils > < deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton'
+    deviceB @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    nils > < deviceB | 'key' : 'secret' >, 'rev5} {$ userC 'approaches' deviceB
+    @
+< cloudA | userA : 'key' : 'UIDA', userC : 'key' : 'UIDC', deviceB : ('key' :
+    'secret', 'owner' : userC) > < userA | 'keys' : ('UIDA', 'secret'),
+    'localTo' : deviceB > < userC | 'keys' : ('UIDC', 'secret'), 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev1}
+idle
+$ userA 'pressButton' deviceB
+$ userA 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userA 'leaves' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | ('secret' ; 'UIDC')
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+rewrites: 3163 in 6ms cpu (6ms real) (486316 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userA 'leaves' deviceB ^ ($ userA 'approaches' deviceB ^ ($ userC
+    'approaches' deviceB ^ ($ userC 'pressButton' deviceB ^ ($ userA 'leaves'
+    deviceB ^ ($ userC 'leaves' deviceB ^ ($ userC 'callAPI:bind' cloudA | (
+    'secret' ; 'UIDC') ^ ($ userA 'approaches' deviceB ^ ($ userC 'approaches'
+    deviceB ^ nile))))))))))
+Bye.

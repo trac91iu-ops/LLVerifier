@@ -1,0 +1,86 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('counter' : 0) > < deviceB | ('key' : '' , 'trust' : (userA)) > < userA | ('localTo' : deviceB , 'key' : nils , 'signedKey' : nils) > < userC | ('localTo' : nils , 'key' : nils , 'signedKey' : nils) > < cloudA | (deviceB : ('trust' : userA)) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars FreshKeyA : Qid .
+vars UserY : User .
+vars KeyA : Qid .
+vars DeviceX : Device .
+vars SetA : Set .
+vars UserX : User .
+vars SignedKeyA : Qid .
+vars DeviceY : Device .
+*** policy
+eq < system | ('counter' : N , ..) > < DeviceX | ('key' : KeyA , ...) > < UserY | ('key' : nils , ....) > $ UserY 'callAPI:getKey' DeviceX 
+= < system | ('counter' : N + 1 , ..) > < DeviceX | ('key' : randomStr('KeyA', N) , ...) > < UserY | ('key' : randomStr('KeyA', N) , ....) > .
+eq < cloudA | (DeviceX : ('trust' : (UserY , ..) , ...) , ....) > $ UserY 'callAPI:signKey' cloudA | (DeviceX ; KeyA) 
+= < cloudA | (DeviceX : ('trust' : (UserY , ..) , ...) , ....) > $ cloudA 'send' UserY | (encrypt('secret', KeyA)) .
+eq < DeviceX | ('key' : KeyA , 'trust' : SetA , ..) > < UserY | ('signedKey' : encrypt('secret', KeyA) , ...) > $ UserY 'callAPI:bind' DeviceX | (encrypt('secret', KeyA)) 
+= < DeviceX | ('key' : KeyA , 'trust' : (SetA , UserY) , ..) > < UserY | ('signedKey' : encrypt('secret', KeyA) , ...) > .
+eq < cloudA | (DeviceX : ('trust' : SetA , ..) , ...) > $ UserX 'callAPI:share' cloudA | (UserY ; DeviceX) 
+= < cloudA | (DeviceX : ('trust' : (SetA , UserY) , ..) , ...) > .
+eq < cloudA | (DeviceX : ('trust' : (UserX , UserY , ..) , ...) , ....) > $ UserX 'callAPI:revoke' cloudA | (UserY) 
+= < cloudA | (DeviceX : ('trust' : (UserX , ..) , ...) , ....) > .
+eq < UserX | ('signedKey' : nils , ..) > $ cloudA 'send' UserX | (SignedKeyA) 
+= < UserX | ('signedKey' : SignedKeyA , ..) > .
+eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY 
+= < UserX | ('localTo' : DeviceY , ..) > .
+eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY 
+= < UserX | ('localTo' : nils , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars FreshKeyA : Qid .
+vars UserY : User .
+vars KeyA : Qid .
+vars DeviceX : Device .
+vars SetA : Set .
+vars UserX : User .
+vars SignedKeyA : Qid .
+vars DeviceY : Device .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device Qid -> Event .
+ops ev3 : User Device Qid -> Event .
+ops ev4 : User Device Qid -> Event .
+ops ev5 : User User Device -> Event .
+ops ev6 : User User -> Event .
+ops ev7 : User Device -> Event .
+ops ev8 : User Device -> Event .
+*** events
+eq ev1(UserY, DeviceX) = $ UserY 'callAPI:getKey' DeviceX .
+eq ev2(UserY, DeviceX, KeyA) = $ UserY 'callAPI:bind' DeviceX | (encrypt('secret', KeyA)) .
+eq ev3(UserY, DeviceX, MessageA) = $ UserY 'callAPI:bind' DeviceX | (MessageA) .
+eq ev4(UserY, DeviceX, KeyA) = $ UserY 'callAPI:signKey' cloudA | (DeviceX ; KeyA) .
+eq ev5(UserX, UserY, DeviceX) = $ UserX 'callAPI:share' cloudA | (UserY ; DeviceX) .
+eq ev6(UserX, UserY) = $ UserX 'callAPI:revoke' cloudA | (UserY) .
+eq ev7(UserX, DeviceY) = $ UserX 'leaves' DeviceY .
+eq ev8(UserX, DeviceY) = $ UserX 'approaches' DeviceY .
+*** transitions
+rl [rev1]: E @ S < UserY | ('localTo' : DeviceX , ..) > 
+=> ep: ev1(UserY, DeviceX) @ S < UserY | ('localTo' : DeviceX , ..) > .
+rl [rev2]: E @ S < UserY | ('signedKey' : KeyA , 'localTo' : DeviceX , ..) > 
+=> ep: ev3(UserY, DeviceX, KeyA) @ S < UserY | ('signedKey' : KeyA , 'localTo' : DeviceX , ..) > .
+rl [rev4]: E @ S < UserY | ('key' : KeyA , ..) > < DeviceX | ... > 
+=> ep: ev4(UserY, DeviceX, KeyA) @ S < UserY | ('key' : KeyA , ..) > < DeviceX | ... > .
+rl [rev5]: E @ S < UserX | (..) > < UserY | (...) > < DeviceX | (....) > 
+=> ep: ev5(UserX, UserY, DeviceX) @ S < UserX | (..) > < UserY | (...) > < DeviceX | (....) > .
+rl [rev6]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev6(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev7]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev7(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev8]: E @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > 
+=> ep: ev8(UserX, DeviceY) @ S < UserX | ('localTo' : nils , ..) > < DeviceY | ... > .
+
+endm

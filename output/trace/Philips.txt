@@ -1,0 +1,9 @@
+idle
+$ userA 'pressButton' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' cloudA | deviceB
+$ userC 'leaves' deviceB
+

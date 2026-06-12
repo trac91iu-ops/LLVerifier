@@ -1,0 +1,14 @@
+Initially, userA has no key, userC has no key, and cloudA records that userA has deviceB but no members, while userC has no device and no members. DeviceB has the key 'secret'.
+
+When any device is off and its owner calls the device API 'callAPI:toggle' with the correct key, the device will turn on. When cloudA records any user information and the user calls the cloudA API 'callAPI:invite' with another user as the invited user, the cloud will add the invited user to the user's members. If cloudA records that a user has a device and members, and one of the members has no device, cloudA will add the device to the member user's information. Furthermore, when cloudA records that a user has a set of members and the user calls 'callAPI:invite' with another invited user, the cloud will include the invited user in their members. If a user has a member who owns a device, and the user calls the cloudA API 'callAPI:kick' with the member user, the cloud will remove the member user from the user's members and remove the device from the member user's information.
+
+When any device has a key and cloudA records that a user owns the device, if the user calls the cloudA API 'callAPI:getKey' with the device as an argument, cloudA will trigger an event to send the key to the user. If a device is off and cloudA records that a user owns the device, the user can call the cloudA API 'cloudAPI:toggle', which will turn the device on. When cloudA sends a key to any user, the user will add the key to their knowledge.
+
+If any user knows a key, they can call the device API 'callAPI:toggle' with the key to turn on any device. Any user can call the cloud API 'cloudAPI:toggle' to interact with cloudA. Any user can also call the cloud API 'callAPI:getKey' to request a key from cloudA. UserA can call the cloudA API 'callAPI:invite' to invite userC, and userC can call the cloudA API 'callAPI:invite' to invite userA. If a user has members, they can call the cloudA API 'callAPI:kick' to remove a member user.
+
+
+[properties]
+The userA will always take first invite the userC, then kick userC out. 
+After that, in the next state userA will always not perform any operations.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that deviceB is off, and the cloudA records that userC has no device deviceB, and the next state userC performs some actions, deviceB is on and the cloudA records that userC has no device deviceB.

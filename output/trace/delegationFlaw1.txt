@@ -1,0 +1,8 @@
+idle
+$ userA 'callAPI:getKey' cloudGoogle
+$ userA 'callAPI:delegate' cloudGoogle | (userC ; deviceSwitch)
+$ userC 'callAPI:getKey' cloudGoogle
+$ userA 'callAPI:revoke' cloudGoogle | (userC ; deviceSwitch)
+$ userC 'callAPI:provide' cloudSmartThing | (deviceSwitch ; 'secret')
+$ userC 'callAPI:toggle' deviceSwitch
+

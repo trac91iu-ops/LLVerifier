@@ -1,0 +1,11 @@
+Initially, userA is local to deviceB and has no key, while userC is not local and also has no key. The cloud records userA's information, stating that their devices are empty and members are empty. Similarly, it records userC's information, noting that their devices are empty and their members are empty. Additionally, the cloud records that deviceB's key is 'secret,' and deviceB itself maintains the key 'secret.'
+
+When a user is not local to a device and approaches the device, the user becomes local to the device. Conversely, when a user is local to a device and leaves it, the user becomes remote to the device. If a user presses the button on a device and the device has a key, the device sends its key to the user. If the cloud has recorded a user and the user calls the API `callAPI:invite` with another user as an argument, the cloud adds the invited user to the member list. Similarly, if the cloud records that a user has a member and the user calls `callAPI:kick` with that member as an argument, the cloud removes the member from the member list. When a device sends a user a key and the user does not already have a key, the user acquires the key. If the cloud records that a device has a key and a user calls `callAPI:bind` with the device and the same key as arguments, the cloud adds the user to the device's owner.
+
+If a user is local to a device, the user can press the device button. If a user has a key, they can use it to call the cloud API `callAPI:bind`. At any time, userA can call the cloud API `callAPI:invite` or `callAPI:kick` with userC as an argument, and userC can do the same with userA as an argument. When a user is local to a device, the user can leave the device. When a user is not local to a device, they can approach deviceB.
+
+[properties]
+The userA will first press the button, then call cloud's API 'callApi:Bind'.
+If the cloud records that userA is the owner of deviceB, userA will not take any operations in the next state.
+In the meantime, the userC can perform any operations between or after the userA.
+Eventually, there is a state that userC is not local to deviceB and is not the owner of deviceB, and the next time userC is not local and is the owner of deviceB.

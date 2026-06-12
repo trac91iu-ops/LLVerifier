@@ -1,0 +1,33 @@
+mod PostProcess is
+pr CHECK .
+sorts PPResult EList .
+subsort Event < EList .
+subsort Bool < PPResult .
+subsort EList < PPResult .
+
+op nile : -> EList [ctor] .
+op op _^_ : EList EList -> EList [ctor id: nile format (d n n n d)] .
+op pp : ModelCheckResult ~> PPResult .
+op pph : TransitionList Soup -> EList .
+op printEList : EList -> EList .
+
+var B : Bool .
+vars TL TL' : TransitionList .
+var RN : RuleName .
+var E : Event .
+var EL : EList .
+vars S S' : Soup .
+eq pp(B) = B .
+eq pp(counterexample(TL , TL')) = pph(TL , null) [print TL] .
+
+eq pph(nil , S) = nile .
+eq pph({E @ S , RN} TL , S) = pph(TL , S)  .
+eq pph({E @ S , RN} TL , S') = E ^ (pph(TL , S)) [print E ] .
+
+eq printEList(nile) = nile [owise] .
+eq printEList(E EL) = printEList(EL) [print E] .
+endm
+
+set print format on .
+set print attribute on .
+red pp(modelCheck(init , spec)) .
