@@ -15,24 +15,15 @@ vars UserX : User .
 vars CurrentTime : Nat .
 vars TimeA : Nat .
 *** policy
-eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY 
-= < UserX | ('localTo' : DeviceY , ..) > .
-eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY 
-= < UserX | ('localTo' : nils , ..) > .
-eq < system | ('counter' : N , ..) > < DeviceY | (...) > $ UserX 'pressButton' DeviceY 
-= < system | ('counter' : N + 1 , ..) > < DeviceY | (...) > $ DeviceY 'callAPI:setKey' cloudA | (randomStr('Secret', N)) .
-eq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : SetX , ...) , ....) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) 
-= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (SetX , ('key' : KeyA , 'time' : CurrentTime)) , ...) , ....) > .
-ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > $ UserX 'callAPI:getKey' cloudA | (DeviceY) 
-= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > $ cloudA 'send' UserX | (KeyA) if CurrentTime < TimeA + 1 .
-eq < cloudA | (DeviceY : ('owner' : nils , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) 
-= < cloudA | (DeviceY : ('owner' : (UserX) , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > .
-eq < cloudA | (DeviceY : ('owner' : SetX , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > $ UserX 'callAPI:join' cloudA | (DeviceY ; KeyA) 
-= < cloudA | (DeviceY : ('owner' : (SetX , UserX) , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > .
-ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > 
-= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : nils , ....) , .....) > if CurrentTime > TimeA + 2 .
-eq < UserX | ('knowledge' : SetX , ..) > $ cloudA 'send' UserX | (KeyA) 
-= < UserX | ('knowledge' : (SetX , KeyA) , ..) > .
+eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY = < UserX | ('localTo' : DeviceY , ..) > .
+eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY = < UserX | ('localTo' : nils , ..) > .
+eq < system | ('counter' : N , ..) > < DeviceY | (...) > $ UserX 'pressButton' DeviceY = < system | ('counter' : N + 1 , ..) > < DeviceY | (...) > $ DeviceY 'callAPI:setKey' cloudA | (randomStr('Secret', N)) .
+eq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : SetX , ...) , ....) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) = < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (SetX , ('key' : KeyA , 'time' : CurrentTime)) , ...) , ....) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > $ UserX 'callAPI:getKey' cloudA | (DeviceY) = < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > $ cloudA 'send' UserX | (KeyA) if CurrentTime < TimeA + 1 .
+eq < cloudA | (DeviceY : ('owner' : nils , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) = < cloudA | (DeviceY : ('owner' : (UserX) , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > .
+eq < cloudA | (DeviceY : ('owner' : SetX , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > $ UserX 'callAPI:join' cloudA | (DeviceY ; KeyA) = < cloudA | (DeviceY : ('owner' : (SetX , UserX) , 'tickets' : (('key' : KeyA , 'time' : TimeA) , ..) , ...) , ....) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : (('key' : KeyA , 'time' : TimeA) , ...) , ....) , .....) > = < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (DeviceY : ('tickets' : nils , ....) , .....) > if CurrentTime > TimeA + 2 .
+eq < UserX | ('knowledge' : SetX , ..) > $ cloudA 'send' UserX | (KeyA) = < UserX | ('knowledge' : (SetX , KeyA) , ..) > .
 endm
 
 mod TRANSITION is

@@ -1,0 +1,24 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Message : Qid .
+  var UserX : User .
+  eq init = idle @ < userA | (nils) > < userC | (nils) > < cloudB | (deviceB : ('permission' : true), 'buffer' : nils, userA : ('permission' : true), userC : ('permission' : false)) > < deviceA | ('on' : false) > .
+  eq < UserX | (..) > < cloudB | (UserX : ('permission' : true, ...), 'buffer' : nils, ....) > $ UserX 'publishToggle' cloudB = < UserX | (..) > < cloudB | (UserX : ('permission' : true, ...), 'buffer' : 'toggle', ....) > $ cloudB 'acknowledge' UserX .
+  eq < cloudB | (UserX : ('permission' : true, ..), ...) > $ cloudB 'revokePermission' cloudB = < cloudB | (UserX : ('permission' : false, ..), ...) > .
+  eq < UserX | (..) > < cloudB | ('buffer' : Message, deviceA : ('permission' : true, ...), ....) > $ UserX 'releaseBufferedMessage' cloudB = < UserX | (..) > < cloudB | ('buffer' : nils, deviceA : ('permission' : true, ...), ....) > $ cloudB 'publish' deviceA | (Message) .
+  eq < deviceA | ('on' : false, ..) > $ cloudB 'publish' deviceA | ('toggle') = < deviceA | ('on' : true, ..) > .
+  eq < deviceA | ('on' : true, ..) > $ cloudB 'publish' deviceA | ('toggle') = < deviceA | ('on' : true, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (37037 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_(userA, _:_('permission', true)), _:_(userC, _:_('permission', false)), _:_(deviceB, _:_('permission', true)))), <_|_>(userA, nils), <_|_>(userC, nils), <_|_>(deviceA, _:_('on', false))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'publishToggle', cloudB), __(<_|_>(cloudB, _`,_(_:_('buffer', 'toggle'), _:_(userA, _:_('permission', true)), _:_(userC, _:_('permission', false)), _:_(deviceB, _:_('permission', true)))), <_|_>(userA, nils), <_|_>(userC, nils), <_|_>(deviceA, _:_('on', false))))
+Bye.

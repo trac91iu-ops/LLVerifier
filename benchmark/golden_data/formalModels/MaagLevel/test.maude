@@ -1,0 +1,8 @@
+load rules .
+mod TEST is
+protecting TRANSITION .
+endm
+*** red (ep: ev1(userA , userC) @ getState(ep: ev5(userC, deviceB) @ getState(init))) .
+*** red getState(ep: ev1(userA , userC) @ getState(ep: ev5(userC, deviceB) @ getState(init))) .
+*** red (ep: ev2(userA, userC) @ getState(ep: ev1(userA , userC) @ getState(ep: ev5(userC, deviceB) @ getState(init)))) .
+red  (ep: ev3(userC, deviceB, (encrypt('secret', 'auth') ; 'share' ; userC)) @ getState(ep: ev2(userA, userC) @ getState(ep: ev1(userA , userC) @ getState(ep: ev5(userC, deviceB) @ getState(init))))) .

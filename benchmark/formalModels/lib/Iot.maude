@@ -16,7 +16,10 @@ subsort State Event < Soup .
 
 *** trace the operations sequance
 *** so we can restrict to some transitions according to action trace .
-op _@_ : Event Soup -> Vertex [ctor prec 41 format (y g! bn o)] . ***leading to
+*** E @ S : a state-graph node pairing the last event E with the world soup S (e.g. idle @ < userA | ... > ...)
+*** ctor: pure data, no equations reduce it; prec 41: Maude's default, same as soup __, looser than events ($ = 15)
+*** format: printing only -- event yellow, @ bold green, soup blue on a new line, then reset color
+op _@_ : Event Soup -> Vertex [ctor prec 41 format (y g! bn o)] . ***leading to 
 op ep:_ : Vertex -> Vertex [ctor prec 50] . ***ephemeral
 op __ : Soup Soup -> Soup [ctor prec 41 assoc comm id: null] .  
 op null : -> Soup [ctor] .

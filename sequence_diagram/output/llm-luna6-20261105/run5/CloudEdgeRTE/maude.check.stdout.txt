@@ -1,0 +1,32 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : deviceD > < deviceB | 'buttonPressed' : false, 'key' : nils > < deviceD | nils >, 'rev2} {$ userC 'leave' deviceD @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : nils > < deviceD | nils >, 'rev1} {$ userC 'approach' deviceB @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : nils > < deviceD | nils >, 'rev1} {$ userC 'approach' deviceD @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : nils > < deviceD | nils >, 'rev3} {$ userA 'pressButton' deviceB @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : true, 'key' : nils > < deviceD | nils >, 'rev1} {$ userC 'approach' deviceB @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : true, 'key' : nils > < deviceD | nils >, 'rev1} {$ userC 'approach' deviceD @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : true, 'key' : nils > < deviceD | nils >, 'rev4} {$ userA 'sendKey' deviceB | 'keyC' @
+< cloudA | 'owner' : nils, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : 'keyC' > < deviceD | nils >, 'rev5} {$ userA 'discover' deviceB @
+< cloudA | 'owner' : userC, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : 'keyC' > < deviceD | nils >, 'rev1} {$ userC 'approach' deviceB @
+< cloudA | 'owner' : userC, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : 'keyC' > < deviceD | nils >, 'rev1} {$ userC 'approach' deviceD @
+< cloudA | 'owner' : userC, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : deviceB > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : 'keyC' > < deviceD | nils >, 'rev2} {$ userA 'leave' deviceB @
+< cloudA | 'owner' : userC, userA : 'key' : 'keyA', userC : 'key' : 'keyC' > < userA | 'near' : nils > < userC | 'near' : nils > < deviceB | 'buttonPressed' : false, 'key' : 'keyC' > < deviceD | nils >, 'rev1}
+idle
+$ userC 'leave' deviceD
+$ userA 'pressButton' deviceB
+$ userA 'sendKey' deviceB | 'keyC'
+$ userA 'discover' deviceB
+$ userA 'leave' deviceB
+rewrites: 1834 in 3ms cpu (3ms real) (475499 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userC 'leave' deviceD ^ ($ userA 'pressButton' deviceB ^ ($ userA 'sendKey' deviceB | 'keyC' ^ ($ userA 'discover' deviceB ^ ($ userA 'leave' deviceB ^ nile)))))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

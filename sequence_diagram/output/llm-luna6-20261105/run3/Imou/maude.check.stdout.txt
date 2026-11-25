@@ -1,0 +1,22 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | deviceB : ('bindingKey' : 'keyB', 'owner' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'keyB', 'online' : false >, 'rev1} {$ userA 'leave' deviceB @
+< cloudA | deviceB : ('bindingKey' : 'keyB', 'owner' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'keyB', 'online' : false >, 'rev2} {$ userC 'buttonPress' deviceB @
+< cloudA | deviceB : ('bindingKey' : 'keyB', 'owner' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : 'keyB', 'near' : nils > < deviceB | 'key' : 'keyB', 'online' : true >, 'rev3} {$ userC 'bind' cloudA | 'keyB' @
+< cloudA | deviceB : ('bindingKey' : 'keyB', 'owner' : userC) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : 'keyB', 'near' : nils > < deviceB | 'key' : 'keyB', 'online' : true >, 'rev2}
+idle
+$ userA 'leave' deviceB
+$ userC 'buttonPress' deviceB
+$ userC 'bind' cloudA | 'keyB'
+rewrites: 189 in 0ms cpu (0ms real) (382591 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'leave' deviceB ^ ($ userC 'buttonPress' deviceB ^ ($ userC 'bind' cloudA | 'keyB' ^ nile)))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (333333 rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

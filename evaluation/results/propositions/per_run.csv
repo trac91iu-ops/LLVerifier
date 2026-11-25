@@ -1,0 +1,146 @@
+protocol,run,loaded,gold_slots,gen_slots,precise,recalled,acc,rec,labels
+Aqara,run1,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+August,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Beurer,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Broadlink,run1,False,2,0,0,0,0.0,0.0,attackerLocal=not generated;attackerOwner=not generated
+CloudEdgeCAC,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+CloudEdgeRTE,run1,True,2,2,1,1,50.0,50.0,attackerLocal=literal;attackerOwner=different
+delegationFlaw1,run1,True,2,2,2,1,100.0,50.0,deviceOn=generated narrower;attackerAuthorized=same meaning
+delegationFlaw2,run1,True,2,2,1,1,50.0,50.0,deviceOn=literal;attackerAuthorized=different
+Dyson,run1,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Ezviz,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Govee,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Huawei,run1,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Imou,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+iRobot,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Kevo,run1,True,2,2,1,2,50.0,100.0,attackerLocal=generated wider;attackerOwner=literal
+MaagKwikset,run1,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+MaagLevel,run1,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+Meross,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Midea,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+MQTTFlaw1,run1,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Netvue,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+philips,run1,True,3,2,2,2,100.0,66.7,attackerLocal=literal;attackerOwner=same meaning;victimOwner=not generated
+Sunlogin,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Switchbot,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+TPLink,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+TuyaCAC,run1,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+TuyaMatter,run1,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Wemo,run1,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Xiaomi,run1,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Aqara,run2,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+August,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Beurer,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Broadlink,run2,False,2,0,0,0,0.0,0.0,attackerLocal=not generated;attackerOwner=not generated
+CloudEdgeCAC,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+CloudEdgeRTE,run2,True,2,2,1,1,50.0,50.0,attackerLocal=literal;attackerOwner=different
+delegationFlaw1,run2,True,2,2,2,1,100.0,50.0,deviceOn=generated narrower;attackerAuthorized=same meaning
+delegationFlaw2,run2,True,2,2,1,1,50.0,50.0,deviceOn=literal;attackerAuthorized=different
+Dyson,run2,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Ezviz,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Govee,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Huawei,run2,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Imou,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+iRobot,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Kevo,run2,True,2,2,1,2,50.0,100.0,attackerLocal=generated wider;attackerOwner=literal
+MaagKwikset,run2,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+MaagLevel,run2,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+Meross,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Midea,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+MQTTFlaw1,run2,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Netvue,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+philips,run2,True,3,2,2,2,100.0,66.7,attackerLocal=literal;attackerOwner=same meaning;victimOwner=not generated
+Sunlogin,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Switchbot,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+TPLink,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+TuyaCAC,run2,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+TuyaMatter,run2,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Wemo,run2,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Xiaomi,run2,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Aqara,run3,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+August,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Beurer,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Broadlink,run3,True,2,2,1,2,50.0,100.0,attackerLocal=literal;attackerOwner=generated wider
+CloudEdgeCAC,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+CloudEdgeRTE,run3,True,2,2,1,1,50.0,50.0,attackerLocal=literal;attackerOwner=different
+delegationFlaw1,run3,True,2,2,2,1,100.0,50.0,deviceOn=generated narrower;attackerAuthorized=same meaning
+delegationFlaw2,run3,True,2,2,1,1,50.0,50.0,deviceOn=literal;attackerAuthorized=different
+Dyson,run3,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Ezviz,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Govee,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Huawei,run3,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Imou,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+iRobot,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Kevo,run3,True,2,2,1,2,50.0,100.0,attackerLocal=generated wider;attackerOwner=literal
+MaagKwikset,run3,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+MaagLevel,run3,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+Meross,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Midea,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+MQTTFlaw1,run3,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Netvue,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+philips,run3,True,3,2,2,2,100.0,66.7,attackerLocal=literal;attackerOwner=same meaning;victimOwner=not generated
+Sunlogin,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Switchbot,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+TPLink,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+TuyaCAC,run3,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+TuyaMatter,run3,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Wemo,run3,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Xiaomi,run3,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Aqara,run4,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+August,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Beurer,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Broadlink,run4,False,2,0,0,0,0.0,0.0,attackerLocal=not generated;attackerOwner=not generated
+CloudEdgeCAC,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+CloudEdgeRTE,run4,True,2,2,1,1,50.0,50.0,attackerLocal=literal;attackerOwner=different
+delegationFlaw1,run4,True,2,2,2,1,100.0,50.0,deviceOn=generated narrower;attackerAuthorized=same meaning
+delegationFlaw2,run4,True,2,2,1,1,50.0,50.0,deviceOn=literal;attackerAuthorized=different
+Dyson,run4,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Ezviz,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Govee,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Huawei,run4,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Imou,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+iRobot,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Kevo,run4,True,2,2,1,2,50.0,100.0,attackerLocal=generated wider;attackerOwner=same meaning
+MaagKwikset,run4,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+MaagLevel,run4,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+Meross,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Midea,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+MQTTFlaw1,run4,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Netvue,run4,True,2,2,1,1,50.0,50.0,attackerLocal=literal;attackerOwner=different
+philips,run4,True,3,2,2,2,100.0,66.7,attackerLocal=literal;attackerOwner=same meaning;victimOwner=not generated
+Sunlogin,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Switchbot,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+TPLink,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+TuyaCAC,run4,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+TuyaMatter,run4,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Wemo,run4,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Xiaomi,run4,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Aqara,run5,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+August,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Beurer,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Broadlink,run5,True,2,2,1,2,50.0,100.0,attackerLocal=literal;attackerOwner=generated wider
+CloudEdgeCAC,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+CloudEdgeRTE,run5,True,2,2,1,1,50.0,50.0,attackerLocal=literal;attackerOwner=different
+delegationFlaw1,run5,True,2,2,2,1,100.0,50.0,deviceOn=generated narrower;attackerAuthorized=same meaning
+delegationFlaw2,run5,True,2,2,1,1,50.0,50.0,deviceOn=literal;attackerAuthorized=different
+Dyson,run5,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Ezviz,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Govee,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Huawei,run5,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Imou,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+iRobot,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Kevo,run5,True,2,2,1,2,50.0,100.0,attackerLocal=generated wider;attackerOwner=literal
+MaagKwikset,run5,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+MaagLevel,run5,True,2,2,2,2,100.0,100.0,deviceTrustsAttacker=same meaning;cloudRecordsTrust=same meaning
+Meross,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+Midea,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+MQTTFlaw1,run5,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Netvue,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+philips,run5,True,3,2,2,2,100.0,66.7,attackerLocal=literal;attackerOwner=same meaning;victimOwner=not generated
+Sunlogin,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Switchbot,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=same meaning
+TPLink,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+TuyaCAC,run5,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+TuyaMatter,run5,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal
+Wemo,run5,True,2,2,2,2,100.0,100.0,attackerLocal=literal;attackerOwner=literal
+Xiaomi,run5,True,2,2,2,2,100.0,100.0,deviceOn=literal;attackerAuthorized=literal

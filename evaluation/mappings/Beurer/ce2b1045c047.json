@@ -1,0 +1,99 @@
+{
+  "protocol": "Beurer",
+  "model_sha256": "ce2b1045c0473648e8821461ee5aeb95a43204ffa16e086d945836713af9535d",
+  "runs": [
+    "run1"
+  ],
+  "generated": "sequence_diagram/output/eval-astra-20261105/run1/Beurer/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Beurer/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'sendKey'": "'sendKey'"
+    },
+    "attributes": {
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'keyB'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'keyB'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'leaves'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'key'",
+      "'localTo'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'leave'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'key'",
+      "'near'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'keyB'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T07:20:20+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1407,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'sendKey'\": \"'sendKey'\"\n  },\n  \"attributes\": {\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'keyB'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyB'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

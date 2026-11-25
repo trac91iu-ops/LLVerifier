@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "context_id": "761630091d9577e45aaf34fd61e3e7e207d851ddad01a56ab6348037338bd295",
+  "answers": {
+    "genPolicy:bdf2e11a975665ba4d44573c1d634d261418c3e4656369ee26e14e5b88e33824": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA\n=> < UserX | 'near' : deviceA , ... > .\n[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceA | 'key' : Key , ... > $ UserX 'pressButton' deviceA\n=> < deviceA | 'key' : Key , ... > $ deviceA 'sendMessage' UserX | (encrypt(FreshR,Key)) .\n[B3] < UserX | 'message' : nils , ... > $ deviceA 'sendMessage' UserX | (Message)\n=> < UserX | 'message' : Message , ... > .\n[B3] < UserX | 'message' : StoredMessage , ... > $ deviceA 'sendMessage' UserX | (Message)\n=> < UserX | 'message' : StoredMessage , ... > .\n[B4] < cloudA | deviceA : ('key' : Key , ...), UserX : ('owner' : OldOwner , ...) , ... > $ UserX 'bind' cloudA | (encrypt(R,Key))\n=> < cloudA | deviceA : ('key' : Key , ...), UserX : ('owner' : deviceA , ...) , ... > .\n[B5] < cloudA | UserX : ('owner' : OldOwner , ...) , ... > $ UserX 'reset' cloudA\n=> < cloudA | UserX : ('owner' : nils , ...) , ... > .",
+    "genPolicyVars:a3727d5ae4de267e4dc942c29e26b4ba76753ad678c3d71c39852271882c7713": "{\n  \"FreshR\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Message\": \"Item\",\n  \"OldOwner\": \"Set\",\n  \"R\": \"Qid\",\n  \"StoredMessage\": \"Item\",\n  \"UserX\": \"User\"\n}",
+    "filterEvents:3a2bacdf3ba9f84ef84eb9ee12740a89f58d8848c496adce3cfb3b44c3e476e0": "[1, 2, 3, 6, 7]",
+    "genInit:258389e1179e4560fae9cdfcae28b305eaa5c603c4970826db2813d007bc1585": "< userA | ('message' : nils , 'near' : deviceB) > < userC | ('message' : nils , 'near' : nils) > < deviceB | ('key' : 'keyA') > < cloudA | (userA : ('owner' : nils) , userC : ('owner' : nils) , deviceB : ('key' : 'keyA')) >",
+    "genRRLs:9e1d837b19d9a8a4c77af3d1e19679e16f04f2f1e36cfc39289b202beed455f2": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceA , ... > => ev3(UserX) .\n[B4] < UserX | 'message' : encrypt(R, Key) , ... > => ev4(UserX, R, Key) .\n[B4] < UserX | 'message' : MessageA , ... > => ev5(UserX, MessageA) .\n[B5] < UserX | ... > => ev6(UserX) .",
+    "genSlots:28560917f8bde96c2dd8a20bec7d2ab776d65cddfe5a1e1916d93a84a0cb7944": "attackerLocal =| < userC | 'near' : deviceA , ... > .\nattackerOwner =| < cloudA | userC : ('owner' : deviceA , ...) , ... > ."
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:bdf2e11a975665ba4d44573c1d634d261418c3e4656369ee26e14e5b88e33824"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA\n=> < UserX | 'near' : deviceA , ... > .\n[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceA | 'key' : Key , ... > $ UserX 'pressButton' deviceA\n=> < deviceA | 'key' : Key , ... > $ deviceA 'sendMessage' UserX | (encrypt(FreshR,Key)) .\n[B3] < UserX | 'message' : nils , ... > $ deviceA 'sendMessage' UserX | (Message)\n=> < UserX | 'message' : Message , ... > .\n[B3] < UserX | 'message' : StoredMessage , ... > $ deviceA 'sendMessage' UserX | (Message)\n=> < UserX | 'message' : StoredMessage , ... > .\n[B4] < cloudA | deviceA : ('key' : Key , ...), UserX : ('owner' : OldOwner , ...) , ... > $ UserX 'bind' cloudA | (encrypt(R,Key))\n=> < cloudA | deviceA : ('key' : Key , ...), UserX : ('owner' : deviceA , ...) , ... > .\n[B5] < cloudA | UserX : ('owner' : OldOwner , ...) , ... > $ UserX 'reset' cloudA\n=> < cloudA | UserX : ('owner' : nils , ...) , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:a3727d5ae4de267e4dc942c29e26b4ba76753ad678c3d71c39852271882c7713"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"FreshR\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Message\": \"Item\",\n  \"OldOwner\": \"Set\",\n  \"R\": \"Qid\",\n  \"StoredMessage\": \"Item\",\n  \"UserX\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:3a2bacdf3ba9f84ef84eb9ee12740a89f58d8848c496adce3cfb3b44c3e476e0"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 2, 3, 6, 7]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:258389e1179e4560fae9cdfcae28b305eaa5c603c4970826db2813d007bc1585"
+    },
+    {
+      "attempt": 0,
+      "output": "< userA | ('message' : nils , 'near' : deviceB) > < userC | ('message' : nils , 'near' : nils) > < deviceB | ('key' : 'keyA') > < cloudA | (userA : ('owner' : nils) , userC : ('owner' : nils) , deviceB : ('key' : 'keyA')) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:9e1d837b19d9a8a4c77af3d1e19679e16f04f2f1e36cfc39289b202beed455f2"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceA , ... > => ev3(UserX) .\n[B4] < UserX | 'message' : encrypt(R, Key) , ... > => ev4(UserX, R, Key) .\n[B4] < UserX | 'message' : MessageA , ... > => ev5(UserX, MessageA) .\n[B5] < UserX | ... > => ev6(UserX) .",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:28560917f8bde96c2dd8a20bec7d2ab776d65cddfe5a1e1916d93a84a0cb7944"
+    },
+    {
+      "attempt": 0,
+      "output": "attackerLocal =| < userC | 'near' : deviceA , ... > .\nattackerOwner =| < cloudA | userC : ('owner' : deviceA , ...) , ... > .",
+      "error": null
+    }
+  ]
+}

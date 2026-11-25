@@ -1,0 +1,112 @@
+{
+  "protocol": "Imou",
+  "model_sha256": "163fbaa108ef582e644bd89590c6ab1f020c9e4cf81d86b6b67fc7d781ed202a",
+  "runs": [
+    "run1",
+    "run3"
+  ],
+  "generated": "sequence_diagram/output/full-reword-20261102/Imou/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Imou/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'bind'": "'callAPI:bind'",
+      "'buttonPress'": "'pressButton'",
+      "'leave'": "'leaves'",
+      "'reset'": "'callAPI:reset'",
+      "'sendKey'": "'sendKey'"
+    },
+    "attributes": {
+      "'bindingKey'": "'bdKey'",
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'online'": "'online'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'keyB'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'keyB'",
+        "gold": "'secret'"
+      },
+      {
+        "attribute": "'bdKey'",
+        "generated": "'keyB'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:reset'",
+      "'leaves'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'bdKey'",
+      "'key'",
+      "'localTo'",
+      "'online'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'bind'",
+      "'buttonPress'",
+      "'leave'",
+      "'reset'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'bindingKey'",
+      "'key'",
+      "'near'",
+      "'online'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'keyB'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T04:59:39+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1711,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'buttonPress'\": \"'pressButton'\",\n    \"'leave'\": \"'leaves'\",\n    \"'reset'\": \"'callAPI:reset'\",\n    \"'sendKey'\": \"'sendKey'\"\n  },\n  \"attributes\": {\n    \"'bindingKey'\": \"'bdKey'\",\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'online'\": \"'online'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'keyB'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyB'\",\n      \"gold\": \"'secret'\"\n    },\n    {\n      \"attribute\": \"'bdKey'\",\n      \"generated\": \"'keyB'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

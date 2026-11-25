@@ -1,0 +1,6 @@
+# name  run directory; A2A, every stage on GPT-6 Astra (configs/config.yaml)
+a2a-run1 sequence_diagram/output/a2a-astra-v2-20261105/run1
+a2a-run2 sequence_diagram/output/a2a-astra-v2-20261105/run2
+a2a-run3 sequence_diagram/output/a2a-astra-v2-20261105/run3
+a2a-run4 sequence_diagram/output/a2a-astra-v2-20261105/run4
+a2a-run5 sequence_diagram/output/a2a-astra-v2-20261105/run5

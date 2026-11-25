@@ -1,0 +1,6 @@
+# name  run directory; LLM comparison, every stage on luna6
+luna6-run1 sequence_diagram/output/llm-luna6-20261105/run1
+luna6-run2 sequence_diagram/output/llm-luna6-20261105/run2
+luna6-run3 sequence_diagram/output/llm-luna6-20261105/run3
+luna6-run4 sequence_diagram/output/llm-luna6-20261105/run4
+luna6-run5 sequence_diagram/output/llm-luna6-20261105/run5

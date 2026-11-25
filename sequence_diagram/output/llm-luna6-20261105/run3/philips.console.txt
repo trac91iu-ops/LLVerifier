@@ -1,0 +1,170 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 7 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4856
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : deviceA , ... > .
+[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : nils , ... > .
+[B3] < deviceA | ... > $ UserX 'pressButton' deviceA
+=> < deviceA | ... > $ deviceA 'uploadSecret' cloudA | (FreshSecret ; CurrentTime) .
+[B3] < cloudA | deviceA : ('tickets' : Tickets , ...) , ... > $ deviceA 'uploadSecret' cloudA | (Secret ; IssuedAt)
+=> < cloudA | deviceA : ('tickets' : (Secret , Tickets) , 'issuedAt' : IssuedAt , ...) , ... > .
+[B4] < cloudA | deviceA : ('tickets' : (Secret , Tickets) , 'issuedAt' : IssuedAt , ...) , ... > $ UserX 'getKey' cloudA
+=> < cloudA | deviceA : ('tickets' : (Secret , Tickets) , 'issuedAt' : IssuedAt , ...) , ... > $ cloudA 'sendSecret' UserX | (Secret) if IssuedAt == CurrentTime .
+[B4] < UserX | 'knownSecrets' : nils , ... > $ cloudA 'sendSecret' UserX | (Secret)
+=> < UserX | 'knownSecrets' : (Secret) , ... > .
+[B4] < UserX | 'knownSecrets' : (KnownSecrets) , ... > $ cloudA 'sendSecret' UserX | (Secret)
+=> < UserX | 'knownSecrets' : (Secret , KnownSecrets) , ... > .
+[B5] < cloudA | deviceA : ('owner' : nils , 'tickets' : (Secret , Tickets) , ...) , ... > $ UserX 'bindDevice' cloudA | (Secret)
+=> < cloudA | deviceA : ('owner' : UserX , 'tickets' : (Secret , Tickets) , ...) , ... > .
+[B6] < cloudA | deviceA : ('owner' : Owner , 'owners' : Owners , 'tickets' : (Secret , Tickets) , ...) , ... > $ UserX 'joinDevice' cloudA | (Secret)
+=> < cloudA | deviceA : ('owner' : Owner , 'owners' : (UserX , Owners) , 'tickets' : (Secret , Tickets) , ...) , ... > .
+[B7] < cloudA | deviceA : ('tickets' : Tickets , 'issuedAt' : IssuedAt , ...) , ... >
+=> < cloudA | deviceA : ('tickets' : nils , 'issuedAt' : nils , ...) , ... > if CurrentTime - IssuedAt > 2 .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3104
+--------------------------------------------------
+```json
+{
+  "CurrentTime": "Nat",
+  "FreshSecret": "Qid",
+  "IssuedAt": "Nat",
+  "KnownSecrets": "Set",
+  "Owner": "User",
+  "Owners": "Set",
+  "Secret": "Qid",
+  "Tickets": "Set",
+  "UserX": "User"
+}
+```
+==================================================
+{'CurrentTime': 'Nat', 'FreshSecret': 'Qid', 'IssuedAt': 'Nat', 'KnownSecrets': 'Set', 'Owner': 'User', 'Owners': 'Set', 'Secret': 'Qid', 'Tickets': 'Set', 'UserX': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('knownSecrets' : ([Set]) , 'near' : [Principal]) > < userC | ('knownSecrets' : ([Set]) , 'near' : [Principal]) > < deviceA | nils > < cloudA | ([Principal] : ('issuedAt' : [Nat] , 'tickets' : {[Set] , [Qid]} , 'owner' : [User] , 'owners' : ([Set]))) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh True hasCurrentTime True
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceA 
+= < UserX | ('near' : deviceA , ..) > .
+eq < UserX | ('near' : deviceA , ..) > $ UserX 'leave' deviceA 
+= < UserX | ('near' : nils , ..) > .
+eq < system | ('time' : CurrentTime , 'counter' : N , ..) > < deviceA | (...) > $ UserX 'pressButton' deviceA 
+= < system | ('time' : CurrentTime , 'counter' : N + 1 , ..) > < deviceA | (...) > $ deviceA 'uploadSecret' cloudA | (randomStr('Secret', N) ; CurrentTime) .
+eq < cloudA | (deviceA : ('tickets' : Tickets , ..) , ...) > $ deviceA 'uploadSecret' cloudA | (Secret ; IssuedAt) 
+= < cloudA | (deviceA : ('tickets' : (Secret , Tickets) , 'issuedAt' : IssuedAt , ..) , ...) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceA : ('tickets' : (Secret , Tickets) , 'issuedAt' : IssuedAt , ...) , ....) > $ UserX 'getKey' cloudA 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceA : ('tickets' : (Secret , Tickets) , 'issuedAt' : IssuedAt , ...) , ....) > $ cloudA 'sendSecret' UserX | (Secret) if IssuedAt == CurrentTime .
+eq < UserX | ('knownSecrets' : nils , ..) > $ cloudA 'sendSecret' UserX | (Secret) 
+= < UserX | ('knownSecrets' : (Secret) , ..) > .
+eq < UserX | ('knownSecrets' : (KnownSecrets) , ..) > $ cloudA 'sendSecret' UserX | (Secret) 
+= < UserX | ('knownSecrets' : (Secret , KnownSecrets) , ..) > .
+eq < cloudA | (deviceA : ('owner' : nils , 'tickets' : (Secret , Tickets) , ..) , ...) > $ UserX 'bindDevice' cloudA | (Secret) 
+= < cloudA | (deviceA : ('owner' : UserX , 'tickets' : (Secret , Tickets) , ..) , ...) > .
+eq < cloudA | (deviceA : ('owner' : Owner , 'owners' : Owners , 'tickets' : (Secret , Tickets) , ..) , ...) > $ UserX 'joinDevice' cloudA | (Secret) 
+= < cloudA | (deviceA : ('owner' : Owner , 'owners' : (UserX , Owners) , 'tickets' : (Secret , Tickets) , ..) , ...) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceA : ('tickets' : Tickets , 'issuedAt' : IssuedAt , ...) , ....) > 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceA : ('tickets' : nils , 'issuedAt' : nils , ...) , ....) > if CurrentTime - IssuedAt > 2 .
+$ UserX 'approach' deviceA
+$ UserX 'leave' deviceA
+$ UserX 'pressButton' deviceA
+$ deviceA 'uploadSecret' cloudA | (randomStr('Secret', N) ; CurrentTime)
+$ deviceA 'uploadSecret' cloudA | (Secret ; IssuedAt)
+$ UserX 'getKey' cloudA
+$ cloudA 'sendSecret' UserX | (Secret)
+$ UserX 'bindDevice' cloudA | (Secret)
+$ UserX 'joinDevice' cloudA | (Secret)
+[*] Total token: 1838
+--------------------------------------------------
+```text
+[1, 2, 3, 4, 5, 6, 8, 9]
+```
+==================================================
+[1, 2, 3, 4, 5, 6, 8, 9]
+[$ UserX 'approach' deviceA, $ UserX 'leave' deviceA, $ UserX 'pressButton' deviceA, $ deviceA 'uploadSecret' cloudA | (randomStr('Secret', N) ; CurrentTime), $ deviceA 'uploadSecret' cloudA | (Secret ; IssuedAt), $ UserX 'getKey' cloudA, $ UserX 'bindDevice' cloudA | (Secret), $ UserX 'joinDevice' cloudA | (Secret)]
+[eq ev1(UserX) = $ UserX 'approach' deviceA ., eq ev2(UserX) = $ UserX 'leave' deviceA ., eq ev3(UserX) = $ UserX 'pressButton' deviceA ., eq ev4(N, CurrentTime) = $ deviceA 'uploadSecret' cloudA | (randomStr('Secret', N) ; CurrentTime) ., eq ev5(Secret, IssuedAt) = $ deviceA 'uploadSecret' cloudA | (Secret ; IssuedAt) ., eq ev6(UserX) = $ UserX 'getKey' cloudA ., eq ev7(UserX, Secret) = $ UserX 'bindDevice' cloudA | (Secret) ., eq ev8(UserX, Secret) = $ UserX 'joinDevice' cloudA | (Secret) .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3343
+--------------------------------------------------
+```text
+< userA | ('knownSecrets' : nils , 'near' : deviceB) > < userC | ('knownSecrets' : nils , 'near' : nils) > < deviceB | nils > < cloudA | (deviceB : ('issuedAt' : nils , 'tickets' : nils , 'owner' : nils , 'owners' : nils)) >
+```
+==================================================
+< system | ('time' : 0 , 'counter' : 0) > < userA | ('knownSecrets' : nils , 'near' : deviceB) > < userC | ('knownSecrets' : nils , 'near' : nils) > < deviceB | (nils) > < cloudA | (deviceB : ('issuedAt' : nils , 'tickets' : nils , 'owner' : nils , 'owners' : nils)) >
+[*] Generating event rules with LLM...
+[*] Total token: 4055
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .
+[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .
+[B3] < UserX | 'near' : deviceA , ... > => ev3(UserX) .
+[B4] < UserX | 'near' : deviceA , ... > => ev6(UserX) .
+[B5] < UserX | 'knownSecrets' : (Secret , Rest) , ... > => ev7(UserX, Secret) .
+[B6] < UserX | 'knownSecrets' : (Secret , Rest) , ... > => ev8(UserX, Secret) .
+```
+==================================================
+< UserX | 'near' : nils , ... > => ev1(UserX) .
+< UserX | 'near' : deviceA , ... > => ev2(UserX) .
+< UserX | 'near' : deviceA , ... > => ev3(UserX) .
+< UserX | 'near' : deviceA , ... > => ev6(UserX) .
+< UserX | 'knownSecrets' : (Secret , Rest) , ... > => ev7(UserX, Secret) .
+< UserX | 'knownSecrets' : (Secret , Rest) , ... > => ev8(UserX, Secret) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2206
+--------------------------------------------------
+```json
+{"Rest": "Set"}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev2(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+rl [rev3]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+rl [rev7]: E @ S < UserX | ('knownSecrets' : (Secret , Rest) , ..) > 
+=> ep: ev7(UserX, Secret) @ S < UserX | ('knownSecrets' : (Secret , Rest) , ..) > .
+rl [rev8]: E @ S < UserX | ('knownSecrets' : (Secret , Rest) , ..) > 
+=> ep: ev8(UserX, Secret) @ S < UserX | ('knownSecrets' : (Secret , Rest) , ..) > .
+rl [rtp]: E @ S < system | ('time' : N , .. ) >
+=> ep: timepass @ S < system | ('time' : (N + 1) , .. ) > .
+
+[*] Instantiating property slots with LLM...
+[*] Total token: 2758
+--------------------------------------------------
+```text
+attackerLocal =| < userC | 'near' : deviceA , ... > .
+attackerOwner =| < cloudA | deviceA : ('owners' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 1837
+--------------------------------------------------
+```json
+{"Rest": "Set"}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check OWN-remote: holds (0 events)
+[+] Model written: sequence_diagram/output/llm-luna6-20261105/run3/philips/rules.maude; status: validated

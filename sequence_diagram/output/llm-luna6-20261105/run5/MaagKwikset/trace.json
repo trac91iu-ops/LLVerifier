@@ -1,0 +1,182 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        10,
+        13
+      ],
+      "head": "alt UserX is not near a device and the device exists",
+      "state_rules": [
+        0
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        14,
+        17
+      ],
+      "head": "alt UserX is near the device",
+      "state_rules": [
+        1
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        19,
+        25
+      ],
+      "head": "alt UserX is near the device",
+      "state_rules": [
+        2
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        27,
+        36
+      ],
+      "head": "alt UserX has key and the device exists",
+      "state_rules": [
+        3,
+        4
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        38,
+        43
+      ],
+      "head": "alt UserX is near the device and has signed key M",
+      "state_rules": [
+        5
+      ],
+      "event_rules": [
+        4
+      ]
+    },
+    {
+      "id": "B6",
+      "kind": "action",
+      "lines": [
+        45,
+        48
+      ],
+      "head": "alt Existing distinct users UserX and UserY and Device",
+      "state_rules": [
+        6
+      ],
+      "event_rules": [
+        5
+      ]
+    },
+    {
+      "id": "B7",
+      "kind": "action",
+      "lines": [
+        49,
+        54
+      ],
+      "head": "alt Existing distinct users UserX and UserY",
+      "state_rules": [
+        7
+      ],
+      "event_rules": [
+        6
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('near' : nils , ..) > < Device | (...) > $ UserX 'approach' Device \n= < UserX | ('near' : Device , ..) > < Device | (...) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < UserX | ('near' : Device , ..) > < Device | (...) > $ UserX 'leave' Device \n= < UserX | ('near' : nils , ..) > < Device | (...) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < system | ('counter' : N , ..) > < UserX | ('near' : Device , 'key' : nils , ...) > < Device | ('key' : DeviceKey , ....) > $ UserX 'requestKey' Device \n= < system | ('counter' : N + 1 , ..) > < UserX | ('near' : Device , 'key' : randomStr('Key', N) , ...) > < Device | ('key' : randomStr('Key', N) , ....) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < UserX | ('key' : Key , ..) > < Cloud | (Device : ('trusted' : TrustedUsers , ...) , 'secret' : Secret , ....) > $ UserX 'signKey' Cloud | (Device ; Key) \n= < UserX | ('key' : Key , ..) > < Cloud | (Device : ('trusted' : TrustedUsers , ...) , 'secret' : Secret , ....) > $ Cloud 'signedKey' UserX | (encrypt(Key, Secret)) ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < UserX | ('signedKey' : nils , ..) > $ Cloud 'signedKey' UserX | (SignedKey) \n= < UserX | ('signedKey' : SignedKey , ..) > ."
+    },
+    {
+      "block": "B5",
+      "rule": "ceq < UserX | ('near' : Device , 'signedKey' : SignedKey , ..) > < Device | ('key' : Key , 'secret' : Secret , 'trusted' : TrustedUsers , ...) > $ UserX 'bindDevice' Device | (SignedKey) \n= < UserX | ('near' : Device , 'signedKey' : SignedKey , ..) > < Device | ('key' : Key , 'secret' : Secret , 'trusted' : (UserX , TrustedUsers) , ...) > if SignedKey == encrypt(Key, Secret) ."
+    },
+    {
+      "block": "B6",
+      "rule": "eq < Cloud | (Device : ('trusted' : TrustedUsers , ..) , ...) > $ UserX 'shareAccess' Cloud | (Device ; UserY) \n= < Cloud | (Device : ('trusted' : (UserY , TrustedUsers) , ..) , ...) > ."
+    },
+    {
+      "block": "B7",
+      "rule": "eq < Cloud | (Device : ('trusted' : (UserX , (UserY , Rest) , ..) , ...) , ....) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) \n= < Cloud | (Device : ('trusted' : (UserX , Rest) , ...) , ....) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > \n=> ep: ev1(UserX, deviceB) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev2(UserX, deviceB) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev3(UserX, deviceB) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > \n=> ep: ev4(UserX, cloudB, deviceB, Key) @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | ('near' : deviceB , 'signedKey' : SignedKey , ..) > \n=> ep: ev5(UserX, deviceB, SignedKey) @ S < UserX | ('near' : deviceB , 'signedKey' : SignedKey , ..) > ."
+    },
+    {
+      "block": "B6",
+      "label": "rev6",
+      "rule": "rl [rev6]: E @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > \n=> ep: ev6(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > ."
+    },
+    {
+      "block": "B7",
+      "label": "rev7",
+      "rule": "rl [rev7]: E @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > \n=> ep: ev7(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > ."
+    }
+  ],
+  "coverage_issues": []
+}

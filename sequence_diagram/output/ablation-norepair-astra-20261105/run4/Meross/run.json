@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/Meross/diagram.md",
+  "input_sha256": "f549c898fd74cbed7efb841d5e7c013fd5b66180362fd5ab3e0c3400b9e4be69",
+  "pipeline_id": "31326de9cb0d280e8609836e2db168543d910323b7286faa2f8915bcd1c8b471",
+  "mode": "check",
+  "started_at": "2026-11-05T07:03:15.392940+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/ablation-norepair-astra-20261105/run4/Meross/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _:_('key', 'keyUserA')), _:_(userC, _:_('key', 'keyUserC')), _:_(deviceB, _`,_(_:_('key', 'keyDeviceB'), _:_('owner', nils))))), <_|_>(userA, _`,_(_:_('keys', 'keyUserA'), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('keys', 'keyUserC'), _:_('near', nils))), <_|_>(deviceB, _:_('key', 'keyDeviceB'))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 5,
+    "coverage_issues": []
+  },
+  "model_sha256": "1d13a93ec26d7a7a0ce083f27abefbe090b70904e3003cb4292084da851f3e73",
+  "check": {
+    "property": "OWN-remote",
+    "verdict": "counterexample",
+    "events": 7,
+    "at_init": {
+      "attackerLocal": false,
+      "attackerOwner": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 166.266,
+  "tokens_this_run": 20594,
+  "finished_at": "2026-11-05T07:06:01.659767+00:00"
+}

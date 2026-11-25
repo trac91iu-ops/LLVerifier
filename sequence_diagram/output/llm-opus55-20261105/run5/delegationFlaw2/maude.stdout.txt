@@ -1,0 +1,33 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var CloudX : Cloud .
+  var DeviceX : Device .
+  var DeviceY : Device .
+  var K : Qid .
+  var P : Principal .
+  var Rest : Set .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < cloudB | (deviceLock : ('on' : false, 'trust' : cloudSmartThing, 'key' : 'key', 'link' : nils)) > < userA | ('key' : nils) > < userC | ('key' : nils) > < cloudSmartThing | (deviceSwitch : ('link' : deviceLock, 'key' : 'key', 'on' : false, 'trust' : userA)) > < deviceLock | ('on' : false, 'trust' : (cloudB)) > < deviceSwitch | (nils) > .
+  eq < CloudX | (DeviceX : ('trust' : (UserX, Rest), 'key' : K, ..), ...) > $ UserX 'requestKey' CloudX = < CloudX | (DeviceX : ('trust' : (UserX, Rest), 'key' : K, ..), ...) > $ CloudX 'sendKey' UserX | (K) .
+  eq < UserX | ('key' : nils, ..) > $ CloudX 'sendKey' UserX | (K) = < UserX | ('key' : K, ..) > .
+  eq < CloudX | (DeviceX : ('trust' : (UserX, Rest), ..), ...) > $ UserX 'delegate' CloudX | (DeviceX ; UserY) = < CloudX | (DeviceX : ('trust' : (UserX, UserY, Rest), ..), ...) > .
+  eq < CloudX | (DeviceX : ('trust' : (UserX, UserY, Rest), ..), ...) > $ UserX 'revoke' CloudX | (DeviceX ; UserY) = < CloudX | (DeviceX : ('trust' : (UserX, Rest), ..), ...) > .
+  eq < cloudSmartThing | (DeviceX : ('key' : K, 'on' : false, ..), ...) > $ UserX 'turnOnWithKey' cloudSmartThing | (DeviceX ; K) = < cloudSmartThing | (DeviceX : ('key' : K, 'on' : true, ..), ...) > $ cloudSmartThing 'turnOn' DeviceX .
+  eq < CloudX | (DeviceX : ('trust' : (P, Rest), 'on' : false, ..), ...) > $ P 'turnOn' DeviceX = < CloudX | (DeviceX : ('trust' : (P, Rest), 'on' : true, ..), ...) > $ CloudX 'turnOn' DeviceX .
+  eq < cloudSmartThing | (DeviceX : ('link' : DeviceY, ..), ...) > $ cloudSmartThing 'turnOn' DeviceX = < cloudSmartThing | (DeviceX : ('link' : DeviceY, ..), ...) > $ cloudSmartThing 'turnOn' DeviceY .
+  eq < deviceLock | ('trust' : (P, Rest), 'on' : false, ..) > $ P 'turnOn' deviceLock = < deviceLock | ('trust' : (P, Rest), 'on' : true, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (38461 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudB, _:_(deviceLock, _`,_(_:_('key', 'key'), _:_('link', nils), _:_('on', false), _:_('trust', cloudSmartThing)))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceLock, _`,_(_:_('on', false), _:_('trust', cloudB))), <_|_>(deviceSwitch, nils), <_|_>(cloudSmartThing, _:_(deviceSwitch, _`,_(_:_('key', 'key'), _:_('link', deviceLock), _:_('on', false), _:_('trust', userA))))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'requestKey', cloudB), __(<_|_>(cloudB, _:_(deviceLock, _`,_(_:_('key', 'key'), _:_('link', nils), _:_('on', false), _:_('trust', cloudSmartThing)))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceLock, _`,_(_:_('on', false), _:_('trust', cloudB))), <_|_>(deviceSwitch, nils), <_|_>(cloudSmartThing, _:_(deviceSwitch, _`,_(_:_('key', 'key'), _:_('link', deviceLock), _:_('on', false), _:_('trust', userA))))))
+Bye.

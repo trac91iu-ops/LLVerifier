@@ -1,0 +1,27 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var DeviceX : Device .
+  var K : Qid .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < userA | ('near' : deviceB) > < userC | ('near' : deviceD) > < deviceB | ('key' : nils, 'button' : false) > < deviceD | ('key' : nils, 'button' : false) > < cloudA | (userA : ('key' : 'keyA'), userC : ('key' : 'keyC'), deviceB : ('owner' : nils), deviceD : ('owner' : nils)) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' DeviceX = < UserX | ('near' : DeviceX, ..) > .
+  eq < UserX | ('near' : DeviceX, ..) > $ UserX 'leave' DeviceX = < UserX | ('near' : nils, ..) > .
+  eq < DeviceX | ('button' : false, ..) > $ UserX 'pressButton' DeviceX = < DeviceX | ('button' : true, ..) > .
+  eq < DeviceX | ('button' : true, 'key' : nils, ..) > $ UserX 'sendKey' DeviceX | (K) = < DeviceX | ('button' : false, 'key' : K, ..) > .
+  eq < DeviceX | ('key' : K, ..) > $ UserX 'discover' DeviceX = < DeviceX | ('key' : K, ..) > $ DeviceX 'bind' cloudA | (K) .
+  eq < cloudA | (DeviceX : ('owner' : nils, ..), UserY : ('key' : K, ...), ....) > $ DeviceX 'bind' cloudA | (K) = < cloudA | (DeviceX : ('owner' : UserY, ..), UserY : ('key' : K, ...), ....) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (41666 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')), _:_(deviceB, _:_('owner', nils)), _:_(deviceD, _:_('owner', nils)))), <_|_>(userA, _:_('near', deviceB)), <_|_>(userC, _:_('near', deviceD)), <_|_>(deviceB, _`,_(_:_('button', false), _:_('key', nils))), <_|_>(deviceD, _`,_(_:_('button', false), _:_('key', nils)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'leave', deviceB), __(<_|_>(cloudA, _`,_(_:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')), _:_(deviceB, _:_('owner', nils)), _:_(deviceD, _:_('owner', nils)))), <_|_>(userA, _:_('near', nils)), <_|_>(userC, _:_('near', deviceD)), <_|_>(deviceB, _`,_(_:_('button', false), _:_('key', nils))), <_|_>(deviceD, _`,_(_:_('button', false), _:_('key', nils)))))
+Bye.

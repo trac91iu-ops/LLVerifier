@@ -1,0 +1,74 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:191b828da6891700fad49b3e2e0a93158d6b954c36ae6012b530015a3d5dbb60"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < serverA | 'contexts' : nils , ... > $ ClientX 'sendWithoutContext' serverA | 'msgA'\n=> < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgA')) , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > .\n\n[B1] < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : OldHist , ... > $ serverA 'returnInitialContext' ClientX | (ReturnedCtx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > if Ctx =/= nils .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : OldHist , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : nils , 'receivedHistory' : Hist , ... > if OldHist =/= nils .\n\n[B2] < ClientY | 'authenticated' : true , 'knowCtx' : OldCtx , ... > < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > $ ClientY 'snoop' serverA | Ctx\n=> < ClientY | 'authenticated' : true , 'knowCtx' : Ctx , ... > < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > .\n\n[B3] < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > $ ClientY 'sendWithContext' serverA | (Ctx ; 'msgB')\n=> < serverA | 'contexts' : ('id' : Ctx , 'history' : ('msgB' , Hist)) , ... > $ serverA 'returnHistory' ClientY | (Ctx ; ('msgB' , Hist)) .\n\n[B3] < ClientY | 'receivedHistory' : OldHist , ... > $ serverA 'returnHistory' ClientY | (Ctx ; Hist)\n=> < ClientY | 'receivedHistory' : Hist , ... > .\n\n[B4] < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > $ ClientX 'sendWithContext' serverA | (Ctx ; 'msgA2')\n=> < serverA | 'contexts' : ('id' : Ctx , 'history' : ('msgA2' , Hist)) , ... > $ serverA 'returnHistory' ClientX | (Ctx ; ('msgA2' , Hist)) .\n\n[B4] < ClientX | 'receivedHistory' : OldHist , ... > $ serverA 'returnHistory' ClientX | (Ctx ; Hist)\n=> < ClientX | 'receivedHistory' : Hist , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:a2e6e348c8b458712f3f379d1e19cca7cad7423d1f3060bf181f3764ea6cdc79"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"ClientX\": \"Client\",\n  \"ClientY\": \"Client\",\n  \"Ctx\": \"Qid\",\n  \"Hist\": \"Set\",\n  \"OldCtx\": \"Set\",\n  \"OldHist\": \"Set\",\n  \"ReturnedCtx\": \"Qid\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:8ba04a89e3c17c4e016f1d3818ba5378148acf888c471207623575c0247f2159"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 4, 5, 8]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:c0862392e654a5009e88e3663c8ef17ab5e08b600c0805ab9229075efcc6845c"
+  },
+  {
+    "attempt": 0,
+    "output": "< serverA | ('contexts' : nils) >\n< clientA | ('receivedHistory' : nils , 'authenticated' : true , 'knowCtx' : nils) >\n< clientB | ('receivedHistory' : nils , 'authenticated' : true , 'knowCtx' : nils) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:a515c87a3ac311f2ce695ae357cc7adc36c096193388ce328c067c82e3675949"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < ClientX | 'authenticated' : true , 'knowCtx' : nils , ... > => ev1(ClientX) .\n[B2] < ClientY | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'contexts' : ('id' : Ctx , ...) , ... > => ev2(ClientY, Ctx) .\n[B3] < ClientY | 'authenticated' : true , 'knowCtx' : (Ctx , Rest) , ... > => ev3(ClientY, Ctx) .\n[B4] < ClientX | 'authenticated' : true , 'knowCtx' : (Ctx , Rest) , ... > => ev4(ClientX, Ctx) .",
+    "error": null
+  },
+  {
+    "stage": "genEventVars",
+    "prompt_hash": "genEventVars:8bd031caa0690a375931c335d4e80d77a35faaade27ba79049242bfcdd5bc053"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Rest\": \"Set\"\n}",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:c8a991d704da0f09b14453385e5f79c41645fccc0fac484813729904dddf025f"
+  },
+  {
+    "attempt": 0,
+    "output": "attackerReadsVictimData =| < clientB | 'receivedHistory' : ('msgA' , Rest) , ... > .\nvictimContextTampered =| < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgB' , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:d55d4f43aed6b2292ccc96b2be2b05b04d3184714fb53e3cc0320c0742f57766"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Rest\": \"Set\"\n}",
+    "error": null
+  }
+]

@@ -1,0 +1,34 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < deviceB | 'buttonPressed' : false , ... > $ UserX 'pressButton' deviceB
+=> < d
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4068
+--------------------------------------------------
+```
+< deviceB | 'buttonPressed' : false , ... > $ UserX 'pressButton' deviceB
+=> < deviceB | 'buttonPressed' : true , ... > .
+
+< cloudA | UserX : ('accountKey' : Key , ...) , ... >
+< deviceB | 'buttonPressed' : true , 'key' : nils , ... >
+$ UserX 'sendKey' deviceB | Key
+=> < cloudA | UserX : ('accountKey' : Key , ...) , ... >
+< deviceB | 'buttonPressed' : false , 'key' : Key , ... > .
+
+< deviceB | 'key' : Key , ... > $ UserX 'discover' deviceB
+=> < deviceB | 'key' : Key , ... >
+$ deviceB 'bind' cloudA | (deviceB ; Key)
+if Key =/= nils .
+
+< cloudA | UserY : ('accountKey' : Key , ...) , deviceB : ('owner' : nils , ...) , ... >
+$ deviceB 'bind' cloudA | (deviceB ; Key)
+=> < cloudA | UserY : ('accountKey' : Key , ...) , deviceB : ('owner' : UserY , ...) , ... > .
+
+< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+
+< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+```
+==================================================

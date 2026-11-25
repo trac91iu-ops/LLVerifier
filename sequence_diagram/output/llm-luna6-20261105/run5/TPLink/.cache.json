@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "context_id": "0dc6d425132ad24da422415fbefc12c6a4d3ea2928b2f7a8e9a1b1c8beebead5",
+  "answers": {
+    "genPolicy:89c20f2fa364ddaa22f12b6cf20ea9a1e6fc7515b1066228bc7a6afc61756d2a": "[B1] < deviceA | 'buttonPressed' : false , ... > $ UserX 'pressButton' deviceA => < deviceA | 'buttonPressed' : true , ... > .\n[B2] < deviceA | 'buttonPressed' : true , 'key' : nils , ... > < cloudA | UserX : ('accountKey' : Key , ...) , ... > $ UserX 'sendKey' deviceA | (Key) => < deviceA | 'buttonPressed' : false , 'key' : Key , ... > < cloudA | UserX : ('accountKey' : Key , ...) , ... > .\n[B3] < deviceA | 'key' : Key , ... > $ UserX 'discover' deviceA => < deviceA | 'key' : Key , ... > $ deviceA 'bind' cloudA | (Key) .\n[B3] < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : nils , ...) , ... > $ deviceA 'bind' cloudA | (Key) => < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : UserY , ...) , ... > .\n[B4] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA => < UserX | 'near' : deviceA , ... > .\n[B5] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA => < UserX | 'near' : nils , ... > .",
+    "genPolicyVars:bab0142a422fc086ec509f6a9df2de238003a2c00102ceabc6a62328bd3757a0": "{\n  \"Key\": \"Qid\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:89c20f2fa364ddaa22f12b6cf20ea9a1e6fc7515b1066228bc7a6afc61756d2a"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < deviceA | 'buttonPressed' : false , ... > $ UserX 'pressButton' deviceA => < deviceA | 'buttonPressed' : true , ... > .\n[B2] < deviceA | 'buttonPressed' : true , 'key' : nils , ... > < cloudA | UserX : ('accountKey' : Key , ...) , ... > $ UserX 'sendKey' deviceA | (Key) => < deviceA | 'buttonPressed' : false , 'key' : Key , ... > < cloudA | UserX : ('accountKey' : Key , ...) , ... > .\n[B3] < deviceA | 'key' : Key , ... > $ UserX 'discover' deviceA => < deviceA | 'key' : Key , ... > $ deviceA 'bind' cloudA | (Key) .\n[B3] < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : nils , ...) , ... > $ deviceA 'bind' cloudA | (Key) => < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : UserY , ...) , ... > .\n[B4] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA => < UserX | 'near' : deviceA , ... > .\n[B5] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA => < UserX | 'near' : nils , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:bab0142a422fc086ec509f6a9df2de238003a2c00102ceabc6a62328bd3757a0"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Key\": \"Qid\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    }
+  ]
+}

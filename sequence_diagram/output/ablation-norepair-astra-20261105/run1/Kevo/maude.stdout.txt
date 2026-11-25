@@ -1,0 +1,30 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var FreshR : Qid .
+  var Key : Qid .
+  var Message : Item .
+  var OldNear : Set .
+  var Owners : Set .
+  var R : Qid .
+  var UserX : User .
+  eq init = idle @ < system | ('counter' : 0) > < userA | ('message' : nils, 'near' : deviceB) > < userC | ('message' : nils, 'near' : nils) > < deviceB | ('key' : 'keyB') > < cloudA | (deviceB : ('owners' : nils, 'key' : 'keyB')) > .
+  eq < UserX | ('near' : OldNear, ..) > $ UserX 'approach' deviceB = < UserX | ('near' : deviceB, ..) > .
+  eq < UserX | ('near' : OldNear, ..) > $ UserX 'leave' deviceB = < UserX | ('near' : nils, ..) > .
+  eq < system | ('counter' : N, ..) > < deviceB | ('key' : Key, ...) > $ UserX 'pressButton' deviceB = < system | ('counter' : N + 1, ..) > < deviceB | ('key' : Key, ...) > $ deviceB 'deliverMessage' UserX | (encrypt (randomStr ('R', N), Key)) .
+  eq < UserX | ('message' : nils, ..) > $ deviceB 'deliverMessage' UserX | (Message) = < UserX | ('message' : Message, ..) > .
+  eq < cloudA | (deviceB : ('key' : Key, 'owners' : Owners, ..), ...) > $ UserX 'bind' cloudA | (deviceB ; encrypt (R, Key)) = < cloudA | (deviceB : ('key' : Key, 'owners' : (UserX, Owners), ..), ...) > .
+  eq < cloudA | (deviceB : ('owners' : (UserX, Owners), ..), ...) > $ UserX 'reset' cloudA | (deviceB) = < cloudA | (deviceB : ('owners' : (nils, Owners), ..), ...) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (34482 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'keyB'), _:_('owners', nils)))), <_|_>(userA, _`,_(_:_('message', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('message', nils), _:_('near', nils))), <_|_>(deviceB, _:_('key', 'keyB'))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userC, 'approach', deviceB), __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'keyB'), _:_('owners', nils)))), <_|_>(userA, _`,_(_:_('message', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('message', nils), _:_('near', deviceB))), <_|_>(deviceB, _:_('key', 'keyB'))))
+Bye.

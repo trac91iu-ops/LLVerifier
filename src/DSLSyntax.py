@@ -45,6 +45,8 @@ class ParseGrammar:
     item: BOOL | qid | INTEGER | principal | pair | DOTS | funcall | VARIABLE | set
 
     funcall: FUNCNAME "(" item ("," item)* ")"
+           | "list" "(" ordered_items ")" -> listcall
+    ordered_items: item (";" item)*
 
     FUNCNAME: "encrypt" | "decrypt"
 
@@ -127,6 +129,8 @@ class CheckGrammar:
     item: BOOL | qid | INTEGER | principal | pair | DOTS | funcall | VARIABLE | set
 
     funcall: FUNCNAME "(" item ("," item)* ")"
+           | "list" "(" ordered_items ")" -> listcall
+    ordered_items: item (";" item)*
 
     FUNCNAME: "encrypt" | "decrypt"
 

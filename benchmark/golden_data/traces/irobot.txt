@@ -1,0 +1,499 @@
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : nils, 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : nils, 'pressed' : true >, 'rev2} {$ userA
+    'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : nils, 'pressed' : true >, 'rev3} {$ userA
+    'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$ userA
+    'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$ userA
+    'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$ userA
+    'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userA
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$ userA
+    'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$ userA
+    'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev6} {$ userA
+    'leaves' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretC', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretC', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretC', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userA
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretC', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretC', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev7} {$ userA
+    'approaches' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev7} {$ userC
+    'approaches' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userA 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$
+    userA 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$
+    userA 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$
+    userC 'callAPI:setKey' deviceB | 'secretC' @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userA 'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userC 'callAPI:bind' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$
+    userA 'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$
+    userC 'callAPI:reset' cloudA | (deviceB ; 'secretC') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev6} {$
+    userA 'leaves' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretC', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev3} {$
+    userC 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userA 'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$
+    userC 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userC 'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$
+    userA 'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$
+    userC 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userA 'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userC 'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$
+    userC 'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev6} {$
+    userC 'leaves' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userA
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev7} {$ userA
+    'approaches' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$ userA
+    'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$ userA
+    'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userA
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev6} {$ userA
+    'leaves' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev7} {$ userC
+    'approaches' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev7} {$
+    userA 'approaches' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userA 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev3} {$
+    userA 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userA 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$
+    userA 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$
+    userC 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userA 'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$
+    userA 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev1} {$
+    userC 'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$
+    userA 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev2} {$
+    userC 'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$
+    userA 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$
+    userC 'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$
+    userC 'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$
+    userC 'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev6} {$
+    userA 'leaves' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$
+    userC 'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev6} {$
+    userC 'leaves' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : nils > < userC | 'key' : 'secretA', 'localTo' : nils
+    > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev7} {$ userA
+    'approaches' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userA) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev5} {$ userA
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev3} {$ userA
+    'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : true >, 'rev2} {$ userA
+    'callAPI:getKey' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev3} {$ userA
+    'callAPI:setKey' deviceB | 'secretA' @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev4} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userA
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : 'secretA', 'owner' : userC) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev5} {$ userC
+    'callAPI:reset' cloudA | (deviceB ; 'secretA') @
+< cloudA | deviceB : ('bdKey' : '', 'owner' : nils) > < userA | 'key' :
+    'secretA', 'localTo' : deviceB > < userC | 'key' : 'secretA', 'localTo' :
+    nils > < deviceB | 'key' : 'secretA', 'pressed' : false >, 'rev1}
+idle
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:setKey' deviceB | 'secretA'
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userA 'callAPI:bind' cloudA | (deviceB ; 'secretA')
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userA 'callAPI:reset' cloudA | (deviceB ; 'secretA')
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userA 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userA 'leaves' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:setKey' deviceB | 'secretA'
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userA 'callAPI:bind' cloudA | (deviceB ; 'secretA')
+$ userC 'pressButton' deviceB
+$ userC 'callAPI:getKey' deviceB
+$ userA 'callAPI:reset' cloudA | (deviceB ; 'secretA')
+$ userC 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userA 'leaves' deviceB
+$ userC 'approaches' deviceB
+$ userA 'approaches' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:setKey' deviceB | 'secretA'
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userA 'callAPI:bind' cloudA | (deviceB ; 'secretA')
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userA 'leaves' deviceB
+$ userC 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:reset' cloudA | (deviceB ; 'secretA')
+$ userA 'callAPI:setKey' deviceB | 'secretA'
+$ userC 'callAPI:bind' cloudA | (deviceB ; 'secretA')
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' deviceB
+$ userC 'callAPI:reset' cloudA | (deviceB ; 'secretA')
+rewrites: 4172 in 23ms cpu (23ms real) (181092 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userA 'callAPI:setKey' deviceB | 'secretA' ^ ($ userA 'pressButton' deviceB
+    ^ ($ userA 'callAPI:getKey' deviceB ^ ($ userA 'callAPI:bind' cloudA | (
+    deviceB ; 'secretA') ^ ($ userA 'pressButton' deviceB ^ ($ userA
+    'callAPI:getKey' deviceB ^ ($ userA 'callAPI:reset' cloudA | (deviceB ;
+    'secretA') ^ ($ userA 'pressButton' deviceB ^ ($ userA 'callAPI:getKey'
+    deviceB ^ ($ userA 'leaves' deviceB ^ ($ userA 'approaches' deviceB ^ ($
+    userC 'approaches' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userA
+    'callAPI:getKey' deviceB ^ ($ userA 'leaves' deviceB ^ ($ userC
+    'pressButton' deviceB ^ ($ userC 'callAPI:getKey' deviceB ^ ($ userC
+    'pressButton' deviceB ^ ($ userC 'callAPI:setKey' deviceB | 'secretA' ^ ($
+    userC 'pressButton' deviceB ^ ($ userC 'callAPI:getKey' deviceB ^ ($ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') ^ ($ userC 'pressButton'
+    deviceB ^ ($ userC 'callAPI:getKey' deviceB ^ ($ userA 'callAPI:reset'
+    cloudA | (deviceB ; 'secretA') ^ ($ userC 'leaves' deviceB ^ ($ userA
+    'approaches' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userA
+    'callAPI:getKey' deviceB ^ ($ userA 'leaves' deviceB ^ ($ userC
+    'approaches' deviceB ^ ($ userA 'approaches' deviceB ^ ($ userA
+    'pressButton' deviceB ^ ($ userA 'callAPI:setKey' deviceB | 'secretA' ^ ($
+    userA 'pressButton' deviceB ^ ($ userA 'callAPI:getKey' deviceB ^ ($ userA
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') ^ ($ userA 'pressButton'
+    deviceB ^ ($ userA 'callAPI:getKey' deviceB ^ ($ userA 'leaves' deviceB ^ (
+    $ userC 'leaves' deviceB ^ ($ userA 'approaches' deviceB ^ ($ userA
+    'pressButton' deviceB ^ ($ userA 'callAPI:reset' cloudA | (deviceB ;
+    'secretA') ^ ($ userA 'callAPI:setKey' deviceB | 'secretA' ^ ($ userC
+    'callAPI:bind' cloudA | (deviceB ; 'secretA') ^ ($ userA 'pressButton'
+    deviceB ^ ($ userA 'callAPI:getKey' deviceB ^ ($ userC 'callAPI:reset'
+    cloudA | (deviceB ; 'secretA') ^
+    nile))))))))))))))))))))))))))))))))))))))))))))))))))

@@ -1,0 +1,180 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        8,
+        11
+      ],
+      "head": "alt UserX is not near any device",
+      "state_rules": [
+        0
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        12,
+        15
+      ],
+      "head": "alt UserX is near the device",
+      "state_rules": [
+        1
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        17,
+        22
+      ],
+      "head": "alt UserX is near the device",
+      "state_rules": [
+        2,
+        3
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        24,
+        30
+      ],
+      "head": "alt UserX is near the device",
+      "state_rules": [
+        4,
+        5
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        32,
+        37
+      ],
+      "head": "alt UserX knows a secret",
+      "state_rules": [
+        6
+      ],
+      "event_rules": [
+        4
+      ]
+    },
+    {
+      "id": "B6",
+      "kind": "action",
+      "lines": [
+        39,
+        44
+      ],
+      "head": "alt UserX knows a secret",
+      "state_rules": [
+        7
+      ],
+      "event_rules": [
+        5
+      ]
+    },
+    {
+      "id": "B7",
+      "kind": "auto",
+      "lines": [
+        46,
+        48
+      ],
+      "head": "alt A ticket of the device was issued more than 2 time units ago",
+      "state_rules": [
+        8
+      ],
+      "event_rules": []
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('near' : OldNear , ..) > $ UserX 'approach' deviceB \n= < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < UserX | ('near' : OldNear , ..) > $ UserX 'leave' deviceB \n= < UserX | ('near' : nils , ..) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < system | ('counter' : N , ..) > < deviceB | (...) > $ UserX 'pressButton' deviceB \n= < system | ('counter' : N + 1 , ..) > < deviceB | (...) > $ deviceB 'uploadSecret' cloudA | (deviceB ; randomStr('Secret', N)) ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : Tickets , ...) , ....) > $ deviceB 'uploadSecret' cloudA | (deviceB ; Secret) \n= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : CurrentTime) , Tickets) , ...) , ....) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : IssuedTime) , OtherTickets) , ...) , ....) > $ UserX 'getKey' cloudA | (deviceB) \n= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : IssuedTime) , OtherTickets) , ...) , ....) > $ cloudA 'sendSecret' UserX | (deviceB ; Secret) if IssuedTime == CurrentTime ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < UserX | ('knowledge' : Knowledge , ..) > $ cloudA 'sendSecret' UserX | (deviceB ; Secret) \n= < UserX | ('knowledge' : (Secret , Knowledge) , ..) > ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < cloudA | (deviceB : ('owners' : nils , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , OtherTickets) , ..) , ...) > $ UserX 'bind' cloudA | (deviceB ; Secret) \n= < cloudA | (deviceB : ('owners' : (UserX) , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , OtherTickets) , ..) , ...) > ."
+    },
+    {
+      "block": "B6",
+      "rule": "eq < cloudA | (deviceB : ('owners' : (UserY , OtherOwners) , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , OtherTickets) , ..) , ...) > $ UserX 'join' cloudA | (deviceB ; Secret) \n= < cloudA | (deviceB : ('owners' : (UserX , UserY , OtherOwners) , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , OtherTickets) , ..) , ...) > ."
+    },
+    {
+      "block": "B7",
+      "rule": "ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : IssuedTime) , OtherTickets) , ...) , ....) > \n= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : nils , ...) , ....) > if CurrentTime - IssuedTime > 2 ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | ('near' : nils , ..) > \n=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev2(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev3(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev4(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | ('knowledge' : (Secret , Rest) , ..) > \n=> ep: ev5(UserX, Secret) @ S < UserX | ('knowledge' : (Secret , Rest) , ..) > ."
+    },
+    {
+      "block": "B6",
+      "label": "rev6",
+      "rule": "rl [rev6]: E @ S < UserX | ('knowledge' : (Secret , Rest) , ..) > \n=> ep: ev6(UserX, Secret) @ S < UserX | ('knowledge' : (Secret , Rest) , ..) > ."
+    }
+  ],
+  "coverage_issues": []
+}

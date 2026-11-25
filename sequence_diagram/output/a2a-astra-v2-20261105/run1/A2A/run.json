@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/A2A/diagram.md",
+  "input_sha256": "8cec6526140559c8d8e951999767985e9f927935baaebc62bd6a29e54068e719",
+  "pipeline_id": "ea40af76701a6ed69853d2e9b76e05d7854a57347d14ed1386429028012dbff6",
+  "mode": "check",
+  "started_at": "2026-11-05T09:39:30.611561+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/a2a-astra-v2-20261105/run1/A2A/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(serverA, _`,_(_:_('context', nils), _:_('history', nils))), <_|_>(clientA, _`,_(_:_('authenticated', true), _:_('knowCtx', nils), _:_('receivedHistory', nils))), <_|_>(clientB, _`,_(_:_('authenticated', true), _:_('knowCtx', nils), _:_('receivedHistory', nils)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 4,
+    "coverage_issues": []
+  },
+  "model_sha256": "ebffc9d3318ff5a1c13dd01ca0cb5d1cf997202090a1a391ba152e4696805b35",
+  "check": {
+    "property": "CTX-isolation",
+    "verdict": "counterexample",
+    "events": 6,
+    "at_init": {
+      "attackerReadsVictimData": false,
+      "victimContextTampered": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 41.334,
+  "tokens_this_run": 21266,
+  "finished_at": "2026-11-05T09:40:11.946504+00:00"
+}

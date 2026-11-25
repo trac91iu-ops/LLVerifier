@@ -1,0 +1,90 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('counter' : 0) > < userA | ('near' : deviceB , 'signedKey' : nils , 'key' : nils) > < userC | ('near' : nils , 'signedKey' : nils , 'key' : nils) > < deviceB | ('key' : '' , 'secret' : 'secretA' , 'trusted' : (userA)) > < cloudA | (deviceB : ('trusted' : (userA)) , 'secret' : 'secretA') > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Cloud : Cloud .
+vars Device : Device .
+vars DeviceKey : Qid .
+vars FreshKey : Qid .
+vars Key : Qid .
+vars Rest : Set .
+vars Secret : Qid .
+vars SignedKey : Qid .
+vars TrustedUsers : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < UserX | ('near' : nils , ..) > < Device | (...) > $ UserX 'approach' Device 
+= < UserX | ('near' : Device , ..) > < Device | (...) > .
+eq < UserX | ('near' : Device , ..) > < Device | (...) > $ UserX 'leave' Device 
+= < UserX | ('near' : nils , ..) > < Device | (...) > .
+eq < system | ('counter' : N , ..) > < UserX | ('near' : Device , 'key' : nils , ...) > < Device | ('key' : DeviceKey , ....) > $ UserX 'requestKey' Device 
+= < system | ('counter' : N + 1 , ..) > < UserX | ('near' : Device , 'key' : randomStr('Key', N) , ...) > < Device | ('key' : randomStr('Key', N) , ....) > .
+eq < UserX | ('key' : Key , ..) > < Cloud | (Device : ('trusted' : TrustedUsers , ...) , 'secret' : Secret , ....) > $ UserX 'signKey' Cloud | (Device ; Key) 
+= < UserX | ('key' : Key , ..) > < Cloud | (Device : ('trusted' : TrustedUsers , ...) , 'secret' : Secret , ....) > $ Cloud 'signedKey' UserX | (encrypt(Key, Secret)) .
+eq < UserX | ('signedKey' : nils , ..) > $ Cloud 'signedKey' UserX | (SignedKey) 
+= < UserX | ('signedKey' : SignedKey , ..) > .
+ceq < UserX | ('near' : Device , 'signedKey' : SignedKey , ..) > < Device | ('key' : Key , 'secret' : Secret , 'trusted' : TrustedUsers , ...) > $ UserX 'bindDevice' Device | (SignedKey) 
+= < UserX | ('near' : Device , 'signedKey' : SignedKey , ..) > < Device | ('key' : Key , 'secret' : Secret , 'trusted' : (UserX , TrustedUsers) , ...) > if SignedKey == encrypt(Key, Secret) .
+eq < Cloud | (Device : ('trusted' : TrustedUsers , ..) , ...) > $ UserX 'shareAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserY , TrustedUsers) , ..) , ...) > .
+eq < Cloud | (Device : ('trusted' : (UserX , (UserY , Rest) , ..) , ...) , ....) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserX , Rest) , ...) , ....) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Cloud : Cloud .
+vars Device : Device .
+vars DeviceKey : Qid .
+vars FreshKey : Qid .
+vars Key : Qid .
+vars Rest : Set .
+vars Secret : Qid .
+vars SignedKey : Qid .
+vars TrustedUsers : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device -> Event .
+ops ev3 : User Device -> Event .
+ops ev4 : User Cloud Device Qid -> Event .
+ops ev5 : User Device Qid -> Event .
+ops ev6 : User Cloud Device User -> Event .
+ops ev7 : User Cloud Device User -> Event .
+*** events
+eq ev1(UserX, Device) = $ UserX 'approach' Device .
+eq ev2(UserX, Device) = $ UserX 'leave' Device .
+eq ev3(UserX, Device) = $ UserX 'requestKey' Device .
+eq ev4(UserX, Cloud, Device, Key) = $ UserX 'signKey' Cloud | (Device ; Key) .
+eq ev5(UserX, Device, SignedKey) = $ UserX 'bindDevice' Device | (SignedKey) .
+eq ev6(UserX, Cloud, Device, UserY) = $ UserX 'shareAccess' Cloud | (Device ; UserY) .
+eq ev7(UserX, Cloud, Device, UserY) = $ UserX 'revokeAccess' Cloud | (Device ; UserY) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > 
+=> ep: ev1(UserX, deviceB) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev2(UserX, deviceB) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev3(UserX, deviceB) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > 
+=> ep: ev4(UserX, cloudB, deviceB, Key) @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > .
+rl [rev5]: E @ S < UserX | ('near' : deviceB , 'signedKey' : SignedKey , ..) > 
+=> ep: ev5(UserX, deviceB, SignedKey) @ S < UserX | ('near' : deviceB , 'signedKey' : SignedKey , ..) > .
+rl [rev6]: E @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > 
+=> ep: ev6(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > .
+rl [rev7]: E @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > 
+=> ep: ev7(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > .
+
+endm

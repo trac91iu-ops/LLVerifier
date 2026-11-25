@@ -1,0 +1,32 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var FreshKey : Qid .
+  var Key : Qid .
+  var Members : Set .
+  var Trusted : Set .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < system | ('counter' : 0) > < cloudA | (userA : ('device' : deviceB, 'members' : nils), userC : ('device' : nils, 'members' : nils)) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceB | ('trusted' : cloudA, 'on' : false, 'key' : nils) > .
+  eq < cloudA | (UserX : ('members' : Members, ..), ...) > $ UserX 'invite' cloudA | (UserY) = < cloudA | (UserX : ('members' : (UserY, Members), ..), ...) > .
+  eq < cloudA | (UserX : ('device' : deviceB, 'members' : (UserY, Members), ..), UserY : ('device' : nils, ...), ....) > = < cloudA | (UserX : ('device' : deviceB, 'members' : (UserY, Members), ..), UserY : ('device' : deviceB, ...), ....) > .
+  eq < system | ('counter' : N, ..) > < UserX | ('key' : nils, ...) > < cloudA | (UserX : ('device' : deviceB, ....), .....) > $ UserX 'openWindow' cloudA | (deviceB) = < system | ('counter' : N + 1, ..) > < UserX | ('key' : randomStr ('Key', N), ...) > < cloudA | (UserX : ('device' : deviceB, ....), .....) > $ cloudA 'openWindow' deviceB | (randomStr ('Key', N)) .
+  eq < deviceB | ('key' : nils, ..) > $ cloudA 'openWindow' deviceB | (Key) = < deviceB | ('key' : Key, ..) > .
+  eq < deviceB | ('key' : Key, 'trusted' : Trusted, ..) > $ UserX 'bind' deviceB | (Key) = < deviceB | ('key' : Key, 'trusted' : (UserX, Trusted), ..) > .
+  eq < deviceB | ('trusted' : (UserX, Trusted), 'on' : false, ..) > $ UserX 'turnOn' deviceB = < deviceB | ('trusted' : (UserX, Trusted), 'on' : true, ..) > .
+  eq < cloudA | (UserX : ('device' : deviceB, ..), ...) > $ UserX 'turnOn' cloudA = < cloudA | (UserX : ('device' : deviceB, ..), ...) > $ cloudA 'turnOn' deviceB .
+  eq < deviceB | ('trusted' : (cloudA, Trusted), 'on' : false, ..) > $ cloudA 'turnOn' deviceB = < deviceB | ('trusted' : (cloudA, Trusted), 'on' : true, ..) > .
+  eq < cloudA | (UserX : ('device' : deviceB, 'members' : (UserY, Members), ..), UserY : ('device' : deviceB, ...), ....) > $ UserX 'removeMember' cloudA | (UserY) = < cloudA | (UserX : ('device' : deviceB, 'members' : Members, ..), UserY : ('device' : nils, ...), ....) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (34482 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('device', deviceB), _:_('members', nils))), _:_(userC, _`,_(_:_('device', nils), _:_('members', nils))))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceB, _`,_(_:_('key', nils), _:_('on', false), _:_('trusted', cloudA)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___|_(userA, 'invite', cloudA, userC), __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('device', deviceB), _:_('members', userC))), _:_(userC, _`,_(_:_('device', deviceB), _:_('members', nils))))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceB, _`,_(_:_('key', nils), _:_('on', false), _:_('trusted', cloudA)))))
+Bye.

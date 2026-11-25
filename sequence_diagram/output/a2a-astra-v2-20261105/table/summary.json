@@ -1,0 +1,43 @@
+{
+  "runs": [
+    "sequence_diagram/output/a2a-astra-v2-20261105/run1",
+    "sequence_diagram/output/a2a-astra-v2-20261105/run2",
+    "sequence_diagram/output/a2a-astra-v2-20261105/run3",
+    "sequence_diagram/output/a2a-astra-v2-20261105/run4",
+    "sequence_diagram/output/a2a-astra-v2-20261105/run5"
+  ],
+  "aggregate": {
+    "protocols": 1,
+    "runs_per_protocol": 5,
+    "samples": 5,
+    "load": 2,
+    "counterexample": 2,
+    "golden_match": 2,
+    "pass_at_1": 40.0,
+    "success_in_any_run": 1,
+    "success_in_every_run": 0,
+    "first_try": 2,
+    "retries": 11,
+    "coverage_warnings": 0,
+    "time_s": 71.0,
+    "tokens_k": 25.7
+  },
+  "protocols": [
+    {
+      "protocol": "A2A",
+      "property": "CTX-isolation",
+      "runs": 5,
+      "load": 2,
+      "counterexample": 2,
+      "golden_match": 2,
+      "pass_at_1": 40.0,
+      "first_try": 2,
+      "retries": 11,
+      "coverage_warnings": 0,
+      "events": 6.0,
+      "golden_events": 4,
+      "time_s": 71.0,
+      "tokens_k": 25.7
+    }
+  ]
+}

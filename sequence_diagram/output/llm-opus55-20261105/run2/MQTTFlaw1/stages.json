@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:090914bfb40d1cf4957c089b3df01b1bff8bdb688ad16d35233170e373dca148"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < cloudB | 'buffer' : nils , 'permission' : (UserX , Rest) , ... > $ UserX 'requestPublish' cloudB | ('toggle')\n=> < cloudB | 'buffer' : 'toggle' , 'permission' : (UserX , Rest) , ... > $ cloudB 'ack' UserX | ('toggle') .\n[B2] < cloudB | 'permission' : (UserX , Rest) , ... >\n=> < cloudB | 'permission' : Rest , ... > .\n[B3] < cloudB | 'buffer' : Msg , 'permission' : (deviceA , Rest) , ... > $ UserX 'release' cloudB\n=> < cloudB | 'buffer' : nils , 'permission' : (deviceA , Rest) , ... > $ cloudB 'publish' deviceA | (Msg) .\n[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | ('toggle')\n=> < deviceA | 'on' : true , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:758bacd48d39faa8011c62e03fef1bab4665afdf8682fa720d9b9d4a4b308016"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Msg\": \"Qid\", \"Rest\": \"Set\", \"UserX\": \"User\"}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:3f891f5fbfb883aea1016cb305b7b7dcfe81e7bd84254c35f256d785ab5104f1"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:132c1dd6d3a3c766650defd752f483ef38e2204c2d2a4b7d96b5be179005d1ed"
+  },
+  {
+    "attempt": 0,
+    "output": "< cloudB | ('permission' : (userA , deviceA) , 'buffer' : nils) > < deviceA | ('on' : false) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:574f09f0cf9e1dc51fcd3b0f14e2c880c5f25bb7eb53ed06da70dd9a92b3bf28"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | ... > => ev1(UserX) .\n[B3] < UserX | ... > => ev2(UserX) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:e7f8bcab086d9464222f059bd99f26e343d767c282ae602729e872d12b095137"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceOn =| < deviceA | 'on' : true , ... > .\nattackerAuthorized =| < cloudB | 'permission' : (userA , Rest) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:71de9011429bd2394b3c552563076b0e5c32edcd9908ac3cf31dcb5f1eb581b8"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

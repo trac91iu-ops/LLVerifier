@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:19:55.561Z",
+  "model": "11ede9a4f2f4",
+  "note": "",
+  "protocol": "TuyaCAC",
+  "runs": [
+    "nr-run3"
+  ],
+  "verdict": "present"
+}

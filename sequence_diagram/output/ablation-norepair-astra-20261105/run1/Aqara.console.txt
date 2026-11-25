@@ -1,0 +1,40 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'key' : OldKey , ... > $ UserX 'openWindow' cloudA | deviceB
+=> < User
+[*] Diagram split into 6 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4703
+--------------------------------------------------
+```
+< UserX | 'key' : OldKey , ... > $ UserX 'openWindow' cloudA | deviceB
+=> < UserX | 'key' : FreshKey , ... > $ cloudA 'openWindow' deviceB | FreshKey .
+
+< deviceB | 'key' : nils , ... > $ cloudA 'openWindow' deviceB | Key
+=> < deviceB | 'key' : Key , ... > .
+
+< deviceB | 'key' : Key , 'trusted' : Trusted , ... > $ UserX 'bind' deviceB | Key
+=> < deviceB | 'key' : Key , 'trusted' : (UserX , Trusted) , ... > .
+
+< deviceB | 'trusted' : (UserX , Rest) , 'on' : false , ... > $ UserX 'turnOn' deviceB
+=> < deviceB | 'trusted' : (UserX , Rest) , 'on' : true , ... > .
+
+< cloudA | UserX : ('device' : deviceB , ...) , ... > $ UserX 'turnOn' cloudA | deviceB
+=> < cloudA | UserX : ('device' : deviceB , ...) , ... > $ cloudA 'turnOn' deviceB .
+
+< deviceB | 'trusted' : (cloudA , Rest) , 'on' : false , ... > $ cloudA 'turnOn' deviceB
+=> < deviceB | 'trusted' : (cloudA , Rest) , 'on' : true , ... > .
+
+< cloudA | UserX : ('members' : Members , 'device' : deviceB , ...) , UserY : ('device' : nils , ...) , ... > $ UserX 'invite' cloudA | UserY
+=> < cloudA | UserX : ('members' : (UserY , Members) , 'device' : deviceB , ...) , UserY : ('device' : deviceB , ...) , ... > .
+
+< cloudA | UserX : ('members' : Members , 'device' : nils , ...) , UserY : ('device' : Association , ...) , ... > $ UserX 'invite' cloudA | UserY
+=> < cloudA | UserX : ('members' : (UserY , Members) , 'device' : nils , ...) , UserY : ('device' : Association , ...) , ... > .
+
+< cloudA | UserX : ('members' : Members , 'device' : deviceB , ...) , UserY : ('device' : Association , ...) , ... > $ UserX 'invite' cloudA | UserY
+=> < cloudA | UserX : ('members' : (UserY , Members) , 'device' : deviceB , ...) , UserY : ('device' : Association , ...) , ... > if Association =/= nils .
+
+< cloudA | UserX : ('members' : (UserY , Rest) , ...) , UserY : ('device' : OldDevice , ...) , ... > $ UserX 'remove' cloudA | UserY
+=> < cloudA | UserX : ('members' : Rest , ...) , UserY : ('device' : nils , ...) , ... > .
+```
+==================================================

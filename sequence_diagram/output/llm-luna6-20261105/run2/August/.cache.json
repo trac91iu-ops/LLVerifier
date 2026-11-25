@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "context_id": "0b8c3a2b900df4975d38211af06c3b66d444557bbd0f0700099eb4b5c0b6229e",
+  "answers": {
+    "genPolicy:62a70820afa59e9a865d5069f2e0586e92cad9843fcfabac4ec1f48e1153b0f4": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceB | 'owner' : nils , 'online' : false , 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'owner' : nils , 'online' : true , 'key' : Key , 'button' : true , ... > $ deviceB 'sendKey' UserX | (Key) .\n[B3] < UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key , ... > .\n[B4] < UserX | 'key' : Key , ... > < deviceB | 'owner' : nils , 'online' : true , 'key' : Key , ... > < cloudA | deviceB : ('owner' : nils , 'key' : Key , ...) > $ UserX 'callAPI:bind' cloudA | (deviceB ; Key)\n=> < UserX | 'key' : Key , ... > < deviceB | 'owner' : UserX , 'online' : true , 'key' : Key , ... > < cloudA | deviceB : ('owner' : UserX , 'key' : Key , ...) > .\n[B5] < UserX | 'key' : Key , ... > < cloudA | deviceB : ('owner' : UserX , ...) > $ UserX 'callAPI:reset' cloudA | (deviceB)\n=> < UserX | 'key' : Key , ... > < cloudA | deviceB : ('owner' : nils , ...) > $ cloudA 'reset' deviceB .\n[B5] < deviceB | 'online' : true , 'owner' : Owner, ... > $ cloudA 'reset' deviceB\n=> < deviceB | 'online' : false , 'owner' : nils , ... > .",
+    "genPolicyVars:c1b65226b261a8b6b33f48bfd559081bf1b6ab1cc2f53c19cb26589458a28f90": "{\n  \"Key\": \"Qid\",\n  \"Owner\": \"User\",\n  \"UserX\": \"User\"\n}"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:62a70820afa59e9a865d5069f2e0586e92cad9843fcfabac4ec1f48e1153b0f4"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceB | 'owner' : nils , 'online' : false , 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'owner' : nils , 'online' : true , 'key' : Key , 'button' : true , ... > $ deviceB 'sendKey' UserX | (Key) .\n[B3] < UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key , ... > .\n[B4] < UserX | 'key' : Key , ... > < deviceB | 'owner' : nils , 'online' : true , 'key' : Key , ... > < cloudA | deviceB : ('owner' : nils , 'key' : Key , ...) > $ UserX 'callAPI:bind' cloudA | (deviceB ; Key)\n=> < UserX | 'key' : Key , ... > < deviceB | 'owner' : UserX , 'online' : true , 'key' : Key , ... > < cloudA | deviceB : ('owner' : UserX , 'key' : Key , ...) > .\n[B5] < UserX | 'key' : Key , ... > < cloudA | deviceB : ('owner' : UserX , ...) > $ UserX 'callAPI:reset' cloudA | (deviceB)\n=> < UserX | 'key' : Key , ... > < cloudA | deviceB : ('owner' : nils , ...) > $ cloudA 'reset' deviceB .\n[B5] < deviceB | 'online' : true , 'owner' : Owner, ... > $ cloudA 'reset' deviceB\n=> < deviceB | 'online' : false , 'owner' : nils , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:c1b65226b261a8b6b33f48bfd559081bf1b6ab1cc2f53c19cb26589458a28f90"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Key\": \"Qid\",\n  \"Owner\": \"User\",\n  \"UserX\": \"User\"\n}",
+      "error": null
+    }
+  ]
+}

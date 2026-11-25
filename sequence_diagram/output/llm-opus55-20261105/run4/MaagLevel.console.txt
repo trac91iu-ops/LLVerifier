@@ -1,0 +1,141 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 9 blocks
+[*] Generating policy with LLM...
+[*] Total token: 10458
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : deviceA , ... > .
+[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : nils , ... > .
+[B3] < cloudA | 'key' : 'secret' , deviceA : ('trusted' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'shareAccess' cloudA | (deviceA ; UserY)
+=> < cloudA | 'key' : 'secret' , deviceA : ('trusted' : (UserX , UserY) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'proxyCommand' RelayUser | (deviceA ; list(encrypt('auth' , 'secret') ; 'share' ; UserY)) .
+[B4] < cloudA | 'key' : 'secret' , deviceA : ('trusted' : (UserX , UserY , Rest) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'revokeAccess' cloudA | (deviceA ; UserY)
+=> < cloudA | 'key' : 'secret' , deviceA : ('trusted' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'proxyCommand' RelayUser | (deviceA ; list(encrypt('auth' , 'secret') ; 'revoke' ; UserY)) .
+[B5] < ImmediateRelayUser | 'near' : deviceA , ... > $ cloudA 'proxyCommand' RelayUser | (deviceA ; L)
+=> < ImmediateRelayUser | 'near' : deviceA , ... > $ RelayUser 'forwardCommand' deviceA | (L) .
+[B6] < CachingRelayUser | 'near' : deviceA , 'cache' : nils , ... > $ cloudA 'proxyCommand' RelayUser | (deviceA ; L)
+=> < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... > .
+[B7] < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... >
+=> < CachingRelayUser | 'near' : deviceA , 'cache' : nils , ... > $ CachingRelayUser 'forwardCommand' deviceA | (L) if L =/= nils .
+[B8] < deviceA | 'trusted' : Trusted , ... > $ RelayUser 'forwardCommand' deviceA | (list(encrypt('auth' , 'secret') ; 'share' ; UserY))
+=> < deviceA | 'trusted' : (Trusted , UserY) , ... > .
+[B9] < deviceA | 'trusted' : (UserY , Rest) , ... > $ RelayUser 'forwardCommand' deviceA | (list(encrypt('auth' , 'secret') ; 'revoke' ; UserY))
+=> < deviceA | 'trusted' : Rest , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 5477
+--------------------------------------------------
+```
+{"CachingRelayUser": "User", "ImmediateRelayUser": "User", "L": "Item", "RelayUser": "User", "Rest": "Set", "Trusted": "Set", "UserX": "User", "UserY": "User"}
+```
+==================================================
+{'CachingRelayUser': 'User', 'ImmediateRelayUser': 'User', 'L': 'Item', 'RelayUser': 'User', 'Rest': 'Set', 'Trusted': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('cache' : [Item] , 'near' : [Principal]) > < userC | ('near' : [Principal] , 'cache' : [Item]) > < cloudA | ([Principal] : ('trusted' : [Set]) , 'key' : 'secret') > < deviceA | ('trusted' : [Set]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceA 
+= < UserX | ('near' : deviceA , ..) > .
+eq < UserX | ('near' : deviceA , ..) > $ UserX 'leave' deviceA 
+= < UserX | ('near' : nils , ..) > .
+eq < cloudA | ('key' : 'secret' , deviceA : ('trusted' : (UserX) , ..) , ...) > < RelayUser | ('near' : deviceA , ....) > $ UserX 'shareAccess' cloudA | (deviceA ; UserY) 
+= < cloudA | ('key' : 'secret' , deviceA : ('trusted' : (UserX , UserY , ..) , ..) , ...) > < RelayUser | ('near' : deviceA , ....) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; list((encrypt('auth', 'secret') ; 'share' ; UserY))) .
+eq < cloudA | ('key' : 'secret' , deviceA : ('trusted' : (UserX , UserY , Rest) , ..) , ...) > < RelayUser | ('near' : deviceA , ....) > $ UserX 'revokeAccess' cloudA | (deviceA ; UserY) 
+= < cloudA | ('key' : 'secret' , deviceA : ('trusted' : (UserX) , ..) , ...) > < RelayUser | ('near' : deviceA , ....) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; list((encrypt('auth', 'secret') ; 'revoke' ; UserY))) .
+eq < ImmediateRelayUser | ('near' : deviceA , ..) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; L) 
+= < ImmediateRelayUser | ('near' : deviceA , ..) > $ RelayUser 'forwardCommand' deviceA | (L) .
+eq < CachingRelayUser | ('near' : deviceA , 'cache' : nils , ..) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; L) 
+= < CachingRelayUser | ('near' : deviceA , 'cache' : L , ..) > .
+ceq < CachingRelayUser | ('near' : deviceA , 'cache' : L , ..) > 
+= < CachingRelayUser | ('near' : deviceA , 'cache' : nils , ..) > $ CachingRelayUser 'forwardCommand' deviceA | (L) if L =/= nils .
+eq < deviceA | ('trusted' : Trusted , ..) > $ RelayUser 'forwardCommand' deviceA | (list((encrypt('auth', 'secret') ; 'share' ; UserY))) 
+= < deviceA | ('trusted' : (Trusted , UserY) , ..) > .
+eq < deviceA | ('trusted' : (UserY , Rest) , ..) > $ RelayUser 'forwardCommand' deviceA | (list((encrypt('auth', 'secret') ; 'revoke' ; UserY))) 
+= < deviceA | ('trusted' : Rest , ..) > .
+$ UserX 'approach' deviceA
+$ UserX 'leave' deviceA
+$ UserX 'shareAccess' cloudA | (deviceA ; UserY)
+$ cloudA 'proxyCommand' RelayUser | (deviceA ; list((encrypt('auth', 'secret') ; 'share' ; UserY)))
+$ UserX 'revokeAccess' cloudA | (deviceA ; UserY)
+$ cloudA 'proxyCommand' RelayUser | (deviceA ; list((encrypt('auth', 'secret') ; 'revoke' ; UserY)))
+$ cloudA 'proxyCommand' RelayUser | (deviceA ; L)
+$ RelayUser 'forwardCommand' deviceA | (L)
+$ RelayUser 'forwardCommand' deviceA | (list((encrypt('auth', 'secret') ; 'share' ; UserY)))
+$ RelayUser 'forwardCommand' deviceA | (list((encrypt('auth', 'secret') ; 'revoke' ; UserY)))
+[*] Total token: 3949
+--------------------------------------------------
+```
+[1, 2, 3, 5, 8]
+```
+==================================================
+[1, 2, 3, 5, 8]
+[$ UserX 'approach' deviceA, $ UserX 'leave' deviceA, $ UserX 'shareAccess' cloudA | (deviceA ; UserY), $ UserX 'revokeAccess' cloudA | (deviceA ; UserY), $ RelayUser 'forwardCommand' deviceA | (L)]
+[eq ev1(UserX) = $ UserX 'approach' deviceA ., eq ev2(UserX) = $ UserX 'leave' deviceA ., eq ev3(UserX, UserY) = $ UserX 'shareAccess' cloudA | (deviceA ; UserY) ., eq ev4(UserX, UserY) = $ UserX 'revokeAccess' cloudA | (deviceA ; UserY) ., eq ev5(RelayUser, L) = $ RelayUser 'forwardCommand' deviceA | (L) .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 4915
+--------------------------------------------------
+```
+< userA | ('cache' : nils , 'near' : nils) > < userC | ('near' : nils , 'cache' : nils) > < cloudA | (deviceA : ('trusted' : (userA)) , 'key' : 'secret') > < deviceA | ('trusted' : (userA)) >
+```
+==================================================
+< userA | ('cache' : nils , 'near' : nils) > < userC | ('near' : nils , 'cache' : nils) > < cloudA | (deviceA : ('trusted' : (userA)) , 'key' : 'secret') > < deviceA | ('trusted' : (userA)) >
+[*] Generating event rules with LLM...
+[*] Total token: 6456
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : nils , ... > < deviceA | ... > => ev1(UserX) .
+[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .
+[B3] < UserX | ... > < UserY | ... > => ev3(UserX, UserY) .
+[B4] < UserX | ... > < UserY | ... > => ev4(UserX, UserY) .
+[B7] < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... > => ev5(CachingRelayUser, L) .
+```
+==================================================
+< UserX | 'near' : nils , ... > < deviceA | ... > => ev1(UserX) .
+< UserX | 'near' : deviceA , ... > => ev2(UserX) .
+< UserX | ... > < UserY | ... > => ev3(UserX, UserY) .
+< UserX | ... > < UserY | ... > => ev4(UserX, UserY) .
+< CachingRelayUser | 'near' : deviceA , 'cache' : L , ... > => ev5(CachingRelayUser, L) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev2(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev3(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev4]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev4(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev5]: E @ S < CachingRelayUser | ('near' : deviceA , 'cache' : L , ..) > 
+=> ep: ev5(CachingRelayUser, L) @ S < CachingRelayUser | ('near' : deviceA , 'cache' : L , ..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 4509
+--------------------------------------------------
+```
+deviceTrustsAttacker =| < deviceA | 'trusted' : (userC , Rest) , ... > .
+cloudRecordsTrust =| < cloudA | deviceA : ('trusted' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3150
+--------------------------------------------------
+```
+{"Rest": "Set"}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check OWN-stealth: holds (0 events)
+[+] Model written: sequence_diagram/output/llm-opus55-20261105/run4/MaagLevel/rules.maude; status: validated

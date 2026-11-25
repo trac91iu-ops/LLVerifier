@@ -1,0 +1,75 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < deviceLock | ('trust' : (cloudSmartThing) , 'state' : false) > < cloudGoogle | (deviceSwitch : ('trust' : userA , 'key' : 'secret' , 'state' : false)) > < cloudSmartThing | (deviceSwitch : ('trust' : (cloudGoogle) , 'key' : 'secret' , 'boundTo' : deviceLock, 'state' : false)) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceSwitch | 'state' : false > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars PrincipalX : Principal .
+vars CloudX : Cloud .
+vars DeviceY : Device .
+vars DeviceX : Device .
+vars UserX : User .
+vars KeyA : Qid .
+vars UserZ : User .
+
+*** policy
+eq < deviceLock | ('trust' : (PrincipalX , ..) , 'state' : false , ...) > $ PrincipalX 'callAPI:toggle' deviceLock 
+= < deviceLock | ('trust' : (PrincipalX , ..) , 'state' : true , ...) > .
+eq < CloudX | (DeviceY : ('trust' : (PrincipalX , ..) , 'state' : false , ...) , ....) > $ PrincipalX 'callAPI:toggle' DeviceY 
+= < CloudX | (DeviceY : ('trust' : (PrincipalX , ..) , 'state' : true , ...) , ....) > $ CloudX 'callAPI:toggle' DeviceY .
+eq < cloudSmartThing | (DeviceX : ('boundTo' : DeviceY , ..) , ...) > $ cloudSmartThing 'callAPI:toggle' DeviceX 
+= < cloudSmartThing | (DeviceX : ('boundTo' : DeviceY , ..) , ...) > $ cloudSmartThing 'callAPI:toggle' DeviceY .
+eq < CloudX | (DeviceY : ('trust' : (UserX , ..) , 'key' : KeyA , ...) , ....) > $ UserX 'callAPI:getKey' CloudX 
+= < CloudX | (DeviceY : ('trust' : (UserX , ..) , 'key' : KeyA , ...) , ....) > $ CloudX 'send' UserX | (KeyA) .
+eq < UserX | ('key' : nils , ..) > $ CloudX 'send' UserX | (KeyA) 
+= < UserX | ('key' : KeyA , ..) > .
+eq < CloudX | (DeviceY : ('trust' : (UserX , ..) , ...) , ....) > $ UserX 'callAPI:delegate' CloudX | (UserZ ; DeviceY) 
+= < CloudX | (DeviceY : ('trust' : (UserX , UserZ , ..) , ...) , ....) > .
+eq < CloudX | (DeviceY : ('trust' : (UserX , UserZ , ..) , ...) , ....) > $ UserX 'callAPI:revoke' CloudX | (UserZ ; DeviceY) 
+= < CloudX | (DeviceY : ('trust' : (UserX , ..) , ...) , ....) > .
+eq < cloudSmartThing | (DeviceX : ('trust' : (....), 'key' : KeyA , ..) , ...) > $ PrincipalX 'callAPI:provide' cloudSmartThing | (DeviceX ; KeyA) 
+= < cloudSmartThing | (DeviceX : ('trust' : (PrincipalX , ....) , 'key' : KeyA , ..) , ...) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars PrincipalX : Principal .
+vars CloudX : Cloud .
+vars DeviceY : Device .
+vars DeviceX : Device .
+vars UserX : User .
+vars KeyA : Qid .
+vars UserZ : User .
+
+*** events type declaration
+ops ev1 : User Cloud -> Event .
+ops ev2 : User Cloud User Device -> Event .
+ops ev3 : User Cloud User Device -> Event .
+ops ev4 : Principal Device Qid -> Event .
+ops ev5 : Principal Device -> Event .
+*** events
+eq ev1(UserX, CloudX) = $ UserX 'callAPI:getKey' CloudX .
+eq ev2(UserX, CloudX, UserZ, DeviceY) = $ UserX 'callAPI:delegate' CloudX | (UserZ ; DeviceY) .
+eq ev3(UserX, CloudX, UserZ, DeviceY) = $ UserX 'callAPI:revoke' CloudX | (UserZ ; DeviceY) .
+eq ev4(PrincipalX, DeviceY, KeyA) = $ PrincipalX 'callAPI:provide' cloudSmartThing | (DeviceY ; KeyA) .
+eq ev5(PrincipalX, DeviceY) = $ PrincipalX 'callAPI:toggle' DeviceY .
+*** transitions
+rl [rev1]: E @ S < UserX | .. > < CloudX | ... >
+=> ep: ev1(UserX, CloudX) @ S < UserX | .. > < CloudX | ... > .
+rl [rev2]: E @ S < UserX | .. > < CloudX | ... > < UserZ | .... > < DeviceY | ..... >
+=> ep: ev2(UserX, CloudX, UserZ, DeviceY) @ S < UserX | .. > < CloudX | ... > < UserZ | .... > < DeviceY | ..... > .
+rl [rev3]: E @ S < UserX | .. > < CloudX | ... > < UserZ | .... > < DeviceY | ..... >
+=> ep: ev3(UserX, CloudX, UserZ, DeviceY) @ S < UserX | .. > < CloudX | ... > < UserZ | .... > < DeviceY | ..... > .
+rl [rev4]: E @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... >
+=> ep: ev4(UserX, DeviceY, KeyA) @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... > .
+rl [rev5]: E @ S < UserX | .. > < DeviceY | ... >
+=> ep: ev5(UserX, DeviceY) @ S < UserX | .. > < DeviceY | ... > .
+
+endm

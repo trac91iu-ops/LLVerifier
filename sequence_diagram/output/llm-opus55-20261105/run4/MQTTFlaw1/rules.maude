@@ -1,0 +1,48 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < cloudB | ('buffer' : nils , deviceA : ('permission' : true) , userA : ('permission' : true)) > < deviceA | ('power' : 'off') > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Msg : Qid .
+vars UserX : User .
+*** policy
+eq < cloudB | ('buffer' : nils , UserX : ('permission' : true , ..) , ...) > $ UserX 'requestPublish' cloudB | ('toggle') 
+= < cloudB | ('buffer' : 'toggle' , UserX : ('permission' : true , ..) , ...) > $ cloudB 'ackPublish' UserX | ('toggle') .
+eq < cloudB | (UserX : ('permission' : true , ..) , ...) > $ cloudB 'revokePermission' cloudB | (UserX) 
+= < cloudB | (UserX : ('permission' : false , ..) , ...) > .
+eq < cloudB | ('buffer' : Msg , deviceA : ('permission' : true , ..) , ...) > $ UserX 'releaseMessage' cloudB 
+= < cloudB | ('buffer' : nils , deviceA : ('permission' : true , ..) , ...) > $ cloudB 'publishMessage' deviceA | (Msg) .
+eq < deviceA | ('power' : 'off' , ..) > $ cloudB 'publishMessage' deviceA | ('toggle') 
+= < deviceA | ('power' : 'on' , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Msg : Qid .
+vars UserX : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'requestPublish' cloudB | ('toggle') .
+eq ev2(UserX) = $ cloudB 'revokePermission' cloudB | (UserX) .
+eq ev3(UserX) = $ UserX 'releaseMessage' cloudB .
+*** transitions
+rl [rev1]: E @ S < UserX | (..) > 
+=> ep: ev1(UserX) @ S < UserX | (..) > .
+rl [rev2]: E @ S < cloudB | (UserX : ('permission' : true , ..) , ...) > 
+=> ep: ev2(UserX) @ S < cloudB | (UserX : ('permission' : true , ..) , ...) > .
+rl [rev3]: E @ S < UserX | (..) > 
+=> ep: ev3(UserX) @ S < UserX | (..) > .
+
+endm

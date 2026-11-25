@@ -1,0 +1,72 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < deviceB | ('key' : 'deviceKey') > < userA | ('near' : deviceB , 'keys' : ('userAKey')) > < userC | ('near' : nils , 'keys' : ('userCKey')) > < cloudA | (userA : ('key' : 'userAKey') , userC : ('key' : 'userCKey') , deviceB : ('owner' : nils , 'key' : 'deviceKey')) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Kdevice : Qid .
+vars Kuser : Qid .
+vars Rest : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < deviceA | ('key' : Kdevice , ..) > $ UserX 'pressButton' deviceA 
+= < deviceA | ('key' : Kdevice , ..) > $ deviceA 'sendDeviceKey' UserX | (Kdevice) .
+eq < UserX | ('keys' : nils , ..) > $ deviceA 'sendDeviceKey' UserX | (Kdevice) 
+= < UserX | ('keys' : (Kdevice) , ..) > .
+eq < UserX | ('keys' : (Kdevice , Rest) , ..) > $ deviceA 'sendDeviceKey' UserX | (Kdevice) 
+= < UserX | ('keys' : (Kdevice , Rest) , ..) > .
+eq < deviceA | ('key' : Kdevice , ..) > $ UserX 'bindDevice' deviceA | (Kuser) 
+= < deviceA | ('key' : Kdevice , ..) > $ deviceA 'bindCloud' cloudA | (Kdevice ; Kuser) .
+eq < cloudA | (deviceA : ('key' : Kdevice , 'owner' : nils , ..) , UserY : ('key' : Kuser , ...) , ....) > $ deviceA 'bindCloud' cloudA | (Kdevice ; Kuser) 
+= < cloudA | (deviceA : ('key' : Kdevice , 'owner' : UserY , ..) , UserY : ('key' : Kuser , ...) , ....) > .
+eq < cloudA | (deviceA : ('key' : Kdevice , 'owner' : nils , ..) , UserY : ('key' : Kuser , ...) , ....) > $ UserX 'bindDevice' cloudA | (Kdevice ; Kuser) 
+= < cloudA | (deviceA : ('key' : Kdevice , 'owner' : UserY , ..) , UserY : ('key' : Kuser , ...) , ....) > .
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceA 
+= < UserX | ('near' : deviceA , ..) > .
+eq < UserX | ('near' : deviceA , ..) > $ UserX 'leave' deviceA 
+= < UserX | ('near' : nils , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Kdevice : Qid .
+vars Kuser : Qid .
+vars Rest : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User Qid -> Event .
+ops ev3 : Qid Qid -> Event .
+ops ev4 : User Qid Qid -> Event .
+ops ev5 : User -> Event .
+ops ev6 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'pressButton' deviceA .
+eq ev2(UserX, Kuser) = $ UserX 'bindDevice' deviceA | (Kuser) .
+eq ev3(Kdevice, Kuser) = $ deviceA 'bindCloud' cloudA | (Kdevice ; Kuser) .
+eq ev4(UserX, Kdevice, Kuser) = $ UserX 'bindDevice' cloudA | (Kdevice ; Kuser) .
+eq ev5(UserX) = $ UserX 'approach' deviceA .
+eq ev6(UserX) = $ UserX 'leave' deviceA .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceA , 'keys' : (Kuser) , ..) > 
+=> ep: ev2(UserX, Kuser) @ S < UserX | ('near' : deviceA , 'keys' : (Kuser) , ..) > .
+rl [rev4]: E @ S < UserX | ('keys' : (Kdevice , Kuser , Rest) , ..) > 
+=> ep: ev4(UserX, Kdevice, Kuser) @ S < UserX | ('keys' : (Kdevice , Kuser , Rest) , ..) > .
+rl [rev5]: E @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+
+endm

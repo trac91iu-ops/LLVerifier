@@ -1,0 +1,33 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var ClientX : Client .
+  var ClientY : Client .
+  var Ctx : Qid .
+  var Hist : Set .
+  var OldCtx : Set .
+  var OldHist : Set .
+  var ReturnedCtx : Qid .
+  eq init = idle @ < serverA | ('contexts' : nils) > < clientA | ('receivedHistory' : nils, 'authenticated' : true, 'knowCtx' : nils) > < clientB | ('receivedHistory' : nils, 'authenticated' : true, 'knowCtx' : nils) > .
+  eq < serverA | ('contexts' : nils, ..) > $ ClientX 'sendWithoutContext' serverA | ('msgA') = < serverA | ('contexts' : ('id' : 'ctxX', 'history' : ('msgA'), ..), ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .
+  eq < ClientX | ('knowCtx' : nils, 'receivedHistory' : nils, ..) > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist) = < ClientX | ('knowCtx' : Ctx, 'receivedHistory' : Hist, ..) > .
+  ceq < ClientX | ('knowCtx' : Ctx, 'receivedHistory' : OldHist, ..) > $ serverA 'returnInitialContext' ClientX | (ReturnedCtx ; Hist) = < ClientX | ('knowCtx' : Ctx, 'receivedHistory' : Hist, ..) > if Ctx =/= nils .
+  ceq < ClientX | ('knowCtx' : nils, 'receivedHistory' : OldHist, ..) > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist) = < ClientX | ('knowCtx' : nils, 'receivedHistory' : Hist, ..) > if OldHist =/= nils .
+  eq < ClientY | ('authenticated' : true, 'knowCtx' : OldCtx, ..) > < serverA | ('contexts' : ('id' : Ctx, 'history' : Hist, ...), ....) > $ ClientY 'snoop' serverA | (Ctx) = < ClientY | ('authenticated' : true, 'knowCtx' : Ctx, ..) > < serverA | ('contexts' : ('id' : Ctx, 'history' : Hist, ...), ....) > .
+  eq < serverA | ('contexts' : ('id' : Ctx, 'history' : Hist, ..), ...) > $ ClientY 'sendWithContext' serverA | (Ctx ; 'msgB') = < serverA | ('contexts' : ('id' : Ctx, 'history' : ('msgB', Hist), ..), ...) > $ serverA 'returnHistory' ClientY | (Ctx ; ('msgB', Hist)) .
+  eq < ClientY | ('receivedHistory' : OldHist, ..) > $ serverA 'returnHistory' ClientY | (Ctx ; Hist) = < ClientY | ('receivedHistory' : Hist, ..) > .
+  eq < serverA | ('contexts' : ('id' : Ctx, 'history' : Hist, ..), ...) > $ ClientX 'sendWithContext' serverA | (Ctx ; 'msgA2') = < serverA | ('contexts' : ('id' : Ctx, 'history' : ('msgA2', Hist), ..), ...) > $ serverA 'returnHistory' ClientX | (Ctx ; ('msgA2', Hist)) .
+  eq < ClientX | ('receivedHistory' : OldHist, ..) > $ serverA 'returnHistory' ClientX | (Ctx ; Hist) = < ClientX | ('receivedHistory' : Hist, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (35714 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(serverA, _:_('contexts', nils)), <_|_>(clientA, _`,_(_:_('authenticated', true), _:_('knowCtx', nils), _:_('receivedHistory', nils))), <_|_>(clientB, _`,_(_:_('authenticated', true), _:_('knowCtx', nils), _:_('receivedHistory', nils)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___|_(clientA, 'sendWithoutContext', serverA, 'msgA'), __(<_|_>(serverA, _:_('contexts', _`,_(_:_('history', 'msgA'), _:_('id', 'ctxX')))), <_|_>(clientA, _`,_(_:_('authenticated', true), _:_('knowCtx', 'ctxX'), _:_('receivedHistory', 'msgA'))), <_|_>(clientB, _`,_(_:_('authenticated', true), _:_('knowCtx', nils), _:_('receivedHistory', nils)))))
+Bye.

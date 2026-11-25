@@ -1,0 +1,46 @@
+{
+  "input": "sequence_diagram/input/delegationFlaw2/diagram.md",
+  "input_sha256": "8bb4debfafe23205f55f05fafe1e464e3175396be0543477c0062a44d176995c",
+  "pipeline_id": "a886d2fc8cad7e7bbae8e1823ff222ffc021528e26e7c523b73d9d5a841d2666",
+  "mode": "check",
+  "started_at": "2026-11-05T05:29:56.064913+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run4/delegationFlaw2/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(cloudB, _:_(deviceLock, _`,_(_:_('key', 'keyA'), _:_('linkedLock', nils), _:_('state', nils), _:_('trusted', cloudSmartThing)))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceB, nils), <_|_>(deviceLock, _`,_(_:_('state', nils), _:_('trusted', cloudB)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 8,
+    "coverage_issues": [
+      "B6 (action, line 50): no event rule for the initiated message",
+      "B7 (action, line 55): no event rule for the initiated message"
+    ]
+  },
+  "model_sha256": "2065afb9ad0fcd73743f98941265409d49d60a9f6719e2106d5e3da7509f9f82",
+  "check": {
+    "property": "CTRL-direct",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceOn": false,
+      "attackerAuthorized": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 201.632,
+  "tokens_this_run": 24797,
+  "finished_at": "2026-11-05T05:33:17.699961+00:00"
+}

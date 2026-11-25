@@ -1,0 +1,79 @@
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils >
+    < deviceB | 'key' : 'secret', 'status' : false >, 'rev2} {$ userC
+    'cloudAPI:toggle' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils >
+    < deviceB | 'key' : 'secret', 'status' : false >, 'rev3} {$ userA
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'status' : false >, 'rev2} {$ userC
+    'cloudAPI:toggle' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'status' : false >, 'rev3} {$ userC
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'status' : false >, 'rev4} {$ userA
+    'callAPI:invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'status' : false >, 'rev3} {$ userA
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    nils > < deviceB | 'key' : 'secret', 'status' : false >, 'rev3} {$ userC
+    'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev3} {$
+    userA 'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev4} {$
+    userA 'callAPI:invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : nils) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev4} {$
+    userC 'callAPI:invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev3} {$
+    userA 'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev3} {$
+    userC 'callAPI:getKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev4} {$
+    userA 'callAPI:invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' :
+    deviceB, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key'
+    : 'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev5} {$
+    userA 'callAPI:kick' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'status' : false >, 'rev1} {$
+    userC 'callAPI:toggle' deviceB | 'secret' @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' :
+    nils, 'members' : userA) > < userA | 'key' : 'secret' > < userC | 'key' :
+    'secret' > < deviceB | 'key' : 'secret', 'status' : true >, 'rev1}
+idle
+$ userA 'callAPI:getKey' cloudA | deviceB
+$ userA 'callAPI:invite' cloudA | userC
+$ userC 'callAPI:getKey' cloudA | deviceB
+$ userC 'callAPI:invite' cloudA | userA
+$ userA 'callAPI:kick' cloudA | userC
+$ userC 'callAPI:toggle' deviceB | 'secret'
+rewrites: 5208 in 37ms cpu (38ms real) (137095 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'callAPI:getKey' cloudA |
+    deviceB ^ ($ userA 'callAPI:invite' cloudA | userC ^ ($ userC
+    'callAPI:getKey' cloudA | deviceB ^ ($ userC 'callAPI:invite' cloudA |
+    userA ^ ($ userA 'callAPI:kick' cloudA | userC ^ ($ userC 'callAPI:toggle'
+    deviceB | 'secret' ^ nile))))))

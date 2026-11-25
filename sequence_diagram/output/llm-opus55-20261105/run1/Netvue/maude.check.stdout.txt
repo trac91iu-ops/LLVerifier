@@ -1,0 +1,68 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : nils, 'near' : deviceB > < userC | 'msg' : nils, 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev1} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 1 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : nils, 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev1} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 2 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : nils, 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev1} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : nils, 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userA) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : nils, 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userA 'resetDevice' cloudA @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : nils, 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userC 'resetDevice' cloudA @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : nils, 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev5} {$ userC 'approach' deviceB @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : nils, 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev1} {$ userC 'pressButton' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userA) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : (userA, userC)) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : (userA, userC)) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userA 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userC) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userC) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userC 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userA 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev6} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userA) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : (userA, userC)) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : (userA, userC)) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userA 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userC) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userC) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userC 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userA 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : nils > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev5} {$ userA 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : deviceB > < deviceB | 'key' : 'keyB' >, 'rev6} {$ userC 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userC) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : (userA, userC)) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev2} {$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : (userA, userC)) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userA 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : userC) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev4} {$ userC 'resetDevice' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'keyB', 'owner' : nils) > < userA | 'msg' : encrypt('R'2357136044, 'keyB'), 'near' : deviceB > < userC | 'msg' : encrypt('R'362609376e, 'keyB'), 'near' : nils > < deviceB | 'key' : 'keyB' >, 'rev2}
+idle
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB')
+$ userA 'resetDevice' cloudA
+$ userC 'approach' deviceB
+$ userC 'pressButton' deviceB
+$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB')
+$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB')
+$ userA 'resetDevice' cloudA
+$ userC 'resetDevice' cloudA
+$ userA 'leave' deviceB
+$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB')
+$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB')
+$ userA 'resetDevice' cloudA
+$ userC 'resetDevice' cloudA
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB')
+$ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB')
+$ userA 'resetDevice' cloudA
+$ userC 'resetDevice' cloudA
+rewrites: 3506 in 6ms cpu (6ms real) (523596 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') ^ ($ userA 'resetDevice' cloudA ^ ($ userC 'approach' deviceB ^ ($ userC 'pressButton' deviceB ^ ($ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') ^ ($ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') ^ ($ userA 'resetDevice' cloudA ^ ($ userC 'resetDevice' cloudA ^ ($ userA 'leave' deviceB ^ ($ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') ^ ($ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') ^ ($ userA 'resetDevice' cloudA ^ ($ userC 'resetDevice' cloudA ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userC 'bindDevice' cloudA | encrypt('R'362609376e, 'keyB') ^ ($ userA 'bindDevice' cloudA | encrypt('R'2357136044, 'keyB') ^ ($ userA 'resetDevice' cloudA ^ ($ userC 'resetDevice' cloudA ^ nile))))))))))))))))))))))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

@@ -1,0 +1,32 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Sun Oct 25 23:37:14 2026
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | deviceB : ('bdKey' : 'secret', 'owner' : nils) > < userA | 'key' :
+    nils, 'localTo' : deviceB > < userC | 'key' : nils, 'localTo' : nils > <
+    deviceB | 'key' : 'secret', 'online' : false >, 'rev3} {$ userA
+    'callAPI:reset' cloudA @
+< cloudA | deviceB : ('bdKey' : 'secret', 'owner' : nils) > < userA | 'key' :
+    nils, 'localTo' : deviceB > < userC | 'key' : nils, 'localTo' : nils > <
+    deviceB | 'key' : 'secret', 'online' : false >, 'rev4} {$ userA 'leaves'
+    deviceB @
+< cloudA | deviceB : ('bdKey' : 'secret', 'owner' : nils) > < userA | 'key' :
+    nils, 'localTo' : nils > < userC | 'key' : nils, 'localTo' : nils > <
+    deviceB | 'key' : 'secret', 'online' : false >, 'rev1} {$ userC
+    'pressButton' deviceB @
+< cloudA | deviceB : ('bdKey' : 'secret', 'owner' : nils) > < userA | 'key' :
+    nils, 'localTo' : nils > < userC | 'key' : 'secret', 'localTo' : nils > <
+    deviceB | 'key' : 'secret', 'online' : true >, 'rev2}
+idle
+$ userA 'leaves' deviceB
+$ userC 'pressButton' deviceB
+rewrites: 400 in 2ms cpu (2ms real) (177777 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'leaves' deviceB ^ ($
+    userC 'pressButton' deviceB ^ nile))
+Bye.

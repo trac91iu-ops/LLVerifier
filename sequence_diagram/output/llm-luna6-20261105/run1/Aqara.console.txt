@@ -1,0 +1,138 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 6 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4919
+--------------------------------------------------
+```text
+[B1] < UserX | 'key' : nils , ... > < cloudA | UserX : ('device' : deviceA , ...) , ... > $ UserX 'openWindow' cloudA | (deviceA)
+=> < UserX | 'key' : FreshKeyA , ... > < cloudA | UserX : ('device' : deviceA , ...) , ... > $ cloudA 'openWindow' deviceA | (FreshKeyA) .
+[B1] < deviceA | 'key' : nils , ... > $ cloudA 'openWindow' deviceA | (Key)
+=> < deviceA | 'key' : Key , ... > .
+[B2] < UserX | 'key' : Key , ... > < deviceA | 'key' : Key , 'trusted' : (TrustedUsers) , ... > $ UserX 'bind' deviceA | (Key)
+=> < UserX | 'key' : Key , ... > < deviceA | 'key' : Key , 'trusted' : (TrustedUsers , UserX) , ... > .
+[B3] < deviceA | 'trusted' : (TrustedUsers , UserX) , 'power' : 'off' , ... > $ UserX 'turnOn' deviceA
+=> < deviceA | 'trusted' : (TrustedUsers , UserX) , 'power' : 'on' , ... > .
+[B4] < cloudA | UserX : ('device' : deviceA , ...) , ... > $ UserX 'turnOn' cloudA | (deviceA)
+=> < cloudA | UserX : ('device' : deviceA , ...) , ... > $ cloudA 'turnOn' deviceA .
+[B4] < deviceA | 'trusted' : (TrustedUsers , cloudA) , 'power' : 'off' , ... > $ cloudA 'turnOn' deviceA
+=> < deviceA | 'trusted' : (TrustedUsers , cloudA) , 'power' : 'on' , ... > .
+[B5] < cloudA | UserX : ('members' : (Members) , ...) , ... > $ UserX 'invite' cloudA | (UserY)
+=> < cloudA | UserX : ('members' : (Members , UserY) , ...) , ... > .
+[B5] < cloudA | UserX : ('device' : deviceA , 'members' : (Members) , ...) , UserY : ('device' : nils , ...) , ... > $ UserX 'invite' cloudA | (UserY)
+=> < cloudA | UserX : ('device' : deviceA , 'members' : (Members , UserY) , ...) , UserY : ('device' : deviceA , ...) , ... > .
+[B6] < cloudA | UserX : ('members' : (Members , UserY) , ...) , UserY : ('device' : deviceA , ...) , ... > $ UserX 'removeMember' cloudA | (UserY)
+=> < cloudA | UserX : ('members' : (Members) , ...) , UserY : ('device' : nils , ...) , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3172
+--------------------------------------------------
+```json
+{
+  "FreshKeyA": "Qid",
+  "Key": "Qid",
+  "Members": "Set",
+  "TrustedUsers": "Set",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'FreshKeyA': 'Qid', 'Key': 'Qid', 'Members': 'Set', 'TrustedUsers': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('key' : [Qid]) > < userC | ('key' : [Qid]) > < cloudA | ([User] : ('members' : ([Set]) , 'device' : [Principal]) , [User] : ('members' : [Set])) > < deviceA | ('power' : {'on' , 'off'} , 'trusted' : {[Set] , [Principal] , [User]} , 'key' : [Qid]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh True hasCurrentTime False
+eq < system | ('counter' : N , ..) > < UserX | ('key' : nils , ...) > < cloudA | (UserX : ('device' : deviceA , ....) , .....) > $ UserX 'openWindow' cloudA | (deviceA) 
+= < system | ('counter' : N + 1 , ..) > < UserX | ('key' : randomStr('KeyA', N) , ...) > < cloudA | (UserX : ('device' : deviceA , ....) , .....) > $ cloudA 'openWindow' deviceA | (randomStr('KeyA', N)) .
+eq < deviceA | ('key' : nils , ..) > $ cloudA 'openWindow' deviceA | (Key) 
+= < deviceA | ('key' : Key , ..) > .
+eq < UserX | ('key' : Key , ..) > < deviceA | ('key' : Key , 'trusted' : (TrustedUsers) , ...) > $ UserX 'bind' deviceA | (Key) 
+= < UserX | ('key' : Key , ..) > < deviceA | ('key' : Key , 'trusted' : (TrustedUsers , UserX) , ...) > .
+eq < deviceA | ('trusted' : (TrustedUsers , UserX) , 'power' : 'off' , ..) > $ UserX 'turnOn' deviceA 
+= < deviceA | ('trusted' : (TrustedUsers , UserX) , 'power' : 'on' , ..) > .
+eq < cloudA | (UserX : ('device' : deviceA , ..) , ...) > $ UserX 'turnOn' cloudA | (deviceA) 
+= < cloudA | (UserX : ('device' : deviceA , ..) , ...) > $ cloudA 'turnOn' deviceA .
+eq < deviceA | ('trusted' : (TrustedUsers , cloudA) , 'power' : 'off' , ..) > $ cloudA 'turnOn' deviceA 
+= < deviceA | ('trusted' : (TrustedUsers , cloudA) , 'power' : 'on' , ..) > .
+eq < cloudA | (UserX : ('members' : (Members) , ..) , ...) > $ UserX 'invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : (Members , UserY) , ..) , ...) > .
+eq < cloudA | (UserX : ('device' : deviceA , 'members' : (Members) , ..) , UserY : ('device' : nils , ...) , ....) > $ UserX 'invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('device' : deviceA , 'members' : (Members , UserY) , ..) , UserY : ('device' : deviceA , ...) , ....) > .
+eq < cloudA | (UserX : ('members' : (Members , UserY) , ..) , UserY : ('device' : deviceA , ...) , ....) > $ UserX 'removeMember' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : (Members) , ..) , UserY : ('device' : nils , ...) , ....) > .
+$ UserX 'openWindow' cloudA | (deviceA)
+$ cloudA 'openWindow' deviceA | (randomStr('KeyA', N))
+$ cloudA 'openWindow' deviceA | (Key)
+$ UserX 'bind' deviceA | (Key)
+$ UserX 'turnOn' deviceA
+$ UserX 'turnOn' cloudA | (deviceA)
+$ cloudA 'turnOn' deviceA
+$ UserX 'invite' cloudA | (UserY)
+$ UserX 'removeMember' cloudA | (UserY)
+[*] Total token: 1918
+--------------------------------------------------
+```text
+[1, 4, 5, 6, 8, 9]
+```
+==================================================
+[1, 4, 5, 6, 8, 9]
+[$ UserX 'openWindow' cloudA | (deviceA), $ UserX 'bind' deviceA | (Key), $ UserX 'turnOn' deviceA, $ UserX 'turnOn' cloudA | (deviceA), $ UserX 'invite' cloudA | (UserY), $ UserX 'removeMember' cloudA | (UserY)]
+[eq ev1(UserX) = $ UserX 'openWindow' cloudA | (deviceA) ., eq ev2(UserX, Key) = $ UserX 'bind' deviceA | (Key) ., eq ev3(UserX) = $ UserX 'turnOn' deviceA ., eq ev4(UserX) = $ UserX 'turnOn' cloudA | (deviceA) ., eq ev5(UserX, UserY) = $ UserX 'invite' cloudA | (UserY) ., eq ev6(UserX, UserY) = $ UserX 'removeMember' cloudA | (UserY) .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3365
+--------------------------------------------------
+```text
+< userA | ('key' : nils) > < userC | ('key' : nils) > < cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils)) > < deviceB | ('power' : 'off' , 'trusted' : (cloudA) , 'key' : nils) >
+```
+==================================================
+< system | ('counter' : 0) > < userA | ('key' : nils) > < userC | ('key' : nils) > < cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils)) > < deviceB | ('power' : 'off' , 'trusted' : (cloudA) , 'key' : nils) >
+[*] Generating event rules with LLM...
+[*] Total token: 4447
+--------------------------------------------------
+```text
+[B1] < UserX | 'key' : nils , ... > < cloudA | UserX : ('members' : Members , 'device' : deviceA) , ... > => ev1(UserX) .
+[B2] < UserX | 'key' : Key , ... > => ev2(UserX, Key) .
+[B3] < UserX | ... > < deviceA | ... > => ev3(UserX) .
+[B4] < UserX | ... > => ev4(UserX) .
+[B5] < UserX | ... > < UserY | ... > => ev5(UserX, UserY) .
+```
+==================================================
+< UserX | 'key' : nils , ... > < cloudA | UserX : ('members' : Members , 'device' : deviceA) , ... > => ev1(UserX) .
+< UserX | 'key' : Key , ... > => ev2(UserX, Key) .
+< UserX | ... > < deviceA | ... > => ev3(UserX) .
+< UserX | ... > => ev4(UserX) .
+< UserX | ... > < UserY | ... > => ev5(UserX, UserY) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('key' : nils , ..) > < cloudA | (UserX : ('members' : Members , 'device' : deviceA , ...) , ....) > 
+=> ep: ev1(UserX) @ S < UserX | ('key' : nils , ..) > < cloudA | (UserX : ('members' : Members , 'device' : deviceA , ...) , ....) > .
+rl [rev2]: E @ S < UserX | ('key' : Key , ..) > 
+=> ep: ev2(UserX, Key) @ S < UserX | ('key' : Key , ..) > .
+rl [rev3]: E @ S < UserX | (..) > < deviceA | (...) > 
+=> ep: ev3(UserX) @ S < UserX | (..) > < deviceA | (...) > .
+rl [rev4]: E @ S < UserX | (..) > 
+=> ep: ev4(UserX) @ S < UserX | (..) > .
+rl [rev5]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev5(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 2999
+--------------------------------------------------
+```text
+deviceOn =| < deviceB | 'power' : 'on' , ... > .
+attackerAuthorized =| < cloudA | (userC : ('device' : deviceB , ...) , ...) > .
+```
+==================================================
+[*] Extract variables
+[*] Add varable types to AST
+[+] Check CTRL-direct: holds (0 events)
+[+] Model written: sequence_diagram/output/llm-luna6-20261105/run1/Aqara/rules.maude; status: validated

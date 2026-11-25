@@ -1,0 +1,31 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< serverA | 'context' : nils, 'history' : nils > < clientA | 'authenticated' : true, 'knowCtx' : nils, 'receivedHistory' : nils > < clientB | 'authenticated' : true, 'knowCtx' : nils, 'receivedHistory' : nils >, 'rev1} {$ clientA 'sendWithoutContext' serverA | 'msgA' @
+< serverA | 'context' : 'ctxX', 'history' : 'msgA' > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : 'msgA' > < clientB | 'authenticated' : true, 'knowCtx' : nils, 'receivedHistory' : nils >, 'rev1} {$ clientB 'sendWithoutContext' serverA | 'msgA' @
+< serverA | 'context' : 'ctxX', 'history' : 'msgA' > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : 'msgA' > < clientB | 'authenticated' : true, 'knowCtx' : nils, 'receivedHistory' : nils >, 'rev2} {$ clientB 'snoop' serverA | 'ctxX' @
+< serverA | 'context' : 'ctxX', 'history' : 'msgA' > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : 'msgA' > < clientB | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : nils >, 'rev3} {$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB') @
+< serverA | 'context' : 'ctxX', 'history' : ('msgA', 'msgB') > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgB') > < clientB | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : nils >, 'rev3} {$ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB') @
+< serverA | 'context' : 'ctxX', 'history' : ('msgA', 'msgB') > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgB') > < clientB | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgB') >, 'rev3} {$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB') @
+< serverA | 'context' : 'ctxX', 'history' : ('msgA', 'msgB') > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgB') > < clientB | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgB') >, 'rev4} {$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2') @
+< serverA | 'context' : 'ctxX', 'history' : ('msgA', 'msgA2', 'msgB') > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgA2', 'msgB') > < clientB | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgB') >, 'rev3} {$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB') @
+< serverA | 'context' : 'ctxX', 'history' : ('msgA', 'msgA2', 'msgB') > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgA2', 'msgB') > < clientB | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgB') >, 'rev3} {$ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB') @
+< serverA | 'context' : 'ctxX', 'history' : ('msgA', 'msgA2', 'msgB') > < clientA | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgA2', 'msgB') > < clientB | 'authenticated' : true, 'knowCtx' : 'ctxX', 'receivedHistory' : ('msgA', 'msgA2', 'msgB') >, 'rev3}
+idle
+$ clientA 'sendWithoutContext' serverA | 'msgA'
+$ clientB 'snoop' serverA | 'ctxX'
+$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+$ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2')
+$ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+rewrites: 224 in 0ms cpu (0ms real) (232365 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ clientA 'sendWithoutContext' serverA | 'msgA' ^ ($ clientB 'snoop' serverA | 'ctxX' ^ ($ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB') ^ ($ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB') ^ ($ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2') ^ ($ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB') ^ nile))))))
+==========================================
+reduce in CHECK : init |= attackerReadsVictimData .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= victimContextTampered .
+rewrites: 2 in 0ms cpu (0ms real) (2000000 rewrites/second)
+result Bool: false
+Bye.

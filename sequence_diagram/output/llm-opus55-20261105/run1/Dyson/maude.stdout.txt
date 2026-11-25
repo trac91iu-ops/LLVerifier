@@ -1,0 +1,30 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var D : Set .
+  var DeviceX : Device .
+  var K : Qid .
+  var Ms : Set .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < cloudA | (userA : ('members' : nils, 'device' : deviceB), userC : ('members' : nils, 'device' : nils), deviceB : ('key' : 'keyB')) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceB | ('on' : false, 'key' : 'keyB') > .
+  eq < cloudA | (UserX : ('members' : Ms, ..), ...) > $ UserX 'inviteMember' cloudA | (UserY) = < cloudA | (UserX : ('members' : (UserY, Ms), ..), ...) > .
+  ceq < cloudA | (UserX : ('device' : D, 'members' : (UserY, Ms), ..), UserY : ('device' : nils, ...), ....) > = < cloudA | (UserX : ('device' : D, 'members' : (UserY, Ms), ..), UserY : ('device' : D, ...), ....) > if D =/= nils .
+  eq < cloudA | (UserX : ('device' : DeviceX, ..), DeviceX : ('key' : K, ...), ....) > $ UserX 'requestKey' cloudA | (DeviceX) = < cloudA | (UserX : ('device' : DeviceX, ..), DeviceX : ('key' : K, ...), ....) > $ cloudA 'sendKey' UserX | (DeviceX ; K) .
+  eq < UserX | ('key' : nils, ..) > $ cloudA 'sendKey' UserX | (DeviceX ; K) = < UserX | ('key' : K, ..) > .
+  eq < DeviceX | ('key' : K, 'on' : false, ..) > $ UserX 'turnOn' DeviceX | (K) = < DeviceX | ('key' : K, 'on' : true, ..) > .
+  eq < cloudA | (UserX : ('device' : DeviceX, ..), ...) > < DeviceX | ('on' : false, ....) > $ UserX 'cloudTurnOn' cloudA | (DeviceX) = < cloudA | (UserX : ('device' : DeviceX, ..), ...) > < DeviceX | ('on' : true, ....) > .
+  ceq < cloudA | (UserX : ('members' : (UserY, Ms), ..), UserY : ('device' : D, ...), ....) > $ UserX 'removeMember' cloudA | (UserY) = < cloudA | (UserX : ('members' : Ms, ..), UserY : ('device' : nils, ...), ....) > if D =/= nils .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (33333 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('device', deviceB), _:_('members', nils))), _:_(userC, _`,_(_:_('device', nils), _:_('members', nils))), _:_(deviceB, _:_('key', 'keyB')))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceB, _`,_(_:_('key', 'keyB'), _:_('on', false)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 7 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___|_(userA, 'inviteMember', cloudA, userC), __(<_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('device', deviceB), _:_('members', userC))), _:_(userC, _`,_(_:_('device', deviceB), _:_('members', nils))), _:_(deviceB, _:_('key', 'keyB')))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceB, _`,_(_:_('key', 'keyB'), _:_('on', false)))))
+Bye.

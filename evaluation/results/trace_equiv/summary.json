@@ -1,0 +1,15 @@
+{
+  "runs": {
+    "run1": "sequence_diagram/output/eval-astra-20261105/run1",
+    "run2": "sequence_diagram/output/eval-astra-20261105/run2",
+    "run3": "sequence_diagram/output/eval-astra-20261105/run3",
+    "run4": "sequence_diagram/output/eval-astra-20261105/run4",
+    "run5": "sequence_diagram/output/eval-astra-20261105/run5"
+  },
+  "trace_equiv": 91.0,
+  "labels": {
+    "gold attack present": 132,
+    "model did not load": 3,
+    "gold attack not present": 10
+  }
+}

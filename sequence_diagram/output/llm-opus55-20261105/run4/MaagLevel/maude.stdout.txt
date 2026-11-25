@@ -1,0 +1,34 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var CachingRelayUser : User .
+  var ImmediateRelayUser : User .
+  var L : Item .
+  var RelayUser : User .
+  var Rest : Set .
+  var Trusted : Set .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < userA | ('cache' : nils, 'near' : nils) > < userC | ('near' : nils, 'cache' : nils) > < cloudA | (deviceA : ('trusted' : (userA)), 'key' : 'secret') > < deviceA | ('trusted' : (userA)) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' deviceA = < UserX | ('near' : deviceA, ..) > .
+  eq < UserX | ('near' : deviceA, ..) > $ UserX 'leave' deviceA = < UserX | ('near' : nils, ..) > .
+  eq < cloudA | ('key' : 'secret', deviceA : ('trusted' : (UserX), ..), ...) > < RelayUser | ('near' : deviceA, ....) > $ UserX 'shareAccess' cloudA | (deviceA ; UserY) = < cloudA | ('key' : 'secret', deviceA : ('trusted' : (UserX, UserY, ..), ..), ...) > < RelayUser | ('near' : deviceA, ....) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; list ((encrypt ('auth', 'secret') ; 'share' ; UserY))) .
+  eq < cloudA | ('key' : 'secret', deviceA : ('trusted' : (UserX, UserY, Rest), ..), ...) > < RelayUser | ('near' : deviceA, ....) > $ UserX 'revokeAccess' cloudA | (deviceA ; UserY) = < cloudA | ('key' : 'secret', deviceA : ('trusted' : (UserX), ..), ...) > < RelayUser | ('near' : deviceA, ....) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; list ((encrypt ('auth', 'secret') ; 'revoke' ; UserY))) .
+  eq < ImmediateRelayUser | ('near' : deviceA, ..) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; L) = < ImmediateRelayUser | ('near' : deviceA, ..) > $ RelayUser 'forwardCommand' deviceA | (L) .
+  eq < CachingRelayUser | ('near' : deviceA, 'cache' : nils, ..) > $ cloudA 'proxyCommand' RelayUser | (deviceA ; L) = < CachingRelayUser | ('near' : deviceA, 'cache' : L, ..) > .
+  ceq < CachingRelayUser | ('near' : deviceA, 'cache' : L, ..) > = < CachingRelayUser | ('near' : deviceA, 'cache' : nils, ..) > $ CachingRelayUser 'forwardCommand' deviceA | (L) if L =/= nils .
+  eq < deviceA | ('trusted' : Trusted, ..) > $ RelayUser 'forwardCommand' deviceA | (list ((encrypt ('auth', 'secret') ; 'share' ; UserY))) = < deviceA | ('trusted' : (Trusted, UserY), ..) > .
+  eq < deviceA | ('trusted' : (UserY, Rest), ..) > $ RelayUser 'forwardCommand' deviceA | (list ((encrypt ('auth', 'secret') ; 'revoke' ; UserY))) = < deviceA | ('trusted' : Rest, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (16393 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_('key', 'secret'), _:_(deviceA, _:_('trusted', userA)))), <_|_>(userA, _`,_(_:_('cache', nils), _:_('near', nils))), <_|_>(userC, _`,_(_:_('cache', nils), _:_('near', nils))), <_|_>(deviceA, _:_('trusted', userA))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'approach', deviceA), __(<_|_>(cloudA, _`,_(_:_('key', 'secret'), _:_(deviceA, _:_('trusted', userA)))), <_|_>(userA, _`,_(_:_('cache', nils), _:_('near', deviceA))), <_|_>(userC, _`,_(_:_('cache', nils), _:_('near', nils))), <_|_>(deviceA, _:_('trusted', userA))))
+Bye.

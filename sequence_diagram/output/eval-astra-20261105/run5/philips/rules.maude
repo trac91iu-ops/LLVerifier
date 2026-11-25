@@ -1,0 +1,98 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('time' : 0 , 'counter' : 0) > < userA | ('knows' : nils , 'near' : deviceB) > < userC | ('knows' : nils , 'near' : nils) > < deviceB | (nils) > < cloudA | (deviceB : ('tickets' : nils , 'owners' : nils)) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars CurrentTime : Nat .
+vars FreshSecret : Qid .
+vars IssuedTime : Nat .
+vars KnownSecrets : Set .
+vars OldNear : Set .
+vars RestOwners : Set .
+vars RestTickets : Set .
+vars Secret : Qid .
+vars Tickets : Set .
+vars UserOwner : User .
+vars UserX : User .
+*** policy
+eq < UserX | ('near' : OldNear , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : OldNear , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+eq < system | ('counter' : N , ..) > < deviceB | (...) > $ UserX 'pressButton' deviceB 
+= < system | ('counter' : N + 1 , ..) > < deviceB | (...) > $ deviceB 'uploadSecret' cloudA | (randomStr('Secret', N)) .
+eq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : Tickets , ...) , ....) > $ deviceB 'uploadSecret' cloudA | (Secret) 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : CurrentTime) , Tickets) , ...) , ....) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : IssuedTime) , RestTickets) , ...) , ....) > $ UserX 'getKey' cloudA | (deviceB) 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : IssuedTime) , RestTickets) , ...) , ....) > $ cloudA 'sendSecret' UserX | (deviceB ; Secret) if IssuedTime == CurrentTime .
+eq < UserX | ('knows' : KnownSecrets , ..) > $ cloudA 'sendSecret' UserX | (deviceB ; Secret) 
+= < UserX | ('knows' : (Secret , KnownSecrets) , ..) > .
+eq < cloudA | (deviceB : ('owners' : nils , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , RestTickets) , ..) , ...) > $ UserX 'bind' cloudA | (deviceB ; Secret) 
+= < cloudA | (deviceB : ('owners' : (UserX) , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , RestTickets) , ..) , ...) > .
+eq < cloudA | (deviceB : ('owners' : (UserOwner , RestOwners) , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , RestTickets) , ..) , ...) > $ UserX 'join' cloudA | (deviceB ; Secret) 
+= < cloudA | (deviceB : ('owners' : (UserX , UserOwner , RestOwners) , 'tickets' : (('secret' : Secret , 'time' : IssuedTime) , RestTickets) , ..) , ...) > .
+ceq < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret , 'time' : IssuedTime) , RestTickets) , ...) , ....) > 
+= < system | ('time' : CurrentTime , 'counter' : N , ..) > < cloudA | (deviceB : ('tickets' : nils , ...) , ....) > if CurrentTime - IssuedTime > 2 .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars CurrentTime : Nat .
+vars FreshSecret : Qid .
+vars IssuedTime : Nat .
+vars KnownSecrets : Set .
+vars OldNear : Set .
+vars RestOwners : Set .
+vars RestTickets : Set .
+vars Secret : Qid .
+vars Tickets : Set .
+vars UserOwner : User .
+vars UserX : User .
+vars MessageA : Qid .
+vars Rest : Set .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User -> Event .
+ops ev4 : User -> Event .
+ops ev5 : User Qid -> Event .
+ops ev6 : User Qid -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'approach' deviceB .
+eq ev2(UserX) = $ UserX 'leave' deviceB .
+eq ev3(UserX) = $ UserX 'pressButton' deviceB .
+eq ev4(UserX) = $ UserX 'getKey' cloudA | (deviceB) .
+eq ev5(UserX, Secret) = $ UserX 'bind' cloudA | (deviceB ; Secret) .
+eq ev6(UserX, Secret) = $ UserX 'join' cloudA | (deviceB ; Secret) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev2(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : (deviceB , Rest) , ..) > 
+=> ep: ev2(UserX) @ S < UserX | ('near' : (deviceB , Rest) , ..) > .
+rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | ('near' : (deviceB , Rest) , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : (deviceB , Rest) , ..) > .
+rl [rev4]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev4(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev4]: E @ S < UserX | ('near' : (deviceB , Rest) , ..) > 
+=> ep: ev4(UserX) @ S < UserX | ('near' : (deviceB , Rest) , ..) > .
+rl [rev5]: E @ S < UserX | ('knows' : (Secret , Rest) , ..) > 
+=> ep: ev5(UserX, Secret) @ S < UserX | ('knows' : (Secret , Rest) , ..) > .
+rl [rev6]: E @ S < UserX | ('knows' : (Secret , Rest) , ..) > 
+=> ep: ev6(UserX, Secret) @ S < UserX | ('knows' : (Secret , Rest) , ..) > .
+rl [rtp]: E @ S < system | ('time' : N , .. ) >
+=> ep: timepass @ S < system | ('time' : (N + 1) , .. ) > .
+
+
+endm

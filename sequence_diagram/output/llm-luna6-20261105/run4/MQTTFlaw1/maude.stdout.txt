@@ -1,0 +1,24 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var User : User .
+  eq init = idle @ < userA | (nils) > < userC | (nils) > < cloudB | ('buffer' : nils, deviceA : ('permission' : true), userA : ('permission' : true), userC : ('permission' : false)) > < deviceA | ('on' : false) > .
+  eq < User | (..) > < cloudB | ('buffer' : nils, User : ('permission' : true, ...), ....) > $ User 'publishToggle' cloudB = < User | (..) > < cloudB | ('buffer' : 'toggle', User : ('permission' : true, ...), ....) > $ cloudB 'acknowledge' User .
+  eq < User | (..) > < cloudB | ('buffer' : 'toggle', User : ('permission' : true, ...), ....) > $ cloudB 'acknowledge' User = < User | (..) > < cloudB | ('buffer' : 'toggle', User : ('permission' : true, ...), ....) > .
+  eq < cloudB | (User : ('permission' : true, ..), ...) > = < cloudB | (User : ('permission' : false, ..), ...) > .
+  eq < User | (..) > < cloudB | ('buffer' : 'toggle', deviceA : ('permission' : true, ...), ....) > $ User 'releaseMessage' cloudB = < User | (..) > < cloudB | ('buffer' : nils, deviceA : ('permission' : true, ...), ....) > $ cloudB 'publish' deviceA | ('toggle') .
+  eq < deviceA | ('on' : false, ..) > $ cloudB 'publish' deviceA | ('toggle') = < deviceA | ('on' : true, ..) > .
+  eq < deviceA | ('on' : true, ..) > $ cloudB 'publish' deviceA | ('toggle') = < deviceA | ('on' : true, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 2 in 0ms cpu (0ms real) (76923 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_(userA, _:_('permission', false)), _:_(userC, _:_('permission', false)), _:_(deviceA, _:_('permission', true)))), <_|_>(userA, nils), <_|_>(userC, nils), <_|_>(deviceA, _:_('on', false))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'publishToggle', cloudB), __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_(userA, _:_('permission', false)), _:_(userC, _:_('permission', false)), _:_(deviceA, _:_('permission', true)))), <_|_>(userA, nils), <_|_>(userC, nils), <_|_>(deviceA, _:_('on', false))))
+Bye.

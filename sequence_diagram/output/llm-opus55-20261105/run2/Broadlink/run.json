@@ -1,0 +1,41 @@
+{
+  "input": "sequence_diagram/input/Broadlink/diagram.md",
+  "input_sha256": "b380723cff8d06c378360086e0e434873cc99bf4bc6bb05e5dff75ca6f51b6dd",
+  "pipeline_id": "4120f0c14bdcb97b3216b374da4754404c4594aacb53c6f0cf1e5e5d075af60c",
+  "mode": "check",
+  "started_at": "2026-11-05T04:41:19.920557+00:00",
+  "status": "validation_failed",
+  "validation": {
+    "status": "error",
+    "path": "sequence_diagram/output/llm-opus55-20261105/run2/Broadlink/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.",
+      "Warning: \"rules.maude\", line 86 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 85 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 88 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 87 (mod TRANSITION): no parse for statement"
+    ],
+    "errors": [
+      "Warning: \"rules.maude\", line 86 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 85 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 88 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 87 (mod TRANSITION): no parse for statement"
+    ],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(userC, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(deviceB, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('key', 'keyB'), _:_('locked', false)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 9,
+    "coverage_issues": []
+  },
+  "model_sha256": "2804d8b5408c6b45e076fb8d5895900a49eba55da68f3cb9dc8e94f11d53ae07",
+  "elapsed_seconds": 63.417,
+  "tokens_this_run": 33125,
+  "finished_at": "2026-11-05T04:42:23.339143+00:00"
+}

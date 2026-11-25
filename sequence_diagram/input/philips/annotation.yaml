@@ -1,0 +1,18 @@
+schema_version: "1.0"
+target_protocol: "PhilipsHue-Pushlink-Pairing"
+
+# Device-Specific Reverse-Engineered Invariants (Matching Maude SYSTEM)
+Entities:
+  - User: attributes [localTo, knowledge]
+  - Device: attributes [hardware]
+  - Cloud: attributes [tickets (key, time), owner]
+  - System: attributes [time, counter]
+
+Device_Rules:
+  - ButtonPress: User pressButton Device -> Device callAPI:setKey(randomStr('Secret', counter)) to Cloud
+  - SetKey: Cloud records ticket ('key': Key, 'time': CurrentTime) for Device
+  - GetKey: User callAPI:getKey(Device) from Cloud -> Cloud sends Key to User IF CurrentTime < TimeA + 1
+  - UserLearn: User receives Key -> User.knowledge += Key
+  - Bind: User callAPI:bind(Device, Key) -> Cloud sets owner = User IF Cloud.owner == nils AND Key in tickets
+  - Join: User callAPI:join(Device, Key) -> Cloud sets owner = (owner, User) IF Cloud.owner != nils AND Key in tickets
+  - Expire: Cloud clears tickets (tickets = nils) IF CurrentTime > TimeA + 2

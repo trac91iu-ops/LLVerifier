@@ -1,0 +1,114 @@
+{
+  "protocol": "Netvue",
+  "model_sha256": "1cfea7ba5fcd84e1861ddf9498011b54e124d809d670899a67dd339225171f1a",
+  "runs": [
+    "a2-run1"
+  ],
+  "generated": "sequence_diagram/output/ablation-norepair-20261104/run1/Netvue/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Netvue/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bindDevice'": "'callAPI:bind'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'resetDevice'": "'callAPI:reset'",
+      "'sendEncryptedText'": "'send'"
+    },
+    "attributes": {
+      "'counter'": "'counter'",
+      "'key'": "'key'",
+      "'message'": "'message'",
+      "'near'": "'localTo'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "system": "system",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'R'": "'RandomString'",
+      "'deviceKey'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'deviceKey'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:reset'",
+      "'leaves'",
+      "'pressButton'",
+      "'send'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'key'",
+      "'localTo'",
+      "'message'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'RandomString'",
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bindDevice'",
+      "'leave'",
+      "'pressButton'",
+      "'resetDevice'",
+      "'sendEncryptedText'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'key'",
+      "'message'",
+      "'near'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'R'",
+      "'deviceKey'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T04:12:56+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1816,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bindDevice'\": \"'callAPI:bind'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'resetDevice'\": \"'callAPI:reset'\",\n    \"'sendEncryptedText'\": \"'send'\"\n  },\n  \"attributes\": {\n    \"'counter'\": \"'counter'\",\n    \"'key'\": \"'key'\",\n    \"'message'\": \"'message'\",\n    \"'near'\": \"'localTo'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"system\": \"system\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'R'\": \"'RandomString'\",\n    \"'deviceKey'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'deviceKey'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

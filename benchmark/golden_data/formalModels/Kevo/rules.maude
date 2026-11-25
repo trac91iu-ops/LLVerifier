@@ -1,0 +1,67 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('counter' : 0) > < userA | ('message' : nils , 'localTo' : deviceB) > < userC | ('message' : nils , 'localTo' : nils) > < deviceB | ('key' : 'secret') > < cloudA | (deviceB : ('owner' : nils , 'key' : 'secret')) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars DeviceY : Device .
+vars MessageA : Qid .
+vars FreshRandomString : Qid .
+vars UserX : User .
+vars KeyA : Qid .
+*** policy
+eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY 
+= < UserX | ('localTo' : DeviceY , ..) > .
+eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY 
+= < UserX | ('localTo' : nils , ..) > .
+eq < system | ('counter' : N , ..) > < DeviceY | ('key' : KeyA , ...) > $ UserX 'pressButton' DeviceY 
+= < system | ('counter' : N + 1 , ..) > < DeviceY | ('key' : KeyA , ...) > $ DeviceY 'send' UserX | (encrypt(randomStr('RandomString', N), KeyA)) .
+eq < UserX | ('message' : nils , ..) > $ DeviceY 'send' UserX | (MessageA) 
+= < UserX | ('message' : MessageA , ..) > .
+eq < system | ('counter' : N , ..) > < cloudA | (DeviceY : ('key' : KeyA , ...) , ....) > $ UserX 'callAPI:bind' cloudA | (encrypt(FreshRandomString, KeyA)) 
+= < system | ('counter' : N , ..) > < cloudA | (DeviceY : ('key' : KeyA , 'owner' : UserX , ...) , ....) > .
+eq < cloudA | (DeviceY : ('owner' : UserX , ..) , ...) > $ UserX 'callAPI:reset' cloudA 
+= < cloudA | (DeviceY : ('owner' : nils , ..) , ...) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars DeviceY : Device .
+vars MessageA : Qid .
+vars FreshRandomString : Qid .
+vars UserX : User .
+vars KeyA : Qid .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Qid Qid -> Event .
+ops ev3 : User Qid -> Event .
+ops ev4 : User -> Event .
+ops ev5 : User Device -> Event .
+ops ev6 : User Device -> Event .
+*** events
+eq ev1(UserX, DeviceY) = $ UserX 'pressButton' DeviceY .
+eq ev2(UserX, FreshRandomString, KeyA) = $ UserX 'callAPI:bind' cloudA | (encrypt(FreshRandomString, KeyA)) .
+eq ev3(UserX, MessageA) = $ UserX 'callAPI:bind' cloudA | (MessageA) .
+eq ev4(UserX) = $ UserX 'callAPI:reset' cloudA .
+eq ev5(UserX, DeviceY) = $ UserX 'leaves' DeviceY .
+eq ev6(UserX, DeviceY) = $ UserX 'approaches' DeviceY .
+*** transitions
+rl [rev1]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev1(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev3]: E @ S < UserX | ('message' : MessageA , ..) > 
+=> ep: ev3(UserX, MessageA) @ S < UserX | ('message' : MessageA , ..) > .
+rl [rev4]: E @ S < UserX | .. > 
+=> ep: ev4(UserX) @ S < UserX | .. > .
+rl [rev5]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev5(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev6]: E @ S < UserX | ('localTo' : nils , ..) > 
+=> ep: ev6(UserX, deviceB) @ S < UserX | ('localTo' : nils , ..) > .
+
+endm

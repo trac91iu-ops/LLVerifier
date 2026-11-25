@@ -1,0 +1,11 @@
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.
+Warning: "rules.maude", line 97 (mod TRANSITION): didn't expect token nils:
+rl [ rev7 ] : E @ S < userC | ( .. ) > < userA | ( ... ) > => ep: ev7 ( nils <---*HERE*
+Warning: "rules.maude", line 96 (mod TRANSITION): no parse for statement
+rl [rev7] : E @ S < userC | (..) > < userA | (...) > => ep: ev7 (nils) @ S < userC | (..) > < userA | (...) > .
+Warning: "rules.maude", line 99 (mod TRANSITION): didn't expect token nils:
+rl [ rev8 ] : E @ S < userC | ( .. ) > < userA | ( ... ) > => ep: ev8 ( nils <---*HERE*
+Warning: "rules.maude", line 98 (mod TRANSITION): no parse for statement
+rl [rev8] : E @ S < userC | (..) > < userA | (...) > => ep: ev8 (nils) @ S < userC | (..) > < userA | (...) > .

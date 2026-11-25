@@ -50,10 +50,18 @@ def giveEvtDecls(es:list[EVENT])->list[EVENT_DECL]:
             elif isinstance(arg, LIST):
                 helper(arg)
             elif isinstance(arg, FUNCALL):
-                compound = True
-                for param in arg.params:
-                    if isinstance(param, VARIABLE):
-                        params_lst2.append(param)
+                compound = compound or arg.funcname in ('encrypt', 'decrypt')
+                def collect(v):
+                    params_lst2.append(v)
+                    return v
+                arg.visit([(lambda v: isinstance(v, VARIABLE), collect)])
+            elif isinstance(arg, (PAIR, SET)):
+                def collect(v):
+                    params_lst2.append(v)
+                    return v
+                arg.visit([(lambda v: isinstance(v, VARIABLE), collect)])
+            elif isinstance(arg, (QID, PRINCIPAL, BOOL, int, NILS)):
+                pass  # Constants remain literal arguments, not constructor parameters.
             else:
                 print('[-] Warning in function giveEvtDecls, unhandled argument type:',type(arg))
     #def addIfNot(edecl:EVENT_DECL, l:LIST):
@@ -71,7 +79,8 @@ def giveEvtDecls(es:list[EVENT])->list[EVENT_DECL]:
         if e.arguments:
             helper(e.arguments)
 
-        l.append(EVENT_DECL(f'ev{idx}',e,params_lst1 + params_lst2))
+        params = list(dict.fromkeys(params_lst1 + params_lst2))
+        l.append(EVENT_DECL(f'ev{idx}',e,params))
         #addIfNot(EVENT_DECL(f'ev{idx}',e,params_lst1 + params_lst2),l)
         idx += 1
         if compound:

@@ -1,0 +1,41 @@
+# MaagLevel
+
+- input: `sequence_diagram/input/MaagLevel/diagram.md`
+- output: `sequence_diagram/output/llm-luna6-20261105/run3/MaagLevel/`
+- property: OWN-stealth (attacker userC)
+- status: failed; verdict: None (0 events); golden: counterexample (23 events)
+- slots false at init expected; true at init: None
+- coverage issues: None
+- error: ValueError: Expected exactly one complete output code block.
+
+## Generated slots
+```
+```
+
+## Counterexamples
+
+| # | golden | generated |
+|---|---|---|
+| 1 | `$ userA 'approaches' deviceB` | `` |
+| 2 | `$ userA 'callAPI:share' cloudA | userC` | `` |
+| 3 | `$ userA 'callAPI:revoke' cloudA | userC` | `` |
+| 4 | `$ userA 'leaves' deviceB` | `` |
+| 5 | `$ userC 'approaches' deviceB` | `` |
+| 6 | `$ userA 'callAPI:share' cloudA | userC` | `` |
+| 7 | `$ userA 'callAPI:revoke' cloudA | userC` | `` |
+| 8 | `$ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ; 'share' ; userC)` | `` |
+| 9 | `$ userA 'callAPI:share' cloudA | userC` | `` |
+| 10 | `$ userA 'callAPI:revoke' cloudA | userC` | `` |
+| 11 | `$ userC 'leaves' deviceB` | `` |
+| 12 | `$ userA 'approaches' deviceB` | `` |
+| 13 | `$ userA 'callAPI:share' cloudA | userC` | `` |
+| 14 | `$ userA 'callAPI:revoke' cloudA | userC` | `` |
+| 15 | `$ userA 'leaves' deviceB` | `` |
+| 16 | `$ userA 'approaches' deviceB` | `` |
+| 17 | `$ userC 'approaches' deviceB` | `` |
+| 18 | `$ userA 'callAPI:share' cloudA | userC` | `` |
+| 19 | `$ userA 'callAPI:revoke' cloudA | userC` | `` |
+| 20 | `$ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ; 'share' ; userC)` | `` |
+| 21 | `$ userA 'callAPI:share' cloudA | userC` | `` |
+| 22 | `$ userA 'callAPI:revoke' cloudA | userC` | `` |
+| 23 | `$ userA 'leaves' deviceB` | `` |

@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/Govee/diagram.md",
+  "input_sha256": "1507f53933fb5c09f8caadf70593e4f7e6424f27ec9becca3b3253d768efb2e3",
+  "pipeline_id": "5887eed3689cad5dfaaa8aa9ac7b14182607b5a96eeec8c0fca00c7e44a20409",
+  "mode": "check",
+  "started_at": "2026-11-05T06:36:01.720235+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , 'key' : nils , ... > $ UserX 'approach' deviceB\n=> ",
+  "elapsed_seconds": 47.039,
+  "tokens_this_run": 3865,
+  "finished_at": "2026-11-05T06:36:48.759744+00:00"
+}

@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "context_id": "1b1c6ab83fcfb28a63a7d7591929373cb9a07fe1358f4918c725b0394c6a2cbc",
+  "answers": {
+    "genPolicy:464520babe62a012d8a3d31594faecb21922c5aacc5eaf80b33bdbca9da278db": "[B1] < UserX | 'near' : deviceB , ... > < deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < UserX | 'near' : deviceB , ... > < deviceB | 'key' : Key , ... > $ deviceB 'sendMessage' UserX | (encrypt(FreshR,Key)) .\n[B1] < UserX | 'storedMessage' : nils , ... > $ deviceB 'sendMessage' UserX | (Message)\n=> < UserX | 'storedMessage' : Message , ... > .\n[B2] < cloudA | deviceB : ('key' : Key , 'owners' : (UserX, Rest) , ...) , ... > $ UserX 'bindDevice' cloudA | (encrypt(R,Key))\n=> < cloudA | deviceB : ('key' : Key , 'owners' : (UserX, Rest) , ...) , ... > .\n[B2] < cloudA | deviceB : ('key' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bindDevice' cloudA | (encrypt(R,Key))\n=> < cloudA | deviceB : ('key' : Key , 'owners' : (UserX, Owners) , ...) , ... > .\n[B3] < UserX | ... > < cloudA | deviceB : ('owners' : (UserX, Rest) , ...) , ... > $ UserX 'resetDevice' cloudA\n=> < UserX | ... > < cloudA | deviceB : ('owners' : (UserX, nils) , ...) , ... > .\n[B4] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B5] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .",
+    "genPolicyVars:803ba4e095a5d66eb1fae3326902dc44c7c0a995ab41cbeb2b632f2b40ca85fb": "{\n  \"FreshR\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Message\": \"Item\",\n  \"Owners\": \"Set\",\n  \"R\": \"Qid\",\n  \"Rest\": \"Set\",\n  \"UserX\": \"User\"\n}",
+    "filterEvents:769921e1ae0ea687969849538cba482001c861a8e60b83565828bb961ceb42d4": "[2, 4, 5, 6, 7]",
+    "genInit:f4c1d60dbe649b42ecb2ea264cfdcc5385926a76382229d391cd910e46c46ae4": "< userA | ('near' : deviceB , 'storedMessage' : nils) > < userC | ('near' : nils , 'storedMessage' : nils) > < deviceB | ('key' : 'deviceKey') > < cloudA | (deviceB : ('owners' : nils , 'key' : 'deviceKey')) >",
+    "genRRLs:f9bbe556f8de887d6485f55a3714dc33ad9ea716fdc1fdc1f01678dfdca23be6": "[B2] < UserX | 'storedMessage' : MessageA , ... > => ev4(UserX, MessageA) .\n[B3] < UserX | ... > => ev5(UserX) .\n[B4] < UserX | 'near' : nils , ... > => ev6(UserX) .\n[B5] < UserX | 'near' : deviceB , ... > => ev7(UserX) .",
+    "genSlots:11fdf34caefb6e622675cdfd53fd6e1f0b72c05e2ba0760cf64f93327afacb15": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .",
+    "genPropVars:d3bb23b2ea2b17bf0884ad972ffb119955c0fa668b6749ab846e96fc982a8a83": "{\"Rest\": \"Set\"}"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:464520babe62a012d8a3d31594faecb21922c5aacc5eaf80b33bdbca9da278db"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : deviceB , ... > < deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < UserX | 'near' : deviceB , ... > < deviceB | 'key' : Key , ... > $ deviceB 'sendMessage' UserX | (encrypt(FreshR,Key)) .\n[B1] < UserX | 'storedMessage' : nils , ... > $ deviceB 'sendMessage' UserX | (Message)\n=> < UserX | 'storedMessage' : Message , ... > .\n[B2] < cloudA | deviceB : ('key' : Key , 'owners' : (UserX, Rest) , ...) , ... > $ UserX 'bindDevice' cloudA | (encrypt(R,Key))\n=> < cloudA | deviceB : ('key' : Key , 'owners' : (UserX, Rest) , ...) , ... > .\n[B2] < cloudA | deviceB : ('key' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bindDevice' cloudA | (encrypt(R,Key))\n=> < cloudA | deviceB : ('key' : Key , 'owners' : (UserX, Owners) , ...) , ... > .\n[B3] < UserX | ... > < cloudA | deviceB : ('owners' : (UserX, Rest) , ...) , ... > $ UserX 'resetDevice' cloudA\n=> < UserX | ... > < cloudA | deviceB : ('owners' : (UserX, nils) , ...) , ... > .\n[B4] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B5] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:803ba4e095a5d66eb1fae3326902dc44c7c0a995ab41cbeb2b632f2b40ca85fb"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"FreshR\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Message\": \"Item\",\n  \"Owners\": \"Set\",\n  \"R\": \"Qid\",\n  \"Rest\": \"Set\",\n  \"UserX\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:769921e1ae0ea687969849538cba482001c861a8e60b83565828bb961ceb42d4"
+    },
+    {
+      "attempt": 0,
+      "output": "[2, 4, 5, 6, 7]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:f4c1d60dbe649b42ecb2ea264cfdcc5385926a76382229d391cd910e46c46ae4"
+    },
+    {
+      "attempt": 0,
+      "output": "< userA | ('near' : deviceB , 'storedMessage' : nils) > < userC | ('near' : nils , 'storedMessage' : nils) > < deviceB | ('key' : 'deviceKey') > < cloudA | (deviceB : ('owners' : nils , 'key' : 'deviceKey')) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:f9bbe556f8de887d6485f55a3714dc33ad9ea716fdc1fdc1f01678dfdca23be6"
+    },
+    {
+      "attempt": 0,
+      "output": "[B2] < UserX | 'storedMessage' : MessageA , ... > => ev4(UserX, MessageA) .\n[B3] < UserX | ... > => ev5(UserX) .\n[B4] < UserX | 'near' : nils , ... > => ev6(UserX) .\n[B5] < UserX | 'near' : deviceB , ... > => ev7(UserX) .",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:11fdf34caefb6e622675cdfd53fd6e1f0b72c05e2ba0760cf64f93327afacb15"
+    },
+    {
+      "attempt": 0,
+      "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPropVars",
+      "prompt_hash": "genPropVars:d3bb23b2ea2b17bf0884ad972ffb119955c0fa668b6749ab846e96fc982a8a83"
+    },
+    {
+      "attempt": 0,
+      "output": "{\"Rest\": \"Set\"}",
+      "error": null
+    }
+  ]
+}

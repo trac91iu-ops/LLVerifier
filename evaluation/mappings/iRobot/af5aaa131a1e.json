@@ -1,0 +1,127 @@
+{
+  "protocol": "iRobot",
+  "model_sha256": "af5aaa131a1eb8a894c4d9173deb66afbde029cca54b042ff65f117db421f925",
+  "runs": [
+    "a2-run1"
+  ],
+  "generated": "sequence_diagram/output/ablation-norepair-20261104/run1/iRobot/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/iRobot/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'reset'": "'callAPI:reset'",
+      "'retrieveKey'": "'callAPI:getKey'",
+      "'sendKey'": "'sendKey'",
+      "'setBindingKey'": "'callAPI:setKey'",
+      "'setKey'": "'callAPI:setKey'"
+    },
+    "attributes": {
+      "'bindingKey'": "'bdKey'",
+      "'buttonPressed'": "'pressed'",
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "''": "''",
+      "'keyA'": "'secretA'",
+      "'keyC'": "'secretC'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'keyA'",
+        "gold": "'secretA'"
+      },
+      {
+        "attribute": "'key'",
+        "generated": "'keyC'",
+        "gold": "'secretC'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:getKey'",
+      "'callAPI:reset'",
+      "'callAPI:setKey'",
+      "'leaves'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'bdKey'",
+      "'key'",
+      "'localTo'",
+      "'owner'",
+      "'pressed'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "''",
+      "'secretA'",
+      "'secretC'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'leave'",
+      "'pressButton'",
+      "'reset'",
+      "'retrieveKey'",
+      "'sendKey'",
+      "'setBindingKey'",
+      "'setKey'"
+    ],
+    "attributes": [
+      "'bindingKey'",
+      "'buttonPressed'",
+      "'key'",
+      "'near'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "''",
+      "'keyA'",
+      "'keyC'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T04:13:35+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2229,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'reset'\": \"'callAPI:reset'\",\n    \"'retrieveKey'\": \"'callAPI:getKey'\",\n    \"'sendKey'\": \"'sendKey'\",\n    \"'setBindingKey'\": \"'callAPI:setKey'\",\n    \"'setKey'\": \"'callAPI:setKey'\"\n  },\n  \"attributes\": {\n    \"'bindingKey'\": \"'bdKey'\",\n    \"'buttonPressed'\": \"'pressed'\",\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"''\": \"''\",\n    \"'keyA'\": \"'secretA'\",\n    \"'keyC'\": \"'secretC'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyA'\",\n      \"gold\": \"'secretA'\"\n    },\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyC'\",\n      \"gold\": \"'secretC'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

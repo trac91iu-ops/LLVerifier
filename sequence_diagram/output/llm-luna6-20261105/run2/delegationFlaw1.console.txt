@@ -1,0 +1,163 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 8 blocks
+[*] Generating policy with LLM...
+[*] Total token: 5056
+--------------------------------------------------
+```text
+[B1] < UserX | 'key' : nils , ... > $ UserX 'requestKey' Cloud
+=> < UserX | 'key' : nils , ... > .
+[B1] < Cloud | Device : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ UserX 'requestKey' Cloud
+=> < Cloud | Device : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ Cloud 'sendKey' UserX | (Key) .
+[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | (Key)
+=> < UserX | 'key' : Key , ... > .
+
+[B2] < Cloud | Device : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY)
+=> < Cloud | Device : ('trusted' : (UserX , UserY , Rest) , ...) , ... > .
+
+[B3] < Cloud | Device : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY)
+=> < Cloud | Device : ('trusted' : (UserX , Rest) , ...) , ... > .
+
+[B4] < UserX | 'key' : Key , ... > < SmartThingsCloud | Device : ('key' : Key , 'trusted' : Trusted , ...) , ... > $ UserX 'provideKey' SmartThingsCloud | (Device ; Key)
+=> < UserX | 'key' : Key , ... > < SmartThingsCloud | Device : ('key' : Key , 'trusted' : (UserX , Trusted) , ...) , ... > .
+
+[B5] < Device | ... > $ UserX 'turnOn' Device
+=> < Device | ... > .
+
+[B6] < Cloud | Device : ('state' : 'off' , 'trusted' : (P , Rest) , ...) , ... > $ P 'toggle' Device
+=> < Cloud | Device : ('state' : 'on' , 'trusted' : (P , Rest) , ...) , ... > $ Cloud 'turnOn' Device .
+
+[B7] < SmartThingsCloud | Device : ('linkedLock' : Lock , ...) , ... > $ SmartThingsCloud 'toggle' Device
+=> < SmartThingsCloud | Device : ('linkedLock' : Lock , ...) , ... > $ SmartThingsCloud 'turnOn' Lock .
+
+[B8] < Lock | 'trusted' : (P , Rest) , 'state' : 'off' , ... > $ P 'turnOn' Lock
+=> < Lock | 'trusted' : (P , Rest) , 'state' : 'on' , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3397
+--------------------------------------------------
+```json
+{
+  "Cloud": "Cloud",
+  "Device": "Device",
+  "Key": "Qid",
+  "Lock": "Device",
+  "P": "Principal",
+  "Rest": "Set",
+  "SmartThingsCloud": "Cloud",
+  "Trusted": "Set",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'Cloud': 'Cloud', 'Device': 'Device', 'Key': 'Qid', 'Lock': 'Device', 'P': 'Principal', 'Rest': 'Set', 'SmartThingsCloud': 'Cloud', 'Trusted': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('key' : [Qid]) > < userC | ('key' : [Qid]) > < cloudB | ([Device] : ('linkedLock' : [Device] , 'key' : [Qid] , 'state' : {'on' , 'off'} , 'trusted' : {[Set] , [Principal] , [User]})) > < deviceB | ('trusted' : ([Set]) , 'state' : {'on' , 'off'}) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < UserX | ('key' : nils , ..) > $ UserX 'requestKey' Cloud 
+= < UserX | ('key' : nils , ..) > .
+eq < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ UserX 'requestKey' Cloud 
+= < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ Cloud 'sendKey' UserX | (Key) .
+eq < UserX | ('key' : nils , ..) > $ Cloud 'sendKey' UserX | (Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < Cloud | (Device : ('trusted' : (UserX , Rest) , ..) , ...) > $ UserX 'delegateAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , ..) , ...) > .
+eq < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , ..) , ...) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserX , Rest) , ..) , ...) > .
+eq < UserX | ('key' : Key , ..) > < SmartThingsCloud | (Device : ('key' : Key , 'trusted' : Trusted , ...) , ....) > $ UserX 'provideKey' SmartThingsCloud | (Device ; Key) 
+= < UserX | ('key' : Key , ..) > < SmartThingsCloud | (Device : ('key' : Key , 'trusted' : (UserX , Trusted) , ...) , ....) > .
+eq < Device | (..) > $ UserX 'turnOn' Device 
+= < Device | (..) > .
+eq < Cloud | (Device : ('state' : 'off' , 'trusted' : (P , Rest) , ..) , ...) > $ P 'toggle' Device 
+= < Cloud | (Device : ('state' : 'on' , 'trusted' : (P , Rest) , ..) , ...) > $ Cloud 'turnOn' Device .
+eq < SmartThingsCloud | (Device : ('linkedLock' : Lock , ..) , ...) > $ SmartThingsCloud 'toggle' Device 
+= < SmartThingsCloud | (Device : ('linkedLock' : Lock , ..) , ...) > $ SmartThingsCloud 'turnOn' Lock .
+eq < Lock | ('trusted' : (P , Rest) , 'state' : 'off' , ..) > $ P 'turnOn' Lock 
+= < Lock | ('trusted' : (P , Rest) , 'state' : 'on' , ..) > .
+$ UserX 'requestKey' Cloud
+$ Cloud 'sendKey' UserX | (Key)
+$ UserX 'delegateAccess' Cloud | (Device ; UserY)
+$ UserX 'revokeAccess' Cloud | (Device ; UserY)
+$ UserX 'provideKey' SmartThingsCloud | (Device ; Key)
+$ UserX 'turnOn' Device
+$ P 'toggle' Device
+$ Cloud 'turnOn' Device
+$ SmartThingsCloud 'toggle' Device
+$ P 'turnOn' Lock
+[*] Total token: 2108
+--------------------------------------------------
+```text
+[1, 3, 4, 5, 6, 8, 9]
+```
+==================================================
+[1, 3, 4, 5, 6, 8, 9]
+[$ UserX 'requestKey' Cloud, $ UserX 'delegateAccess' Cloud | (Device ; UserY), $ UserX 'revokeAccess' Cloud | (Device ; UserY), $ UserX 'provideKey' SmartThingsCloud | (Device ; Key), $ UserX 'turnOn' Device, $ Cloud 'turnOn' Device, $ SmartThingsCloud 'toggle' Device]
+[eq ev1(UserX, Cloud) = $ UserX 'requestKey' Cloud ., eq ev2(UserX, Cloud, Device, UserY) = $ UserX 'delegateAccess' Cloud | (Device ; UserY) ., eq ev3(UserX, Cloud, Device, UserY) = $ UserX 'revokeAccess' Cloud | (Device ; UserY) ., eq ev4(UserX, SmartThingsCloud, Device, Key) = $ UserX 'provideKey' SmartThingsCloud | (Device ; Key) ., eq ev5(UserX, Device) = $ UserX 'turnOn' Device ., eq ev6(Cloud, Device) = $ Cloud 'turnOn' Device ., eq ev7(SmartThingsCloud, Device) = $ SmartThingsCloud 'toggle' Device .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3808
+--------------------------------------------------
+```text
+< userA | ('key' : nils) > < userC | ('key' : nils) > < cloudGoogle | (deviceSwitch : ('linkedLock' : nils , 'key' : 'keyA' , 'state' : nils , 'trusted' : (userA))) > < cloudSmartThing | (deviceSwitch : ('linkedLock' : deviceLock , 'key' : 'keyA' , 'state' : nils , 'trusted' : (cloudGoogle))) > < deviceSwitch | ('trusted' : nils , 'state' : nils) > < deviceLock | ('trusted' : (cloudSmartThing) , 'state' : nils) >
+```
+==================================================
+< userA | ('key' : nils) > < userC | ('key' : nils) > < cloudGoogle | (deviceSwitch : ('linkedLock' : nils , 'key' : 'keyA' , 'state' : nils , 'trusted' : (userA))) > < cloudSmartThing | (deviceSwitch : ('linkedLock' : deviceLock , 'key' : 'keyA' , 'state' : nils , 'trusted' : (cloudGoogle))) > < deviceSwitch | ('trusted' : nils , 'state' : nils) > < deviceLock | ('trusted' : (cloudSmartThing) , 'state' : nils) >
+[*] Generating event rules with LLM...
+[*] Total token: 4728
+--------------------------------------------------
+```text
+[B1] < UserX | ... > < Cloud | ... > => ev1(UserX, Cloud) .
+[B2] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev2(UserX, Cloud, Device, UserY) .
+[B3] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev3(UserX, Cloud, Device, UserY) .
+[B4] < UserX | 'key' : Key , ... > < Device | ... > < cloudB | ... > => ev4(UserX, cloudB, Device, Key) .
+[B5] < UserX | ... > < Device | ... > => ev5(UserX, Device) .
+```
+==================================================
+< UserX | ... > < Cloud | ... > => ev1(UserX, Cloud) .
+< UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev2(UserX, Cloud, Device, UserY) .
+< UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev3(UserX, Cloud, Device, UserY) .
+< UserX | 'key' : Key , ... > < Device | ... > < cloudB | ... > => ev4(UserX, cloudB, Device, Key) .
+< UserX | ... > < Device | ... > => ev5(UserX, Device) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | (..) > < Cloud | (...) > 
+=> ep: ev1(UserX, Cloud) @ S < UserX | (..) > < Cloud | (...) > .
+rl [rev2]: E @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > 
+=> ep: ev2(UserX, Cloud, Device, UserY) @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > 
+=> ep: ev3(UserX, Cloud, Device, UserY) @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > .
+rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < Device | (...) > < cloudB | (....) > 
+=> ep: ev4(UserX, cloudB, Device, Key) @ S < UserX | ('key' : Key , ..) > < Device | (...) > < cloudB | (....) > .
+rl [rev5]: E @ S < UserX | (..) > < Device | (...) > 
+=> ep: ev5(UserX, Device) @ S < UserX | (..) > < Device | (...) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 3255
+--------------------------------------------------
+```text
+deviceOn =| < cloudGoogle | deviceSwitch : ('state' : 'on' , ...) , ... > .
+attackerAuthorized =| < cloudGoogle | deviceSwitch : ('trusted' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2154
+--------------------------------------------------
+```json
+{"Rest": "Set"}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check CTRL-direct: holds (0 events)
+[+] Model written: sequence_diagram/output/llm-luna6-20261105/run2/delegationFlaw1/rules.maude; status: validated

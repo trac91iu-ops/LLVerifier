@@ -1,0 +1,38 @@
+fmod Container is
+pr QID .
+protecting TRUTH-VALUE .
+sorts Item Key Pair Set List .
+subsort Pair < Item .
+subsort Item < Set .
+subsort Item < List .
+subsort Qid < Key .
+***op _:_ : Qid Set -> Pair [ctor prec 40 gather (e E)] .
+op _:_ : Key Set -> Pair [ctor prec 40 gather (e E)] .
+op _++_ : List Set -> Set [ctor prec 39 gather (e E)] .
+
+op nil : -> List [ctor] .
+op nils : -> Set [ctor] .
+op _,_ : Set Set -> Set [ctor prec 41 id: nils assoc comm] . 
+op _;_ : List List -> List[ctor prec 41 id: nil gather(e E)]
+ . 
+op _in_ : Item Set -> Bool [prec 41] .
+op _in_ : Item List -> Bool [prec 41] .
+
+op list : List -> Item .
+
+vars X Y : Item .
+vars S : Set .
+vars L L' : List .
+
+eq X in nils = false .
+eq X in (X , S) = true .
+eq X in (Y , S) = X in S .
+eq X , X = X  . *** idem for efficiency
+
+eq X in nil = false .
+eq X in (X ; L) = true .
+eq X in (Y ; L) = X in L .
+
+eq nil ++ S = S .
+eq (X ; L) ++ S = L ++ (X , S) .
+endfm

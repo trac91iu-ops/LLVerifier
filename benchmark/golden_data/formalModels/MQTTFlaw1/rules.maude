@@ -1,0 +1,52 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < cloudB | (userA : ('permission' : true) , deviceB : ('permission' : true) , 'storedMessages' : nils) > < deviceB | ('status' : false) > < userA | 'device' : deviceB > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars DeviceY : Device .
+vars MessageX : Qid .
+vars MessageY : Qid .
+vars UserX : User .
+*** policy
+eq < cloudB | (deviceB : ('permission' : true , ...) , ....) > < deviceB | ('status' : false , .. ) > $ cloudB 'device:publish' deviceB | ('toggle') 
+= < cloudB | (deviceB : ('permission' : true , ...) , ....) > < deviceB | ('status' : true , .. ) > .
+eq < cloudB | ('storedMessages' : nils , UserX : ('permission' : true , ..) , ...) > $ UserX 'cloud:publish' cloudB | (MessageY) 
+= < cloudB | ('storedMessages' : (MessageY) , UserX : ('permission' : true , ..) , ...) > $ cloudB 'user:pubrec' UserX .
+eq < cloudB | ('storedMessages' : (MessageX) , DeviceY : ('permission' : true , ...) , ....) > $ UserX 'cloud:pubrel' cloudB 
+= < cloudB | ('storedMessages' : nils , DeviceY : ('permission' : true , ...) , ....) > $ cloudB 'device:publish' DeviceY | (MessageX) .
+eq < cloudB | (UserX : ('permission' : true , ..) , ...) > $ cloudB 'cloud:revoke' cloudB | (UserX) 
+= < cloudB | (UserX : ('permission' : false , ..) , ...) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars DeviceY : Device .
+vars MessageX : Qid .
+vars MessageY : Qid .
+vars UserX : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User Qid -> Event .
+*** events
+eq ev1(UserX) = $ cloudB 'cloud:revoke' cloudB | (UserX) .
+eq ev2(UserX) = $ UserX 'cloud:pubrel' cloudB .
+eq ev3(UserX, MessageA) = $ UserX 'cloud:publish' cloudB | (MessageA) .
+*** transitions
+rl [rev1]: E @ S < cloudB | (UserX : ('permission' : true , ..) , ...) > 
+=> ep: ev1(UserX) @ S < cloudB | (UserX : ('permission' : true , ..) , ...) > .
+rl [rev3]: E @ S < UserX | .. > 
+=> ep: ev3(UserX , 'toggle') @ S < UserX | .. > .
+rl [rev2]: E @ S < UserX | .. > 
+=> ep: ev2(UserX) @ S < UserX | .. > .
+
+endm

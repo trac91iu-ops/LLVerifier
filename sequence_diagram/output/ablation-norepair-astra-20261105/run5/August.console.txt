@@ -1,0 +1,36 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4240
+--------------------------------------------------
+```
+< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+
+< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+
+< deviceB | 'owner' : nils , 'online' : false , 'buttonPressed' : OldPressed , 'key' : Key , ... > $ UserX 'pressButton' deviceB
+=> < deviceB | 'owner' : nils , 'online' : true , 'buttonPressed' : true , 'key' : Key , ... > $ deviceB 'sendKey' UserX | Key .
+
+< UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | Key
+=> < UserX | 'key' : Key , ... > .
+
+< cloudA | deviceB : ('owner' : nils , 'key' : Key , ...) , ... >
+< deviceB | 'owner' : nils , 'online' : true , 'key' : Key , ... >
+$ UserX 'callAPI:bind' cloudA | (deviceB ; Key)
+=> < cloudA | deviceB : ('owner' : UserX , 'key' : Key , ...) , ... >
+< deviceB | 'owner' : UserX , 'online' : true , 'key' : Key , ... > .
+
+< cloudA | deviceB : ('owner' : UserX , ...) , ... >
+$ UserX 'callAPI:reset' cloudA | deviceB
+=> < cloudA | deviceB : ('owner' : nils , ...) , ... >
+$ cloudA 'reset' deviceB .
+
+< deviceB | 'online' : true , 'owner' : UserY , ... > $ cloudA 'reset' deviceB
+=> < deviceB | 'online' : false , 'owner' : nils , ... > .
+```
+==================================================

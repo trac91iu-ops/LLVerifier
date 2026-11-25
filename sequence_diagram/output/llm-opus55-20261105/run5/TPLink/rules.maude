@@ -1,0 +1,62 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < deviceB | ('key' : nils , 'buttonPressed' : false) > < cloudA | (userA : ('accountKey' : 'keyA') , userC : ('accountKey' : 'keyC') , deviceB : ('owner' : nils)) > < userA | ('near' : deviceB) > < userC | ('near' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Key : Qid .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < deviceB | ('buttonPressed' : false , ..) > $ UserX 'pressButton' deviceB 
+= < deviceB | ('buttonPressed' : true , ..) > .
+eq < deviceB | ('buttonPressed' : true , 'key' : nils , ..) > $ UserX 'sendKey' deviceB | (Key) 
+= < deviceB | ('buttonPressed' : false , 'key' : Key , ..) > .
+eq < deviceB | ('key' : Key , ..) > $ UserX 'discover' deviceB 
+= < deviceB | ('key' : Key , ..) > $ deviceB 'bind' cloudA | (Key) .
+eq < cloudA | (UserY : ('accountKey' : Key , ..) , deviceB : ('owner' : nils , ...) , ....) > $ deviceB 'bind' cloudA | (Key) 
+= < cloudA | (UserY : ('accountKey' : Key , ..) , deviceB : ('owner' : UserY , ...) , ....) > .
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Key : Qid .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User Qid -> Event .
+ops ev3 : User -> Event .
+ops ev4 : User -> Event .
+ops ev5 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'pressButton' deviceB .
+eq ev2(UserX, Key) = $ UserX 'sendKey' deviceB | (Key) .
+eq ev3(UserX) = $ UserX 'discover' deviceB .
+eq ev4(UserX) = $ UserX 'approach' deviceB .
+eq ev5(UserX) = $ UserX 'leave' deviceB .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > < cloudA | (UserX : ('accountKey' : Key , ...) , ....) > 
+=> ep: ev2(UserX, Key) @ S < UserX | ('near' : deviceB , ..) > < cloudA | (UserX : ('accountKey' : Key , ...) , ....) > .
+rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev4]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > 
+=> ep: ev4(UserX) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > .
+rl [rev5]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+
+endm

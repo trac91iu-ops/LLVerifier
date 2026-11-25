@@ -1,0 +1,107 @@
+{
+  "protocol": "delegationFlaw2",
+  "model_sha256": "57863c610aa9ced4ef72f49a6607976122025e2914a9528b9c3a1e3205db52f7",
+  "runs": [
+    "run3"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run3/delegationFlaw2/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/delegationFlaw2/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'delegateAccess'": "'callAPI:delegate'",
+      "'requestKey'": "'callAPI:getKey'",
+      "'revokeAccess'": "'callAPI:revoke'",
+      "'sendKey'": "'sendKey'",
+      "'turnOn'": "'callAPI:toggle'",
+      "'turnOnWithKey'": "'callAPI:cloudAPI:toggle'"
+    },
+    "attributes": {
+      "'bound'": "'boundTo'",
+      "'key'": "'key'",
+      "'on'": "'state'",
+      "'trust'": "'trustSet'"
+    },
+    "principals": {
+      "cloudB": "cloudB",
+      "cloudSmartThing": "cloudSmartThing",
+      "deviceLock": "deviceLock",
+      "deviceSwitch": "deviceSwitch",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {},
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'key'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'callAPI:cloudAPI:toggle'",
+      "'callAPI:delegate'",
+      "'callAPI:getKey'",
+      "'callAPI:revoke'",
+      "'callAPI:toggle'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'boundTo'",
+      "'key'",
+      "'state'",
+      "'trustSet'"
+    ],
+    "principals": [
+      "cloudB",
+      "cloudSmartThing",
+      "deviceLock",
+      "deviceSwitch",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'delegateAccess'",
+      "'requestKey'",
+      "'revokeAccess'",
+      "'sendKey'",
+      "'turnOn'",
+      "'turnOnWithKey'"
+    ],
+    "attributes": [
+      "'bound'",
+      "'key'",
+      "'on'",
+      "'trust'"
+    ],
+    "principals": [
+      "cloudB",
+      "cloudSmartThing",
+      "deviceLock",
+      "deviceSwitch",
+      "userA",
+      "userC"
+    ],
+    "constants": []
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:02:55+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2367,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'delegateAccess'\": \"'callAPI:delegate'\",\n    \"'requestKey'\": \"'callAPI:getKey'\",\n    \"'revokeAccess'\": \"'callAPI:revoke'\",\n    \"'sendKey'\": \"'sendKey'\",\n    \"'turnOn'\": \"'callAPI:toggle'\",\n    \"'turnOnWithKey'\": \"'callAPI:cloudAPI:toggle'\"\n  },\n  \"attributes\": {\n    \"'bound'\": \"'boundTo'\",\n    \"'key'\": \"'key'\",\n    \"'on'\": \"'state'\",\n    \"'trust'\": \"'trustSet'\"\n  },\n  \"principals\": {\n    \"cloudB\": \"cloudB\",\n    \"cloudSmartThing\": \"cloudSmartThing\",\n    \"deviceLock\": \"deviceLock\",\n    \"deviceSwitch\": \"deviceSwitch\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {},\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'key'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

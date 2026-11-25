@@ -1,0 +1,53 @@
+{
+  "input": "sequence_diagram/input/Broadlink/diagram.md",
+  "input_sha256": "b380723cff8d06c378360086e0e434873cc99bf4bc6bb05e5dff75ca6f51b6dd",
+  "pipeline_id": "ad94be47771399e657d188e36f6d6841fbdb544f1a287ccc9a0d071d2d95e9da",
+  "mode": "check",
+  "started_at": "2026-11-05T05:03:06.390701+00:00",
+  "status": "validation_failed",
+  "validation": {
+    "status": "error",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run3/Broadlink/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.",
+      "Warning: \"rules.maude\", line 33 (mod SYSTEM): bad token userY.",
+      "Warning: \"rules.maude\", line 33 (mod SYSTEM): no parse for statement",
+      "Warning: \"rules.maude\", line 70 (mod TRANSITION): bad token userY.",
+      "Warning: \"rules.maude\", line 70 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 85 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 84 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 87 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 86 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 89 (mod TRANSITION): didn't expect token UserY:",
+      "Warning: \"rules.maude\", line 88 (mod TRANSITION): no parse for statement"
+    ],
+    "errors": [
+      "Warning: \"rules.maude\", line 33 (mod SYSTEM): bad token userY.",
+      "Warning: \"rules.maude\", line 33 (mod SYSTEM): no parse for statement",
+      "Warning: \"rules.maude\", line 70 (mod TRANSITION): bad token userY.",
+      "Warning: \"rules.maude\", line 70 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 85 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 84 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 87 (mod TRANSITION): didn't expect token userC:",
+      "Warning: \"rules.maude\", line 86 (mod TRANSITION): no parse for statement",
+      "Warning: \"rules.maude\", line 89 (mod TRANSITION): didn't expect token UserY:",
+      "Warning: \"rules.maude\", line 88 (mod TRANSITION): no parse for statement"
+    ],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('members', nils), _:_('owners', nils))), _:_(userC, _`,_(_:_('members', nils), _:_('owners', nils))), _:_(deviceB, _`,_(_:_('members', nils), _:_('owners', nils))))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('devices', nils), _:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('key', 'key1'), _:_('locked', false)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 9,
+    "coverage_issues": []
+  },
+  "model_sha256": "749f7d0da181ca16bcfca5ec353e93a49897d2ecbd5a996055f735de7ba2320d",
+  "elapsed_seconds": 284.835,
+  "tokens_this_run": 25620,
+  "finished_at": "2026-11-05T05:07:51.228300+00:00"
+}

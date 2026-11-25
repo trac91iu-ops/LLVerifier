@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/Broadlink/diagram.md",
+  "input_sha256": "b380723cff8d06c378360086e0e434873cc99bf4bc6bb05e5dff75ca6f51b6dd",
+  "pipeline_id": "9ed8840702ed3ef23ba40192695966c6806c985f6aea24ef8f3a5c4634648e95",
+  "mode": "check",
+  "started_at": "2026-11-05T07:09:40.923379+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 0 repairs: No terminal matches '.' in the current parser context, at line 11 col 40\n\n< userC | ... > < userA | ... > => ev7 .\n                                       ^\nExpected one of: '\\\\('",
+  "elapsed_seconds": 173.431,
+  "tokens_this_run": 17184,
+  "finished_at": "2026-11-05T07:12:34.355972+00:00"
+}

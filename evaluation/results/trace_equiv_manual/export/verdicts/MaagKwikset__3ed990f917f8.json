@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-05T08:11:24.452Z",
+  "model": "3ed990f917f8",
+  "note": "",
+  "protocol": "MaagKwikset",
+  "runs": [
+    "run1",
+    "run5"
+  ],
+  "verdict": "present"
+}

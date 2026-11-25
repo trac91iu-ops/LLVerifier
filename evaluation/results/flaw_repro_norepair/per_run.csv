@@ -1,0 +1,146 @@
+protocol,run,verdict,label,events,unmapped
+Aqara,a2-run1,counterexample,reproduced,18,0
+August,a2-run1,counterexample,reproduced,33,0
+Beurer,a2-run1,counterexample,reproduced,18,0
+Broadlink,a2-run1,,no counterexample (None),0,0
+CloudEdgeCAC,a2-run1,counterexample,reproduced,50,0
+CloudEdgeRTE,a2-run1,counterexample,not reproduced,50,0
+Dyson,a2-run1,counterexample,reproduced,12,0
+Ezviz,a2-run1,counterexample,reproduced,11,0
+Govee,a2-run1,counterexample,reproduced,17,0
+Huawei,a2-run1,counterexample,reproduced,12,0
+Imou,a2-run1,counterexample,reproduced,3,0
+Kevo,a2-run1,,no counterexample (None),0,0
+MQTTFlaw1,a2-run1,counterexample,reproduced,3,0
+MaagKwikset,a2-run1,counterexample,reproduced,87,0
+MaagLevel,a2-run1,,no counterexample (None),0,0
+Meross,a2-run1,counterexample,reproduced,26,0
+Midea,a2-run1,counterexample,reproduced,36,0
+Netvue,a2-run1,counterexample,reproduced,40,0
+Sunlogin,a2-run1,counterexample,reproduced,10,0
+Switchbot,a2-run1,counterexample,reproduced,56,0
+TPLink,a2-run1,counterexample,reproduced,16,0
+TuyaCAC,a2-run1,counterexample,reproduced,12,0
+TuyaMatter,a2-run1,counterexample,reproduced,21,0
+Wemo,a2-run1,counterexample,reproduced,16,0
+Xiaomi,a2-run1,counterexample,reproduced,12,0
+delegationFlaw1,a2-run1,holds,no counterexample (holds),0,0
+delegationFlaw2,a2-run1,counterexample,not reproduced,18,0
+iRobot,a2-run1,counterexample,reproduced,70,0
+philips,a2-run1,counterexample,reproduced,53,0
+Aqara,a2-run2,counterexample,reproduced,18,0
+August,a2-run2,counterexample,reproduced,33,0
+Beurer,a2-run2,,no counterexample (None),0,0
+Broadlink,a2-run2,,no counterexample (None),0,0
+CloudEdgeCAC,a2-run2,counterexample,reproduced,50,0
+CloudEdgeRTE,a2-run2,counterexample,not reproduced,50,0
+Dyson,a2-run2,counterexample,reproduced,12,0
+Ezviz,a2-run2,counterexample,reproduced,11,0
+Govee,a2-run2,counterexample,reproduced,17,0
+Huawei,a2-run2,counterexample,reproduced,12,0
+Imou,a2-run2,counterexample,reproduced,3,0
+Kevo,a2-run2,counterexample,reproduced,59,0
+MQTTFlaw1,a2-run2,counterexample,reproduced,3,0
+MaagKwikset,a2-run2,counterexample,reproduced,87,0
+MaagLevel,a2-run2,holds,no counterexample (holds),0,0
+Meross,a2-run2,counterexample,reproduced,26,0
+Midea,a2-run2,counterexample,reproduced,36,0
+Netvue,a2-run2,counterexample,reproduced,40,0
+Sunlogin,a2-run2,counterexample,reproduced,10,0
+Switchbot,a2-run2,counterexample,reproduced,56,0
+TPLink,a2-run2,,no counterexample (None),0,0
+TuyaCAC,a2-run2,,no counterexample (None),0,0
+TuyaMatter,a2-run2,counterexample,reproduced,21,0
+Wemo,a2-run2,counterexample,reproduced,16,0
+Xiaomi,a2-run2,counterexample,reproduced,12,0
+delegationFlaw1,a2-run2,holds,no counterexample (holds),0,0
+delegationFlaw2,a2-run2,counterexample,not reproduced,14,0
+iRobot,a2-run2,counterexample,reproduced,70,0
+philips,a2-run2,,no counterexample (None),0,0
+Aqara,a2-run3,counterexample,reproduced,18,0
+August,a2-run3,,no counterexample (None),0,0
+Beurer,a2-run3,counterexample,reproduced,18,0
+Broadlink,a2-run3,,no counterexample (None),0,0
+CloudEdgeCAC,a2-run3,counterexample,reproduced,50,0
+CloudEdgeRTE,a2-run3,counterexample,not reproduced,50,0
+Dyson,a2-run3,counterexample,reproduced,12,0
+Ezviz,a2-run3,counterexample,reproduced,11,0
+Govee,a2-run3,counterexample,reproduced,17,0
+Huawei,a2-run3,counterexample,reproduced,12,0
+Imou,a2-run3,counterexample,reproduced,3,0
+Kevo,a2-run3,counterexample,reproduced,44,0
+MQTTFlaw1,a2-run3,counterexample,reproduced,3,0
+MaagKwikset,a2-run3,counterexample,reproduced,87,0
+MaagLevel,a2-run3,holds,no counterexample (holds),0,0
+Meross,a2-run3,counterexample,reproduced,26,0
+Midea,a2-run3,counterexample,reproduced,36,0
+Netvue,a2-run3,counterexample,reproduced,40,0
+Sunlogin,a2-run3,counterexample,reproduced,10,0
+Switchbot,a2-run3,counterexample,reproduced,56,0
+TPLink,a2-run3,counterexample,reproduced,16,0
+TuyaCAC,a2-run3,,no counterexample (None),0,0
+TuyaMatter,a2-run3,counterexample,reproduced,21,0
+Wemo,a2-run3,counterexample,reproduced,16,0
+Xiaomi,a2-run3,counterexample,reproduced,12,0
+delegationFlaw1,a2-run3,holds,no counterexample (holds),0,0
+delegationFlaw2,a2-run3,counterexample,not reproduced,18,0
+iRobot,a2-run3,counterexample,reproduced,70,0
+philips,a2-run3,counterexample,reproduced,53,0
+Aqara,a2-run4,counterexample,reproduced,18,0
+August,a2-run4,counterexample,reproduced,33,0
+Beurer,a2-run4,counterexample,reproduced,18,0
+Broadlink,a2-run4,,no counterexample (None),0,0
+CloudEdgeCAC,a2-run4,counterexample,reproduced,50,0
+CloudEdgeRTE,a2-run4,counterexample,not reproduced,50,0
+Dyson,a2-run4,counterexample,reproduced,12,0
+Ezviz,a2-run4,counterexample,reproduced,11,0
+Govee,a2-run4,counterexample,reproduced,17,0
+Huawei,a2-run4,counterexample,reproduced,12,0
+Imou,a2-run4,counterexample,reproduced,3,0
+Kevo,a2-run4,counterexample,reproduced,44,0
+MQTTFlaw1,a2-run4,counterexample,reproduced,3,0
+MaagKwikset,a2-run4,counterexample,reproduced,87,0
+MaagLevel,a2-run4,,no counterexample (None),0,0
+Meross,a2-run4,counterexample,reproduced,26,0
+Midea,a2-run4,counterexample,reproduced,36,0
+Netvue,a2-run4,counterexample,reproduced,41,0
+Sunlogin,a2-run4,counterexample,reproduced,10,0
+Switchbot,a2-run4,counterexample,reproduced,56,0
+TPLink,a2-run4,counterexample,reproduced,16,0
+TuyaCAC,a2-run4,counterexample,reproduced,12,0
+TuyaMatter,a2-run4,counterexample,reproduced,21,0
+Wemo,a2-run4,,no counterexample (None),0,0
+Xiaomi,a2-run4,counterexample,reproduced,12,0
+delegationFlaw1,a2-run4,holds,no counterexample (holds),0,0
+delegationFlaw2,a2-run4,counterexample,not reproduced,14,0
+iRobot,a2-run4,counterexample,reproduced,70,0
+philips,a2-run4,counterexample,reproduced,53,0
+Aqara,a2-run5,,no counterexample (None),0,0
+August,a2-run5,counterexample,reproduced,33,0
+Beurer,a2-run5,counterexample,reproduced,18,0
+Broadlink,a2-run5,,no counterexample (None),0,0
+CloudEdgeCAC,a2-run5,counterexample,reproduced,50,0
+CloudEdgeRTE,a2-run5,counterexample,not reproduced,50,0
+Dyson,a2-run5,counterexample,reproduced,12,0
+Ezviz,a2-run5,counterexample,reproduced,11,0
+Govee,a2-run5,counterexample,reproduced,17,0
+Huawei,a2-run5,counterexample,reproduced,12,0
+Imou,a2-run5,counterexample,reproduced,3,0
+Kevo,a2-run5,,no counterexample (None),0,0
+MQTTFlaw1,a2-run5,,no counterexample (None),0,0
+MaagKwikset,a2-run5,counterexample,reproduced,87,0
+MaagLevel,a2-run5,,no counterexample (None),0,0
+Meross,a2-run5,counterexample,reproduced,26,0
+Midea,a2-run5,counterexample,reproduced,36,0
+Netvue,a2-run5,counterexample,reproduced,40,0
+Sunlogin,a2-run5,counterexample,reproduced,10,0
+Switchbot,a2-run5,counterexample,reproduced,56,0
+TPLink,a2-run5,counterexample,reproduced,16,0
+TuyaCAC,a2-run5,counterexample,reproduced,12,0
+TuyaMatter,a2-run5,counterexample,reproduced,21,0
+Wemo,a2-run5,counterexample,reproduced,16,0
+Xiaomi,a2-run5,counterexample,reproduced,12,0
+delegationFlaw1,a2-run5,holds,no counterexample (holds),0,0
+delegationFlaw2,a2-run5,counterexample,not reproduced,18,0
+iRobot,a2-run5,counterexample,reproduced,70,0
+philips,a2-run5,counterexample,reproduced,53,0

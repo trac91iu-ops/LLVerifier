@@ -1,0 +1,6 @@
+# name  run directory; LLM comparison, every stage on opus55
+opus55-run1 sequence_diagram/output/llm-opus55-20261105/run1
+opus55-run2 sequence_diagram/output/llm-opus55-20261105/run2
+opus55-run3 sequence_diagram/output/llm-opus55-20261105/run3
+opus55-run4 sequence_diagram/output/llm-opus55-20261105/run4
+opus55-run5 sequence_diagram/output/llm-opus55-20261105/run5

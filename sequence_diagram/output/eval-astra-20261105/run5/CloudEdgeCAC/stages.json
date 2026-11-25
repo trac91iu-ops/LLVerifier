@@ -1,0 +1,56 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:4d41d75c0e0421c1556cdf652a202b1cbca7e14d672928e0b65f6a0be51ed4f3"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : OldNear , ... > $ UserX 'approach' DeviceX\n=> < UserX | 'near' : DeviceX , ... > .\n[B2] < UserX | 'near' : OldNear , ... > $ UserX 'leave' DeviceX\n=> < UserX | 'near' : nils , ... > .\n[B3] < DeviceX | 'buttonPressed' : false , ... > $ UserX 'pressButton' DeviceX\n=> < DeviceX | 'buttonPressed' : true , ... > .\n[B4] < DeviceX | 'buttonPressed' : true , 'key' : nils , ... > $ UserX 'sendKey' DeviceX | Key\n=> < DeviceX | 'buttonPressed' : false , 'key' : Key , ... > .\n[B5] < DeviceX | 'key' : Key , ... > $ UserX 'discover' DeviceX\n=> < DeviceX | 'key' : Key , ... > $ DeviceX 'bind' cloudA | Key\nif Key =/= nils .\n[B5] < cloudA | UserY : ('key' : Key , ...) , DeviceX : ('owner' : nils , ...) , ... > $ DeviceX 'bind' cloudA | Key\n=> < cloudA | UserY : ('key' : Key , ...) , DeviceX : ('owner' : UserY , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:54a77ad2d7fd4a26bc8ecb680d41228f9aef643b5e1fa838e590de40a65af09e"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"DeviceX\": \"Device\",\n  \"Key\": \"Qid\",\n  \"OldNear\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:253a659e364a2ad96deda3d16c3a4bf94a5fb38c600239e9168e512a1e4d1b4b"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 4, 5]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:e2ed558c9c1d0f68c5e255e5f8aa514badca82654d4fe23ce3feea32bd85a8b2"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('near' : deviceB) >\n< userC | ('near' : deviceD) >\n< deviceB | ('key' : nils , 'buttonPressed' : false) >\n< deviceD | ('key' : nils , 'buttonPressed' : false) >\n< cloudA | (userA : ('key' : 'keyA') , userC : ('key' : 'keyC') , deviceB : ('owner' : nils) , deviceD : ('owner' : nils)) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:fd01ea669188306d7434fdaa510ff9a1d3b85bdd228f305a4bd159e310fed47b"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > < DeviceX | ... > => ev1(UserX, DeviceX) .\n[B2] < UserX | 'near' : DeviceX , ... > => ev2(UserX, DeviceX) .\n[B3] < UserX | 'near' : DeviceX , ... > => ev3(UserX, DeviceX) .\n[B4] < UserX | 'near' : DeviceX , ... > < cloudA | UserY : ('key' : Key , ...) , ... > => ev4(UserX, DeviceX, Key) .\n[B5] < UserX | 'near' : DeviceX , ... > => ev5(UserX, DeviceX) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:c91b6a59578492ee410255f374a48481672e9efd810dac411d0ee9b1e12e32ce"
+  },
+  {
+    "attempt": 0,
+    "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owner' : userC , ...) , ... > .",
+    "error": null
+  }
+]

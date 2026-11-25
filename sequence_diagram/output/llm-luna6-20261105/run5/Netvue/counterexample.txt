@@ -1,0 +1,22 @@
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'bindDevice' cloudA | (deviceB ; encrypt('Text'2357136044, 'keyB'))
+$ userA 'resetDevice' cloudA | deviceB
+$ userC 'approach' deviceB
+$ userC 'pressButton' deviceB
+$ userA 'bindDevice' cloudA | (deviceB ; encrypt('Text'2357136044, 'keyB'))
+$ userC 'bindDevice' cloudA | (deviceB ; encrypt('Text'362609376e, 'keyB'))
+$ userA 'resetDevice' cloudA | deviceB
+$ userC 'resetDevice' cloudA | deviceB
+$ userA 'leave' deviceB
+$ userA 'bindDevice' cloudA | (deviceB ; encrypt('Text'2357136044, 'keyB'))
+$ userC 'bindDevice' cloudA | (deviceB ; encrypt('Text'362609376e, 'keyB'))
+$ userA 'resetDevice' cloudA | deviceB
+$ userC 'resetDevice' cloudA | deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userC 'bindDevice' cloudA | (deviceB ; encrypt('Text'362609376e, 'keyB'))
+$ userA 'bindDevice' cloudA | (deviceB ; encrypt('Text'2357136044, 'keyB'))
+$ userA 'resetDevice' cloudA | deviceB
+$ userC 'resetDevice' cloudA | deviceB

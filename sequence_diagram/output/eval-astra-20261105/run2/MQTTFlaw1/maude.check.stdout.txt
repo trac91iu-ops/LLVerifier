@@ -1,0 +1,22 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudB | 'buffer' : nils, userA : 'permission' : true, deviceB : 'permission' : true > < userA | nils > < deviceB | 'on' : false >, 'rev1} {$ userA 'publishToggle' cloudB @
+< cloudB | 'buffer' : 'toggle', userA : 'permission' : true, deviceB : 'permission' : true > < userA | nils > < deviceB | 'on' : false >, 'rev2} {$ cloudB 'revokePermission' cloudB | userA @
+< cloudB | 'buffer' : 'toggle', userA : 'permission' : false, deviceB : 'permission' : true > < userA | nils > < deviceB | 'on' : false >, 'rev3} {$ userA 'releaseBufferedMessage' cloudB @
+< cloudB | 'buffer' : nils, userA : 'permission' : false, deviceB : 'permission' : true > < userA | nils > < deviceB | 'on' : true >, 'rev1}
+idle
+$ userA 'publishToggle' cloudB
+$ cloudB 'revokePermission' cloudB | userA
+$ userA 'releaseBufferedMessage' cloudB
+rewrites: 95 in 0ms cpu (0ms real) (296875 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'publishToggle' cloudB ^ ($ cloudB 'revokePermission' cloudB | userA ^ ($ userA 'releaseBufferedMessage' cloudB ^ nile)))
+==========================================
+reduce in CHECK : init |= deviceOn .
+rewrites: 2 in 0ms cpu (0ms real) (2000000 rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerAuthorized .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: true
+Bye.

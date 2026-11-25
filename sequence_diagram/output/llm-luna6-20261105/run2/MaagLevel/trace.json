@@ -1,0 +1,193 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        13,
+        16
+      ],
+      "head": "alt UserX is not near a device and the device exists",
+      "state_rules": [
+        0
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        17,
+        20
+      ],
+      "head": "alt UserX is near the device",
+      "state_rules": [
+        1
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        22,
+        28
+      ],
+      "head": "alt Existing distinct users UserX and UserY",
+      "state_rules": [
+        2
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        29,
+        35
+      ],
+      "head": "alt Existing distinct users UserX and UserY",
+      "state_rules": [
+        3
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        38,
+        41
+      ],
+      "head": "alt The cloud command L is being delivered for the device and ImmediateRelayUser is near the device",
+      "state_rules": [
+        4
+      ],
+      "event_rules": []
+    },
+    {
+      "id": "B6",
+      "kind": "auto",
+      "lines": [
+        42,
+        44
+      ],
+      "head": "alt The cloud command L is being delivered for the device, CachingRelayUser is near the device, and CachingRelayUser has no cached command",
+      "state_rules": [
+        5
+      ],
+      "event_rules": []
+    },
+    {
+      "id": "B7",
+      "kind": "action",
+      "lines": [
+        46,
+        50
+      ],
+      "head": "alt CachingRelayUser is near the device and has cached command L",
+      "state_rules": [
+        6
+      ],
+      "event_rules": []
+    },
+    {
+      "id": "B8",
+      "kind": "auto",
+      "lines": [
+        52,
+        54
+      ],
+      "head": "alt Processing a proxy command containing auth encrypted with the secret, followed by share and UserY",
+      "state_rules": [
+        7
+      ],
+      "event_rules": []
+    },
+    {
+      "id": "B9",
+      "kind": "auto",
+      "lines": [
+        55,
+        59
+      ],
+      "head": "alt Processing a proxy command containing auth encrypted with the secret, followed by revoke and UserY",
+      "state_rules": [
+        8
+      ],
+      "event_rules": []
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('near' : nils , ..) > $ UserX 'approach' Device \n= < UserX | ('near' : Device , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < UserX | ('near' : Device , ..) > $ UserX 'leave' Device \n= < UserX | ('near' : nils , ..) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < cloudA | ('cloudKey' : Secret , Device : ('trusted' : (UserX) , ..) , ...) > < UserX | (....) > < UserY | (.....) > < RelayUser | ('near' : Device , ......) > $ UserX 'shareAccess' cloudA | (Device ; UserY) \n= < cloudA | ('cloudKey' : Secret , Device : ('trusted' : (UserX , UserY , ..) , ..) , ...) > < UserX | (....) > < UserY | (.....) > < RelayUser | ('near' : Device , ......) > $ cloudA 'sendCommand' RelayUser | (Device ; encrypt('auth', Secret) ; 'share' ; UserY) ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < cloudA | ('cloudKey' : Secret , Device : ('trusted' : (UserX , UserY , ..) , ...) , ....) > < UserX | (.....) > < UserY | (......) > < RelayUser | ('near' : Device , .......) > $ UserX 'revokeAccess' cloudA | (Device ; UserY) \n= < cloudA | ('cloudKey' : Secret , Device : ('trusted' : (UserX) , ...) , ....) > < UserX | (.....) > < UserY | (......) > < RelayUser | ('near' : Device , .......) > $ cloudA 'sendCommand' RelayUser | (Device ; encrypt('auth', Secret) ; 'revoke' ; UserY) ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < RelayUser | (..) > < ImmediateRelayUser | ('near' : Device , ...) > $ cloudA 'deliverCommand' RelayUser | (Device ; L) \n= < RelayUser | (..) > < ImmediateRelayUser | ('near' : Device , ...) > $ RelayUser 'forwardCommand' Device | (L) ."
+    },
+    {
+      "block": "B6",
+      "rule": "eq < CachingRelayUser | ('cachedCommand' : nils , ..) > $ cloudA 'deliverCommand' CachingRelayUser | (Device ; L) \n= < CachingRelayUser | ('cachedCommand' : L , ..) > ."
+    },
+    {
+      "block": "B7",
+      "rule": "eq < CachingRelayUser | ('near' : Device , 'cachedCommand' : L , ..) > \n= < CachingRelayUser | ('near' : Device , 'cachedCommand' : nils , ..) > $ CachingRelayUser 'forwardCommand' Device | (L) ."
+    },
+    {
+      "block": "B8",
+      "rule": "eq < Device | ('trusted' : Trusted , 'cloudKey' : Secret , ..) > $ RelayUser 'forwardCommand' Device | (encrypt('auth', Secret) ; 'share' ; UserY) \n= < Device | ('trusted' : (Trusted , UserY) , 'cloudKey' : Secret , ..) > ."
+    },
+    {
+      "block": "B9",
+      "rule": "eq < Device | ('trusted' : (Trusted , UserY) , 'cloudKey' : Secret , ..) > $ RelayUser 'forwardCommand' Device | (encrypt('auth', Secret) ; 'revoke' ; UserY) \n= < Device | ('trusted' : Trusted , 'cloudKey' : Secret , ..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > \n=> ep: ev1(UserX, deviceB) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | ('near' : Device , ..) > \n=> ep: ev2(UserX, Device) @ S < UserX | ('near' : Device , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > \n=> ep: ev3(UserX, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | (..) > < UserY | (...) > \n=> ep: ev4(UserX, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > ."
+    }
+  ],
+  "coverage_issues": [
+    "B5 (action, line 38): no event rule for the initiated message",
+    "B7 (action, line 46): no event rule for the initiated message"
+  ]
+}

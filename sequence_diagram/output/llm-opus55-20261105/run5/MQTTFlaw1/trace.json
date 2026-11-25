@@ -1,0 +1,86 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        10,
+        16
+      ],
+      "head": "alt UserX exists",
+      "state_rules": [
+        0
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        18,
+        21
+      ],
+      "head": "alt The user currently has permission at the cloud",
+      "state_rules": [
+        1
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        23,
+        34
+      ],
+      "head": "alt UserX exists",
+      "state_rules": [
+        2,
+        3
+      ],
+      "event_rules": [
+        2
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < cloudB | ('buffer' : nils , 'permission' : (UserX , Rest) , ..) > $ UserX 'publish' cloudB | ('toggle') \n= < cloudB | ('buffer' : 'toggle' , 'permission' : (UserX , Rest) , ..) > $ cloudB 'ack' UserX | ('toggle') ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < cloudB | ('permission' : (UserX , Rest) , ..) > $ cloudB 'revokePermission' cloudB | (UserX) \n= < cloudB | ('permission' : (Rest) , ..) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < cloudB | ('buffer' : Msg , 'permission' : (deviceA , Rest) , ..) > $ UserX 'release' cloudB \n= < cloudB | ('buffer' : nils , 'permission' : (deviceA , Rest) , ..) > $ cloudB 'publishMsg' deviceA | (Msg) ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < deviceA | ('on' : false , ..) > $ cloudB 'publishMsg' deviceA | ('toggle') \n= < deviceA | ('on' : true , ..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | (..) > \n=> ep: ev1(UserX) @ S < UserX | (..) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < cloudB | ('permission' : (UserX , Rest) , ..) > \n=> ep: ev2(UserX) @ S < cloudB | ('permission' : (UserX , Rest) , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | (..) > \n=> ep: ev3(UserX) @ S < UserX | (..) > ."
+    }
+  ],
+  "coverage_issues": []
+}

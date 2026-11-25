@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "context_id": "95325a1290fbceade709614b5fba7552ab4c402193da3f53846f64fae4c5f7df",
+  "answers": {
+    "genPolicy:f8f20872e68b490929f43218761bae11261660ef950fcef9a63379cb4320b2e6": "[B1] < cloudA | userA : ('members' : Members, ...), ... > $ userA 'invite' cloudA | (userB)\n=> < cloudA | userA : ('members' : (userB, Members), ...), ... > .\n[B1] < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : nils, ...), ... >\n=> < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : DeviceX, ...), ... > .\n[B2] < cloudA | userA : ('device' : DeviceX, ...), DeviceX : ('key' : Key, ...), ... > $ userA 'requestKey' cloudA | (DeviceX)\n=> < cloudA | userA : ('device' : DeviceX, ...), DeviceX : ('key' : Key, ...), ... > $ cloudA 'sendKey' userA | (DeviceX ; Key) .\n[B2] < userA | 'key' : nils, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)\n=> < userA | 'key' : Key, ... > .\n[B2] < userA | 'key' : ExistingKey, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)\n=> < userA | 'key' : ExistingKey, ... > .\n[B3] < DeviceX | 'key' : Key, 'on' : false, ... > $ userA 'turnOn' DeviceX | (Key)\n=> < DeviceX | 'key' : Key, 'on' : true, ... > .\n[B4] < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : false, ... > $ userA 'cloudTurnOn' cloudA | (DeviceX)\n=> < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : true, ... > .\n[B5] < cloudA | userA : ('device' : DeviceX, 'members' : (userB), ...), ... > < userB | 'device' : DeviceY, ... > $ userA 'removeMember' cloudA | (userB)\n=> < cloudA | userA : ('device' : DeviceX, 'members' : nils, ...), ... > < userB | 'device' : nils, ... > .",
+    "genPolicyVars:cb78237b59b6a5d5bef4c7fb254e2c011a624c8df95158fd3afddfb3ed008438": "{\n  \"DeviceX\": \"Device\",\n  \"DeviceY\": \"Device\",\n  \"ExistingKey\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\"\n}",
+    "filterEvents:54539c48369a090cf33c9906388cea1b3c35011150fb99773f44eb0c3fcbdff0": "[1, 2, 4, 5, 6]",
+    "genInit:fa6da7e7d7be995da92441ef3851843b6747f90eb9b1779b7acad226a0632611": "< cloudA | (cloudA : ('device' : deviceB , 'members' : (userA)) , deviceB : ('key' : 'keyA')) > < userA | ('key' : nils) > < deviceB | ('on' : false , 'key' : 'keyA') > < userB | ('device' : nils) >"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:f8f20872e68b490929f43218761bae11261660ef950fcef9a63379cb4320b2e6"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < cloudA | UserX : ('members' : Members, ...), ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (UserY, Members), ...), ... > .\n[B1] < cloudA | UserX : ('device' : DeviceX, ...), UserY : ('device' : nils, ...), ... >\n=> < cloudA | UserX : ('device' : DeviceX, ...), UserY : ('device' : DeviceX, ...), ... > .\n[B2] < cloudA | UserX : ('device' : DeviceX, ...), ... > $ UserX 'requestKey' cloudA | (DeviceX)\n=> < cloudA | UserX : ('device' : DeviceX, ...), ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key) .\n[B2] < UserX | 'key' : nils, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : Key, ... > .\n[B2] < UserX | 'key' : ExistingKey, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : ExistingKey, ... > .\n[B3] < deviceB | 'key' : Key, 'on' : false, ... > $ UserX 'turnOn' deviceB | (Key)\n=> < deviceB | 'key' : Key, 'on' : true, ... > .\n[B4] < cloudA | UserX : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : false, ... > $ UserX 'cloudTurnOn' cloudA | (DeviceX)\n=> < cloudA | UserX : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : true, ... > .\n[B5] < cloudA | UserX : ('device' : DeviceX, ...), 'members' : (UserY), ... > UserY : ('device' : DeviceY, ...), ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : DeviceX, ...), 'members' : nils, ... > UserY : ('device' : nils, ...), ... > .",
+      "error": "No terminal matches 'U' in the current parser context, at line 15 col 74\n\nviceX, ...), 'members' : (UserY), ... > UserY : ('device' : DeviceY, ...), ... >\n                                        ^\nExpected one of: '<', '\\\\$'"
+    },
+    {
+      "attempt": 1,
+      "output": "[B1] < cloudA | userA : ('members' : Members, ...), ... > $ userA 'invite' cloudA | (userB)\n=> < cloudA | userA : ('members' : (userB, Members), ...), ... > .\n[B1] < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : nils, ...), ... >\n=> < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : DeviceX, ...), ... > .\n[B2] < cloudA | userA : ('device' : DeviceX, ...), ... > $ userA 'requestKey' cloudA | (DeviceX)\n=> < cloudA | userA : ('device' : DeviceX, ...), ... > $ cloudA 'sendKey' userA | (DeviceX ; Key) .\n[B2] < userA | 'key' : nils, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)\n=> < userA | 'key' : Key, ... > .\n[B2] < userA | 'key' : ExistingKey, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)\n=> < userA | 'key' : ExistingKey, ... > .\n[B3] < DeviceX | 'key' : Key, 'on' : false, ... > $ userA 'turnOn' DeviceX | (Key)\n=> < DeviceX | 'key' : Key, 'on' : true, ... > .\n[B4] < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : false, ... > $ userA 'cloudTurnOn' cloudA | (DeviceX)\n=> < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : true, ... > .\n[B5] < cloudA | userA : ('device' : DeviceX, 'members' : (userB), ...), ... > < userB | 'device' : DeviceY, ... > $ userA 'removeMember' cloudA | (userB)\n=> < cloudA | userA : ('device' : DeviceX, 'members' : nils, ...), ... > < userB | 'device' : nils, ... > .",
+      "error": "[Errors]\nFind additional variables Key in right-hand side of state rule eq < cloudA | (userA : ('device' : DeviceX , ..) , ..) > $ userA 'requestKey' cloudA | (DeviceX) \n= < cloudA | (userA : ('device' : DeviceX , ..) , ..) > $ cloudA 'sendKey' userA | (DeviceX ; Key) ..\nThese variables should appear on the left-hand side (premise) first. To record them, possibly use an attribute in the internal states on the left-hand side."
+    },
+    {
+      "attempt": 2,
+      "output": "[B1] < cloudA | userA : ('members' : Members, ...), ... > $ userA 'invite' cloudA | (userB)\n=> < cloudA | userA : ('members' : (userB, Members), ...), ... > .\n[B1] < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : nils, ...), ... >\n=> < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : DeviceX, ...), ... > .\n[B2] < cloudA | userA : ('device' : DeviceX, ...), DeviceX : ('key' : Key, ...), ... > $ userA 'requestKey' cloudA | (DeviceX)\n=> < cloudA | userA : ('device' : DeviceX, ...), DeviceX : ('key' : Key, ...), ... > $ cloudA 'sendKey' userA | (DeviceX ; Key) .\n[B2] < userA | 'key' : nils, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)\n=> < userA | 'key' : Key, ... > .\n[B2] < userA | 'key' : ExistingKey, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)\n=> < userA | 'key' : ExistingKey, ... > .\n[B3] < DeviceX | 'key' : Key, 'on' : false, ... > $ userA 'turnOn' DeviceX | (Key)\n=> < DeviceX | 'key' : Key, 'on' : true, ... > .\n[B4] < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : false, ... > $ userA 'cloudTurnOn' cloudA | (DeviceX)\n=> < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : true, ... > .\n[B5] < cloudA | userA : ('device' : DeviceX, 'members' : (userB), ...), ... > < userB | 'device' : DeviceY, ... > $ userA 'removeMember' cloudA | (userB)\n=> < cloudA | userA : ('device' : DeviceX, 'members' : nils, ...), ... > < userB | 'device' : nils, ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:cb78237b59b6a5d5bef4c7fb254e2c011a624c8df95158fd3afddfb3ed008438"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"DeviceX\": \"Device\",\n  \"DeviceY\": \"Device\",\n  \"ExistingKey\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:54539c48369a090cf33c9906388cea1b3c35011150fb99773f44eb0c3fcbdff0"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 2, 4, 5, 6]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:fa6da7e7d7be995da92441ef3851843b6747f90eb9b1779b7acad226a0632611"
+    },
+    {
+      "attempt": 0,
+      "output": "< cloudA | (cloudA : ('device' : deviceB , 'members' : (userA)) , deviceB : ('key' : 'keyA')) > < userA | ('key' : nils) > < deviceB | ('on' : false , 'key' : 'keyA') > < userB | ('device' : nils) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:a7c07892f1371ba13f62e796d29eebbf1fac1cff7bf95e28502c7ae82527731b"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] => ev1 .\n[B2] < userA | 'key' : UserKey , ... > < DeviceX | ... > => ev2(DeviceX) .\n[B3] < userA | 'key' : Key , ... > < DeviceX | ... > => ev3(DeviceX, Key) .\n[B4] < userA | 'key' : UserKey , ... > < DeviceX | ... > => ev4(DeviceX) .\n[B5] < cloudA | userA : ('device' : DeviceX , 'members' : (userB)) , ... > => ev5 .",
+      "error": "No terminal matches '.' in the current parser context, at line 1 col 8\n\n=> ev1 .\n       ^\nExpected one of: '\\\\('"
+    },
+    {
+      "attempt": 1,
+      "output": "[B1] => ev1() .\n[B2] < userA | ... > < DeviceX | ... > => ev2(DeviceX) .\n[B3] < userA | 'key' : Key , ... > < DeviceX | ... > => ev3(DeviceX, Key) .\n[B4] < userA | ... > < DeviceX | ... > => ev4(DeviceX) .\n[B5] < cloudA | userA : ('device' : DeviceX , 'members' : (userB)) , ... > => ev5() .",
+      "error": "No terminal matches ')' in the current parser context, at line 1 col 8\n\n=> ev1() .\n       ^\nExpected one of: 'user[A-Z][a-zA-Z0-9]*', 'device[A-Z][a-zA-Z0-9]*', '[A-Z](?:[a-zA-Z0-9_])*', 'nils', '\\\\.\\\\.\\\\.(?:\\\\.)*', '\\\\(', '(?:false|true)', '(?:encrypt|decrypt)', 'list', 'app[A-Z][a-zA-Z0-9]*', '[0-9]+', 'cloud[A-Z][a-zA-Z0-9]*', 'server[A-Z][a-zA-Z0-9]*', 'client[A-Z][a-zA-Z0-9]*'"
+    },
+    {
+      "attempt": 2,
+      "output": "[B1] < userA | ... > => ev1 .\n[B2] < userA | ... > < DeviceX | ... > => ev2(DeviceX) .\n[B3] < userA | 'key' : Key , ... > < DeviceX | ... > => ev3(DeviceX, Key) .\n[B4] < userA | ... > < DeviceX | ... > => ev4(DeviceX) .\n[B5] < cloudA | userA : ('device' : DeviceX , 'members' : (userB)) , ... > => ev5 .",
+      "error": "No terminal matches '.' in the current parser context, at line 1 col 24\n\n< userA | ... > => ev1 .\n                       ^\nExpected one of: '\\\\('"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userA 'pressButton' deviceA
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userA 'pressButton' deviceA
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userA 'pressButton' deviceA
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userA 'bind' cloudA | encrypt('R'2357136044, 'keyA')
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'reset' cloudA | deviceA
+$ userC 'approach' deviceA
+$ userC 'pressButton' deviceA
+$ userA 'approach' deviceA
+$ userA 'leave' deviceA
+$ userC 'leave' deviceA
+$ userC 'bind' cloudA | encrypt('R'362609376e, 'keyA')
+$ userA 'approach' deviceA
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'bind' cloudA | encrypt('R'2357136044, 'keyA')
+$ userA 'approach' deviceA
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'reset' cloudA | deviceA
+$ userC 'reset' cloudA | deviceA

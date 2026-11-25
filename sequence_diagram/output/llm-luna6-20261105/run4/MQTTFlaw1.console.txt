@@ -1,0 +1,111 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 3 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4593
+--------------------------------------------------
+```text
+[B1] < User | ... > < cloudB | 'buffer' : nils , User : ('permission' : true , ...) , ... > $ User 'publishToggle' cloudB
+=> < User | ... > < cloudB | 'buffer' : 'toggle' , User : ('permission' : true , ...) , ... > $ cloudB 'acknowledge' User .
+[B1] < User | ... > < cloudB | 'buffer' : 'toggle' , User : ('permission' : true , ...) , ... > $ cloudB 'acknowledge' User
+=> < User | ... > < cloudB | 'buffer' : 'toggle' , User : ('permission' : true , ...) , ... > .
+[B2] < cloudB | User : ('permission' : true , ...) , ... >
+=> < cloudB | User : ('permission' : false , ...) , ... > .
+[B3] < User | ... > < cloudB | 'buffer' : 'toggle' , deviceA : ('permission' : true , ...) , ... > $ User 'releaseMessage' cloudB
+=> < User | ... > < cloudB | 'buffer' : nils , deviceA : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceA | 'toggle' .
+[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | 'toggle'
+=> < deviceA | 'on' : true , ... > .
+[B3] < deviceA | 'on' : true , ... > $ cloudB 'publish' deviceA | 'toggle'
+=> < deviceA | 'on' : true , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2556
+--------------------------------------------------
+```json
+{"User": "User"}
+```
+==================================================
+{'User': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | nils > < userC | nils > < cloudB | ('buffer' : 'toggle' , [Principal] : ('permission' : [Bool]) , [User] : ('permission' : [Bool])) > < deviceA | ('on' : [Bool]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < User | (..) > < cloudB | ('buffer' : nils , User : ('permission' : true , ...) , ....) > $ User 'publishToggle' cloudB 
+= < User | (..) > < cloudB | ('buffer' : 'toggle' , User : ('permission' : true , ...) , ....) > $ cloudB 'acknowledge' User .
+eq < User | (..) > < cloudB | ('buffer' : 'toggle' , User : ('permission' : true , ...) , ....) > $ cloudB 'acknowledge' User 
+= < User | (..) > < cloudB | ('buffer' : 'toggle' , User : ('permission' : true , ...) , ....) > .
+eq < cloudB | (User : ('permission' : true , ..) , ...) > 
+= < cloudB | (User : ('permission' : false , ..) , ...) > .
+eq < User | (..) > < cloudB | ('buffer' : 'toggle' , deviceA : ('permission' : true , ...) , ....) > $ User 'releaseMessage' cloudB 
+= < User | (..) > < cloudB | ('buffer' : nils , deviceA : ('permission' : true , ...) , ....) > $ cloudB 'publish' deviceA | ('toggle') .
+eq < deviceA | ('on' : false , ..) > $ cloudB 'publish' deviceA | ('toggle') 
+= < deviceA | ('on' : true , ..) > .
+eq < deviceA | ('on' : true , ..) > $ cloudB 'publish' deviceA | ('toggle') 
+= < deviceA | ('on' : true , ..) > .
+$ User 'publishToggle' cloudB
+$ cloudB 'acknowledge' User
+$ User 'releaseMessage' cloudB
+$ cloudB 'publish' deviceA | ('toggle')
+[*] Total token: 1577
+--------------------------------------------------
+```text
+[1, 3]
+```
+==================================================
+[1, 3]
+[$ User 'publishToggle' cloudB, $ User 'releaseMessage' cloudB]
+[eq ev1(User) = $ User 'publishToggle' cloudB ., eq ev2(User) = $ User 'releaseMessage' cloudB .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3256
+--------------------------------------------------
+```text
+< userA | nils > < userC | nils > < cloudB | ('buffer' : nils , deviceA : ('permission' : true) , userA : ('permission' : true) , userC : ('permission' : false)) > < deviceA | ('on' : false) >
+```
+==================================================
+< userA | (nils) > < userC | (nils) > < cloudB | ('buffer' : nils , deviceA : ('permission' : true) , userA : ('permission' : true) , userC : ('permission' : false)) > < deviceA | ('on' : false) >
+[*] Generating event rules with LLM...
+[*] Total token: 3517
+--------------------------------------------------
+```text
+[B1] < UserX | ... > => ev1(UserX) .
+[B3] < UserX | ... > => ev2(UserX) .
+```
+==================================================
+< UserX | ... > => ev1(UserX) .
+< UserX | ... > => ev2(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 1916
+--------------------------------------------------
+```json
+{"UserX": "User"}
+```
+==================================================
+{'UserX': 'User'}
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | (..) > 
+=> ep: ev1(UserX) @ S < UserX | (..) > .
+rl [rev2]: E @ S < UserX | (..) > 
+=> ep: ev2(UserX) @ S < UserX | (..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 2368
+--------------------------------------------------
+```text
+deviceOn =| < deviceA | 'on' : true , ... > .
+attackerAuthorized =| < cloudB | userA : ('permission' : true , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Add varable types to AST
+[+] Check CTRL-revoked: holds (0 events)
+[+] Model written: sequence_diagram/output/llm-luna6-20261105/run4/MQTTFlaw1/rules.maude; status: validated

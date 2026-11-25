@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:43:25.441Z",
+  "model": "f5256af47b43",
+  "note": "",
+  "protocol": "MaagLevel",
+  "runs": [
+    "luna6-run2"
+  ],
+  "verdict": "absent"
+}

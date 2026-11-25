@@ -1,0 +1,26 @@
+{
+  "runs": {
+    "run1": "sequence_diagram/output/eval-astra-20261105/run1",
+    "run2": "sequence_diagram/output/eval-astra-20261105/run2",
+    "run3": "sequence_diagram/output/eval-astra-20261105/run3",
+    "run4": "sequence_diagram/output/eval-astra-20261105/run4",
+    "run5": "sequence_diagram/output/eval-astra-20261105/run5"
+  },
+  "mean_of_protocols": {
+    "acc": 91.7,
+    "rec": 91.3
+  },
+  "mean_of_protocols_loaded_runs_only": {
+    "acc": 92.8,
+    "rec": 93.3
+  },
+  "slot_labels": {
+    "literal": 201,
+    "same meaning": 60,
+    "not generated": 11,
+    "different": 11,
+    "generated narrower": 5,
+    "generated wider": 7
+  },
+  "unreviewed_mappings": 120
+}

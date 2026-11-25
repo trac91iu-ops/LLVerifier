@@ -1,0 +1,105 @@
+{
+  "protocol": "Midea",
+  "model_sha256": "92d65e0bbba0a602bb1e7fa07d6c0e0a3cad980bb741af921d69bc3c0c095063",
+  "runs": [
+    "run2"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run2/Midea/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Midea/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bindDevice'": "'callAPI:bind'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'resetDevice'": "'callAPI:reset'",
+      "'sendKey'": "'sendKey'"
+    },
+    "attributes": {
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'online'": "'online'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'deviceKey'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'deviceKey'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:reset'",
+      "'leaves'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'key'",
+      "'localTo'",
+      "'online'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bindDevice'",
+      "'leave'",
+      "'pressButton'",
+      "'resetDevice'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'key'",
+      "'near'",
+      "'online'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'deviceKey'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:01:15+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1691,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bindDevice'\": \"'callAPI:bind'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'resetDevice'\": \"'callAPI:reset'\",\n    \"'sendKey'\": \"'sendKey'\"\n  },\n  \"attributes\": {\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'online'\": \"'online'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'deviceKey'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'deviceKey'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

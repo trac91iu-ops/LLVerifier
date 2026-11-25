@@ -1,0 +1,166 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4753
+--------------------------------------------------
+```text
+[B1] < cloudA | UserX : ('members' : Members, ...), ... > $ UserX 'invite' cloudA | (UserY)
+=> < cloudA | UserX : ('members' : (UserY, Members), ...), ... > .
+[B1] < cloudA | UserX : ('device' : DeviceX, ...), UserY : ('device' : nils, ...), ... >
+=> < cloudA | UserX : ('device' : DeviceX, ...), UserY : ('device' : DeviceX, ...), ... > .
+[B2] < cloudA | UserX : ('device' : DeviceX, ...), ... > $ UserX 'requestKey' cloudA | (DeviceX)
+=> < cloudA | UserX : ('device' : DeviceX, ...), ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key) .
+[B2] < UserX | 'key' : nils, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)
+=> < UserX | 'key' : Key, ... > .
+[B2] < UserX | 'key' : ExistingKey, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)
+=> < UserX | 'key' : ExistingKey, ... > .
+[B3] < deviceB | 'key' : Key, 'on' : false, ... > $ UserX 'turnOn' deviceB | (Key)
+=> < deviceB | 'key' : Key, 'on' : true, ... > .
+[B4] < cloudA | UserX : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : false, ... > $ UserX 'cloudTurnOn' cloudA | (DeviceX)
+=> < cloudA | UserX : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : true, ... > .
+[B5] < cloudA | UserX : ('device' : DeviceX, ...), 'members' : (UserY), ... > UserY : ('device' : DeviceY, ...), ... > $ UserX 'removeMember' cloudA | (UserY)
+=> < cloudA | UserX : ('device' : DeviceX, ...), 'members' : nils, ... > UserY : ('device' : nils, ...), ... > .
+```
+==================================================
+[*] Total token: 5324
+--------------------------------------------------
+```text
+[B1] < cloudA | userA : ('members' : Members, ...), ... > $ userA 'invite' cloudA | (userB)
+=> < cloudA | userA : ('members' : (userB, Members), ...), ... > .
+[B1] < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : nils, ...), ... >
+=> < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : DeviceX, ...), ... > .
+[B2] < cloudA | userA : ('device' : DeviceX, ...), ... > $ userA 'requestKey' cloudA | (DeviceX)
+=> < cloudA | userA : ('device' : DeviceX, ...), ... > $ cloudA 'sendKey' userA | (DeviceX ; Key) .
+[B2] < userA | 'key' : nils, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)
+=> < userA | 'key' : Key, ... > .
+[B2] < userA | 'key' : ExistingKey, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)
+=> < userA | 'key' : ExistingKey, ... > .
+[B3] < DeviceX | 'key' : Key, 'on' : false, ... > $ userA 'turnOn' DeviceX | (Key)
+=> < DeviceX | 'key' : Key, 'on' : true, ... > .
+[B4] < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : false, ... > $ userA 'cloudTurnOn' cloudA | (DeviceX)
+=> < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : true, ... > .
+[B5] < cloudA | userA : ('device' : DeviceX, 'members' : (userB), ...), ... > < userB | 'device' : DeviceY, ... > $ userA 'removeMember' cloudA | (userB)
+=> < cloudA | userA : ('device' : DeviceX, 'members' : nils, ...), ... > < userB | 'device' : nils, ... > .
+```
+==================================================
+[*] Total token: 5607
+--------------------------------------------------
+```text
+[B1] < cloudA | userA : ('members' : Members, ...), ... > $ userA 'invite' cloudA | (userB)
+=> < cloudA | userA : ('members' : (userB, Members), ...), ... > .
+[B1] < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : nils, ...), ... >
+=> < cloudA | userA : ('device' : DeviceX, ...), userB : ('device' : DeviceX, ...), ... > .
+[B2] < cloudA | userA : ('device' : DeviceX, ...), DeviceX : ('key' : Key, ...), ... > $ userA 'requestKey' cloudA | (DeviceX)
+=> < cloudA | userA : ('device' : DeviceX, ...), DeviceX : ('key' : Key, ...), ... > $ cloudA 'sendKey' userA | (DeviceX ; Key) .
+[B2] < userA | 'key' : nils, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)
+=> < userA | 'key' : Key, ... > .
+[B2] < userA | 'key' : ExistingKey, ... > $ cloudA 'sendKey' userA | (DeviceX ; Key)
+=> < userA | 'key' : ExistingKey, ... > .
+[B3] < DeviceX | 'key' : Key, 'on' : false, ... > $ userA 'turnOn' DeviceX | (Key)
+=> < DeviceX | 'key' : Key, 'on' : true, ... > .
+[B4] < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : false, ... > $ userA 'cloudTurnOn' cloudA | (DeviceX)
+=> < cloudA | userA : ('device' : DeviceX, ...), ... > < DeviceX | 'on' : true, ... > .
+[B5] < cloudA | userA : ('device' : DeviceX, 'members' : (userB), ...), ... > < userB | 'device' : DeviceY, ... > $ userA 'removeMember' cloudA | (userB)
+=> < cloudA | userA : ('device' : DeviceX, 'members' : nils, ...), ... > < userB | 'device' : nils, ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2944
+--------------------------------------------------
+```json
+{
+  "DeviceX": "Device",
+  "DeviceY": "Device",
+  "ExistingKey": "Qid",
+  "Key": "Qid",
+  "Members": "Set"
+}
+```
+==================================================
+{'DeviceX': 'Device', 'DeviceY': 'Device', 'ExistingKey': 'Qid', 'Key': 'Qid', 'Members': 'Set'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< cloudA | ([Principal] : ('device' : [Device] , 'members' : {[Set] , [Principal]}) , [Device] : ('key' : [Qid])) > < userA | ('key' : [Qid]) > < deviceB | ('on' : [Bool] , 'key' : [Qid]) > < userB | ('device' : [Device]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < cloudA | (userA : ('members' : Members , ..) , ...) > $ userA 'invite' cloudA | (userB) 
+= < cloudA | (userA : ('members' : (userB , Members) , ..) , ...) > .
+eq < cloudA | (userA : ('device' : DeviceX , ..) , userB : ('device' : nils , ...) , ....) > 
+= < cloudA | (userA : ('device' : DeviceX , ..) , userB : ('device' : DeviceX , ...) , ....) > .
+eq < cloudA | (userA : ('device' : DeviceX , ..) , DeviceX : ('key' : Key , ...) , ....) > $ userA 'requestKey' cloudA | (DeviceX) 
+= < cloudA | (userA : ('device' : DeviceX , ..) , DeviceX : ('key' : Key , ...) , ....) > $ cloudA 'sendKey' userA | (DeviceX ; Key) .
+eq < userA | ('key' : nils , ..) > $ cloudA 'sendKey' userA | (DeviceX ; Key) 
+= < userA | ('key' : Key , ..) > .
+eq < userA | ('key' : ExistingKey , ..) > $ cloudA 'sendKey' userA | (DeviceX ; Key) 
+= < userA | ('key' : ExistingKey , ..) > .
+eq < DeviceX | ('key' : Key , 'on' : false , ..) > $ userA 'turnOn' DeviceX | (Key) 
+= < DeviceX | ('key' : Key , 'on' : true , ..) > .
+eq < cloudA | (userA : ('device' : DeviceX , ..) , ...) > < DeviceX | ('on' : false , ....) > $ userA 'cloudTurnOn' cloudA | (DeviceX) 
+= < cloudA | (userA : ('device' : DeviceX , ..) , ...) > < DeviceX | ('on' : true , ....) > .
+eq < cloudA | (userA : ('device' : DeviceX , 'members' : (userB) , ..) , ...) > < userB | ('device' : DeviceY , ....) > $ userA 'removeMember' cloudA | (userB) 
+= < cloudA | (userA : ('device' : DeviceX , 'members' : nils , ..) , ...) > < userB | ('device' : nils , ....) > .
+$ userA 'invite' cloudA | (userB)
+$ userA 'requestKey' cloudA | (DeviceX)
+$ cloudA 'sendKey' userA | (DeviceX ; Key)
+$ userA 'turnOn' DeviceX | (Key)
+$ userA 'cloudTurnOn' cloudA | (DeviceX)
+$ userA 'removeMember' cloudA | (userB)
+[*] Total token: 1799
+--------------------------------------------------
+```text
+[1, 2, 4, 5, 6]
+```
+==================================================
+[1, 2, 4, 5, 6]
+[$ userA 'invite' cloudA | (userB), $ userA 'requestKey' cloudA | (DeviceX), $ userA 'turnOn' DeviceX | (Key), $ userA 'cloudTurnOn' cloudA | (DeviceX), $ userA 'removeMember' cloudA | (userB)]
+[eq ev1 = $ userA 'invite' cloudA | (userB) ., eq ev2(DeviceX) = $ userA 'requestKey' cloudA | (DeviceX) ., eq ev3(DeviceX, Key) = $ userA 'turnOn' DeviceX | (Key) ., eq ev4(DeviceX) = $ userA 'cloudTurnOn' cloudA | (DeviceX) ., eq ev5 = $ userA 'removeMember' cloudA | (userB) .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3281
+--------------------------------------------------
+[-] ValueError: Validation failed after 2 repairs: No terminal matches '.' in the current parser context, at line 1 col 24
+
+< userA | ... > => ev1 .
+                       ^
+Expected one of: '\\('
+```text
+< cloudA | (cloudA : ('device' : deviceB , 'members' : (userA)) , deviceB : ('key' : 'keyA')) > < userA | ('key' : nils) > < deviceB | ('on' : false , 'key' : 'keyA') > < userB | ('device' : nils) >
+```
+==================================================
+< cloudA | (cloudA : ('device' : deviceB , 'members' : (userA)) , deviceB : ('key' : 'keyA')) > < userA | ('key' : nils) > < deviceB | ('on' : false , 'key' : 'keyA') > < userB | ('device' : nils) >
+[*] Generating event rules with LLM...
+[*] Total token: 4578
+--------------------------------------------------
+```text
+[B1] => ev1 .
+[B2] < userA | 'key' : UserKey , ... > < DeviceX | ... > => ev2(DeviceX) .
+[B3] < userA | 'key' : Key , ... > < DeviceX | ... > => ev3(DeviceX, Key) .
+[B4] < userA | 'key' : UserKey , ... > < DeviceX | ... > => ev4(DeviceX) .
+[B5] < cloudA | userA : ('device' : DeviceX , 'members' : (userB)) , ... > => ev5 .
+```
+==================================================
+[*] Total token: 4432
+--------------------------------------------------
+```text
+[B1] => ev1() .
+[B2] < userA | ... > < DeviceX | ... > => ev2(DeviceX) .
+[B3] < userA | 'key' : Key , ... > < DeviceX | ... > => ev3(DeviceX, Key) .
+[B4] < userA | ... > < DeviceX | ... > => ev4(DeviceX) .
+[B5] < cloudA | userA : ('device' : DeviceX , 'members' : (userB)) , ... > => ev5() .
+```
+==================================================
+[*] Total token: 4140
+--------------------------------------------------
+```text
+[B1] < userA | ... > => ev1 .
+[B2] < userA | ... > < DeviceX | ... > => ev2(DeviceX) .
+[B3] < userA | 'key' : Key , ... > < DeviceX | ... > => ev3(DeviceX, Key) .
+[B4] < userA | ... > < DeviceX | ... > => ev4(DeviceX) .
+[B5] < cloudA | userA : ('device' : DeviceX , 'members' : (userB)) , ... > => ev5 .
+```
+==================================================

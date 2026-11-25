@@ -1,0 +1,21 @@
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.
+Warning: "rules.maude", line 33 (mod SYSTEM): bad token userY.
+Warning: "rules.maude", line 33 (mod SYSTEM): no parse for statement
+eq < cloudA | (..) > $ userY 'retrieveKey' cloudA | (deviceB) = < cloudA | (..) > .
+Warning: "rules.maude", line 70 (mod TRANSITION): bad token userY.
+Warning: "rules.maude", line 70 (mod TRANSITION): no parse for statement
+eq ev9 = $ userY 'retrieveKey' cloudA | (deviceB) .
+Warning: "rules.maude", line 85 (mod TRANSITION): didn't expect token userC:
+rl [ rev7 ] : E @ S => ep: ev7 ( userC <---*HERE*
+Warning: "rules.maude", line 84 (mod TRANSITION): no parse for statement
+rl [rev7] : E @ S => ep: ev7 (userC) @ S .
+Warning: "rules.maude", line 87 (mod TRANSITION): didn't expect token userC:
+rl [ rev8 ] : E @ S => ep: ev8 ( userC <---*HERE*
+Warning: "rules.maude", line 86 (mod TRANSITION): no parse for statement
+rl [rev8] : E @ S => ep: ev8 (userC) @ S .
+Warning: "rules.maude", line 89 (mod TRANSITION): didn't expect token UserY:
+rl [ rev9 ] : E @ S < UserY | ( 'key' : Key , .. ) > < deviceB | ( ... ) > => ep: ev9 ( UserY <---*HERE*
+Warning: "rules.maude", line 88 (mod TRANSITION): no parse for statement
+rl [rev9] : E @ S < UserY | ('key' : Key, ..) > < deviceB | (...) > => ep: ev9 (UserY) @ S < UserY | ('key' : Key, ..) > < deviceB | (...) > .

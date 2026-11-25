@@ -1,0 +1,108 @@
+{
+  "protocol": "MaagLevel",
+  "model_sha256": "347d749df639ed028e468aabaf4fa36f574593adcfca80eb3e05114659c7c6c3",
+  "runs": [
+    "run2"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run2/MaagLevel/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/MaagLevel/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'deliverCommand'": "'send'",
+      "'forwardCommand'": "'callAPI:proxy'",
+      "'leave'": "'leaves'",
+      "'revokeAccess'": "'callAPI:revoke'",
+      "'shareAccess'": "'callAPI:share'"
+    },
+    "attributes": {
+      "'cachedCommand'": "'commandList'",
+      "'key'": "'cloudKey'",
+      "'near'": "'localTo'",
+      "'trusted'": "'trustSet'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'auth'": "'auth'",
+      "'revoke'": "'revoke'",
+      "'secret'": "'secret'",
+      "'share'": "'share'"
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:proxy'",
+      "'callAPI:revoke'",
+      "'callAPI:share'",
+      "'leaves'",
+      "'send'"
+    ],
+    "attributes": [
+      "'cloudKey'",
+      "'commandList'",
+      "'localTo'",
+      "'trustSet'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'auth'",
+      "'revoke'",
+      "'secret'",
+      "'share'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'deliverCommand'",
+      "'forwardCommand'",
+      "'leave'",
+      "'revokeAccess'",
+      "'shareAccess'"
+    ],
+    "attributes": [
+      "'cachedCommand'",
+      "'key'",
+      "'near'",
+      "'trusted'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'auth'",
+      "'revoke'",
+      "'secret'",
+      "'share'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:01:09+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2475,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'deliverCommand'\": \"'send'\",\n    \"'forwardCommand'\": \"'callAPI:proxy'\",\n    \"'leave'\": \"'leaves'\",\n    \"'revokeAccess'\": \"'callAPI:revoke'\",\n    \"'shareAccess'\": \"'callAPI:share'\"\n  },\n  \"attributes\": {\n    \"'cachedCommand'\": \"'commandList'\",\n    \"'key'\": \"'cloudKey'\",\n    \"'near'\": \"'localTo'\",\n    \"'trusted'\": \"'trustSet'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'auth'\": \"'auth'\",\n    \"'revoke'\": \"'revoke'\",\n    \"'secret'\": \"'secret'\",\n    \"'share'\": \"'share'\"\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

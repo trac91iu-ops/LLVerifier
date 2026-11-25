@@ -1,0 +1,61 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:4bbd7260375af413f37316c06484df76c74fa0784da5e4212820133f0686f9e3"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'key' : nils , ... > < cloudA | UserX : ('device' : deviceB) , ... > $ UserX 'openWindow' cloudA | (deviceB)\n=> < UserX | 'key' : FreshKeyA , ... > < cloudA | UserX : ('device' : deviceB) , ... > $ cloudA 'openWindow' deviceB | (FreshKeyA) .\n[B1] < deviceB | 'key' : nils , ... > $ cloudA 'openWindow' deviceB | (FreshKeyA)\n=> < deviceB | 'key' : FreshKeyA , ... > .\n\n[B2] < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , ... > $ UserX 'bind' deviceB | (Key)\n=> < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'trusted' : (UserX, TrustedUsers) , ... > if Key == DeviceKey .\n\n[B3] < deviceB | 'trusted' : (UserX, TrustedUsers) , 'on' : false , ... > $ UserX 'turnOn' deviceB\n=> < deviceB | 'trusted' : (UserX, TrustedUsers) , 'on' : true , ... > .\n\n[B4] < cloudA | UserX : ('device' : deviceB) , ... > $ UserX 'turnOn' cloudA | (deviceB)\n=> < cloudA | UserX : ('device' : deviceB) , ... > $ cloudA 'turnOn' deviceB .\n[B4] < deviceB | 'trusted' : (cloudA, TrustedUsers) , 'on' : false , ... > $ cloudA 'turnOn' deviceB\n=> < deviceB | 'trusted' : (cloudA, TrustedUsers) , 'on' : true , ... > .\n\n[B5] < cloudA | UserX : ('members' : Members, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (UserY, Members), ...) , ... > .\n[B5] < cloudA | UserX : ('device' : deviceB, ...) , UserY : ('device' : nils, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : deviceB, ...) , UserY : ('device' : deviceB, ...) , ... > .\n\n[B6] < cloudA | UserX : ('members' : (UserY, Members), 'device' : deviceB, ...) , UserY : ('device' : deviceB, ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : Members, 'device' : deviceB, ...) , UserY : ('device' : nils, ...) , ... > .",
+    "error": "[Errors]\nFind additional variables TrustedUsers in right-hand side of state rule ceq < UserX | ('key' : Key , ..) > < deviceB | ('key' : DeviceKey , ..) > $ UserX 'bind' deviceB | (Key) \n= < UserX | ('key' : Key , ..) > < deviceB | ('key' : DeviceKey , 'trusted' : (UserX , TrustedUsers) , ..) > if Key == DeviceKey ..\nThese variables should appear on the left-hand side (premise) first. To record them, possibly use an attribute in the internal states on the left-hand side."
+  },
+  {
+    "attempt": 1,
+    "output": "[B1] < UserX | 'key' : nils , ... > < cloudA | UserX : ('device' : deviceB) , ... > $ UserX 'openWindow' cloudA | (deviceB)\n=> < UserX | 'key' : FreshKeyA , ... > < cloudA | UserX : ('device' : deviceB) , ... > $ cloudA 'openWindow' deviceB | (FreshKeyA) .\n[B1] < deviceB | 'key' : nils , ... > $ cloudA 'openWindow' deviceB | (FreshKeyA)\n=> < deviceB | 'key' : FreshKeyA , ... > .\n\n[B2] < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'trusted' : TrustedUsers , ... > $ UserX 'bind' deviceB | (Key)\n=> < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'trusted' : (UserX, TrustedUsers) , ... > if Key == DeviceKey .\n\n[B3] < deviceB | 'trusted' : (UserX, TrustedUsers) , 'on' : false , ... > $ UserX 'turnOn' deviceB\n=> < deviceB | 'trusted' : (UserX, TrustedUsers) , 'on' : true , ... > .\n\n[B4] < cloudA | UserX : ('device' : deviceB) , ... > $ UserX 'turnOn' cloudA | (deviceB)\n=> < cloudA | UserX : ('device' : deviceB) , ... > $ cloudA 'turnOn' deviceB .\n[B4] < deviceB | 'trusted' : (cloudA, TrustedUsers) , 'on' : false , ... > $ cloudA 'turnOn' deviceB\n=> < deviceB | 'trusted' : (cloudA, TrustedUsers) , 'on' : true , ... > .\n\n[B5] < cloudA | UserX : ('members' : Members, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (UserY, Members), ...) , ... > .\n[B5] < cloudA | UserX : ('device' : deviceB, ...) , UserY : ('device' : nils, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : deviceB, ...) , UserY : ('device' : deviceB, ...) , ... > .\n\n[B6] < cloudA | UserX : ('members' : (UserY, Members), 'device' : deviceB, ...) , UserY : ('device' : deviceB, ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : Members, 'device' : deviceB, ...) , UserY : ('device' : nils, ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:8c8335cfe1bb1f4a0b1430cb13a993ccee21fe771e061dfe6f3938ce1d7dba33"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"DeviceKey\": \"Qid\",\n  \"FreshKeyA\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"TrustedUsers\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:917afe85634818a11e875a2dda6271952e54ee4fc18c5c9edea87ee881551274"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 4, 5, 8, 9]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:d6a4e0242dc9c93f8cba2a97630dcd3ee4cbc146464a797a9dc2dc540467e2a8"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('key' : nils) > < userC | ('key' : nils) > < cloudA | (userA : ('device' : deviceB , 'members' : nils) , userC : ('device' : nils , 'members' : nils)) > < deviceB | ('trusted' : cloudA , 'on' : false , 'key' : nils) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:ca9757dbfc1454aa1c217a6cdf9c851ace52e5051858ce81a05f07863817e8fd"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'key' : nils , ... > < cloudA | UserX : ('device' : deviceB , ...) , ... > => ev1(UserX) .\n[B2] < UserX | 'key' : Key , ... > => ev2(UserX, Key) .\n[B3] < UserX | ... > < deviceB | ... > => ev3(UserX) .\n[B5] < UserX | ... > < UserY | ... > => ev4(UserX, UserY) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:7c1c7d76d85a5f30a1bebd1b95e053c1305168fe8f02496b22e8a40a52681a02"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceOn =| < deviceB | 'on' : true , ... > .\nattackerAuthorized =| < cloudA | userC : ('device' : deviceB , ...) , ... > .",
+    "error": null
+  }
+]

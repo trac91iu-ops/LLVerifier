@@ -1,0 +1,70 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('counter' : 0) > < deviceB | ('key' : 'keyB') > < userA | ('near' : deviceB , 'message' : nils) > < userC | ('near' : nils , 'message' : nils) > < cloudA | (deviceB : ('owners' : nils , 'key' : 'keyB')) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars FreshR : Qid .
+vars K : Qid .
+vars M : Item .
+vars Owners : Set .
+vars R : Qid .
+vars UserX : User .
+*** policy
+eq < system | ('counter' : N , ..) > < deviceB | ('key' : K , ...) > $ UserX 'pressButton' deviceB 
+= < system | ('counter' : N + 1 , ..) > < deviceB | ('key' : K , ...) > $ deviceB 'sendMessage' UserX | (encrypt(randomStr('R', N), K)) .
+eq < UserX | ('message' : nils , ..) > $ deviceB 'sendMessage' UserX | (M) 
+= < UserX | ('message' : M , ..) > .
+eq < cloudA | (deviceB : ('key' : K , 'owners' : Owners , ..) , ...) > $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, K)) 
+= < cloudA | (deviceB : ('key' : K , 'owners' : (UserX , Owners) , ..) , ...) > .
+eq < cloudA | (deviceB : ('owners' : (UserX , Owners) , ..) , ...) > $ UserX 'resetDevice' cloudA | (deviceB) 
+= < cloudA | (deviceB : ('owners' : (nils , Owners) , ..) , ...) > .
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars FreshR : Qid .
+vars K : Qid .
+vars M : Item .
+vars Owners : Set .
+vars R : Qid .
+vars UserX : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User Qid Qid -> Event .
+ops ev3 : User Qid -> Event .
+ops ev4 : User -> Event .
+ops ev5 : User -> Event .
+ops ev6 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'pressButton' deviceB .
+eq ev2(UserX, R, K) = $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, K)) .
+eq ev3(UserX, MessageA) = $ UserX 'bindDevice' cloudA | (MessageA) .
+eq ev4(UserX) = $ UserX 'resetDevice' cloudA | (deviceB) .
+eq ev5(UserX) = $ UserX 'approach' deviceB .
+eq ev6(UserX) = $ UserX 'leave' deviceB .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | ('message' : MessageA , ..) > 
+=> ep: ev3(UserX, MessageA) @ S < UserX | ('message' : MessageA , ..) > .
+rl [rev4]: E @ S < UserX | (..) > 
+=> ep: ev4(UserX) @ S < UserX | (..) > .
+rl [rev5]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+
+endm

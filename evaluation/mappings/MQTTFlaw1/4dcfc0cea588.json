@@ -1,0 +1,91 @@
+{
+  "protocol": "MQTTFlaw1",
+  "model_sha256": "4dcfc0cea588f5218a68b774f6f7af327307dc6040f399851cbb7523a2b402d0",
+  "runs": [
+    "run2"
+  ],
+  "generated": "sequence_diagram/output/eval-astra-20261105/run2/MQTTFlaw1/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/MQTTFlaw1/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'acknowledgeReceipt'": "'user:pubrec'",
+      "'publishMessage'": "'device:publish'",
+      "'publishToggle'": "'cloud:publish'",
+      "'releaseBufferedMessage'": "'cloud:pubrel'",
+      "'revokePermission'": "'cloud:revoke'"
+    },
+    "attributes": {
+      "'buffer'": "'storedMessages'",
+      "'on'": "'status'",
+      "'permission'": "'permission'"
+    },
+    "principals": {
+      "cloudB": "cloudB",
+      "deviceB": "deviceB",
+      "userA": "userA"
+    },
+    "constants": {
+      "'toggle'": "'toggle'"
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'cloud:publish'",
+      "'cloud:pubrel'",
+      "'cloud:revoke'",
+      "'device:publish'",
+      "'user:pubrec'"
+    ],
+    "attributes": [
+      "'device'",
+      "'permission'",
+      "'status'",
+      "'storedMessages'"
+    ],
+    "principals": [
+      "cloudB",
+      "deviceB",
+      "userA"
+    ],
+    "constants": [
+      "'toggle'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'acknowledgeReceipt'",
+      "'publishMessage'",
+      "'publishToggle'",
+      "'releaseBufferedMessage'",
+      "'revokePermission'"
+    ],
+    "attributes": [
+      "'buffer'",
+      "'on'",
+      "'permission'"
+    ],
+    "principals": [
+      "cloudB",
+      "deviceB",
+      "userA"
+    ],
+    "constants": [
+      "'toggle'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T07:20:54+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1404,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'acknowledgeReceipt'\": \"'user:pubrec'\",\n    \"'publishMessage'\": \"'device:publish'\",\n    \"'publishToggle'\": \"'cloud:publish'\",\n    \"'releaseBufferedMessage'\": \"'cloud:pubrel'\",\n    \"'revokePermission'\": \"'cloud:revoke'\"\n  },\n  \"attributes\": {\n    \"'buffer'\": \"'storedMessages'\",\n    \"'on'\": \"'status'\",\n    \"'permission'\": \"'permission'\"\n  },\n  \"principals\": {\n    \"cloudB\": \"cloudB\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\"\n  },\n  \"constants\": {\n    \"'toggle'\": \"'toggle'\"\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < deviceB | ('key' : nils , 'buttonPressed' : false) > < cloudA | (deviceB : ('owner' : nils , 'bindingKey' : 'empty')) > < userA | ('near' : true , 'key' : ('keyA')) > < userC | ('near' : false , 'key' : ('keyC')) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Key : Qid .
+vars OldKey : Set .
+vars UserX : User .
+*** policy
+eq < deviceB | ('buttonPressed' : false , ..) > $ UserX 'pressButton' deviceB 
+= < deviceB | ('buttonPressed' : true , ..) > .
+eq < deviceB | ('buttonPressed' : true , 'key' : OldKey , ..) > $ UserX 'setKey' deviceB | (Key) 
+= < deviceB | ('buttonPressed' : false , 'key' : Key , ..) > $ deviceB 'sendBindingKey' cloudA | (Key) .
+eq < cloudA | (deviceB : ('bindingKey' : OldKey , ..) , ...) > $ deviceB 'sendBindingKey' cloudA | (Key) 
+= < cloudA | (deviceB : ('bindingKey' : Key , ..) , ...) > .
+eq < deviceB | ('buttonPressed' : true , 'key' : Key , ..) > $ UserX 'retrieveKey' deviceB 
+= < deviceB | ('buttonPressed' : false , 'key' : Key , ..) > $ deviceB 'sendKey' UserX | (Key) .
+eq < UserX | ('key' : OldKey , ..) > $ deviceB 'sendKey' UserX | (Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < cloudA | (deviceB : ('bindingKey' : Key , 'owner' : nils , ..) , ...) > $ UserX 'bindDevice' cloudA | (deviceB ; Key) 
+= < cloudA | (deviceB : ('bindingKey' : Key , 'owner' : UserX , ..) , ...) > .
+eq < cloudA | (deviceB : ('bindingKey' : Key , 'owner' : UserX , ..) , ...) > $ UserX 'resetDevice' cloudA | (deviceB ; Key) 
+= < cloudA | (deviceB : ('bindingKey' : 'empty' , 'owner' : nils , ..) , ...) > .
+eq < UserX | ('near' : false , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : true , ..) > .
+eq < UserX | ('near' : true , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : false , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Key : Qid .
+vars OldKey : Set .
+vars UserX : User .
+vars MessageA : Qid .
+vars Rest : Set .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User Qid -> Event .
+ops ev3 : User -> Event .
+ops ev4 : User Qid -> Event .
+ops ev5 : User Qid -> Event .
+ops ev6 : User -> Event .
+ops ev7 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'pressButton' deviceB .
+eq ev2(UserX, Key) = $ UserX 'setKey' deviceB | (Key) .
+eq ev3(UserX) = $ UserX 'retrieveKey' deviceB .
+eq ev4(UserX, Key) = $ UserX 'bindDevice' cloudA | (deviceB ; Key) .
+eq ev5(UserX, Key) = $ UserX 'resetDevice' cloudA | (deviceB ; Key) .
+eq ev6(UserX) = $ UserX 'approach' deviceB .
+eq ev7(UserX) = $ UserX 'leave' deviceB .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : true , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : true , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : true , 'key' : (Key , Rest) , ..) > 
+=> ep: ev2(UserX, Key) @ S < UserX | ('near' : true , 'key' : (Key , Rest) , ..) > .
+rl [rev3]: E @ S < UserX | ('near' : true , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : true , ..) > .
+rl [rev4]: E @ S < UserX | ('key' : (Key , Rest) , ..) > < deviceB | (...) > 
+=> ep: ev4(UserX, Key) @ S < UserX | ('key' : (Key , Rest) , ..) > < deviceB | (...) > .
+rl [rev5]: E @ S < UserX | ('key' : (Key , Rest) , ..) > < deviceB | (...) > 
+=> ep: ev5(UserX, Key) @ S < UserX | ('key' : (Key , Rest) , ..) > < deviceB | (...) > .
+rl [rev6]: E @ S < UserX | ('near' : false , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : false , ..) > .
+rl [rev7]: E @ S < UserX | ('near' : true , ..) > 
+=> ep: ev7(UserX) @ S < UserX | ('near' : true , ..) > .
+
+endm

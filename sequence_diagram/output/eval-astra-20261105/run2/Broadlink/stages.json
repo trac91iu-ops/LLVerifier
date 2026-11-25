@@ -1,0 +1,66 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:732bb8587bcd70cb352a414249177df573da82b5ee12f6d1729754017ba32740"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceB | 'key' : OldKey , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : FreshKey , ... > .\n[B4] < UserX | 'key' : nils , ... > < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'retrieveKey' deviceB\n=> < UserX | 'key' : Key , ... > < deviceB | 'locked' : false , 'key' : Key , ... > .\n[B5] < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'lock' deviceB | Key\n=> < deviceB | 'locked' : true , 'key' : Key , ... > .\n[B6] < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('owners' : Owners , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Key)\n=> < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('owners' : (UserX , Owners) , ...) , ... > .\n[B7] < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > $ userC 'invite' cloudA | userA\n=> < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > .\n[B8] < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > $ userC 'remove' cloudA | userA\n=> < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > .\n[B9] < cloudA | ... > $ UserY 'retrieveKey' cloudA | deviceB\n=> < cloudA | ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:9f17408c0aa6dac0b0e5a1ab3cafd981a106c8e8f95cfce9c11a4c24178374f3"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"FreshKey\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"OldKey\": \"Qid\",\n  \"OldNear\": \"Set\",\n  \"Owners\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:0dc2d92c2c70b15cf72bcd749133c4468e78c33d13bb57d55ce62934ba883ede"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 4, 5, 6, 7, 8, 9]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:e229c9a3799fd511e467fd82a442f4ae85cf7da81d407a529a34f3cb367b5e7a"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('key' : nils , 'near' : deviceB) >\n< userC | ('key' : nils , 'near' : nils) >\n< deviceB | ('key' : 'deviceKey' , 'locked' : false) >\n< cloudA | (\n    userA : ('devices' : nils , 'members' : nils , 'owners' : nils) ,\n    userC : ('devices' : nils , 'members' : nils , 'owners' : nils) ,\n    deviceB : ('devices' : nils , 'members' : nils , 'owners' : nils , 'key' : 'deviceKey')\n) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:091ccd715e167598447965f69ee7ff45cea3f866671d2aa570519293a3ab40bc"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B2] < UserX | 'near' : (deviceB , Rest) , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B3] < UserX | 'near' : (deviceB , Rest) , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B4] < UserX | 'near' : (deviceB , Rest) , ... > => ev4(UserX) .\n[B5] < UserX | 'key' : Key , 'near' : deviceB , ... > => ev5(UserX, Key) .\n[B5] < UserX | 'key' : Key , 'near' : (deviceB , Rest) , ... > => ev5(UserX, Key) .\n[B6] < UserX | 'key' : Key , ... > < deviceB | ... > => ev6(UserX, Key) .\n[B7] < userC | ... > < userA | ... > => ev7 .\n[B8] < userC | ... > < userA | ... > => ev8 .\n[B9] < UserY | 'key' : Key , ... > < deviceB | ... > => ev9(UserY) .",
+    "error": "No terminal matches '.' in the current parser context, at line 11 col 40\n\n< userC | ... > < userA | ... > => ev7 .\n                                       ^\nExpected one of: '\\\\('"
+  },
+  {
+    "attempt": 1,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B2] < UserX | 'near' : (deviceB , Rest) , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B3] < UserX | 'near' : (deviceB , Rest) , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B4] < UserX | 'near' : (deviceB , Rest) , ... > => ev4(UserX) .\n[B5] < UserX | 'key' : Key , 'near' : deviceB , ... > => ev5(UserX, Key) .\n[B5] < UserX | 'key' : Key , 'near' : (deviceB , Rest) , ... > => ev5(UserX, Key) .\n[B6] < UserX | 'key' : Key , ... > < deviceB | ... > => ev6(UserX, Key) .\n[B7] < userC | ... > < userA | ... > => ev7() .\n[B8] < userC | ... > < userA | ... > => ev8() .\n[B9] < UserY | 'key' : Key , ... > < deviceB | ... > => ev9(UserY) .",
+    "error": "No terminal matches ')' in the current parser context, at line 11 col 40\n\n< userC | ... > < userA | ... > => ev7() .\n                                       ^\nExpected one of: 'client[A-Z][a-zA-Z0-9]*', 'nils', '(?:encrypt|decrypt)', 'list', '\\\\(', '\\\\.\\\\.\\\\.(?:\\\\.)*', '(?:false|true)', 'user[A-Z][a-zA-Z0-9]*', 'app[A-Z][a-zA-Z0-9]*', '[0-9]+', '[A-Z](?:[a-zA-Z0-9_])*', 'server[A-Z][a-zA-Z0-9]*', 'cloud[A-Z][a-zA-Z0-9]*', 'device[A-Z][a-zA-Z0-9]*'"
+  },
+  {
+    "attempt": 2,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B2] < UserX | 'near' : (deviceB , Rest) , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B3] < UserX | 'near' : (deviceB , Rest) , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B4] < UserX | 'near' : (deviceB , Rest) , ... > => ev4(UserX) .\n[B5] < UserX | 'key' : Key , 'near' : deviceB , ... > => ev5(UserX, Key) .\n[B5] < UserX | 'key' : Key , 'near' : (deviceB , Rest) , ... > => ev5(UserX, Key) .\n[B6] < UserX | 'key' : Key , ... > < deviceB | ... > => ev6(UserX, Key) .\n[B7] < userC | ... > < userA | ... > => ev7(nils) .\n[B8] < userC | ... > < userA | ... > => ev8(nils) .\n[B9] < UserY | 'key' : Key , ... > < deviceB | ... > => ev9(UserY) .",
+    "error": null
+  },
+  {
+    "stage": "genEventVars",
+    "prompt_hash": "genEventVars:cba5222342c15f3e2414c4dd40fe3bfef4d1c4b4b9a656cb76b0156c5cdc1500"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Rest\": \"Set\"\n}",
+    "error": null
+  }
+]

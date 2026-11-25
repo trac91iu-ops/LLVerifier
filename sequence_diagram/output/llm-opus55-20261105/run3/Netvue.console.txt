@@ -1,0 +1,126 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 7335
+--------------------------------------------------
+```
+[B1] < deviceB | 'key' : K , ... > $ UserX 'pressButton' deviceB
+=> < deviceB | 'key' : K , ... > $ deviceB 'sendEncryptedText' UserX | (encrypt(FreshR , K)) .
+[B1] < UserX | 'msg' : nils , ... > $ deviceB 'sendEncryptedText' UserX | (M)
+=> < UserX | 'msg' : M , ... > .
+[B2] < cloudA | deviceB : ('key' : K , 'owners' : (Owners) , ...) > $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R , K))
+=> < cloudA | deviceB : ('key' : K , 'owners' : (UserX , Owners) , ...) > .
+[B3] < cloudA | deviceB : ('owners' : (UserX , Rest) , ...) > $ UserX 'resetDevice' cloudA | (deviceB)
+=> < cloudA | deviceB : ('owners' : (nils , Rest) , ...) > .
+[B4] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+[B5] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3914
+--------------------------------------------------
+```
+{"FreshR": "Qid", "K": "Qid", "M": "Item", "Owners": "Set", "R": "Qid", "Rest": "Set", "UserX": "User"}
+```
+==================================================
+{'FreshR': 'Qid', 'K': 'Qid', 'M': 'Item', 'Owners': 'Set', 'R': 'Qid', 'Rest': 'Set', 'UserX': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< deviceB | ('key' : [Qid]) > < userA | ('near' : [Principal] , 'msg' : [Item]) > < userC | ('near' : [Principal] , 'msg' : [Item]) > < cloudA | ([Principal] : ('owners' : {[Set] , [User]} , 'key' : [Qid])) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh True hasCurrentTime False
+eq < system | ('counter' : N , ..) > < deviceB | ('key' : K , ...) > $ UserX 'pressButton' deviceB 
+= < system | ('counter' : N + 1 , ..) > < deviceB | ('key' : K , ...) > $ deviceB 'sendEncryptedText' UserX | (encrypt(randomStr('R', N), K)) .
+eq < UserX | ('msg' : nils , ..) > $ deviceB 'sendEncryptedText' UserX | (M) 
+= < UserX | ('msg' : M , ..) > .
+eq < cloudA | (deviceB : ('key' : K , 'owners' : (Owners) , ..) , ...) > $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, K)) 
+= < cloudA | (deviceB : ('key' : K , 'owners' : (UserX , Owners) , ..) , ...) > .
+eq < cloudA | (deviceB : ('owners' : (UserX , Rest) , ..) , ...) > $ UserX 'resetDevice' cloudA | (deviceB) 
+= < cloudA | (deviceB : ('owners' : (nils , Rest) , ..) , ...) > .
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+$ UserX 'pressButton' deviceB
+$ deviceB 'sendEncryptedText' UserX | (encrypt(randomStr('R', N), K))
+$ deviceB 'sendEncryptedText' UserX | (M)
+$ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, K))
+$ UserX 'resetDevice' cloudA | (deviceB)
+$ UserX 'approach' deviceB
+$ UserX 'leave' deviceB
+[*] Total token: 2783
+--------------------------------------------------
+```
+[1, 4, 5, 6, 7]
+```
+==================================================
+[1, 4, 5, 6, 7]
+[$ UserX 'pressButton' deviceB, $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, K)), $ UserX 'resetDevice' cloudA | (deviceB), $ UserX 'approach' deviceB, $ UserX 'leave' deviceB]
+[eq ev1(UserX) = $ UserX 'pressButton' deviceB ., eq ev2(UserX, R, K) = $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, K)) ., eq ev3(UserX, MessageA) = $ UserX 'bindDevice' cloudA | (MessageA) ., eq ev4(UserX) = $ UserX 'resetDevice' cloudA | (deviceB) ., eq ev5(UserX) = $ UserX 'approach' deviceB ., eq ev6(UserX) = $ UserX 'leave' deviceB .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 4142
+--------------------------------------------------
+```
+< deviceB | ('key' : 'keyB') > < userA | ('near' : deviceB , 'msg' : nils) > < userC | ('near' : nils , 'msg' : nils) > < cloudA | (deviceB : ('owners' : nils , 'key' : 'keyB')) >
+```
+==================================================
+< system | ('counter' : 0) > < deviceB | ('key' : 'keyB') > < userA | ('near' : deviceB , 'msg' : nils) > < userC | ('near' : nils , 'msg' : nils) > < cloudA | (deviceB : ('owners' : nils , 'key' : 'keyB')) >
+[*] Generating event rules with LLM...
+[*] Total token: 5728
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : deviceB , ... > => ev1(UserX) .
+[B2] < UserX | 'msg' : MessageA , ... > => ev3(UserX, MessageA) .
+[B3] < UserX | ... > => ev4(UserX) .
+[B4] < UserX | 'near' : nils , ... > => ev5(UserX) .
+[B5] < UserX | 'near' : deviceB , ... > => ev6(UserX) .
+```
+==================================================
+< UserX | 'near' : deviceB , ... > => ev1(UserX) .
+< UserX | 'msg' : MessageA , ... > => ev3(UserX, MessageA) .
+< UserX | ... > => ev4(UserX) .
+< UserX | 'near' : nils , ... > => ev5(UserX) .
+< UserX | 'near' : deviceB , ... > => ev6(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | ('msg' : MessageA , ..) > 
+=> ep: ev3(UserX, MessageA) @ S < UserX | ('msg' : MessageA , ..) > .
+rl [rev4]: E @ S < UserX | (..) > 
+=> ep: ev4(UserX) @ S < UserX | (..) > .
+rl [rev5]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 3288
+--------------------------------------------------
+```
+attackerLocal =| < userC | 'near' : deviceB , ... > .
+attackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2477
+--------------------------------------------------
+```
+{"Rest": "Set"}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check OWN-remote: holds (0 events)
+[+] Model written: sequence_diagram/output/llm-opus55-20261105/run3/Netvue/rules.maude; status: validated

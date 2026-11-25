@@ -1,0 +1,57 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev2} {$ userA 'requestKey' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : nils > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : nils > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : nils > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev2} {$ userC 'requestKey' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev2} {$ userA 'requestKey' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev5} {$ userA 'removeMember' cloudA | userC @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : false >, 'rev3} {$ userC 'turnOnDevice' deviceA | 'keyA' @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev2} {$ userA 'requestKey' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev2} {$ userC 'requestKey' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev3} {$ userA 'turnOnDevice' deviceA | 'keyA' @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev3} {$ userC 'turnOnDevice' deviceA | 'keyA' @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev4} {$ userA 'turnOnViaCloud' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev4} {$ userC 'turnOnViaCloud' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : userC), userC : ('device' : deviceA, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev5} {$ userA 'removeMember' cloudA | userC @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev2} {$ userA 'requestKey' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev2} {$ userC 'requestKey' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev3} {$ userA 'turnOnDevice' deviceA | 'keyA' @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev4} {$ userA 'turnOnViaCloud' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev4} {$ userC 'turnOnViaCloud' cloudA | deviceA @
+< cloudA | userA : ('device' : deviceA, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev5} {$ userC 'removeMember' cloudA | userA @
+< cloudA | userA : ('device' : nils, 'members' : nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : nils, 'members' : userC), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : nils, 'members' : userC), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyA' > < userC | 'key' : 'keyA' > < deviceA | 'key' : 'keyA', 'on' : true >, 'rev1}
+idle
+$ userA 'invite' cloudA | userC
+$ userC 'invite' cloudA | userA
+$ userA 'requestKey' cloudA | deviceA
+$ userC 'requestKey' cloudA | deviceA
+$ userA 'removeMember' cloudA | userC
+$ userC 'turnOnDevice' deviceA | 'keyA'
+$ userA 'invite' cloudA | userC
+$ userA 'removeMember' cloudA | userC
+$ userC 'removeMember' cloudA | userA
+$ userA 'invite' cloudA | userC
+$ userC 'invite' cloudA | userA
+rewrites: 2706 in 9ms cpu (9ms real) (293906 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'invite' cloudA | userC ^ ($ userC 'invite' cloudA | userA ^ ($ userA 'requestKey' cloudA | deviceA ^ ($ userC 'requestKey' cloudA | deviceA ^ ($ userA 'removeMember' cloudA | userC ^ ($ userC 'turnOnDevice' deviceA | 'keyA' ^ ($ userA 'invite' cloudA | userC ^ ($ userA 'removeMember' cloudA | userC ^ ($ userC 'removeMember' cloudA | userA ^ ($ userA 'invite' cloudA | userC ^ ($ userC 'invite' cloudA | userA ^ nile)))))))))))
+==========================================
+reduce in CHECK : init |= deviceOn .
+rewrites: 2 in 0ms cpu (0ms real) (2000000 rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerAuthorized .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

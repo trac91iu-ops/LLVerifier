@@ -1,0 +1,11 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:3a67404de2426b00f5444ee7e553fef7dca2bd0dd56e0949da288cc8af97beb9"
+  },
+  {
+    "attempt": 0,
+    "output": "< cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA | UserY\n=> < cloudA | UserX : ('members' : (UserY , Members) , ...) , ... > .\n\n< cloudA | UserX : ('device' : DeviceX , 'members' : (UserY , Members) , ...) , UserY : ('device' : nils , ...) , ... >\n=> < cloudA | UserX : ('device' : DeviceX , 'members' : (UserY , Members) , ...) , UserY : ('device' : DeviceX , ...) , ... > .\n\n< UserX | 'key' : nils , ... > < cloudA | UserX : ('device' : DeviceX , ...) , ... > $ UserX 'openWindow' cloudA | DeviceX\n=> < UserX | 'key' : FreshKey , ... > < cloudA | UserX : ('device' : DeviceX , ...) , ... > $ cloudA 'openWindow' DeviceX | FreshKey .\n\n< DeviceX | 'key' : nils , ... > $ cloudA 'openWindow' DeviceX | Key\n=> < DeviceX | 'key' : Key , ... > .\n\n< DeviceX | 'key' : Key , 'trusted' : Trusted , ... > $ UserX 'bind' DeviceX | Key\n=> < DeviceX | 'key' : Key , 'trusted' : (UserX , Trusted) , ... > .\n\n< DeviceX | 'trusted' : (UserX , Trusted) , 'on' : false , ... > $ UserX 'turnOn' DeviceX\n=> < DeviceX | 'trusted' : (UserX , Trusted) , 'on' : true , ... > .\n\n< cloudA | UserX : ('device' : DeviceX , ...) , ... > $ UserX 'turnOn' cloudA\n=> < cloudA | UserX : ('device' : DeviceX , ...) , ... > $ cloudA 'turnOn' DeviceX .\n\n< DeviceX | 'trusted' : (cloudA , Trusted) , 'on' : false , ... > $ cloudA 'turnOn' DeviceX\n=> < DeviceX | 'trusted' : (cloudA , Trusted) , 'on' : true , ... > .\n\n< cloudA | UserX : ('members' : (UserY , Members) , 'device' : DeviceX , ...) , UserY : ('device' : DeviceX , ...) , ... > $ UserX 'removeMember' cloudA | UserY\n=> < cloudA | UserX : ('members' : Members , 'device' : DeviceX , ...) , UserY : ('device' : nils , ...) , ... > .",
+    "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA |"
+  }
+]

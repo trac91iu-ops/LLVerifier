@@ -1,0 +1,40 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : nils > < deviceA | 'key' : nils, 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : nils > < deviceA | 'key' : nils, 'pressed' : true >, 'rev3} {$ userA 'discover' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : nils > < deviceA | 'key' : nils, 'pressed' : true >, 'rev4} {$ userC 'approach' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : nils, 'pressed' : true >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : nils, 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : nils, 'pressed' : true >, 'rev2} {$ userC 'sendKey' deviceA | 'keyC' @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userA 'sendKey' deviceA | 'keyA' @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userC 'sendKey' deviceA | 'keyC' @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev5} {$ userA 'leave' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : nils > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : nils > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userC 'sendKey' deviceA | 'keyC' @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : nils > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev4} {$ userA 'approach' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev5} {$ userC 'leave' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : nils > < userA | 'near' : deviceA > < userC | 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev3} {$ userA 'discover' deviceA @
+< cloudA | userA : 'accountKey' : 'keyA', userC : 'accountKey' : 'keyC', deviceA : 'owner' : userC > < userA | 'near' : deviceA > < userC | 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev1}
+idle
+$ userA 'pressButton' deviceA
+$ userC 'approach' deviceA
+$ userC 'sendKey' deviceA | 'keyC'
+$ userA 'pressButton' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'discover' deviceA
+rewrites: 2626 in 4ms cpu (5ms real) (528582 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceA ^ ($ userC 'approach' deviceA ^ ($ userC 'sendKey' deviceA | 'keyC' ^ ($ userA 'pressButton' deviceA ^ ($ userA 'leave' deviceA ^ ($ userA 'approach' deviceA ^ ($ userC 'leave' deviceA ^ ($ userA 'discover' deviceA ^ nile))))))))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (2000000 rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/TPLink/diagram.md",
+  "input_sha256": "6e6110aff0229132b89af01ed603f6904a61a153d5f95babfcb928033501624c",
+  "pipeline_id": "0dc6d425132ad24da422415fbefc12c6a4d3ea2928b2f7a8e9a1b1c8beebead5",
+  "mode": "check",
+  "started_at": "2026-11-05T05:11:26.422050+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "AttributeError: 'NoneType' object has no attribute 'v'",
+  "elapsed_seconds": 207.435,
+  "tokens_this_run": 15830,
+  "finished_at": "2026-11-05T05:14:53.858535+00:00"
+}

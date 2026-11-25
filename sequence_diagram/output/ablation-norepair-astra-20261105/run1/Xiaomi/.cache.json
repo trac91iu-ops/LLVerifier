@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "context_id": "17cd77a8f52caf04f2e17f4f949626b6ac0cbb90499b0a5a1aae1d61a389db59",
+  "answers": {},
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:e70567c6080c6687582ba2c7b710dbfb75027f0fa79441ce263aeec285501b40"
+    },
+    {
+      "attempt": 0,
+      "output": "< cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA | UserY\n=> < cloudA | UserX : ('members' : (UserY , Members) , ...) , ... > .\n\n< cloudA | UserX : ('device' : deviceB , 'members' : (UserY , Members) , ...) , UserY : ('device' : nils , ...) , ... >\n=> < cloudA | UserX : ('device' : deviceB , 'members' : (UserY , Members) , ...) , UserY : ('device' : deviceB , ...) , ... > .\n\n< cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'key' : Key , ... > $ UserX 'requestKey' cloudA | deviceB\n=> < cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'key' : Key , ... > $ cloudA 'sendKey' UserX | (deviceB ; Key) .\n\n< UserX | 'key' : nils , ... > $ cloudA 'sendKey' UserX | (deviceB ; Key)\n=> < UserX | 'key' : Key , ... > .\n\n< deviceB | 'key' : Key , 'on' : false , ... > $ UserX 'turnOnWithKey' deviceB | Key\n=> < deviceB | 'key' : Key , 'on' : true , ... > .\n\n< cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'on' : false , ... > $ UserX 'turnOn' cloudA | deviceB\n=> < cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'on' : true , ... > .\n\n< cloudA | UserX : ('members' : (UserY , Members) , ...) , UserY : ('device' : AssociatedDevice , ...) , ... > $ UserX 'removeMember' cloudA | UserY\n=> < cloudA | UserX : ('members' : Members , ...) , UserY : ('device' : nils , ...) , ... > if AssociatedDevice =/= nils .",
+      "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA |"
+    }
+  ]
+}

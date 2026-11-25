@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:48:47.044Z",
+  "model": "95032d2a0f3c",
+  "note": "",
+  "protocol": "Wemo",
+  "runs": [
+    "opus55-run3"
+  ],
+  "verdict": "present"
+}

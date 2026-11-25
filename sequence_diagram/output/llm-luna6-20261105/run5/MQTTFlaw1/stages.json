@@ -1,0 +1,24 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:e17c46ea8610618236e5b651dfaedfe34976fa4883b6c856f1a8d82b95539c7a"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | ... > < cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX 'publishToggle' cloudB\n=> < UserX | ... > < cloudB | 'buffer' : 'toggle' , UserX : ('permission' : true , ...) , ... > $ cloudB 'acknowledge' UserX .\n[B2] < cloudB | UserX : ('permission' : true , ...) , ... > $ cloudB 'revokePermission' cloudB | (UserX)\n=> < cloudB | UserX : ('permission' : false , ...) , ... > .\n[B3] < UserX | ... > < cloudB | 'buffer' : Message , deviceA : ('permission' : true , ...) , ... > $ UserX 'releaseMessage' cloudB\n=> < UserX | ... > < cloudB | 'buffer' : nils , deviceA : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceA | (Message) .\n[B3] < deviceA | 'power' : false , ... > $ cloudB 'publish' deviceA | ('toggle')\n=> < deviceA | 'power' : true , ... > .\n[B3] < deviceA | 'power' : true , ... > $ cloudB 'publish' deviceA | ('toggle')\n=> < deviceA | 'power' : true , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:389eef5cec79d2fd7551fc3486d22bafbac85ccd43617de1882479d47495ee7b"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Message\":\"Qid\",\"UserX\":\"User\"}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:9cc01a9589fe19a60dfb9db880bc507a37ef3adc6a9db8abd4b1104d46b45efe"
+  }
+]

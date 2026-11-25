@@ -1,0 +1,17 @@
+[
+  {
+    "protocol": "A2A",
+    "subtype": "CTX-isolation",
+    "attacker": "clientB",
+    "exit": 0,
+    "status": "validated",
+    "error": null,
+    "verdict": "counterexample",
+    "events": 6,
+    "golden_verdict": "counterexample",
+    "golden_events": 4,
+    "true_at_init": [],
+    "coverage_issues": [],
+    "calls": null
+  }
+]

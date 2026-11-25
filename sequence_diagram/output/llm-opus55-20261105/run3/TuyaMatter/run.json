@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/TuyaMatter/diagram.md",
+  "input_sha256": "a8b77b6802d1f551c04ddd0f2c52b6b6f0b2d8ce8cc7a8ee7ff75ba9e64e74a0",
+  "pipeline_id": "cecd379d16b77e12bb140afb690e1b3607277d54ced36f27a864a902f4a8fe93",
+  "mode": "check",
+  "started_at": "2026-11-05T04:56:43.239872+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-opus55-20261105/run3/TuyaMatter/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('device', deviceA), _:_('members', nils))), _:_(userC, _`,_(_:_('device', nils), _:_('members', nils))))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceA, _`,_(_:_('key', nils), _:_('on', false), _:_('trusted', cloudA)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 6,
+    "coverage_issues": []
+  },
+  "model_sha256": "8ad8141788a631cbe83b4f38caddf6094fdab9586f9fd6df1fa2f3e3293eafc8",
+  "check": {
+    "property": "CTRL-direct",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceOn": false,
+      "attackerAuthorized": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 160.78,
+  "tokens_this_run": 32134,
+  "finished_at": "2026-11-05T04:59:24.019395+00:00"
+}

@@ -1,0 +1,137 @@
+{
+  "protocol": "Broadlink",
+  "model_sha256": "a394f17656e13a9a62254f29d5fa7545897e55a932c9a89012d526b067fd12ff",
+  "runs": [
+    "run2"
+  ],
+  "generated": "sequence_diagram/output/eval-astra-20261105/run2/Broadlink/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Broadlink/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'invite'": "'callAPI:invite'",
+      "'leave'": "'leaves'",
+      "'lock'": "'callAPI:lock'",
+      "'pressButton'": "'pressButton'",
+      "'remove'": "'callAPI:kick'",
+      "'retrieveKey'": "'callAPI:getKey'"
+    },
+    "attributes": {
+      "'counter'": "'counter'",
+      "'devices'": "'devices'",
+      "'key'": "'key'",
+      "'locked'": "'unlocked'",
+      "'members'": "'members'",
+      "'near'": "'localTo'",
+      "'owners'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "system": "system",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'Key'": "'KeyB'",
+      "'deviceKey'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'unlocked'",
+        "generated": "false",
+        "gold": "true"
+      },
+      {
+        "attribute": "'unlocked'",
+        "generated": "true",
+        "gold": "false"
+      },
+      {
+        "attribute": "'key'",
+        "generated": "'deviceKey'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:getKey'",
+      "'callAPI:invite'",
+      "'callAPI:kick'",
+      "'callAPI:lock'",
+      "'cloudAPI:getKey'",
+      "'leaves'",
+      "'pressButton'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'devices'",
+      "'key'",
+      "'localTo'",
+      "'members'",
+      "'owner'",
+      "'unlocked'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'KeyB'",
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'invite'",
+      "'leave'",
+      "'lock'",
+      "'pressButton'",
+      "'remove'",
+      "'retrieveKey'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'devices'",
+      "'key'",
+      "'locked'",
+      "'members'",
+      "'near'",
+      "'owners'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'Key'",
+      "'deviceKey'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T07:21:04+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2639,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'invite'\": \"'callAPI:invite'\",\n    \"'leave'\": \"'leaves'\",\n    \"'lock'\": \"'callAPI:lock'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'remove'\": \"'callAPI:kick'\",\n    \"'retrieveKey'\": \"'callAPI:getKey'\"\n  },\n  \"attributes\": {\n    \"'counter'\": \"'counter'\",\n    \"'devices'\": \"'devices'\",\n    \"'key'\": \"'key'\",\n    \"'locked'\": \"'unlocked'\",\n    \"'members'\": \"'members'\",\n    \"'near'\": \"'localTo'\",\n    \"'owners'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"system\": \"system\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'Key'\": \"'KeyB'\",\n    \"'deviceKey'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'unlocked'\",\n      \"generated\": \"false\",\n      \"gold\": \"true\"\n    },\n    {\n      \"attribute\": \"'unlocked'\",\n      \"generated\": \"true\",\n      \"gold\": \"false\"\n    },\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'deviceKey'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

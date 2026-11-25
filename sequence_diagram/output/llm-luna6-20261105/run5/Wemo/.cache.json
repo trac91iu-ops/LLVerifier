@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "context_id": "0dc6d425132ad24da422415fbefc12c6a4d3ea2928b2f7a8e9a1b1c8beebead5",
+  "answers": {
+    "genPolicy:89c20f2fa364ddaa22f12b6cf20ea9a1e6fc7515b1066228bc7a6afc61756d2a": "[B1] < deviceA | 'buttonPressed' : false , ... > $ UserX 'pressButton' deviceA\n=> < deviceA | 'buttonPressed' : true , ... > .\n[B2] < cloudA | UserX : ('accountKey' : Key , ...) , ... > < deviceA | 'buttonPressed' : true , 'key' : nils , ... > $ UserX 'sendKey' deviceA | (Key)\n=> < cloudA | UserX : ('accountKey' : Key , ...) , ... > < deviceA | 'buttonPressed' : false , 'key' : Key , ... > .\n[B3] < UserX | 'knownDevices' : KnownDevices , ... > < deviceA | 'key' : Key , ... > $ UserX 'discover' deviceA\n=> < UserX | 'knownDevices' : (KnownDevices , deviceA) , ... > < deviceA | 'key' : Key , ... > $ deviceA 'bind' cloudA | (Key) .\n[B3] < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : nils , ...) , ... > $ deviceA 'bind' cloudA | (Key)\n=> < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : UserY , ...) , ... > .\n[B4] < UserX | 'near' : nils , ... > < deviceA | 'exists' : true , ... > $ UserX 'approach' deviceA\n=> < UserX | 'near' : deviceA , ... > < deviceA | 'exists' : true , ... > .\n[B5] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA\n=> < UserX | 'near' : nils , ... > .",
+    "genPolicyVars:d0d25b7357deaa22b1342651a76baeadd5165ceace959f468e36181925a8d9c9": "{\n  \"Key\": \"Qid\",\n  \"KnownDevices\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "filterEvents:30691bb4c676cdadebb7065b1413a6fa93b9bac419dbb91ef029dfb2f96f0985": "[1, 2, 3, 5, 6]",
+    "genInit:7548930b71f4bff3979132b48c610e068120fecd842bd6f1d83068e28203b30f": "< deviceB | ('exists' : false , 'buttonPressed' : false , 'key' : nils) > < cloudA | (userA : ('accountKey' : 'accountKeyA') , userC : ('accountKey' : 'accountKeyC') , deviceB : ('owner' : nils)) > < userA | ('near' : deviceB , 'knownDevices' : nils) > < userC | ('near' : nils , 'knownDevices' : nils) >",
+    "genRRLs:098de2111d9c5e9f8f7f04d10a6c93e2a7442c3ded921fadd7d02394cf2983de": "[B1] < UserX | 'near' : deviceA , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , ... > < cloudA | UserX : ('accountKey' : Key , ...) , ... > => ev2(UserX, Key) .\n[B3] < UserX | 'near' : deviceA , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : nils , ... > < deviceA | 'exists' : true , ... > => ev4(UserX) .\n[B5] < UserX | 'near' : deviceA , ... > => ev5(UserX) .",
+    "genSlots:7ef789d7b5cb7098bc867d21d75d4237043cab7aa7ce03fc3b8b6695eb4aea5f": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owner' : userC , ...) , ... > ."
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:89c20f2fa364ddaa22f12b6cf20ea9a1e6fc7515b1066228bc7a6afc61756d2a"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < deviceA | 'buttonPressed' : false , ... > $ UserX 'pressButton' deviceA\n=> < deviceA | 'buttonPressed' : true , ... > .\n[B2] < cloudA | UserX : ('accountKey' : Key , ...) , ... > < deviceA | 'buttonPressed' : true , 'key' : nils , ... > $ UserX 'sendKey' deviceA | (Key)\n=> < cloudA | UserX : ('accountKey' : Key , ...) , ... > < deviceA | 'buttonPressed' : false , 'key' : Key , ... > .\n[B3] < UserX | 'knownDevices' : KnownDevices , ... > < deviceA | 'key' : Key , ... > $ UserX 'discover' deviceA\n=> < UserX | 'knownDevices' : (KnownDevices , deviceA) , ... > < deviceA | 'key' : Key , ... > $ deviceA 'bind' cloudA | (Key) .\n[B3] < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : nils , ...) , ... > $ deviceA 'bind' cloudA | (Key)\n=> < cloudA | UserY : ('accountKey' : Key , ...) , deviceA : ('owner' : UserY , ...) , ... > .\n[B4] < UserX | 'near' : nils , ... > < deviceA | 'exists' : true , ... > $ UserX 'approach' deviceA\n=> < UserX | 'near' : deviceA , ... > < deviceA | 'exists' : true , ... > .\n[B5] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA\n=> < UserX | 'near' : nils , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:d0d25b7357deaa22b1342651a76baeadd5165ceace959f468e36181925a8d9c9"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Key\": \"Qid\",\n  \"KnownDevices\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:30691bb4c676cdadebb7065b1413a6fa93b9bac419dbb91ef029dfb2f96f0985"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 2, 3, 5, 6]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:7548930b71f4bff3979132b48c610e068120fecd842bd6f1d83068e28203b30f"
+    },
+    {
+      "attempt": 0,
+      "output": "< deviceB | ('exists' : false , 'buttonPressed' : false , 'key' : nils) > < cloudA | (userA : ('accountKey' : 'accountKeyA') , userC : ('accountKey' : 'accountKeyC') , deviceB : ('owner' : nils)) > < userA | ('near' : deviceB , 'knownDevices' : nils) > < userC | ('near' : nils , 'knownDevices' : nils) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:098de2111d9c5e9f8f7f04d10a6c93e2a7442c3ded921fadd7d02394cf2983de"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : deviceA , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , ... > < cloudA | UserX : ('accountKey' : Key , ...) , ... > => ev2(UserX, Key) .\n[B3] < UserX | 'near' : deviceA , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : nils , ... > < deviceA | 'exists' : true , ... > => ev4(UserX) .\n[B5] < UserX | 'near' : deviceA , ... > => ev5(UserX) .",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:7ef789d7b5cb7098bc867d21d75d4237043cab7aa7ce03fc3b8b6695eb4aea5f"
+    },
+    {
+      "attempt": 0,
+      "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owner' : userC , ...) , ... > .",
+      "error": null
+    }
+  ]
+}

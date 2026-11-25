@@ -1,0 +1,119 @@
+{
+  "protocol": "Switchbot",
+  "model_sha256": "5aa1be2c517cb7ebd2ea550ddd0944f8fe0aecc2f3b869be3c79613863be0ba5",
+  "runs": [
+    "run1"
+  ],
+  "generated": "sequence_diagram/output/full-reword-20261102/Switchbot/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Switchbot/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bindDevice'": "'callAPI:bind'",
+      "'invite'": "'callAPI:invite'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'removeMember'": "'callAPI:kick'",
+      "'sendDeviceKey'": "'sendKey'"
+    },
+    "attributes": {
+      "'bindingKey'": "'bdKey'",
+      "'devices'": "'devices'",
+      "'key'": "'key'",
+      "'members'": "'members'",
+      "'near'": "'localTo'",
+      "'owners'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'deviceKey'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'bdKey'",
+        "generated": "'deviceKey'",
+        "gold": "'secret'"
+      },
+      {
+        "attribute": "'key'",
+        "generated": "'deviceKey'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:invite'",
+      "'callAPI:kick'",
+      "'leaves'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'bdKey'",
+      "'devices'",
+      "'key'",
+      "'localTo'",
+      "'members'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bindDevice'",
+      "'invite'",
+      "'leave'",
+      "'pressButton'",
+      "'removeMember'",
+      "'sendDeviceKey'"
+    ],
+    "attributes": [
+      "'bindingKey'",
+      "'devices'",
+      "'key'",
+      "'members'",
+      "'near'",
+      "'owners'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'deviceKey'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:00:10+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1953,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bindDevice'\": \"'callAPI:bind'\",\n    \"'invite'\": \"'callAPI:invite'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'removeMember'\": \"'callAPI:kick'\",\n    \"'sendDeviceKey'\": \"'sendKey'\"\n  },\n  \"attributes\": {\n    \"'bindingKey'\": \"'bdKey'\",\n    \"'devices'\": \"'devices'\",\n    \"'key'\": \"'key'\",\n    \"'members'\": \"'members'\",\n    \"'near'\": \"'localTo'\",\n    \"'owners'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'deviceKey'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'bdKey'\",\n      \"generated\": \"'deviceKey'\",\n      \"gold\": \"'secret'\"\n    },\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'deviceKey'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

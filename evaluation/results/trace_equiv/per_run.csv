@@ -1,0 +1,146 @@
+protocol,run,label,gold_events,unmatched_actions
+Aqara,run1,gold attack present,51,5
+August,run1,gold attack present,23,0
+Beurer,run1,gold attack present,22,0
+Broadlink,run1,model did not load,89,0
+CloudEdgeCAC,run1,gold attack present,65,0
+CloudEdgeRTE,run1,gold attack present,64,0
+Dyson,run1,gold attack present,54,0
+Ezviz,run1,gold attack present,23,0
+Govee,run1,gold attack present,10,0
+Huawei,run1,gold attack present,54,0
+Imou,run1,gold attack present,6,0
+Kevo,run1,gold attack present,54,0
+MQTTFlaw1,run1,gold attack present,4,0
+MaagKwikset,run1,gold attack present,101,0
+MaagLevel,run1,gold attack not present,60,0
+Meross,run1,gold attack present,34,0
+Midea,run1,gold attack present,86,0
+Netvue,run1,gold attack present,54,0
+Sunlogin,run1,gold attack present,10,0
+Switchbot,run1,gold attack present,117,0
+TPLink,run1,gold attack present,39,0
+TuyaCAC,run1,gold attack present,30,0
+TuyaMatter,run1,gold attack present,51,0
+Wemo,run1,gold attack present,39,0
+Xiaomi,run1,gold attack present,54,0
+delegationFlaw1,run1,gold attack not present,286,0
+delegationFlaw2,run1,gold attack present,80,0
+iRobot,run1,gold attack present,138,0
+philips,run1,gold attack present,79,0
+Aqara,run2,gold attack present,51,5
+August,run2,gold attack present,23,0
+Beurer,run2,gold attack present,22,0
+Broadlink,run2,model did not load,89,0
+CloudEdgeCAC,run2,gold attack present,65,0
+CloudEdgeRTE,run2,gold attack present,64,0
+Dyson,run2,gold attack present,54,0
+Ezviz,run2,gold attack present,23,0
+Govee,run2,gold attack present,10,0
+Huawei,run2,gold attack present,54,0
+Imou,run2,gold attack present,6,0
+Kevo,run2,gold attack present,54,0
+MQTTFlaw1,run2,gold attack present,4,0
+MaagKwikset,run2,gold attack present,101,0
+MaagLevel,run2,gold attack not present,60,0
+Meross,run2,gold attack present,34,0
+Midea,run2,gold attack present,86,0
+Netvue,run2,gold attack present,54,0
+Sunlogin,run2,gold attack present,10,0
+Switchbot,run2,gold attack present,117,0
+TPLink,run2,gold attack present,39,0
+TuyaCAC,run2,gold attack present,30,0
+TuyaMatter,run2,gold attack present,51,5
+Wemo,run2,gold attack present,39,0
+Xiaomi,run2,gold attack present,54,0
+delegationFlaw1,run2,gold attack not present,286,0
+delegationFlaw2,run2,gold attack present,80,0
+iRobot,run2,gold attack present,138,0
+philips,run2,gold attack present,79,0
+Aqara,run3,gold attack present,51,5
+August,run3,gold attack present,23,0
+Beurer,run3,gold attack present,22,0
+Broadlink,run3,gold attack present,89,0
+CloudEdgeCAC,run3,gold attack present,65,0
+CloudEdgeRTE,run3,gold attack present,64,0
+Dyson,run3,gold attack present,54,0
+Ezviz,run3,gold attack present,23,0
+Govee,run3,gold attack present,10,0
+Huawei,run3,gold attack present,54,0
+Imou,run3,gold attack present,6,0
+Kevo,run3,gold attack present,54,0
+MQTTFlaw1,run3,gold attack present,4,0
+MaagKwikset,run3,gold attack present,101,0
+MaagLevel,run3,gold attack not present,60,0
+Meross,run3,gold attack present,34,0
+Midea,run3,gold attack present,86,0
+Netvue,run3,gold attack present,54,0
+Sunlogin,run3,gold attack present,10,0
+Switchbot,run3,gold attack present,117,0
+TPLink,run3,gold attack present,39,0
+TuyaCAC,run3,gold attack present,30,0
+TuyaMatter,run3,gold attack present,51,5
+Wemo,run3,gold attack present,39,0
+Xiaomi,run3,gold attack present,54,0
+delegationFlaw1,run3,gold attack not present,286,0
+delegationFlaw2,run3,gold attack present,80,0
+iRobot,run3,gold attack present,138,0
+philips,run3,gold attack present,79,0
+Aqara,run4,gold attack present,51,5
+August,run4,gold attack present,23,0
+Beurer,run4,gold attack present,22,0
+Broadlink,run4,model did not load,89,0
+CloudEdgeCAC,run4,gold attack present,65,0
+CloudEdgeRTE,run4,gold attack present,64,0
+Dyson,run4,gold attack present,54,0
+Ezviz,run4,gold attack present,23,0
+Govee,run4,gold attack present,10,0
+Huawei,run4,gold attack present,54,0
+Imou,run4,gold attack present,6,0
+Kevo,run4,gold attack present,54,0
+MQTTFlaw1,run4,gold attack present,4,0
+MaagKwikset,run4,gold attack present,101,0
+MaagLevel,run4,gold attack not present,60,0
+Meross,run4,gold attack present,34,0
+Midea,run4,gold attack present,86,0
+Netvue,run4,gold attack present,54,0
+Sunlogin,run4,gold attack present,10,0
+Switchbot,run4,gold attack present,117,0
+TPLink,run4,gold attack present,39,0
+TuyaCAC,run4,gold attack present,30,0
+TuyaMatter,run4,gold attack present,51,5
+Wemo,run4,gold attack present,39,0
+Xiaomi,run4,gold attack present,54,0
+delegationFlaw1,run4,gold attack not present,286,0
+delegationFlaw2,run4,gold attack present,80,0
+iRobot,run4,gold attack present,138,0
+philips,run4,gold attack present,79,0
+Aqara,run5,gold attack present,51,5
+August,run5,gold attack present,23,0
+Beurer,run5,gold attack present,22,0
+Broadlink,run5,gold attack present,89,0
+CloudEdgeCAC,run5,gold attack present,65,0
+CloudEdgeRTE,run5,gold attack present,64,0
+Dyson,run5,gold attack present,54,0
+Ezviz,run5,gold attack present,23,0
+Govee,run5,gold attack present,10,0
+Huawei,run5,gold attack present,54,0
+Imou,run5,gold attack present,6,0
+Kevo,run5,gold attack present,54,0
+MQTTFlaw1,run5,gold attack present,4,0
+MaagKwikset,run5,gold attack present,101,0
+MaagLevel,run5,gold attack not present,60,0
+Meross,run5,gold attack present,34,0
+Midea,run5,gold attack present,86,0
+Netvue,run5,gold attack present,54,0
+Sunlogin,run5,gold attack present,10,0
+Switchbot,run5,gold attack present,117,0
+TPLink,run5,gold attack present,39,0
+TuyaCAC,run5,gold attack present,30,0
+TuyaMatter,run5,gold attack present,51,5
+Wemo,run5,gold attack present,39,0
+Xiaomi,run5,gold attack present,54,0
+delegationFlaw1,run5,gold attack not present,286,0
+delegationFlaw2,run5,gold attack present,80,0
+iRobot,run5,gold attack present,138,0
+philips,run5,gold attack present,79,0

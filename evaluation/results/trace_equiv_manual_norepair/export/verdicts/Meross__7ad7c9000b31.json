@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:21:21.220Z",
+  "model": "7ad7c9000b31",
+  "note": "",
+  "protocol": "Meross",
+  "runs": [
+    "nr-run1"
+  ],
+  "verdict": "present"
+}

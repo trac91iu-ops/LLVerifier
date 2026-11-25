@@ -207,6 +207,7 @@ def removeItemInSetItem(ast:AST):
     return ast
 
 def calculateInitState(ast:AST,varmap:dict[str,str]):
+    IStateMAP.clear()  # module-level accumulator; must not leak principals between models
     ast = copy.deepcopy(ast)
     annotateTypes(ast)
     populateIStateMap(varmap,ast)

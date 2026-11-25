@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:261a28cdcace2f420633235fbbe0524d4cf888d1325bb112e8f84ba82512ba93"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < deviceA | 'key' : Kdevice , ... > $ UserX 'pressButton' deviceA\n=> < deviceA | 'key' : Kdevice , ... > $ deviceA 'sendDeviceKey' UserX | (Kdevice) .\n[B1] < UserX | 'keys' : (Keys) , ... > $ deviceA 'sendDeviceKey' UserX | (Kdevice)\n=> < UserX | 'keys' : (Keys , Kdevice) , ... > .\n[B2] < deviceA | 'key' : Kdevice , ... > $ UserX 'bindViaDevice' deviceA | (Kuser)\n=> < deviceA | 'key' : Kdevice , ... > $ deviceA 'bindDevice' cloudA | (Kdevice ; Kuser) .\n[B2] < cloudA | deviceA : ('key' : Kdevice , 'owner' : nils , ...) , UserY : ('key' : Kuser , ...) , ... > $ deviceA 'bindDevice' cloudA | (Kdevice ; Kuser)\n=> < cloudA | deviceA : ('key' : Kdevice , 'owner' : UserY , ...) , UserY : ('key' : Kuser , ...) , ... > .\n[B3] < cloudA | deviceA : ('key' : Kdevice , 'owner' : nils , ...) , UserY : ('key' : Kuser , ...) , ... > $ UserX 'bindDevice' cloudA | (Kdevice ; Kuser)\n=> < cloudA | deviceA : ('key' : Kdevice , 'owner' : UserY , ...) , UserY : ('key' : Kuser , ...) , ... > .\n[B4] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA\n=> < UserX | 'near' : deviceA , ... > .\n[B5] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA\n=> < UserX | 'near' : nils , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:35fa3c811a7dc3a6f327fbcb49c2d05cbbb00324ee5c1b4a5a4e8fbcd42c1178"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Kdevice\": \"Qid\", \"Keys\": \"Set\", \"Kuser\": \"Qid\", \"UserX\": \"User\", \"UserY\": \"User\"}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:3cea5651563d503ec0aa96aabfe4cd9e33dd90e52da49ec53bf1ff32acf4381f"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3, 5, 6, 7]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:48e5a0883468bef4ad84e7661b7ee862229b8554142da4fde8b07a2f948bcbd0"
+  },
+  {
+    "attempt": 0,
+    "output": "< deviceA | ('key' : 'keyDevice') > < userA | ('near' : deviceA , 'keys' : ('keyA')) > < userC | ('near' : nils , 'keys' : ('keyC')) > < cloudA | (deviceA : ('key' : 'keyDevice' , 'owner' : nils) , userA : ('key' : 'keyA') , userC : ('key' : 'keyC')) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:173887c7f3d34cc998ffc0b098dfe40024762259c1670360d345429c49c6be4a"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : deviceA , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , 'keys' : (Kuser) , ... > => ev2(UserX, Kuser) .\n[B3] < UserX | 'keys' : (Kdevice , Kuser , Rest) , ... > => ev3(UserX, Kdevice, Kuser) .\n[B3] < UserX | 'keys' : (Kuser , Rest) , ... > => ev3(UserX, Kuser, Kuser) .\n[B4] < UserX | 'near' : nils , ... > < deviceA | ... > => ev4(UserX) .\n[B5] < UserX | 'near' : deviceA , ... > => ev5(UserX) .",
+    "error": null
+  },
+  {
+    "stage": "genEventVars",
+    "prompt_hash": "genEventVars:1bc4dbdaf17bf6205c1026d350ec619e37e3bcb5a9968a0a4ccaa8e2069734fb"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:880ad8a7c201c609e0cb33fae23ba175a5eee7e67de8a4262c9e3d453fc318c2"
+  },
+  {
+    "attempt": 0,
+    "output": "attackerLocal =| < userC | 'near' : deviceA , ... > .\nattackerOwner =| < cloudA | deviceA : ('owner' : userC , ...) , ... > .",
+    "error": null
+  }
+]

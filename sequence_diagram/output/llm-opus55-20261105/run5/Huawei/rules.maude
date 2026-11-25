@@ -1,0 +1,68 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils)) > < deviceB | ('on' : false , 'key' : 'keyB') > < userA | ('key' : nils) > < userC | ('key' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars D : Set .
+vars K : Qid .
+vars Members : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < cloudA | (UserX : ('members' : Members , ..) , ...) > $ UserX 'invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : (UserY , Members) , ..) , ...) > .
+eq < cloudA | (UserX : ('device' : deviceB , 'members' : (UserY , Members) , ..) , UserY : ('device' : nils , ...) , ....) > 
+= < cloudA | (UserX : ('device' : deviceB , 'members' : (UserY , Members) , ..) , UserY : ('device' : deviceB , ...) , ....) > .
+eq < cloudA | (UserX : ('device' : deviceB , ..) , ...) > < deviceB | ('key' : K , ....) > $ UserX 'requestKey' cloudA | (deviceB) 
+= < cloudA | (UserX : ('device' : deviceB , ..) , ...) > < deviceB | ('key' : K , ....) > $ cloudA 'sendKey' UserX | (deviceB ; K) .
+eq < UserX | ('key' : nils , ..) > $ cloudA 'sendKey' UserX | (deviceB ; K) 
+= < UserX | ('key' : K , ..) > .
+eq < deviceB | ('key' : K , 'on' : false , ..) > $ UserX 'turnOnWithKey' deviceB | (K) 
+= < deviceB | ('key' : K , 'on' : true , ..) > .
+eq < cloudA | (UserX : ('device' : deviceB , ..) , ...) > < deviceB | ('on' : false , ....) > $ UserX 'turnOnViaCloud' cloudA | (deviceB) 
+= < cloudA | (UserX : ('device' : deviceB , ..) , ...) > < deviceB | ('on' : true , ....) > .
+ceq < cloudA | (UserX : ('members' : Members , ..) , UserY : ('device' : D , ...) , ....) > $ UserX 'removeMember' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : nils , ..) , UserY : ('device' : nils , ...) , ....) > if D =/= nils .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars D : Set .
+vars K : Qid .
+vars Members : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User Qid -> Event .
+ops ev4 : User -> Event .
+ops ev5 : User User -> Event .
+*** events
+eq ev1(UserX, UserY) = $ UserX 'invite' cloudA | (UserY) .
+eq ev2(UserX) = $ UserX 'requestKey' cloudA | (deviceB) .
+eq ev3(UserX, K) = $ UserX 'turnOnWithKey' deviceB | (K) .
+eq ev4(UserX) = $ UserX 'turnOnViaCloud' cloudA | (deviceB) .
+eq ev5(UserX, UserY) = $ UserX 'removeMember' cloudA | (UserY) .
+*** transitions
+rl [rev1]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev1(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev2]: E @ S < UserX | (..) > < deviceB | (...) > 
+=> ep: ev2(UserX) @ S < UserX | (..) > < deviceB | (...) > .
+rl [rev3]: E @ S < UserX | ('key' : K , ..) > < deviceB | (...) > 
+=> ep: ev3(UserX, K) @ S < UserX | ('key' : K , ..) > < deviceB | (...) > .
+rl [rev4]: E @ S < UserX | (..) > < deviceB | (...) > 
+=> ep: ev4(UserX) @ S < UserX | (..) > < deviceB | (...) > .
+rl [rev5]: E @ S < cloudA | (UserX : ('members' : UserY , ..) , ...) > 
+=> ep: ev5(UserX, UserY) @ S < cloudA | (UserX : ('members' : UserY , ..) , ...) > .
+
+endm

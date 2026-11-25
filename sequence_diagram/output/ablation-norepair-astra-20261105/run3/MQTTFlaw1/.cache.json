@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "context_id": "ffc16de89d39e50d3d34a99382bf9e1bd8c435e7599481898369abcf5aab80e1",
+  "answers": {},
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:ac41869a9474ee3896db85b290d6c4760bc23152a9f7c0d63c003a0f4041969e"
+    },
+    {
+      "attempt": 0,
+      "output": "< cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX 'requestPublish' cloudB | 'toggle'\n=> < cloudB | 'buffer' : 'toggle' , UserX : ('permission' : true , ...) , ... > $ cloudB 'acknowledge' UserX .\n\n< cloudB | UserX : ('permission' : Permission , ...) , ... > $ cloudB 'revokePermission' cloudB | UserX\n=> < cloudB | UserX : ('permission' : false , ...) , ... > .\n\n< cloudB | 'buffer' : Message , deviceB : ('permission' : true , ...) , ... > $ UserX 'releaseMessage' cloudB\n=> < cloudB | 'buffer' : nils , deviceB : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceB | Message if Message =/= nils .\n\n< deviceB | 'on' : false , ... > $ cloudB 'publish' deviceB | 'toggle'\n=> < deviceB | 'on' : true , ... > .",
+      "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX"
+    }
+  ]
+}

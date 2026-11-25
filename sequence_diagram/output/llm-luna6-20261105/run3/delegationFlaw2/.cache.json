@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "context_id": "a886d2fc8cad7e7bbae8e1823ff222ffc021528e26e7c523b73d9d5a841d2666",
+  "answers": {
+    "genPolicy:d507be68d6f16df25958d04ddcf5c897573cc0fc55b9493479f84cbc5fdb1d7c": "[B1] < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > $ UserX 'requestKey' Cloud\n=> < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > $ Cloud 'sendKey' UserX | (Key) .\n[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key, ... > .\n[B2] < Cloud | Device : ('trusted' : (UserX, Rest), ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, UserY, Rest), ...) , ... > .\n[B3] < Cloud | Device : ('trusted' : (UserX, UserY, Rest), ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, Rest), ...) , ... > .\n[B4] < UserX | 'key' : Key, ... > < cloudSmartThing | deviceSwitch : ('key' : Key, 'status' : 'off', ...) , ... > $ UserX 'turnOn' cloudSmartThing | (deviceSwitch ; Key)\n=> < UserX | 'key' : Key, ... > < cloudSmartThing | deviceSwitch : ('key' : Key, 'status' : 'on', ...) , ... > $ cloudSmartThing 'turnOn' deviceSwitch .\n[B5] < deviceSwitch | ... > $ UserX 'turnOn' deviceSwitch\n=> < deviceSwitch | ... > .\n[B6] < Cloud | Device : ('trusted' : (P, Rest), 'status' : 'off', ...) , ... > $ P 'turnOn' Device\n=> < Cloud | Device : ('trusted' : (P, Rest), 'status' : 'on', ...) , ... > $ Cloud 'turnOn' Device .\n[B7] < cloudSmartThing | deviceSwitch : ('linkedLock' : deviceLock, ...) , ... > $ cloudSmartThing 'turnOn' deviceSwitch\n=> < cloudSmartThing | deviceSwitch : ('linkedLock' : deviceLock, ...) , ... > $ cloudSmartThing 'turnOn' deviceLock .\n[B8] < deviceLock | 'trusted' : (P, Rest), 'status' : 'off', ... > $ P 'turnOn' deviceLock\n=> < deviceLock | 'trusted' : (P, Rest), 'status' : 'on', ... > .",
+    "genPolicyVars:7e1b9df1da1255c938b0df12182f299fa79a4448c5b20457eb2fdff357795578": "{\n  \"Cloud\": \"Cloud\",\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:d507be68d6f16df25958d04ddcf5c897573cc0fc55b9493479f84cbc5fdb1d7c"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > $ UserX 'requestKey' Cloud\n=> < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > $ Cloud 'sendKey' UserX | (Key) .\n[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key, ... > .\n[B2] < Cloud | Device : ('trusted' : (UserX, Rest), ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, UserY, Rest), ...) , ... > .\n[B3] < Cloud | Device : ('trusted' : (UserX, UserY, Rest), ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, Rest), ...) , ... > .\n[B4] < UserX | 'key' : Key, ... > < cloudSmartThing | deviceSwitch : ('key' : Key, 'status' : 'off', ...) , ... > $ UserX 'turnOn' cloudSmartThing | (deviceSwitch ; Key)\n=> < UserX | 'key' : Key, ... > < cloudSmartThing | deviceSwitch : ('key' : Key, 'status' : 'on', ...) , ... > $ cloudSmartThing 'turnOn' deviceSwitch .\n[B5] < deviceSwitch | ... > $ UserX 'turnOn' deviceSwitch\n=> < deviceSwitch | ... > .\n[B6] < Cloud | Device : ('trusted' : (P, Rest), 'status' : 'off', ...) , ... > $ P 'turnOn' Device\n=> < Cloud | Device : ('trusted' : (P, Rest), 'status' : 'on', ...) , ... > $ Cloud 'turnOn' Device .\n[B7] < cloudSmartThing | deviceSwitch : ('linkedLock' : deviceLock, ...) , ... > $ cloudSmartThing 'turnOn' deviceSwitch\n=> < cloudSmartThing | deviceSwitch : ('linkedLock' : deviceLock, ...) , ... > $ cloudSmartThing 'turnOn' deviceLock .\n[B8] < deviceLock | 'trusted' : (P, Rest), 'status' : 'off', ... > $ P 'turnOn' deviceLock\n=> < deviceLock | 'trusted' : (P, Rest), 'status' : 'on', ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:7e1b9df1da1255c938b0df12182f299fa79a4448c5b20457eb2fdff357795578"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Cloud\": \"Cloud\",\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    }
+  ]
+}

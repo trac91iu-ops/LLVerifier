@@ -1,0 +1,27 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var DeviceX : Device .
+  var Key : Qid .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < userA | ('near' : deviceB) > < userC | ('near' : deviceD) > < deviceB | ('key' : nils, 'pressed' : false) > < deviceD | ('key' : nils, 'pressed' : false) > < cloudA | (deviceB : ('owner' : nils), deviceD : ('owner' : nils), userA : ('key' : 'keyA'), userC : ('key' : 'keyC')) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' DeviceX = < UserX | ('near' : DeviceX, ..) > .
+  eq < UserX | ('near' : DeviceX, ..) > $ UserX 'leave' DeviceX = < UserX | ('near' : nils, ..) > .
+  eq < DeviceX | ('pressed' : false, ..) > $ UserX 'pressButton' DeviceX = < DeviceX | ('pressed' : true, ..) > .
+  eq < DeviceX | ('pressed' : true, 'key' : nils, ..) > $ UserX 'sendKey' DeviceX | (Key) = < DeviceX | ('pressed' : false, 'key' : Key, ..) > .
+  eq < DeviceX | ('key' : Key, ..) > $ UserX 'discover' DeviceX = < DeviceX | ('key' : Key, ..) > $ DeviceX 'bind' cloudA | (Key) .
+  eq < cloudA | (DeviceX : ('owner' : nils, ..), UserY : ('key' : Key, ...), ....) > $ DeviceX 'bind' cloudA | (Key) = < cloudA | (DeviceX : ('owner' : UserY, ..), UserY : ('key' : Key, ...), ....) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (35714 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')), _:_(deviceB, _:_('owner', nils)), _:_(deviceD, _:_('owner', nils)))), <_|_>(userA, _:_('near', deviceB)), <_|_>(userC, _:_('near', deviceD)), <_|_>(deviceB, _`,_(_:_('key', nils), _:_('pressed', false))), <_|_>(deviceD, _`,_(_:_('key', nils), _:_('pressed', false)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'leave', deviceB), __(<_|_>(cloudA, _`,_(_:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')), _:_(deviceB, _:_('owner', nils)), _:_(deviceD, _:_('owner', nils)))), <_|_>(userA, _:_('near', nils)), <_|_>(userC, _:_('near', deviceD)), <_|_>(deviceB, _`,_(_:_('key', nils), _:_('pressed', false))), <_|_>(deviceD, _`,_(_:_('key', nils), _:_('pressed', false)))))
+Bye.

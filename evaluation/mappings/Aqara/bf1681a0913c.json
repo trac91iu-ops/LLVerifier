@@ -1,0 +1,108 @@
+{
+  "protocol": "Aqara",
+  "model_sha256": "bf1681a0913c5019f4f68d8e3b67b6efc41e10c54bb87bafa186f0e3adc26a11",
+  "runs": [
+    "run3"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run3/Aqara/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Aqara/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'bind'": "'callAPI:bind'",
+      "'cloudTurnOn'": "'cloudAPI:toggle'",
+      "'invite'": "'callAPI:invite'",
+      "'openWindow'": "'callAPI:openWindow'",
+      "'remove'": "'callAPI:kick'",
+      "'turnOn'": "'callAPI:toggle'"
+    },
+    "attributes": {
+      "'counter'": "'counter'",
+      "'device'": "'device'",
+      "'key'": "'key'",
+      "'members'": "'members'",
+      "'on'": "'on'",
+      "'trusted'": "'trustSet'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "system": "system",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'Key'": "'KeyA'"
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'callAPI:bind'",
+      "'callAPI:invite'",
+      "'callAPI:kick'",
+      "'callAPI:openWindow'",
+      "'callAPI:toggle'",
+      "'cloudAPI:toggle'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'device'",
+      "'key'",
+      "'members'",
+      "'on'",
+      "'trustSet'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'KeyA'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'bind'",
+      "'cloudTurnOn'",
+      "'invite'",
+      "'openWindow'",
+      "'remove'",
+      "'turnOn'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'device'",
+      "'key'",
+      "'members'",
+      "'on'",
+      "'trusted'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'Key'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:01:57+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2532,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'cloudTurnOn'\": \"'cloudAPI:toggle'\",\n    \"'invite'\": \"'callAPI:invite'\",\n    \"'openWindow'\": \"'callAPI:openWindow'\",\n    \"'remove'\": \"'callAPI:kick'\",\n    \"'turnOn'\": \"'callAPI:toggle'\"\n  },\n  \"attributes\": {\n    \"'counter'\": \"'counter'\",\n    \"'device'\": \"'device'\",\n    \"'key'\": \"'key'\",\n    \"'members'\": \"'members'\",\n    \"'on'\": \"'on'\",\n    \"'trusted'\": \"'trustSet'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"system\": \"system\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'Key'\": \"'KeyA'\"\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

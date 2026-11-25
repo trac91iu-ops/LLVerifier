@@ -1,0 +1,147 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 4 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4651
+--------------------------------------------------
+```
+[B1] < serverA | 'context' : nils , 'history' : OldHistory , ... > $ ClientX 'sendWithoutContext' serverA | 'msgA'
+=> < serverA | 'context' : 'ctxX' , 'history' : ('msgA') , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .
+[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History)
+=> < ClientX | 'knowCtx' : 'ctxX' , 'receivedHistory' : History , ... > .
+[B1] < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History)
+=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : History , ... > if Ctx =/= nils .
+[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History)
+=> < ClientX | 'knowCtx' : nils , 'receivedHistory' : History , ... > if OldHistory =/= nils .
+[B2] < ClientY | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'context' : Ctx , ... > $ ClientY 'snoop' serverA | Ctx
+=> < ClientY | 'authenticated' : true , 'knowCtx' : Ctx , ... > < serverA | 'context' : Ctx , ... > if Ctx =/= nils .
+[B3] < serverA | 'context' : 'ctxX' , 'history' : Hist , ... > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+=> < serverA | 'context' : 'ctxX' , 'history' : ('msgB' , Hist) , ... > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) .
+[B3] < ClientY | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientY | ('ctxX' ; History)
+=> < ClientY | 'receivedHistory' : History , ... > .
+[B4] < serverA | 'context' : 'ctxX' , 'history' : Hist , ... > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2')
+=> < serverA | 'context' : 'ctxX' , 'history' : ('msgA2' , Hist) , ... > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) .
+[B4] < ClientX | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientX | ('ctxX' ; History)
+=> < ClientX | 'receivedHistory' : History , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3138
+--------------------------------------------------
+```json
+{
+  "ClientX": "Client",
+  "ClientY": "Client",
+  "Ctx": "Qid",
+  "Hist": "Set",
+  "History": "Set",
+  "OldHistory": "Set"
+}
+```
+==================================================
+{'ClientX': 'Client', 'ClientY': 'Client', 'Ctx': 'Qid', 'Hist': 'Set', 'History': 'Set', 'OldHistory': 'Set'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< serverA | ('history' : {[Set] , 'msgA2' , 'msgB' , 'msgA'} , 'context' : {'ctxX' , [Qid]}) > < clientB | ('receivedHistory' : [Set] , 'knowCtx' : {[Qid] , 'ctxX'} , 'authenticated' : [Bool]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < serverA | ('context' : nils , 'history' : OldHistory , ..) > $ ClientX 'sendWithoutContext' serverA | ('msgA') 
+= < serverA | ('context' : 'ctxX' , 'history' : ('msgA') , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .
+eq < ClientX | ('knowCtx' : nils , 'receivedHistory' : nils , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) 
+= < ClientX | ('knowCtx' : 'ctxX' , 'receivedHistory' : History , ..) > .
+ceq < ClientX | ('knowCtx' : Ctx , 'receivedHistory' : OldHistory , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) 
+= < ClientX | ('knowCtx' : Ctx , 'receivedHistory' : History , ..) > if Ctx =/= nils .
+ceq < ClientX | ('knowCtx' : nils , 'receivedHistory' : OldHistory , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) 
+= < ClientX | ('knowCtx' : nils , 'receivedHistory' : History , ..) > if OldHistory =/= nils .
+ceq < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > $ ClientY 'snoop' serverA | (Ctx) 
+= < ClientY | ('authenticated' : true , 'knowCtx' : Ctx , ..) > < serverA | ('context' : Ctx , ...) > if Ctx =/= nils .
+eq < serverA | ('context' : 'ctxX' , 'history' : Hist , ..) > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB') 
+= < serverA | ('context' : 'ctxX' , 'history' : ('msgB' , Hist) , ..) > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) .
+eq < ClientY | ('receivedHistory' : OldHistory , ..) > $ serverA 'returnHistory' ClientY | ('ctxX' ; History) 
+= < ClientY | ('receivedHistory' : History , ..) > .
+eq < serverA | ('context' : 'ctxX' , 'history' : Hist , ..) > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2') 
+= < serverA | ('context' : 'ctxX' , 'history' : ('msgA2' , Hist) , ..) > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) .
+eq < ClientX | ('receivedHistory' : OldHistory , ..) > $ serverA 'returnHistory' ClientX | ('ctxX' ; History) 
+= < ClientX | ('receivedHistory' : History , ..) > .
+$ ClientX 'sendWithoutContext' serverA | ('msgA')
+$ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA'))
+$ serverA 'returnInitialContext' ClientX | ('ctxX' ; History)
+$ ClientY 'snoop' serverA | (Ctx)
+$ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+$ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist))
+$ serverA 'returnHistory' ClientY | ('ctxX' ; History)
+$ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2')
+$ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist))
+[*] Total token: 2007
+--------------------------------------------------
+```
+[1, 4, 5, 8]
+```
+==================================================
+[1, 4, 5, 8]
+[$ ClientX 'sendWithoutContext' serverA | ('msgA'), $ ClientY 'snoop' serverA | (Ctx), $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB'), $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2')]
+[eq ev1(ClientX) = $ ClientX 'sendWithoutContext' serverA | ('msgA') ., eq ev2(ClientY, Ctx) = $ ClientY 'snoop' serverA | (Ctx) ., eq ev3(ClientY) = $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB') ., eq ev4(ClientX) = $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2') .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3042
+--------------------------------------------------
+```
+< serverA | ('history' : nils , 'context' : nils) >
+< clientA | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >
+< clientB | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >
+```
+==================================================
+< serverA | ('history' : nils , 'context' : nils) > < clientA | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) > < clientB | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >
+[*] Generating event rules with LLM...
+[*] Total token: 3735
+--------------------------------------------------
+```
+[B1] < ClientX | 'authenticated' : true , 'knowCtx' : nils , ... > => ev1(ClientX) .
+[B2] < ClientY | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'context' : Ctx , ... > => ev2(ClientY, Ctx) .
+[B3] < ClientY | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > => ev3(ClientY) .
+[B4] < ClientX | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > => ev4(ClientX) .
+```
+==================================================
+< ClientX | 'authenticated' : true , 'knowCtx' : nils , ... > => ev1(ClientX) .
+< ClientY | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'context' : Ctx , ... > => ev2(ClientY, Ctx) .
+< ClientY | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > => ev3(ClientY) .
+< ClientX | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > => ev4(ClientX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > 
+=> ep: ev1(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > .
+rl [rev2]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > 
+=> ep: ev2(ClientY, Ctx) @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > .
+rl [rev3]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > 
+=> ep: ev3(ClientY) @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > .
+rl [rev4]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > 
+=> ep: ev4(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 2792
+--------------------------------------------------
+```
+attackerReadsVictimData =| < clientB | 'receivedHistory' : ('msgA' , Rest) , ... > .
+victimContextTampered =| < serverA | 'context' : 'ctxX' , 'history' : ('msgB' , Rest) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 1901
+--------------------------------------------------
+```json
+{
+  "Rest": "Set"
+}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check CTX-isolation: counterexample (6 events)
+[+] Model written: sequence_diagram/output/a2a-astra-v2-20261105/run1/A2A/rules.maude; status: validated

@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/August/diagram.md",
+  "input_sha256": "4d73929e29811c11b0af95411aed658c2d6ed76b5cf04f8c468f591ff56991aa",
+  "pipeline_id": "0b8c3a2b900df4975d38211af06c3b66d444557bbd0f0700099eb4b5c0b6229e",
+  "mode": "check",
+  "started_at": "2026-11-05T04:47:59.041140+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Expected exactly one complete output code block.",
+  "elapsed_seconds": 100.505,
+  "tokens_this_run": 9384,
+  "finished_at": "2026-11-05T04:49:39.549712+00:00"
+}

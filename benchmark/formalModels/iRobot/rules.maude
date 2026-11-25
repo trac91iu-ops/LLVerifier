@@ -18,18 +18,25 @@ eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY
 = < UserX | ('localTo' : nils , ..) > .
 eq < DeviceY | ('pressed' : false , ..) > $ UserX 'pressButton' DeviceY 
 = < DeviceY | ('pressed' : true , ..) > .
+
 eq < DeviceY | ('pressed' : true , 'key' : nils , ..) > $ UserX 'callAPI:setKey' DeviceY | (KeyA) 
 = < DeviceY | ('pressed' : false , 'key' : KeyA , ..) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) .
+
 eq < DeviceY | ('pressed' : true , 'key' : KeyB , ..) > $ UserX 'callAPI:setKey' DeviceY | (KeyA) 
 = < DeviceY | ('pressed' : false , 'key' : KeyA , ..) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) .
+
 eq < cloudA | (DeviceY : ('bdKey' : KeyB , ..) , ...) > $ DeviceY 'callAPI:setKey' cloudA | (KeyA) 
 = < cloudA | (DeviceY : ('bdKey' : KeyA , ..) , ...) > .
+
 eq < cloudA | (DeviceY : ('bdKey' : KeyA , 'owner' : nils , ..) , ...) > $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) 
 = < cloudA | (DeviceY : ('bdKey' : KeyA , 'owner' : UserX , ..) , ...) > .
+
 eq < DeviceY | ('pressed' : true , 'key' : KeyA , ..) > $ UserX 'callAPI:getKey' DeviceY 
 = < DeviceY | ('pressed' : false , .. , 'key' : KeyA) > $ DeviceY 'sendKey' UserX | (KeyA) .
+
 eq < UserX | ('key' : KeyB , ..) > $ DeviceY 'sendKey' UserX | (KeyA) 
 = < UserX | ('key' : KeyA , ..) > .
+
 eq < cloudA | (DeviceY : ('bdKey' : KeyA , 'owner' : UserX , ..) , ...) > $ UserX 'callAPI:reset' cloudA | (DeviceY ; KeyA) 
 = < cloudA | (DeviceY : ('bdKey' : '' , 'owner' : nils , ..) , ...) > .
 endm

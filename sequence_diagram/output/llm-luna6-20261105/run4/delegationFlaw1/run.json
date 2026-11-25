@@ -1,0 +1,46 @@
+{
+  "input": "sequence_diagram/input/delegationFlaw1/diagram.md",
+  "input_sha256": "d23fb8b026bacab34da6274259fff9166492dad7cc5b0e80072a63c21169f71c",
+  "pipeline_id": "a5f4c8ccd78ec677b4abdcad6ba23fe986c36cb32f93208d6fec6bbf39c57b2b",
+  "mode": "check",
+  "started_at": "2026-11-05T05:29:47.763078+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run4/delegationFlaw1/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceLock, _`,_(_:_('state', nils), _:_('trusted', cloudSmartThing))), <_|_>(deviceSwitch, _`,_(_:_('state', nils), _:_('trusted', nils))), <_|_>(cloudGoogle, _`,_(_:_(deviceSwitch, _`,_(_:_('key', 'keyA'), _:_('linkedLock', nils), _:_('state', nils), _:_('trusted', userA))), _:_(cloudGoogle, _`,_(_:_('key', nils), _:_('trusted', nils))))), <_|_>(cloudSmartThing, _`,_(_:_(deviceSwitch, _`,_(_:_('key', 'keyA'), _:_('linkedLock', deviceLock), _:_('state', nils), _:_('trusted', cloudGoogle))), _:_(cloudSmartThing, _`,_(_:_('key', nils), _:_('trusted', nils)))))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 8,
+    "coverage_issues": [
+      "B6 (action, line 49): no event rule for the initiated message",
+      "B7 (action, line 54): no event rule for the initiated message"
+    ]
+  },
+  "model_sha256": "cb35e7c1268ff7ac9b609a7627ea7f1cae52717a68fafebdcb55b8b6b7a2a065",
+  "check": {
+    "property": "CTRL-direct",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceOn": false,
+      "attackerAuthorized": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 224.152,
+  "tokens_this_run": 27370,
+  "finished_at": "2026-11-05T05:33:31.917740+00:00"
+}

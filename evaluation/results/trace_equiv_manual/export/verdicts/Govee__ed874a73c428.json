@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:07:36.829Z",
+  "model": "ed874a73c428",
+  "note": "",
+  "protocol": "Govee",
+  "runs": [
+    "run1"
+  ],
+  "verdict": "present"
+}

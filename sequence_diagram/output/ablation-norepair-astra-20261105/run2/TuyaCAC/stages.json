@@ -1,0 +1,11 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:09c73ed6b5e395bab3d47972af87654437746a44f88af6db7efc4610f4c4d70f"
+  },
+  {
+    "attempt": 0,
+    "output": "< cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA | UserY\n=> < cloudA | UserX : ('members' : (UserY , Members) , ...) , ... > .\n\n< cloudA | UserX : ('device' : deviceB , 'members' : (UserY , Rest) , ...) , UserY : ('device' : nils , ...) , ... >\n=> < cloudA | UserX : ('device' : deviceB , 'members' : (UserY , Rest) , ...) , UserY : ('device' : deviceB , ...) , ... > .\n\n< cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'key' : Key , ... > $ UserX 'requestKey' cloudA | deviceB\n=> < cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'key' : Key , ... > $ cloudA 'sendKey' UserX | (deviceB ; Key) .\n\n< UserX | 'key' : nils , ... > $ cloudA 'sendKey' UserX | (deviceB ; Key)\n=> < UserX | 'key' : Key , ... > .\n\n< deviceB | 'key' : Key , 'on' : false , ... > $ UserX 'turnOn' deviceB | Key\n=> < deviceB | 'key' : Key , 'on' : true , ... > .\n\n< cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'on' : false , ... > $ UserX 'cloudTurnOn' cloudA | deviceB\n=> < cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'on' : true , ... > .\n\n< cloudA | UserX : ('members' : (UserY , Rest) , ...) , UserY : ('device' : AssociatedDevice , ...) , ... > $ UserX 'removeMember' cloudA | UserY\n=> < cloudA | UserX : ('members' : Rest , ...) , UserY : ('device' : nils , ...) , ... > if AssociatedDevice =/= nils .",
+    "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA |"
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/MaagKwikset/diagram.md",
+  "input_sha256": "8e9c37570e7f78957960f2ecddedce1486cdd7cecf61b45a1c8c72dbc43fd6d3",
+  "pipeline_id": "0bcbc74c0888ff01c7087e812990e7d763e0142bcf5f61ad957d86afd935e728",
+  "mode": "check",
+  "started_at": "2026-11-05T07:12:10.691028+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/ablation-norepair-astra-20261105/run5/MaagKwikset/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_('secret', 'secret'), _:_(deviceB, _:_('trusted', userA)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB), _:_('signedKey', nils))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils), _:_('signedKey', nils))), <_|_>(deviceB, _`,_(_:_('key', ''), _:_('secret', 'secret'), _:_('trusted', userA)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 7,
+    "coverage_issues": []
+  },
+  "model_sha256": "7cb704740b8aa67a4151462b193883aace591522090265cbe0dcec14fc8ecafd",
+  "check": {
+    "property": "OWN-stealth",
+    "verdict": "counterexample",
+    "events": 69,
+    "at_init": {
+      "deviceTrustsAttacker": false,
+      "cloudRecordsTrust": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 168.67,
+  "tokens_this_run": 21244,
+  "finished_at": "2026-11-05T07:14:59.361897+00:00"
+}

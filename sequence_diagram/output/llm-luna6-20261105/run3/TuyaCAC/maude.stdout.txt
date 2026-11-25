@@ -1,0 +1,29 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Cloud : Cloud .
+  var Device : Device .
+  var Key : Qid .
+  var Members : Set .
+  var UserX : User .
+  var UserY : User .
+  var UserYDevice : Device .
+  eq init = idle @ < cloudA | (userA : ('members' : nils, 'device' : deviceB), userC : ('members' : nils, 'device' : nils)) > < deviceB | ('on' : false, 'key' : 'keyB') > < userA | ('key' : nils) > < userC | ('key' : nils) > .
+  eq < Cloud | (UserX : ('members' : Members, ..), ...) > $ UserX 'invite' Cloud | (UserY) = < Cloud | (UserX : ('members' : (UserY, Members), ..), ...) > .
+  eq < Cloud | (UserX : ('device' : Device, ..), ...) > < Device | ('key' : Key, ....) > $ UserX 'requestKey' Cloud | (Device) = < Cloud | (UserX : ('device' : Device, ..), ...) > < Device | ('key' : Key, ....) > $ Cloud 'sendKey' UserX | (Device ; Key) .
+  eq < UserX | ('key' : nils, ..) > $ Cloud 'sendKey' UserX | (Device ; Key) = < UserX | ('key' : Key, ..) > .
+  eq < Device | ('key' : Key, 'on' : false, ..) > $ UserX 'turnOnWithKey' Device | (Key) = < Device | ('key' : Key, 'on' : true, ..) > .
+  eq < Cloud | (UserX : ('device' : Device, ..), ...) > < Device | ('on' : false, ....) > $ UserX 'turnOn' Cloud | (Device) = < Cloud | (UserX : ('device' : Device, ..), ...) > < Device | ('on' : true, ....) > .
+  eq < Cloud | (UserX : ('device' : Device, 'members' : (UserY), ..), UserY : ('device' : UserYDevice, ...), ....) > $ UserX 'removeMember' Cloud | (UserY) = < Cloud | (UserX : ('device' : Device, 'members' : nils, ..), UserY : ('device' : nils, ...), ....) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (34482 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('device', deviceB), _:_('members', nils))), _:_(userC, _`,_(_:_('device', nils), _:_('members', nils))))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceB, _`,_(_:_('key', 'keyB'), _:_('on', false)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+No solution.
+states: 1  rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
+Bye.

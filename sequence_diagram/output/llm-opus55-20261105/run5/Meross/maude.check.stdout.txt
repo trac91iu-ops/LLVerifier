@@ -1,0 +1,49 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : 'keyUserA', 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyUserA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyDevA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyUserA' ; 'keyUserA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyUserC' ; 'keyUserC') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev4} {$ userC 'approach' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : 'keyUserC', 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyUserA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyUserC' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyDevA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyUserA' ; 'keyUserA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyDevA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyUserC' ; 'keyUserC') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev5} {$ userA 'leave' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyUserA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyUserC' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyDevA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userA 'bindCloud' cloudA | ('keyUserA' ; 'keyUserA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyDevA' ; 'keyDevA') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyUserC' ; 'keyUserC') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : nils > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev4} {$ userA 'approach' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : deviceA > < deviceA | 'key' : 'keyDevA' >, 'rev5} {$ userC 'leave' deviceA @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : nils) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev3} {$ userC 'bindCloud' cloudA | ('keyDevA' ; 'keyUserC') @
+< cloudA | userA : 'key' : 'keyUserA', userC : 'key' : 'keyUserC', deviceA : ('key' : 'keyDevA', 'owner' : userC) > < userA | 'keys' : ('keyDevA', 'keyUserA'), 'near' : deviceA > < userC | 'keys' : ('keyDevA', 'keyUserC'), 'near' : nils > < deviceA | 'key' : 'keyDevA' >, 'rev1}
+idle
+$ userA 'pressButton' deviceA
+$ userC 'approach' deviceA
+$ userC 'pressButton' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userC 'bindCloud' cloudA | ('keyDevA' ; 'keyUserC')
+rewrites: 6447 in 14ms cpu (14ms real) (454398 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceA ^ ($ userC 'approach' deviceA ^ ($ userC 'pressButton' deviceA ^ ($ userA 'leave' deviceA ^ ($ userA 'approach' deviceA ^ ($ userC 'leave' deviceA ^ ($ userC 'bindCloud' cloudA | ('keyDevA' ; 'keyUserC') ^ nile)))))))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

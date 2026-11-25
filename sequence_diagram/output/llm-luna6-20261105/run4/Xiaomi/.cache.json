@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "context_id": "858d1af068db7914f611dc4f760da399e9937a13c503e755a8f00aa78756df41",
+  "answers": {
+    "genPolicy:460b113c319db950ae3b9cd6bf112cb36e4d0d15990e89e4696369347b7befc0": "[B1] < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (Members , UserY) , ...) , ... > .\n[B2] < cloudA | UserX : ('device' : Device , ...) , Device : ('key' : Key , ...) , ... > $ UserX 'requestKey' cloudA | (Device)\n=> < cloudA | UserX : ('device' : Device , ...) , Device : ('key' : Key , ...) , ... > $ cloudA 'sendKey' UserX | (Device ; Key) .\n[B2] < UserX | 'key' : nils , ... > $ cloudA 'sendKey' UserX | (Device ; Key)\n=> < UserX | 'key' : Key , ... > .\n[B3] < UserX | 'key' : Key , ... > < Device | 'key' : Key , 'on' : false , ... > $ UserX 'turnOn' Device | (Key)\n=> < UserX | 'key' : Key , ... > < Device | 'key' : Key , 'on' : true , ... > .\n[B4] < cloudA | UserX : ('device' : Device , ...) , ... > < Device | 'on' : false , ... > $ UserX 'turnOnCloud' cloudA | (Device)\n=> < cloudA | UserX : ('device' : Device , ...) , ... > < Device | 'on' : true , ... > .\n[B5] < cloudA | UserX : ('members' : (UserY) , ...) , UserY : ('device' : Device , ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : nils , ...) , UserY : ('device' : nils , ...) , ... > .",
+    "genPolicyVars:1fe80381451a307c92196ea7a874e60f5d382d8ad8b9117703063f152cc60cb9": "{\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "filterEvents:dda3b59eb9922cc6ef059dd3df8f0bd45c4ff81300040a1cfaf03b131321a1a6": "[1, 2, 4, 5, 6]",
+    "genInit:66c64ae5bc6e8960278d1b82c0ffb4d1301a9d0f12a84b71b9c87289d59fc278": "< cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils) , deviceB : ('key' : 'keyB')) > < userA | ('key' : nils , 'near' : deviceB) > < userC | ('key' : nils , 'near' : nils) > < deviceB | ('on' : false , 'key' : 'keyB') >",
+    "genRRLs:acc7ba0a6a8d364a74ff8fad9dfd5861fb80272c7f602169ec49831963603b11": "[B1] < UserX | ... > < UserY | ... > => ev1(UserX, UserY) .\n[B2] < UserX | ... > < Device | ... > => ev2(UserX, Device) .\n[B3] < UserX | 'key' : Key > < Device | ... > => ev3(UserX, Device, Key) .\n[B4] < UserX | ... > < Device | ... > => ev4(UserX, Device) .\n[B5] < cloudA | UserX : ('members' : (UserY) , ...) , ... > => ev5(UserX, UserY) .",
+    "genSlots:d4b0669769923b6cae671d2a47100cad36d0a46a03ee94da0fa458f328f8c509": "deviceOn =| < deviceB | 'on' : true , ... > .\nattackerAuthorized =| < cloudA | userC : ('device' : deviceB , ...) , ... > ."
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:460b113c319db950ae3b9cd6bf112cb36e4d0d15990e89e4696369347b7befc0"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (Members , UserY) , ...) , ... > .\n[B2] < cloudA | UserX : ('device' : Device , ...) , Device : ('key' : Key , ...) , ... > $ UserX 'requestKey' cloudA | (Device)\n=> < cloudA | UserX : ('device' : Device , ...) , Device : ('key' : Key , ...) , ... > $ cloudA 'sendKey' UserX | (Device ; Key) .\n[B2] < UserX | 'key' : nils , ... > $ cloudA 'sendKey' UserX | (Device ; Key)\n=> < UserX | 'key' : Key , ... > .\n[B3] < UserX | 'key' : Key , ... > < Device | 'key' : Key , 'on' : false , ... > $ UserX 'turnOn' Device | (Key)\n=> < UserX | 'key' : Key , ... > < Device | 'key' : Key , 'on' : true , ... > .\n[B4] < cloudA | UserX : ('device' : Device , ...) , ... > < Device | 'on' : false , ... > $ UserX 'turnOnCloud' cloudA | (Device)\n=> < cloudA | UserX : ('device' : Device , ...) , ... > < Device | 'on' : true , ... > .\n[B5] < cloudA | UserX : ('members' : (UserY) , ...) , UserY : ('device' : Device , ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : nils , ...) , UserY : ('device' : nils , ...) , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:1fe80381451a307c92196ea7a874e60f5d382d8ad8b9117703063f152cc60cb9"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:dda3b59eb9922cc6ef059dd3df8f0bd45c4ff81300040a1cfaf03b131321a1a6"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 2, 4, 5, 6]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:66c64ae5bc6e8960278d1b82c0ffb4d1301a9d0f12a84b71b9c87289d59fc278"
+    },
+    {
+      "attempt": 0,
+      "output": "< cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils) , deviceB : ('key' : 'keyB')) > < userA | ('key' : nils , 'near' : deviceB) > < userC | ('key' : nils , 'near' : nils) > < deviceB | ('on' : false , 'key' : 'keyB') >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:acc7ba0a6a8d364a74ff8fad9dfd5861fb80272c7f602169ec49831963603b11"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | ... > < UserY | ... > => ev1(UserX, UserY) .\n[B2] < UserX | ... > < Device | ... > => ev2(UserX, Device) .\n[B3] < UserX | 'key' : Key > < Device | ... > => ev3(UserX, Device, Key) .\n[B4] < UserX | ... > < Device | ... > => ev4(UserX, Device) .\n[B5] < cloudA | UserX : ('members' : (UserY) , ...) , ... > => ev5(UserX, UserY) .",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:d4b0669769923b6cae671d2a47100cad36d0a46a03ee94da0fa458f328f8c509"
+    },
+    {
+      "attempt": 0,
+      "output": "deviceOn =| < deviceB | 'on' : true , ... > .\nattackerAuthorized =| < cloudA | userC : ('device' : deviceB , ...) , ... > .",
+      "error": null
+    }
+  ]
+}

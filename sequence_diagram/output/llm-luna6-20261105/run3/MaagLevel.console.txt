@@ -1,0 +1,135 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 9 blocks
+[*] Generating policy with LLM...
+[*] Total token: 5717
+--------------------------------------------------
+``` 
+[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : deviceA , ... > .
+[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : nils , ... > .
+[B3] < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'shareAccess' cloudA | (deviceA ; UserY)
+=> < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX , UserY) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; encrypt('auth',Secret) ; 'share' ; UserY) .
+[B4] < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX , UserY) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'revokeAccess' cloudA | (deviceA ; UserY)
+=> < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; encrypt('auth',Secret) ; 'revoke' ; UserY) .
+[B5] < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'share' ; UserY)
+=> < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ RelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY) .
+[B5] < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'revoke' ; UserY)
+=> < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ RelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY) .
+[B6] < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ cloudA 'command' CachingRelayUser | (deviceA ; EncryptedAuth ; 'share' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : (deviceA ; EncryptedAuth ; 'share' ; UserY) , ... > .
+[B6] < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ cloudA 'command' CachingRelayUser | (deviceA ; EncryptedAuth ; 'revoke' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : (deviceA ; EncryptedAuth ; 'revoke' ; UserY) , ... > .
+[B7] < CachingRelayUser | 'near' : deviceA , 'cached' : (deviceA ; EncryptedAuth ; 'share' ; UserY) , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY) .
+[B7] < CachingRelayUser | 'near' : deviceA , 'cached' : (deviceA ; EncryptedAuth ; 'revoke' ; UserY) , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY) .
+[B8] < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > $ RelayUser 'forward' deviceA | (encrypt('auth',Secret) ; 'share' ; UserY)
+=> < deviceA | 'key' : Secret , 'trusted' : (Trusted , UserY) , ... > .
+[B9] < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > $ RelayUser 'forward' deviceA | (encrypt('auth',Secret) ; 'revoke' ; UserY)
+=> < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > if 1 == 0 .
+[B9] < deviceA | 'key' : Secret , 'trusted' : (Trusted , UserY) , ... > $ RelayUser 'forward' deviceA | (encrypt('auth',Secret) ; 'revoke' ; UserY)
+=> < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > .
+```
+==================================================
+[*] Total token: 7029
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : deviceA , ... > .
+[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : nils , ... > .
+[B3] < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'shareAccess' cloudA | (deviceA ; UserY)
+=> < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX , UserY) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; encrypt('auth',Secret) ; 'share' ; UserY) .
+[B4] < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX , UserY) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'revokeAccess' cloudA | (deviceA ; UserY)
+=> < cloudA | 'key' : Secret , deviceA : ('trusted' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; encrypt('auth',Secret) ; 'revoke' ; UserY) .
+[B5] < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'share' ; UserY)
+=> < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ RelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY) .
+[B5] < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'revoke' ; UserY)
+=> < RelayUser | 'near' : deviceA , ... > < ImmediateRelayUser | 'near' : deviceA , ... > $ RelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY) .
+[B6] < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ cloudA 'command' CachingRelayUser | (deviceA ; EncryptedAuth ; 'share' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : list (deviceA ; EncryptedAuth ; 'share' ; UserY) , ... > .
+[B6] < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ cloudA 'command' CachingRelayUser | (deviceA ; EncryptedAuth ; 'revoke' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : list (deviceA ; EncryptedAuth ; 'revoke' ; UserY) , ... > .
+[B7] < CachingRelayUser | 'near' : deviceA , 'cached' : list (deviceA ; EncryptedAuth ; 'share' ; UserY) , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY) .
+[B7] < CachingRelayUser | 'near' : deviceA , 'cached' : list (deviceA ; EncryptedAuth ; 'revoke' ; UserY) , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY)
+=> < CachingRelayUser | 'near' : deviceA , 'cached' : nils , ... > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY) .
+[B8] < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > $ RelayUser 'forward' deviceA | (encrypt('auth',Secret) ; 'share' ; UserY)
+=> < deviceA | 'key' : Secret , 'trusted' : (Trusted , UserY) , ... > .
+[B9] < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > $ RelayUser 'forward' deviceA | (encrypt('auth',Secret) ; 'revoke' ; UserY)
+=> < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > .
+[B9] < deviceA | 'key' : Secret , 'trusted' : (Trusted , UserY) , ... > $ RelayUser 'forward' deviceA | (encrypt('auth',Secret) ; 'revoke' ; UserY)
+=> < deviceA | 'key' : Secret , 'trusted' : Trusted , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3980
+--------------------------------------------------
+```json
+{
+  "CachingRelayUser": "User",
+  "EncryptedAuth": "Item",
+  "ImmediateRelayUser": "User",
+  "RelayUser": "User",
+  "Secret": "Qid",
+  "Trusted": "Set",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'CachingRelayUser': 'User', 'EncryptedAuth': 'Item', 'ImmediateRelayUser': 'User', 'RelayUser': 'User', 'Secret': 'Qid', 'Trusted': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('near' : [Principal] , 'cached' : [Funcall]) > < userC | ('near' : [Principal] , 'cached' : [Funcall]) > < cloudA | ('key' : [Qid] , [Principal] : ('trusted' : [User])) > < deviceA | ('key' : [Qid] , 'trusted' : [Set]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False [-] ValueError: Expected exactly one complete output code block.
+hasCurrentTime False
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceA 
+= < UserX | ('near' : deviceA , ..) > .
+eq < UserX | ('near' : deviceA , ..) > $ UserX 'leave' deviceA 
+= < UserX | ('near' : nils , ..) > .
+eq < cloudA | ('key' : Secret , deviceA : ('trusted' : (UserX) , ..) , ...) > < RelayUser | ('near' : deviceA , ....) > $ UserX 'shareAccess' cloudA | (deviceA ; UserY) 
+= < cloudA | ('key' : Secret , deviceA : ('trusted' : (UserX , UserY , ..) , ..) , ...) > < RelayUser | ('near' : deviceA , ....) > $ cloudA 'command' RelayUser | (deviceA ; encrypt('auth', Secret) ; 'share' ; UserY) .
+eq < cloudA | ('key' : Secret , deviceA : ('trusted' : (UserX , UserY , ..) , ...) , ....) > < RelayUser | ('near' : deviceA , .....) > $ UserX 'revokeAccess' cloudA | (deviceA ; UserY) 
+= < cloudA | ('key' : Secret , deviceA : ('trusted' : (UserX) , ...) , ....) > < RelayUser | ('near' : deviceA , .....) > $ cloudA 'command' RelayUser | (deviceA ; encrypt('auth', Secret) ; 'revoke' ; UserY) .
+eq < RelayUser | ('near' : deviceA , ..) > < ImmediateRelayUser | ('near' : deviceA , ...) > $ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'share' ; UserY) 
+= < RelayUser | ('near' : deviceA , ..) > < ImmediateRelayUser | ('near' : deviceA , ...) > $ RelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY) .
+eq < RelayUser | ('near' : deviceA , ..) > < ImmediateRelayUser | ('near' : deviceA , ...) > $ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'revoke' ; UserY) 
+= < RelayUser | ('near' : deviceA , ..) > < ImmediateRelayUser | ('near' : deviceA , ...) > $ RelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY) .
+eq < CachingRelayUser | ('near' : deviceA , 'cached' : nils , ..) > $ cloudA 'command' CachingRelayUser | (deviceA ; EncryptedAuth ; 'share' ; UserY) 
+= < CachingRelayUser | ('near' : deviceA , 'cached' : list((deviceA ; EncryptedAuth ; 'share' ; UserY)) , ..) > .
+eq < CachingRelayUser | ('near' : deviceA , 'cached' : nils , ..) > $ cloudA 'command' CachingRelayUser | (deviceA ; EncryptedAuth ; 'revoke' ; UserY) 
+= < CachingRelayUser | ('near' : deviceA , 'cached' : list((deviceA ; EncryptedAuth ; 'revoke' ; UserY)) , ..) > .
+eq < CachingRelayUser | ('near' : deviceA , 'cached' : list((deviceA ; EncryptedAuth ; 'share' ; UserY)) , ..) > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY) 
+= < CachingRelayUser | ('near' : deviceA , 'cached' : nils , ..) > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY) .
+eq < CachingRelayUser | ('near' : deviceA , 'cached' : list((deviceA ; EncryptedAuth ; 'revoke' ; UserY)) , ..) > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY) 
+= < CachingRelayUser | ('near' : deviceA , 'cached' : nils , ..) > $ CachingRelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY) .
+eq < deviceA | ('key' : Secret , 'trusted' : Trusted , ..) > $ RelayUser 'forward' deviceA | (encrypt('auth', Secret) ; 'share' ; UserY) 
+= < deviceA | ('key' : Secret , 'trusted' : (Trusted , UserY) , ..) > .
+eq < deviceA | ('key' : Secret , 'trusted' : Trusted , ..) > $ RelayUser 'forward' deviceA | (encrypt('auth', Secret) ; 'revoke' ; UserY) 
+= < deviceA | ('key' : Secret , 'trusted' : Trusted , ..) > .
+eq < deviceA | ('key' : Secret , 'trusted' : (Trusted , UserY) , ..) > $ RelayUser 'forward' deviceA | (encrypt('auth', Secret) ; 'revoke' ; UserY) 
+= < deviceA | ('key' : Secret , 'trusted' : Trusted , ..) > .
+$ UserX 'approach' deviceA
+$ UserX 'leave' deviceA
+$ UserX 'shareAccess' cloudA | (deviceA ; UserY)
+$ cloudA 'command' RelayUser | (deviceA ; encrypt('auth', Secret) ; 'share' ; UserY)
+$ UserX 'revokeAccess' cloudA | (deviceA ; UserY)
+$ cloudA 'command' RelayUser | (deviceA ; encrypt('auth', Secret) ; 'revoke' ; UserY)
+$ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'share' ; UserY)
+$ RelayUser 'forward' deviceA | (EncryptedAuth ; 'share' ; UserY)
+$ cloudA 'command' RelayUser | (deviceA ; EncryptedAuth ; 'revoke' ; UserY)
+$ RelayUser 'forward' deviceA | (EncryptedAuth ; 'revoke' ; UserY)
+$ RelayUser 'forward' deviceA | (encrypt('auth', Secret) ; 'share' ; UserY)
+$ RelayUser 'forward' deviceA | (encrypt('auth', Secret) ; 'revoke' ; UserY)
+[*] Total token: 2739
+--------------------------------------------------
+```[1, 2, 3, 5, 11, 12]```
+==================================================

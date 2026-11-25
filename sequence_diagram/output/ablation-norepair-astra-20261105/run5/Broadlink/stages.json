@@ -1,0 +1,47 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:732bb8587bcd70cb352a414249177df573da82b5ee12f6d1729754017ba32740"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n\n[B2] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n\n[B3] < deviceB | 'key' : OldKey , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : FreshKey , ... > .\n\n[B4] < UserX | 'key' : nils , ... > < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'retrieveKey' deviceB\n=> < UserX | 'key' : Key , ... > < deviceB | 'locked' : false , 'key' : Key , ... > .\n\n[B5] < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'lock' deviceB | Key\n=> < deviceB | 'locked' : true , 'key' : Key , ... > .\n\n[B6] < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : CloudKey , 'owners' : Owners , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Key)\n=> < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : CloudKey , 'owners' : (UserX , Owners) , ...) , ... > .\n\n[B7] < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > $ userC 'invite' cloudA | userA\n=> < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > .\n\n[B8] < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > $ userC 'remove' cloudA | userA\n=> < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > .\n\n[B9] < cloudA | ... > $ UserY 'retrieveKey' cloudA | deviceB\n=> < cloudA | ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:1010aee6593af4f6cb29f982a52152c332f8fb7dd4748a139eded1f5e38a83fd"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"CloudKey\": \"Qid\",\n  \"FreshKey\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"OldKey\": \"Qid\",\n  \"OldNear\": \"Set\",\n  \"Owners\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:0dc2d92c2c70b15cf72bcd749133c4468e78c33d13bb57d55ce62934ba883ede"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 4, 5, 6, 7, 8, 9]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:ccb8bd32e42e3df2dd79aaceac922eb98123b09730d206cfc7945c83b7ea1644"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('key' : nils , 'near' : deviceB) >\n< userC | ('key' : nils , 'near' : nils) >\n< deviceB | ('key' : 'deviceKey' , 'locked' : false) >\n< cloudA | (\n    userA : ('devices' : nils , 'members' : nils , 'owners' : nils , 'key' : nils) ,\n    userC : ('devices' : nils , 'members' : nils , 'owners' : nils , 'key' : nils) ,\n    deviceB : ('devices' : nils , 'members' : nils , 'owners' : nils , 'key' : 'deviceKey')\n) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:7c1d0e5a7b3b384e3c8bdef226c1f3b856d2eea0860c5dddd797eafdad3b858f"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B2] < UserX | 'near' : (deviceB , Rest) , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B3] < UserX | 'near' : (deviceB , Rest) , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B4] < UserX | 'near' : (deviceB , Rest) , ... > => ev4(UserX) .\n[B5] < UserX | 'key' : Key , 'near' : deviceB , ... > => ev5(UserX, Key) .\n[B5] < UserX | 'key' : Key , 'near' : (deviceB , Rest) , ... > => ev5(UserX, Key) .\n[B6] < UserX | 'key' : Key , ... > < deviceB | ... > => ev6(UserX, Key) .\n[B7] < userC | ... > < userA | ... > => ev7 .\n[B8] < userC | ... > < userA | ... > => ev8 .\n[B9] < UserY | 'key' : Key , ... > < deviceB | ... > => ev9(UserY) .",
+    "error": "No terminal matches '.' in the current parser context, at line 11 col 40\n\n< userC | ... > < userA | ... > => ev7 .\n                                       ^\nExpected one of: '\\\\('"
+  }
+]

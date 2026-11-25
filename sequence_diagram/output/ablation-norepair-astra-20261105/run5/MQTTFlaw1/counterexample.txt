@@ -1,0 +1,3 @@
+$ userA 'publishToggle' cloudB | 'toggle'
+$ cloudB 'revokePermission' cloudB | userA
+$ userA 'releaseMessage' cloudB

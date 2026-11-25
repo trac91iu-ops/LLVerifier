@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/Kevo/diagram.md",
+  "input_sha256": "85a68ef38293d7fda15a496ff9afe32008fe0c02783cf3f01fd2e79130d88e4f",
+  "pipeline_id": "d6a68f526a49b906674d06836d4f67dc431194b3c546ddeed5b5bc6e81fb537f",
+  "mode": "check",
+  "started_at": "2026-11-05T06:45:36.353391+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near",
+  "elapsed_seconds": 41.102,
+  "tokens_this_run": 4173,
+  "finished_at": "2026-11-05T06:46:17.455816+00:00"
+}

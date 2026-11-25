@@ -1,0 +1,115 @@
+{
+  "protocol": "Huawei",
+  "model_sha256": "0c6ef5176666125891538ac53347021daa4435c97f76a3085c7e18c8bb979199",
+  "runs": [
+    "run5"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run5/Huawei/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Huawei/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'invite'": "'callAPI:invite'",
+      "'removeMember'": "'callAPI:kick'",
+      "'requestKey'": "'callAPI:getKey'",
+      "'sendKey'": "'send'",
+      "'turnOn'": "'callAPI:toggle'"
+    },
+    "attributes": {
+      "'device'": "'device'",
+      "'key'": "'key'",
+      "'members'": "'members'",
+      "'on'": "'state'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'keyB'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'state'",
+        "generated": "false",
+        "gold": "'off'"
+      },
+      {
+        "attribute": "'state'",
+        "generated": "true",
+        "gold": "'on'"
+      },
+      {
+        "attribute": "'key'",
+        "generated": "'keyB'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'callAPI:getKey'",
+      "'callAPI:invite'",
+      "'callAPI:kick'",
+      "'callAPI:toggle'",
+      "'cloudAPI:toggle'",
+      "'send'"
+    ],
+    "attributes": [
+      "'device'",
+      "'key'",
+      "'members'",
+      "'state'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'off'",
+      "'on'",
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'invite'",
+      "'removeMember'",
+      "'requestKey'",
+      "'sendKey'",
+      "'turnOn'"
+    ],
+    "attributes": [
+      "'device'",
+      "'key'",
+      "'members'",
+      "'on'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'keyB'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:05:02+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2274,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'invite'\": \"'callAPI:invite'\",\n    \"'removeMember'\": \"'callAPI:kick'\",\n    \"'requestKey'\": \"'callAPI:getKey'\",\n    \"'sendKey'\": \"'send'\",\n    \"'turnOn'\": \"'callAPI:toggle'\"\n  },\n  \"attributes\": {\n    \"'device'\": \"'device'\",\n    \"'key'\": \"'key'\",\n    \"'members'\": \"'members'\",\n    \"'on'\": \"'state'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'keyB'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'state'\",\n      \"generated\": \"false\",\n      \"gold\": \"'off'\"\n    },\n    {\n      \"attribute\": \"'state'\",\n      \"generated\": \"true\",\n      \"gold\": \"'on'\"\n    },\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyB'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

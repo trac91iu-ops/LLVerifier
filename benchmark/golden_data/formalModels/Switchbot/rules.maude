@@ -1,0 +1,75 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | ('key' : nils , 'localTo' : deviceB) > < userC | ('key' : nils , 'localTo' : nils) > < deviceB | ('key' : 'secret') > < cloudA | (deviceB : ('bdKey' : 'secret' , 'owner' : nils) , userA : ('devices' : nils , 'members' : nils) , userC : ('devices' : nils , 'members' : nils)) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars DeviceY : Device .
+vars UserX : User .
+vars KeyA : Qid .
+vars SetA : Set .
+vars UserY : User .
+*** policy
+eq < UserX | ('localTo' : nils , ..) > $ UserX 'approaches' DeviceY 
+= < UserX | ('localTo' : DeviceY , ..) > .
+eq < UserX | ('localTo' : DeviceY , ..) > $ UserX 'leaves' DeviceY 
+= < UserX | ('localTo' : nils , ..) > .
+eq < DeviceY | ('key' : KeyA , ..) > $ UserX 'pressButton' DeviceY 
+= < DeviceY | ('key' : KeyA , ..) > $ DeviceY 'sendKey' UserX | (KeyA) .
+eq < cloudA | (UserX : ('devices' : nils , 'members' : SetA , ..) , ...) > $ UserX 'callAPI:invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('devices' : nils , 'members' : (SetA , UserY) , ..) , ...) > .
+eq < cloudA | (UserX : ('devices' : nils , 'members' : (SetA , UserY) , ..) , ...) > $ UserX 'callAPI:kick' cloudA | (UserY) 
+= < cloudA | (UserX : ('devices' : nils , 'members' : SetA , ..) , ...) > .
+eq < UserX | ('key' : nils , ..) > $ DeviceY 'sendKey' UserX | (KeyA) 
+= < UserX | ('key' : KeyA , ..) > .
+eq < cloudA | (DeviceY : ('bdKey' : KeyA , ..) , ...) > $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) *** HC: wrong repeated attribute, but not affect the current property in evaluation
+= < cloudA | (DeviceY : ('bdKey' : KeyA , 'owner' : UserX , ..) , ...) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars DeviceY : Device .
+vars UserX : User .
+vars KeyA : Qid .
+vars SetA : Set .
+vars UserY : User .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device Qid -> Event .
+ops ev3 : User User -> Event .
+ops ev4 : User User -> Event .
+ops ev5 : User Device -> Event .
+ops ev6 : User Device -> Event .
+*** events
+eq ev1(UserX, DeviceY) = $ UserX 'pressButton' DeviceY .
+eq ev2(UserX, DeviceY, KeyA) = $ UserX 'callAPI:bind' cloudA | (DeviceY ; KeyA) .
+eq ev3(UserX, UserY) = $ UserX 'callAPI:invite' cloudA | (UserY) .
+eq ev4(UserX, UserY) = $ UserX 'callAPI:kick' cloudA | (UserY) .
+eq ev5(UserX, DeviceY) = $ UserX 'leaves' DeviceY .
+eq ev6(UserX, DeviceY) = $ UserX 'approaches' DeviceY .
+*** transitions
+rl [rev1]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev1(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev2]: E @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... > 
+=> ep: ev2(UserX, DeviceY, KeyA) @ S < UserX | ('key' : KeyA , ..) > < DeviceY | ... > .
+rl [rev3]: E @ S  
+=> ep: ev3(userA, userC) @ S  .
+rl [rev4]: E @ S  
+=> ep: ev4(userA, userC) @ S  .
+rl [rev3]: E @ S  
+=> ep: ev3(userC, userA) @ S  .
+rl [rev4]: E @ S  
+=> ep: ev4(userC, userA) @ S  .
+rl [rev5]: E @ S < UserX | ('localTo' : DeviceY , ..) > 
+=> ep: ev5(UserX, DeviceY) @ S < UserX | ('localTo' : DeviceY , ..) > .
+rl [rev6]: E @ S < UserX | ('localTo' : nils , ..) > 
+=> ep: ev6(UserX, deviceB) @ S < UserX | ('localTo' : nils , ..) > .
+
+endm

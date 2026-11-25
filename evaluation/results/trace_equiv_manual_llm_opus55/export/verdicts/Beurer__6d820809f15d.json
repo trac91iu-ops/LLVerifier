@@ -1,0 +1,12 @@
+{
+  "at": "2026-11-05T07:55:20.296Z",
+  "model": "6d820809f15d",
+  "note": "",
+  "protocol": "Beurer",
+  "runs": [
+    "opus55-run1",
+    "opus55-run2",
+    "opus55-run5"
+  ],
+  "verdict": "present"
+}

@@ -1,0 +1,34 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' : nils, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : nils) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : nils > < userC | 'key' : nils > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev2} {$ userA 'requestKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : nils > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : nils > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : nils > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev2} {$ userC 'requestKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : 'keyB' > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev1} {$ userA 'invite' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : 'keyB' > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev1} {$ userC 'invite' cloudA | userA @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : 'keyB' > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev2} {$ userA 'requestKey' cloudA | deviceB @
+< cloudA | userA : ('device' : deviceB, 'members' : userC), userC : ('device' : deviceB, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : 'keyB' > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev5} {$ userA 'removeMember' cloudA | userC @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : 'keyB' > < deviceB | 'key' : 'keyB', 'on' : false >, 'rev3} {$ userC 'turnOn' deviceB | 'keyB' @
+< cloudA | userA : ('device' : deviceB, 'members' : nils), userC : ('device' : nils, 'members' : userA) > < userA | 'key' : 'keyB' > < userC | 'key' : 'keyB' > < deviceB | 'key' : 'keyB', 'on' : true >, 'rev1}
+idle
+$ userA 'invite' cloudA | userC
+$ userC 'invite' cloudA | userA
+$ userA 'requestKey' cloudA | deviceB
+$ userC 'requestKey' cloudA | deviceB
+$ userA 'removeMember' cloudA | userC
+$ userC 'turnOn' deviceB | 'keyB'
+rewrites: 1239 in 9ms cpu (9ms real) (126713 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'invite' cloudA | userC ^ ($ userC 'invite' cloudA | userA ^ ($ userA 'requestKey' cloudA | deviceB ^ ($ userC 'requestKey' cloudA | deviceB ^ ($ userA 'removeMember' cloudA | userC ^ ($ userC 'turnOn' deviceB | 'keyB' ^ nile))))))
+==========================================
+reduce in CHECK : init |= deviceOn .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerAuthorized .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

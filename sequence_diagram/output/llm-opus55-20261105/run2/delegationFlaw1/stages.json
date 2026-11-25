@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:7e94ff77e1316546a3c5536eedef2c786498f6b63c2208e87c69741140b90c31"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < Cloud | Device : ('trust' : (UserX , Rest) , 'key' : K , ...) , ... > $ UserX 'requestKey' Cloud\n=> < Cloud | Device : ('trust' : (UserX , Rest) , 'key' : K , ...) , ... > $ Cloud 'sendKey' UserX | K .\n[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | K\n=> < UserX | 'key' : K , ... > .\n[B2] < Cloud | Device : ('trust' : (UserX , Rest) , ...) , ... > $ UserX 'delegate' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trust' : (UserX , UserY , Rest) , ...) , ... > .\n[B3] < Cloud | Device : ('trust' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revoke' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trust' : (UserX , Rest) , ...) , ... > .\n[B4] < cloudSmartThing | Device : ('key' : K , 'trust' : Trust , ...) , ... > $ UserX 'provideKey' cloudSmartThing | (Device ; K)\n=> < cloudSmartThing | Device : ('key' : K , 'trust' : (UserX , Trust) , ...) , ... > .\n[B6] < Cloud | Device : ('status' : false , 'trust' : (P , Rest) , ...) , ... > $ P 'turnOn' Device\n=> < Cloud | Device : ('status' : true , 'trust' : (P , Rest) , ...) , ... > $ Cloud 'turnOn' Device .\n[B7] < cloudSmartThing | Device : ('bind' : B , ...) , ... > $ cloudSmartThing 'turnOn' Device\n=> < cloudSmartThing | Device : ('bind' : B , ...) , ... > $ cloudSmartThing 'turnOn' B .\n[B8] < deviceLock | 'trust' : (P , Rest) , 'status' : false , ... > $ P 'turnOn' deviceLock\n=> < deviceLock | 'trust' : (P , Rest) , 'status' : true , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:dadb78a0bd1bdcc57520bda2d0b6ed66c54fc67a9af04cf415da44c252be506e"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"B\": \"Device\", \"Cloud\": \"Cloud\", \"Device\": \"Device\", \"K\": \"Qid\", \"P\": \"Principal\", \"Rest\": \"Set\", \"Trust\": \"Set\", \"UserX\": \"User\", \"UserY\": \"User\"}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:a998841e9fda81801228d429ecde251ad9153fd09dab01d17956f3324f038f33"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3, 4, 5, 6]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:0967916f87974fbb988c6d26ec7e600473cc8a5be130e0ee14a70abb448d233d"
+  },
+  {
+    "attempt": 0,
+    "output": "< cloudGoogle | (deviceSwitch : ('trust' : userA , 'status' : false , 'key' : 'key')) > < userA | ('key' : nils) > < userC | ('key' : nils) > < cloudSmartThing | (deviceSwitch : ('bind' : deviceLock , 'key' : 'key' , 'trust' : (cloudGoogle))) > < deviceLock | ('status' : false , 'trust' : (cloudSmartThing)) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:cb6beb9e3fa8b1c67934a21876bc675dbfaa1b468b6f5003563c2599e088ef21"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | ... > < Cloud | ... > => ev1(UserX, Cloud) .\n[B2] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev2(UserX, Cloud, Device, UserY) .\n[B3] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev3(UserX, Cloud, Device, UserY) .\n[B4] < UserX | 'key' : K , ... > < Device | ... > => ev4(UserX, Device, K) .\n[B5] < UserX | ... > < Device | ... > => ev5(UserX, Device) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:f7534f1d009e9273fcda2e368adf12b6c4c76ac884086c15b7d78b28b4472c67"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceOn =| < cloudGoogle | deviceSwitch : ('status' : true , ...) , ... > .\nattackerAuthorized =| < cloudGoogle | deviceSwitch : ('trust' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:31b69580a4053994b74659ae84a93e08addcdd5e985cdf6582ee41fbdd872fb7"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

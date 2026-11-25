@@ -1,0 +1,45 @@
+{
+  "input": "sequence_diagram/input/MaagKwikset/diagram.md",
+  "input_sha256": "8e9c37570e7f78957960f2ecddedce1486cdd7cecf61b45a1c8c72dbc43fd6d3",
+  "pipeline_id": "8ac643f153c139af4634baeb9b4529795bb3e85d68e4271b9dbbca67df9fe08a",
+  "mode": "check",
+  "started_at": "2026-11-05T05:07:36.175278+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run3/MaagKwikset/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_('secret', 'secret'), _:_(deviceB, _:_('trusted', userA)))), <_|_>(userA, _`,_(_:_('key', 'emptyText'), _:_('near', deviceB), _:_('signedKey', nils))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils), _:_('signedKey', nils))), <_|_>(deviceB, _`,_(_:_('key', 'emptyText'), _:_('secret', 'secret'), _:_('trusted', userA)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 7,
+    "coverage_issues": [
+      "B7 (action, line 49): no event rule for the initiated message"
+    ]
+  },
+  "model_sha256": "f8a7efb8fe03a87b009820a47bbeb8ecfdce566d48e3a956736ed68f021cfbf4",
+  "check": {
+    "property": "OWN-stealth",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceTrustsAttacker": false,
+      "cloudRecordsTrust": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 305.19,
+  "tokens_this_run": 28088,
+  "finished_at": "2026-11-05T05:12:41.367558+00:00"
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:aa9864a5e5bf623f68b285210d47c69085ae9d60197a501fc9fc474947575ef9"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...), ... > $ UserX 'requestKey' Cloud\n=> < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...), ... > $ Cloud 'sendKey' UserX | Key if Key =/= nils .\n[B1] < UserX | 'key' : nils, ... > $ Cloud 'sendKey' UserX | Key\n=> < UserX | 'key' : Key, ... > .\n[B2] < Cloud | Device : ('trusted' : (UserX, Rest), ...), ... > $ UserX 'delegateAccess' Cloud | (Device; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, UserY, Rest), ...), ... > .\n[B3] < Cloud | Device : ('trusted' : (UserX, UserY, Rest), ...), ... > $ UserX 'revokeAccess' Cloud | (Device; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, Rest), ...), ... > .\n[B4] < cloudSmartThing | Device : ('key' : Key, 'on' : false, ...), ... > $ UserX 'turnOnWithKey' cloudSmartThing | (Device; Key)\n=> < cloudSmartThing | Device : ('key' : Key, 'on' : true, ...), ... > $ cloudSmartThing 'turnOn' Device .\n[B5] < Device | ... > $ UserX 'turnOn' Device\n=> < Device | ... > .\n[B6] < Cloud | Device : ('on' : false, 'trusted' : (P, Rest), ...), ... > $ P 'turnOn' Device\n=> < Cloud | Device : ('on' : true, 'trusted' : (P, Rest), ...), ... > $ Cloud 'turnOn' Device .\n[B7] < cloudSmartThing | Device : ('boundTo' : B, ...), ... > $ cloudSmartThing 'turnOn' Device\n=> < cloudSmartThing | Device : ('boundTo' : B, ...), ... > $ cloudSmartThing 'turnOn' B .\n[B8] < deviceLock | 'trusted' : (P, Rest), 'on' : false, ... > $ P 'turnOn' deviceLock\n=> < deviceLock | 'trusted' : (P, Rest), 'on' : true, ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:a367c41d58e75ed468ce29d35fb17e9f0c9bafebe70265a8826b3ba7c7a16bb4"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"B\": \"Device\",\n  \"Cloud\": \"Cloud\",\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:0b34109833e0259558d70b540008b1d4f6b8b05235bf2c4489cbeca69f940236"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3, 4, 5, 7, 8, 10]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:8fe843430f343fb6f188b54f450d6b918f262d5adabf4f0ddee03eb15ce66bf2"
+  },
+  {
+    "attempt": 0,
+    "output": "< cloudB | (deviceLock : ('on' : false , 'trusted' : (cloudSmartThing) , 'key' : 'key')) >\n< userA | ('key' : nils) >\n< userC | ('key' : nils) >\n< cloudSmartThing | (deviceSwitch : ('boundTo' : deviceLock , 'key' : 'key' , 'on' : false , 'trusted' : (userA))) >\n< deviceSwitch | nils >\n< deviceLock | ('trusted' : (cloudB) , 'on' : false) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:e738bd0abef8990dd035647c3e22d03c4878db731d29839a15c801fbb1536702"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | ... > < Cloud | ... > => ev1(UserX, Cloud) .\n[B2] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev2(UserX, Cloud, Device, UserY) .\n[B3] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev3(UserX, Cloud, Device, UserY) .\n[B4] < UserX | 'key' : Key , ... > < Device | ... > => ev4(UserX, Device, Key) .\n[B5] < UserX | ... > < Device | ... > => ev5(UserX, Device) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:211566fef432a205d567581e6e500a8b1de8596266c2940b0d5476e6720ecfa7"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceOn =| < deviceLock | 'on' : true , ... > .\nattackerAuthorized =| < cloudB | deviceLock : ('trusted' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:952a082143a5e6abe14dcd237a1a1856e17db1b9acdf0477e28ff6ba09f13952"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

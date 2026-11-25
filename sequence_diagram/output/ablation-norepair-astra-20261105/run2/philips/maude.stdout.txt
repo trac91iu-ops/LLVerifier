@@ -1,0 +1,37 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var CurrentTime : Nat .
+  var FreshSecret : Qid .
+  var IssuedTime : Nat .
+  var Knowledge : Set .
+  var OldNear : Set .
+  var OtherOwners : Set .
+  var OtherTickets : Set .
+  var Secret : Qid .
+  var Tickets : Set .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < system | ('time' : 0, 'counter' : 0) > < userA | ('knowledge' : nils, 'near' : deviceB) > < userC | ('knowledge' : nils, 'near' : nils) > < deviceB | (nils) > < cloudA | (deviceB : ('tickets' : nils, 'owners' : nils)) > .
+  eq < UserX | ('near' : OldNear, ..) > $ UserX 'approach' deviceB = < UserX | ('near' : deviceB, ..) > .
+  eq < UserX | ('near' : OldNear, ..) > $ UserX 'leave' deviceB = < UserX | ('near' : nils, ..) > .
+  eq < system | ('counter' : N, ..) > < deviceB | (...) > $ UserX 'pressButton' deviceB = < system | ('counter' : N + 1, ..) > < deviceB | (...) > $ deviceB 'uploadSecret' cloudA | (deviceB ; randomStr ('Secret', N)) .
+  eq < system | ('time' : CurrentTime, 'counter' : N, ..) > < cloudA | (deviceB : ('tickets' : Tickets, ...), ....) > $ deviceB 'uploadSecret' cloudA | (deviceB ; Secret) = < system | ('time' : CurrentTime, 'counter' : N, ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret, 'time' : CurrentTime), Tickets), ...), ....) > .
+  ceq < system | ('time' : CurrentTime, 'counter' : N, ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret, 'time' : IssuedTime), OtherTickets), ...), ....) > $ UserX 'getKey' cloudA | (deviceB) = < system | ('time' : CurrentTime, 'counter' : N, ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret, 'time' : IssuedTime), OtherTickets), ...), ....) > $ cloudA 'sendSecret' UserX | (deviceB ; Secret) if IssuedTime == CurrentTime .
+  eq < UserX | ('knowledge' : Knowledge, ..) > $ cloudA 'sendSecret' UserX | (deviceB ; Secret) = < UserX | ('knowledge' : (Secret, Knowledge), ..) > .
+  eq < cloudA | (deviceB : ('owners' : nils, 'tickets' : (('secret' : Secret, 'time' : IssuedTime), OtherTickets), ..), ...) > $ UserX 'bind' cloudA | (deviceB ; Secret) = < cloudA | (deviceB : ('owners' : (UserX), 'tickets' : (('secret' : Secret, 'time' : IssuedTime), OtherTickets), ..), ...) > .
+  eq < cloudA | (deviceB : ('owners' : (UserY, OtherOwners), 'tickets' : (('secret' : Secret, 'time' : IssuedTime), OtherTickets), ..), ...) > $ UserX 'join' cloudA | (deviceB ; Secret) = < cloudA | (deviceB : ('owners' : (UserX, UserY, OtherOwners), 'tickets' : (('secret' : Secret, 'time' : IssuedTime), OtherTickets), ..), ...) > .
+  ceq < system | ('time' : CurrentTime, 'counter' : N, ..) > < cloudA | (deviceB : ('tickets' : (('secret' : Secret, 'time' : IssuedTime), OtherTickets), ...), ....) > = < system | ('time' : CurrentTime, 'counter' : N, ..) > < cloudA | (deviceB : ('tickets' : nils, ...), ....) > if CurrentTime - IssuedTime > 2 .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (33333 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(system, _`,_(_:_('counter', 0), _:_('time', 0))), <_|_>(cloudA, _:_(deviceB, _`,_(_:_('owners', nils), _:_('tickets', nils)))), <_|_>(userA, _`,_(_:_('knowledge', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('knowledge', nils), _:_('near', nils))), <_|_>(deviceB, nils)))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userC, 'approach', deviceB), __(<_|_>(system, _`,_(_:_('counter', 0), _:_('time', 0))), <_|_>(cloudA, _:_(deviceB, _`,_(_:_('owners', nils), _:_('tickets', nils)))), <_|_>(userA, _`,_(_:_('knowledge', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('knowledge', nils), _:_('near', deviceB))), <_|_>(deviceB, nils)))
+Bye.

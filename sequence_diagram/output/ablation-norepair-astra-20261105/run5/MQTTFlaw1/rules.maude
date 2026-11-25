@@ -1,0 +1,50 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | (nils) > < cloudB | ('buffer' : nils , deviceB : ('permission' : true) , userA : ('permission' : true)) > < deviceB | ('on' : false) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Message : Qid .
+vars Permission : Bool .
+vars UserX : User .
+*** policy
+eq < cloudB | ('buffer' : nils , UserX : ('permission' : true , ..) , ...) > $ UserX 'publishToggle' cloudB | ('toggle') 
+= < cloudB | ('buffer' : 'toggle' , UserX : ('permission' : true , ..) , ...) > $ cloudB 'acknowledgeReceipt' UserX .
+eq < cloudB | (UserX : ('permission' : Permission , ..) , ...) > $ cloudB 'revokePermission' cloudB | (UserX) 
+= < cloudB | (UserX : ('permission' : false , ..) , ...) > .
+ceq < cloudB | ('buffer' : Message , deviceB : ('permission' : true , ..) , ...) > $ UserX 'releaseMessage' cloudB 
+= < cloudB | ('buffer' : nils , deviceB : ('permission' : true , ..) , ...) > $ cloudB 'publishMessage' deviceB | (Message) if Message =/= nils .
+eq < deviceB | ('on' : false , ..) > $ cloudB 'publishMessage' deviceB | ('toggle') 
+= < deviceB | ('on' : true , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Message : Qid .
+vars Permission : Bool .
+vars UserX : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'publishToggle' cloudB | ('toggle') .
+eq ev2(UserX) = $ cloudB 'revokePermission' cloudB | (UserX) .
+eq ev3(UserX) = $ UserX 'releaseMessage' cloudB .
+*** transitions
+rl [rev1]: E @ S < UserX | (..) > 
+=> ep: ev1(UserX) @ S < UserX | (..) > .
+rl [rev2]: E @ S < cloudB | (UserX : ('permission' : true , ..) , ...) > 
+=> ep: ev2(UserX) @ S < cloudB | (UserX : ('permission' : true , ..) , ...) > .
+rl [rev3]: E @ S < UserX | (..) > 
+=> ep: ev3(UserX) @ S < UserX | (..) > .
+
+endm

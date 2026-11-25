@@ -1,0 +1,1467 @@
+---system---
+Generate state rules in the existing DSL from the supplied initial state and protocol description.
+
+# Grammar
+<StateRule> ::= <LogicalState> "=>" <LogicalState> ("if" <Condition>)? "."
+<LogicalState> ::= <InternalState>+ <Event>? <InternalState>*
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+<Condition> ::= <Arith> <CMP> <Arith>   (* exactly one comparison; no "and"/"or" *)
+<Arith> ::= <Arith> <OP> <Arith> | "(" <Arith> ")" | integer | <Var> | <FunCall> | "nils"
+<OP> ::= "+" | "-" | "*" | "/"
+<CMP> ::= ">" | "<" | ">=" | "<=" | "==" | "=/="
+
+# Source fidelity
+Use only the supplied description, not a reference/gold model or assumed security policy.
+Preserve every explicit guard, state update, message direction, action name, and argument
+(including device identifiers, keys, context identifiers, payloads, and returned histories).
+Keep argument order and arity consistent across every occurrence of an event. Multiple
+arguments use a parenthesized semicolon list; omit `|` only for zero arguments.
+Map diagram aliases consistently. Generic roles such as any user are typed capitalized
+variables; explicitly named actors remain constants. Do not specialize a generic role to
+an owner or merge two distinct roles just because they can denote the same principal.
+Use only library principal constants: userA through userD, deviceA through deviceD,
+cloudA through cloudD, clientA through clientD, serverA through serverD, appA through
+appD, deviceLock, deviceSwitch, cloudGoogle, cloudSmartThing, cloudIFTTT.
+Other data names are quoted Qids, not new principal constants. Keep given library names.
+
+# State and conditions
+Represent explicitly described mutable values and guard facts as attributes. Retain initial
+facts and explicit conditions even if they do not change in this rule. Do not invent schema
+keys for ownership, authorization, acknowledgement, progress, phases, or scheduling.
+Use consistent attribute names; preserve distinct stores (e.g. a user's key and a cloud's
+record for that user). Do not merge distinct relationships to minimize the schema.
+Use only the attributes needed for the stated guard or update, with `...` for the rest.
+Keep each matched principal and attribute on both sides; unchanged values stay unchanged.
+For an overwritten value, match a variable on the LHS unless the source explicitly requires
+an empty or particular old value. Never invent an empty-value precondition.
+Express equality, membership and conjunctions of state facts by shared variables and LHS
+patterns. Use `if` for a supported comparison, including explicit inequality; the grammar
+supports one comparison, not arbitrary Boolean expressions. Express alternative cases as
+separate rules. Do not silently drop a condition or encode unsupported syntax or a made-up
+Boolean attribute to conceal a condition the grammar cannot express.
+`nils` denotes an empty value/set, `false` a false Boolean. Use comma-separated sets for
+unordered membership/history and semicolon-separated lists for ordered event arguments.
+Use variables for arbitrary old values and `Fresh`-prefixed variables only for explicitly
+fresh generated data. Other RHS variables must be bound by LHS state or event patterns;
+`CurrentTime` is the special current-time variable. Use only supported functions such as
+`encrypt(Qid1,Qid2)`, never invent helper functions.
+The DSL does not accept lowercase `system`, `randomStr(...)`, or arithmetic expressions
+as attribute values on the RHS. Lower explicit fresh/random generation to a `Fresh`-prefixed
+Qid variable (e.g. FreshKeyA), so the existing transformer introduces its counter and
+random-value machinery. Use `CurrentTime` for current-time values/comparisons so the
+transformer introduces time state. Do not delete freshness/time semantics, substitute a
+fixed secret, invent a principal for system, or manually emit counter arithmetic. Runtime
+counter/time bookkeeping is transformer-owned rather than a DSL principal to initialize.
+Ordered lists are not sets: preserve ordered event arguments with semicolons. Do not emit
+`list(L)` unless the supplied grammar supports it; do not silently replace ordered-list
+semantics by unordered sets.
+A snoop/discovery action that changes knowledge needs an event-driven state handler that
+updates the knowledge attribute. Its event-availability rule only enables the event and
+cannot mutate state. Preserve explicit authentication and context-existence guards without
+adding ownership checks.
+The DSL has no `owise` or branch priority. Encode response alternatives with disjoint LHS
+guards, e.g. an initial response for knowCtx=nils and receivedHistory=nils versus a
+continuation for knowCtx=Ctx where Ctx has type Qid (which excludes nils). Do not emit an
+unconstrained fallback overlapping the initial handler; cover other explicitly stated
+cases using their own disjoint patterns.
+
+# Actions and processing
+Independent optional blocks describe independently enabled actions, not a total schedule,
+mandatory execution, or fairness. Do not add ordering or progress state from their order.
+Distinguish outer action-availability guards from inner processing/effect guards. Outer
+availability guards (the condition of the outermost block) are formalized later as separate
+event rules; keep them out of state rules, and do not turn an inner success test into an
+availability restriction. No owner, authentication, key, proximity, or acknowledgement check is implied
+by an action name. In particular, do not repair an explicitly missing security check.
+An event-driven state rule has one incoming event on the LHS and at most one outgoing
+event on the RHS. Replies/forwarding are generated by the triggering rule and consumed by
+subsequent rules, with their actual senders, receivers and complete arguments. They are not
+independently initiated merely because they appear as arrows. Retain upstream updates when
+a downstream event has no matching processing rule.
+Automatic state changes with no triggering message use event-free state rules, as allowed
+by LogicalState. Do not invent a user event. Match an explicit old state/guard so the rule
+ceases to apply after its update; never emit an identical-state or endlessly reapplicable
+automatic equation. Do not impose priority on overlapping behaviors unless stated.
+For no-op attempts, do not invent error replies or state changes. The pipeline extracts its
+event inventory from these rules: preserve an otherwise unrepresented independent no-op
+event with a consuming rule, e.g. `< DeviceX | ... > $ UserX 'attempt' DeviceX
+=> < DeviceX | ... > .` The event disappears, so this is not a self-loop equation.
+If an event already occurs in another rule, unmatched attempts can use the runtime's
+normal event discard behavior. Never retain the same incoming event on an unchanged RHS.
+
+# Output
+Return only DSL state rules in one code block, with a single final `.` per rule.
+No Maude modules, declarations, prose, comments, properties, or new syntax.
+---user---
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    participant Cloud
+    Note over UserX,Cloud: Initially every user is away from the device and holds its own token.
+    alt [B1] The user is away from the device
+        UserX->>Device: The user walks up to the device
+        Note over UserX: The user is now next to the device.
+    end
+    alt [B2] The user is next to the device and holds a token
+        UserX->>Device: The user submits the token to the device
+        opt The device is unlocked
+            Note over Device: The device stores the token, replacing any stored token, and locks itself.
+            Device->>Cloud: The device uploads the token to the cloud
+            Note over Cloud: The cloud records the token for the device, replacing any earlier record.
+        end
+    end
+    alt [B3] The user holds a token
+        UserX->>Cloud: The user asks the cloud to revoke the device's token, presenting the token
+        opt The presented token matches the cloud record for the device
+            Note over Cloud: The cloud clears its token record for the device.
+            Cloud-->>UserX: The cloud confirms the revocation to the user
+            Note over UserX: The user discards its token.
+        end
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+---assistant---
+```
+[B1] < UserX | 'near' : nils , ... > $ UserX 'walkUp' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+[B2] < deviceB | 'locked' : false , 'token' : OldToken , ... > $ UserX 'submitToken' deviceB | (Token)
+=> < deviceB | 'locked' : true , 'token' : Token , ... > $ deviceB 'uploadToken' cloudA | (Token) .
+[B2] < cloudA | deviceB : ('token' : OldToken , ...) > $ deviceB 'uploadToken' cloudA | (Token)
+=> < cloudA | deviceB : ('token' : Token , ...) > .
+[B3] < cloudA | deviceB : ('token' : Token , ...) > $ UserX 'revokeToken' cloudA | (deviceB ; Token)
+=> < cloudA | deviceB : ('token' : nils , ...) > $ cloudA 'confirmRevoke' UserX | (deviceB) .
+[B3] < UserX | 'token' : Token , ... > $ cloudA 'confirmRevoke' UserX | (deviceB)
+=> < UserX | 'token' : nils , ... > .
+```---user---
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    alt [B1] The user is next to the device
+        UserX->>Device: The user walks away from the device
+        Note over UserX: The user is now away from the device.
+    end
+    UserX->>Device: [B2] The user pings the device
+    alt [B3] The user is next to the device
+        UserX->>Device: The user presses the reset button of the device
+        opt The device is busy
+            Note over Device: The device becomes idle and drops its current job.
+        end
+    end
+    alt [B4] The device is idle and holds a job
+        Note over Device: The device starts the job and becomes busy.
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+---assistant---
+```
+[B1] < UserX | 'near' : deviceB , ... > $ UserX 'walkAway' deviceB
+=> < UserX | 'near' : nils , ... > .
+[B2] < deviceB | ... > $ UserX 'ping' deviceB
+=> < deviceB | ... > .
+[B3] < deviceB | 'busy' : true , 'job' : Job , ... > $ UserX 'pressReset' deviceB
+=> < deviceB | 'busy' : false , 'job' : nils , ... > .
+[B4] < deviceB | 'busy' : false , 'job' : Job , ... >
+=> < deviceB | 'busy' : true , 'job' : Job , ... > .
+```---user---
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially the device holds an empty-text key. The cloud signs keys with a secret, which the device also knows.
+
+    alt [B1] UserX is not near a device and the device exists
+        UserX->>Device: UserX approaches the device
+        Note over UserX: UserX is near the device
+    end
+    alt [B2] UserX is near the device
+        UserX->>Device: UserX leaves the device
+        Note over UserX: UserX is no longer near the device
+    end
+
+    alt [B3] UserX is near the device
+        UserX->>Device: UserX calls an API to request a key from the device
+        opt UserX has no key yet and the device has a key
+            Note over UserX: Generate a key from the counter, save it for the user and device, then advance the counter.
+        end
+        Note over Device: No trust check, generating a key replaces the previous device key
+    end
+
+    alt [B4] UserX has key and the device exists
+        UserX->>Cloud: UserX calls an API to sign key for Device
+        opt The cloud trusts UserX for the device
+            Cloud-->>UserX: The cloud sends the signed key to UserX
+            opt UserX has no signed key yet
+                Note over UserX: UserX stores the signed key, which is key encrypted with the secret
+            end
+        end
+        Note over UserX,Cloud: Signing does not require the user to be nearby or the supplied key to match the current device key
+    end
+
+    alt [B5] UserX is near the device and has signed key M
+        UserX->>Device: UserX calls an API to bind the device using signed key M
+        opt M is the current device key encrypted with the secret and is the signed key stored by UserX
+            Note over Device: The device adds UserX as a trusted user
+        end
+    end
+
+    alt [B6] Existing distinct users UserX and UserY and Device
+        UserX->>Cloud: UserX calls an API to share access to Device with UserY
+        Note over Cloud: Add UserY as a trusted user for the device.
+    end
+    alt [B7] Existing distinct users UserX and UserY
+        UserX->>Cloud: UserX calls an API to revoke access for UserY
+        opt The cloud trusts both UserX and UserY for the device
+            Note over Cloud: The cloud removes UserY as a trusted user for the device
+        end
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+
+--------------------------------------------------
+[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : deviceA , ... > .
+[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : nils , ... > .
+[B3] < UserX | 'key' : nils , ... > < deviceA | 'key' : OldKey , ... > $ UserX 'requestKey' deviceA
+=> < UserX | 'key' : FreshKey , ... > < deviceA | 'key' : FreshKey , ... > .
+[B4] < cloudA | 'secret' : Secret , deviceA : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'signKey' cloudA | (deviceA ; Key)
+=> < cloudA | 'secret' : Secret , deviceA : ('trusted' : (UserX , Rest) , ...) , ... > $ cloudA 'sendSignedKey' UserX | (deviceA ; encrypt(Key , Secret)) .
+[B4] < UserX | 'signedKey' : nils , ... > $ cloudA 'sendSignedKey' UserX | (deviceA ; M)
+=> < UserX | 'signedKey' : M , ... > .
+[B5] < UserX | 'signedKey' : encrypt(Key , Secret) , ... > < deviceA | 'key' : Key , 'secret' : Secret , 'trusted' : Users , ... > $ UserX 'bind' deviceA | (encrypt(Key , Secret))
+=> < UserX | 'signedKey' : encrypt(Key , Secret) , ... > < deviceA | 'key' : Key , 'secret' : Secret , 'trusted' : (UserX , Users) , ... > .
+[B6] < cloudA | deviceA : ('trusted' : Users , ...) , ... > $ UserX 'share' cloudA | (deviceA ; UserY)
+=> < cloudA | deviceA : ('trusted' : (UserY , Users) , ...) , ... > .
+[B7] < cloudA | deviceA : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revoke' cloudA | (deviceA ; UserY)
+=> < cloudA | deviceA : ('trusted' : (UserX , Rest) , ...) , ... > .
+
+==================================================
+---system---
+Imagine you are an engineering expert and you can help me determin variables types of a formalization in a DSL
+
+# The DSL grammar in EBNF
+<StateRule> ::= <LogicalState> "=>" <LogicalState> ("if" <Condition>)? "."
+<LogicalState> ::= <InternalState>+ <Event>? <InternalState>*
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+<Condition> ::= <Arith> <CMP> <Arith>   (* exactly one comparison; no "and"/"or" *)
+<Arith> ::= <Arith> <OP> <Arith> | "(" <Arith> ")" | integer | <Var> | <FunCall> | "nils"
+<OP> ::= "+" | "-" | "*" | "/"
+<CMP> ::= ">" | "<" | ">=" | "<=" | "==" | "=/="
+
+# Variables use capital strings.
+
+# The input contains a protocol text, the formalization in the DSL, and a list of variables.
+
+# You can determin the type of each variable according the the protocol text and its formalization.
+
+# Possible types
+<Type> ::= "Qid" | "Bool" | "Nat" | "Principal" | "User"
+         | "Device" | "Cloud" | "App" | "Server" | "Client"
+         | "Set" | "List" | "Item" | "Key" | "Action" | "Arguments" | "Attributes"
+
+# Meaning of each type
+- Qid: a quoted constant, e.g. 'secretA' or 'near'. A key, token, password or secret that must be present is a Qid.
+- Nat / Bool: a natural number / true or false.
+- User, Device, Cloud, App, Server, Client: one principal of that kind, e.g. userA, deviceB, cloudA.
+- Principal: a principal of any kind.
+- Item: any single value: a principal, a Qid, a Nat, a Bool, or a pair `a : b`.
+- Key: the name on the left of a pair `a : b`, such as the attribute name 'near', or deviceB in
+  `deviceB : (...)`. It is not a cryptographic key.
+- Set: zero or more items joined by `,`; `nils` is the empty set. Only Set matches `nils`, so a variable
+  whose value may be absent when the rule fires must be Set, e.g. an old value that is replaced whatever it
+  was, or a key the user may not have yet.
+- List: ordered items joined by `;`.
+- Action: the action name of an event. Arguments: the arguments of an event.
+  Attributes: all attributes of a principal.
+
+# Every sort except Set excludes the empty value `nils`: a variable of sort Item, Principal, User, Device,
+Qid, Key, Bool, ... never matches `nils`. Choose Set when the variable must also match an empty value,
+e.g. an old value that is overwritten whatever it was, including none. Choose a specific sort when the
+source requires a non-empty value, e.g. 'holds a key' or 'is associated with a device'.
+
+# The output should strictly be a json file in a code block, not anything else, without explanations.
+
+# Take your time, think step by step, no hurry to draw a conclusion
+
+Now, please answer:
+---user---
+[protocol]
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    participant Cloud
+    Note over UserX,Cloud: Initially every user is away from the device and holds its own token.
+    alt [B1] The user is away from the device
+        UserX->>Device: The user walks up to the device
+        Note over UserX: The user is now next to the device.
+    end
+    alt [B2] The user is next to the device and holds a token
+        UserX->>Device: The user submits the token to the device
+        opt The device is unlocked
+            Note over Device: The device stores the token, replacing any stored token, and locks itself.
+            Device->>Cloud: The device uploads the token to the cloud
+            Note over Cloud: The cloud records the token for the device, replacing any earlier record.
+        end
+    end
+    alt [B3] The user holds a token
+        UserX->>Cloud: The user asks the cloud to revoke the device's token, presenting the token
+        opt The presented token matches the cloud record for the device
+            Note over Cloud: The cloud clears its token record for the device.
+            Cloud-->>UserX: The cloud confirms the revocation to the user
+            Note over UserX: The user discards its token.
+        end
+    end
+```
+
+
+[formal]
+< UserX | 'near' : nils , ... > $ UserX 'walkUp' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+< deviceB | 'locked' : false , 'token' : OldToken , ... > $ UserX 'submitToken' deviceB | (Token)
+=> < deviceB | 'locked' : true , 'token' : Token , ... > $ deviceB 'uploadToken' cloudA | (Token) .
+< cloudA | deviceB : ('token' : OldToken , ...) > $ deviceB 'uploadToken' cloudA | (Token)
+=> < cloudA | deviceB : ('token' : Token , ...) > .
+< cloudA | deviceB : ('token' : Token , ...) > $ UserX 'revokeToken' cloudA | (deviceB ; Token)
+=> < cloudA | deviceB : ('token' : nils , ...) > $ cloudA 'confirmRevoke' UserX | (deviceB) .
+< UserX | 'token' : Token , ... > $ cloudA 'confirmRevoke' UserX | (deviceB)
+=> < UserX | 'token' : nils , ... > .
+
+[variables]
+['OldToken', 'Token', 'UserX']---assistant---
+```
+{"OldToken": "Set", "Token": "Qid", "UserX": "User"}
+```---user---
+[protocol]
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially the device holds an empty-text key. The cloud signs keys with a secret, which the device also knows.
+
+    alt [B1] UserX is not near a device and the device exists
+        UserX->>Device: UserX approaches the device
+        Note over UserX: UserX is near the device
+    end
+    alt [B2] UserX is near the device
+        UserX->>Device: UserX leaves the device
+        Note over UserX: UserX is no longer near the device
+    end
+
+    alt [B3] UserX is near the device
+        UserX->>Device: UserX calls an API to request a key from the device
+        opt UserX has no key yet and the device has a key
+            Note over UserX: Generate a key from the counter, save it for the user and device, then advance the counter.
+        end
+        Note over Device: No trust check, generating a key replaces the previous device key
+    end
+
+    alt [B4] UserX has key and the device exists
+        UserX->>Cloud: UserX calls an API to sign key for Device
+        opt The cloud trusts UserX for the device
+            Cloud-->>UserX: The cloud sends the signed key to UserX
+            opt UserX has no signed key yet
+                Note over UserX: UserX stores the signed key, which is key encrypted with the secret
+            end
+        end
+        Note over UserX,Cloud: Signing does not require the user to be nearby or the supplied key to match the current device key
+    end
+
+    alt [B5] UserX is near the device and has signed key M
+        UserX->>Device: UserX calls an API to bind the device using signed key M
+        opt M is the current device key encrypted with the secret and is the signed key stored by UserX
+            Note over Device: The device adds UserX as a trusted user
+        end
+    end
+
+    alt [B6] Existing distinct users UserX and UserY and Device
+        UserX->>Cloud: UserX calls an API to share access to Device with UserY
+        Note over Cloud: Add UserY as a trusted user for the device.
+    end
+    alt [B7] Existing distinct users UserX and UserY
+        UserX->>Cloud: UserX calls an API to revoke access for UserY
+        opt The cloud trusts both UserX and UserY for the device
+            Note over Cloud: The cloud removes UserY as a trusted user for the device
+        end
+    end
+```
+
+
+[formal]
+< UserX | 'near' : nils , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : deviceA , ... > .
+< UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : nils , ... > .
+< UserX | 'key' : nils , ... > < deviceA | 'key' : OldKey , ... > $ UserX 'requestKey' deviceA
+=> < UserX | 'key' : FreshKey , ... > < deviceA | 'key' : FreshKey , ... > .
+< cloudA | 'secret' : Secret , deviceA : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'signKey' cloudA | (deviceA ; Key)
+=> < cloudA | 'secret' : Secret , deviceA : ('trusted' : (UserX , Rest) , ...) , ... > $ cloudA 'sendSignedKey' UserX | (deviceA ; encrypt(Key , Secret)) .
+< UserX | 'signedKey' : nils , ... > $ cloudA 'sendSignedKey' UserX | (deviceA ; M)
+=> < UserX | 'signedKey' : M , ... > .
+< UserX | 'signedKey' : encrypt(Key , Secret) , ... > < deviceA | 'key' : Key , 'secret' : Secret , 'trusted' : Users , ... > $ UserX 'bind' deviceA | (encrypt(Key , Secret))
+=> < UserX | 'signedKey' : encrypt(Key , Secret) , ... > < deviceA | 'key' : Key , 'secret' : Secret , 'trusted' : (UserX , Users) , ... > .
+< cloudA | deviceA : ('trusted' : Users , ...) , ... > $ UserX 'share' cloudA | (deviceA ; UserY)
+=> < cloudA | deviceA : ('trusted' : (UserY , Users) , ...) , ... > .
+< cloudA | deviceA : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revoke' cloudA | (deviceA ; UserY)
+=> < cloudA | deviceA : ('trusted' : (UserX , Rest) , ...) , ... > .
+
+
+[variables]
+['FreshKey', 'Key', 'M', 'OldKey', 'Rest', 'Secret', 'UserX', 'UserY', 'Users']    
+--------------------------------------------------
+{"FreshKey": "Qid", "Key": "Qid", "M": "Item", "OldKey": "Qid", "Rest": "Set", "Secret": "Qid", "UserX": "User", "UserY": "User", "Users": "Set"}
+
+==================================================
+---system---
+Select independently initiable events from the supplied DSL event inventory.
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+<Type> ::= "Qid" | "Bool" | "Nat" | "Principal" | "User"
+         | "Device" | "Cloud" | "App" | "Server" | "Client"
+         | "Set" | "List" | "Item" | "Key" | "Action" | "Arguments" | "Attributes"
+The inventory is ordered: an unlabeled line has its original 1-based position. Return
+those positions, never renumber after filtering or synthesize missing entries. If explicit
+numeric labels are supplied, retain those labels. Preserve input order in the result.
+Match subject type and identity, action, receiver/direction, argument count, argument order
+and constants, not just the action name. A generic typed variable can match a stated
+specific actor; a fixed actor must not stand in for every actor. Cover every matching
+independent event form, including forms differing in payload, receiver, or arity.
+Use the description's actual availability guards to identify independent actions. Do not
+exclude an attempted action because its processing/success guard may fail. Include stated
+independent cloud/device/self actions as well as user actions. Exclude internal replies,
+acknowledgements and forwarding unless explicitly independently enabled. Do not impose a
+schedule, ownership check, or other extra condition. State-only automatic changes are not
+events. Do not invent an event or index when a described form is missing from the inventory.
+Output only a list of unique integer positions in one code block (e.g. [1, 3]); use []
+when none match. No explanation or thinking tags.
+---user---
+[events]
+$ UserX 'walkUp' deviceB
+$ UserX 'submitToken' deviceB | (Token)
+$ deviceB 'uploadToken' cloudA | (Token)
+$ UserX 'revokeToken' cloudA | (deviceB ; Token)
+$ cloudA 'confirmRevoke' UserX | (deviceB)
+
+[description]
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    participant Cloud
+    Note over UserX,Cloud: Initially every user is away from the device and holds its own token.
+    alt [B1] The user is away from the device
+        UserX->>Device: The user walks up to the device
+        Note over UserX: The user is now next to the device.
+    end
+    alt [B2] The user is next to the device and holds a token
+        UserX->>Device: The user submits the token to the device
+        opt The device is unlocked
+            Note over Device: The device stores the token, replacing any stored token, and locks itself.
+            Device->>Cloud: The device uploads the token to the cloud
+            Note over Cloud: The cloud records the token for the device, replacing any earlier record.
+        end
+    end
+    alt [B3] The user holds a token
+        UserX->>Cloud: The user asks the cloud to revoke the device's token, presenting the token
+        opt The presented token matches the cloud record for the device
+            Note over Cloud: The cloud clears its token record for the device.
+            Cloud-->>UserX: The cloud confirms the revocation to the user
+            Note over UserX: The user discards its token.
+        end
+    end
+```
+---assistant---
+```
+[1, 2, 4]
+```---user---
+[events]
+$ UserX 'approach' deviceA
+$ UserX 'leave' deviceA
+$ UserX 'requestKey' deviceA
+$ UserX 'signKey' cloudA | (deviceA ; Key)
+$ cloudA 'sendSignedKey' UserX | (deviceA ; encrypt(Key, Secret))
+$ cloudA 'sendSignedKey' UserX | (deviceA ; M)
+$ UserX 'bind' deviceA | (encrypt(Key, Secret))
+$ UserX 'share' cloudA | (deviceA ; UserY)
+$ UserX 'revoke' cloudA | (deviceA ; UserY)
+
+[description]
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially the device holds an empty-text key. The cloud signs keys with a secret, which the device also knows.
+
+    alt [B1] UserX is not near a device and the device exists
+        UserX->>Device: UserX approaches the device
+        Note over UserX: UserX is near the device
+    end
+    alt [B2] UserX is near the device
+        UserX->>Device: UserX leaves the device
+        Note over UserX: UserX is no longer near the device
+    end
+
+    alt [B3] UserX is near the device
+        UserX->>Device: UserX calls an API to request a key from the device
+        opt UserX has no key yet and the device has a key
+            Note over UserX: Generate a key from the counter, save it for the user and device, then advance the counter.
+        end
+        Note over Device: No trust check, generating a key replaces the previous device key
+    end
+
+    alt [B4] UserX has key and the device exists
+        UserX->>Cloud: UserX calls an API to sign key for Device
+        opt The cloud trusts UserX for the device
+            Cloud-->>UserX: The cloud sends the signed key to UserX
+            opt UserX has no signed key yet
+                Note over UserX: UserX stores the signed key, which is key encrypted with the secret
+            end
+        end
+        Note over UserX,Cloud: Signing does not require the user to be nearby or the supplied key to match the current device key
+    end
+
+    alt [B5] UserX is near the device and has signed key M
+        UserX->>Device: UserX calls an API to bind the device using signed key M
+        opt M is the current device key encrypted with the secret and is the signed key stored by UserX
+            Note over Device: The device adds UserX as a trusted user
+        end
+    end
+
+    alt [B6] Existing distinct users UserX and UserY and Device
+        UserX->>Cloud: UserX calls an API to share access to Device with UserY
+        Note over Cloud: Add UserY as a trusted user for the device.
+    end
+    alt [B7] Existing distinct users UserX and UserY
+        UserX->>Cloud: UserX calls an API to revoke access for UserY
+        opt The cloud trusts both UserX and UserY for the device
+            Note over Cloud: The cloud removes UserY as a trusted user for the device
+        end
+    end
+```
+
+--------------------------------------------------
+[1, 2, 3, 4, 7, 8, 9]
+
+==================================================
+---system---
+Imagine you are an engineering expert who can help me generate the initial state in a DSL.
+
+# The DSL grammar of the initial state in EBNF is below:
+<InitState> ::= <InternalState>+
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+
+# The input includes a template, a threat model and a natural language description.
+The threat model states the roles and the situation before the attack starts; it holds
+unless the description states otherwise. Map its facts onto the template attributes that
+express them, e.g. "near the device" onto a proximity attribute; skip a fact that no
+attribute expresses.
+
+# The template grammar is extended from the DSL, adding choices and type placeholders in attribute values.
+<Pair> ::= (<Qid> | <Principal>)  ":" (<Item> | <Choices>)
+<Choices> ::= "{" <Placeholder> ("," <Placeholder>)* "}"
+<Placeholder> ::= "[" <Type> "]" | Item
+<Type> ::= "Qid" | "Bool" | "Nat" | "Principal" | "User"
+         | "Device" | "Cloud" | "App" | "Server" | "Client"
+         | "Set" | "List" | "Item" | "Key" | "Action" | "Arguments" | "Attributes"
+
+## [A] means a placeholder of type A. E.g., `[Bool]` can be replaced by constants `true` or `false`.
+
+## {[A], [B], c} means choices where there are 3 possible replacements: a constant of type `A`, a constant of type `B`, and a constant `c`.
+
+E.g., the placeholder "{[Bool], 'foo'}" can either be replaced by `true`, `false`, `'foo'`.
+
+# Explicit initial values in the description take precedence over inferred template
+choices, including when a template only shows a value reached later. Preserve every
+explicit initial fact, nested record and principal; do not initialize to a later state.
+Use the template as a schema aid, not evidence that a credential or owner initially exists.
+Keep explicit false and nils values. Anything that neither the description nor the threat
+model states is absent initially: use a type-compatible empty value (nils, or false as
+described below), never invent a nonempty credential, owner, permission or principal.
+So the description need not say that something is empty, off, unpressed or unrecorded.
+Replace placeholders with ground values; do not output variables, choices or ellipses.
+Never omit a template attribute: an absent value is written as nils or false. Template
+records under the same placeholder key, e.g. two `[User] : (...)` records, are views of
+one kind of record taken from different rules; give every concrete record of that kind
+all attributes of those views. A principal without attributes is written `< p | nils >`.
+Use only library principal constants: userA through userD, deviceA through deviceD,
+cloudA through cloudD, clientA through clientD, serverA through serverD, appA through
+appD, deviceLock, deviceSwitch, cloudGoogle, cloudSmartThing, cloudIFTTT.
+Map aliases consistently with the description/template; other data names are quoted Qids.
+The DSL cannot name lowercase system. Counter/time bookkeeping for Fresh-prefixed values
+and CurrentTime is inserted by the transformer; do not invent a system principal or
+manually encode arithmetic initial values. Preserve all ordinary explicit initial facts.
+Do not invent principal constants to fill a placeholder or add unrelated principals.
+
+# Modeling negative concept in attribute value:
+  If an attribute value has only 2 possibilities, use the boolean value "false" to model the concept of "is not" or "negative." E.g., when a template has "'att1' : [Bool]", use "'att1' : false".
+  Else, use "nils" to model the case of "having not" this attribute or the empty set.
+
+# Only output the initial state in a code block, nothing else, no explanations.
+
+# Take your time, think step by step, no hurry to draw a conclusion
+
+Now, please answer the input below:
+---user---
+[template]
+< userA | ('token' : [Qid] , 'near' : [Principal]) > < userC | ('token' : [Qid] , 'near' : [Principal]) > < deviceB | ('token' : [Set] , 'locked' : [Bool]) > < cloudA | ([Principal] : ('token' : {[Qid] , [Set]})) >
+
+[threat model]
+userA is the legitimate owner of the device (the victim) and userC is an outsider (the attacker); unless the description names other instances, the device is deviceB and the cloud is cloudA. The owner is near the device and the attacker is away from it.
+
+[description]
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    participant Cloud
+    Note over UserX,Cloud: Initially every user is away from the device and holds its own token.
+    alt [B1] The user is away from the device
+        UserX->>Device: The user walks up to the device
+        Note over UserX: The user is now next to the device.
+    end
+    alt [B2] The user is next to the device and holds a token
+        UserX->>Device: The user submits the token to the device
+        opt The device is unlocked
+            Note over Device: The device stores the token, replacing any stored token, and locks itself.
+            Device->>Cloud: The device uploads the token to the cloud
+            Note over Cloud: The cloud records the token for the device, replacing any earlier record.
+        end
+    end
+    alt [B3] The user holds a token
+        UserX->>Cloud: The user asks the cloud to revoke the device's token, presenting the token
+        opt The presented token matches the cloud record for the device
+            Note over Cloud: The cloud clears its token record for the device.
+            Cloud-->>UserX: The cloud confirms the revocation to the user
+            Note over UserX: The user discards its token.
+        end
+    end
+```
+---assistant---
+```
+< userA | ('near' : nils , 'token' : 'tokenA') > < userC | ('near' : nils , 'token' : 'tokenC') > < deviceB | ('locked' : false , 'token' : nils) > < cloudA | (deviceB : ('token' : nils)) >
+```---user---
+[template]
+< userA | ('near' : [Principal]) > < userC | ('near' : [Principal]) > < deviceB | ('busy' : [Bool] , 'job' : [Qid]) >
+
+[threat model]
+userA is the legitimate owner of the device (the victim) and userC is an outsider (the attacker); unless the description names other instances, the device is deviceB and the cloud is cloudA. The owner is near the device and the attacker is away from it.
+
+[description]
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    alt [B1] The user is next to the device
+        UserX->>Device: The user walks away from the device
+        Note over UserX: The user is now away from the device.
+    end
+    UserX->>Device: [B2] The user pings the device
+    alt [B3] The user is next to the device
+        UserX->>Device: The user presses the reset button of the device
+        opt The device is busy
+            Note over Device: The device becomes idle and drops its current job.
+        end
+    end
+    alt [B4] The device is idle and holds a job
+        Note over Device: The device starts the job and becomes busy.
+    end
+```
+---assistant---
+```
+< userA | ('near' : deviceB) > < userC | ('near' : nils) > < deviceB | ('busy' : false , 'job' : nils) >
+```---user---
+[template]
+< userA | ('signedKey' : {[Funcall] , [Item]} , 'near' : [Principal] , 'key' : [Qid]) > < userC | ('signedKey' : {[Funcall] , [Item]} , 'near' : [Principal] , 'key' : [Qid]) > < deviceA | ('key' : [Qid] , 'trusted' : ([Set]) , 'secret' : [Qid]) > < cloudA | ([Principal] : ('trusted' : ([Set])) , 'secret' : [Qid]) >
+
+[threat model]
+userA is the legitimate owner of the device (the victim) and userC is an outsider (the attacker); unless the description names other instances, the device is deviceB and the cloud is cloudA. The owner is near the device and the attacker is away from it. The device trusts the owner, and the cloud records the device's trust in the owner.
+
+[description]
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially the device holds an empty-text key. The cloud signs keys with a secret, which the device also knows.
+
+    alt [B1] UserX is not near a device and the device exists
+        UserX->>Device: UserX approaches the device
+        Note over UserX: UserX is near the device
+    end
+    alt [B2] UserX is near the device
+        UserX->>Device: UserX leaves the device
+        Note over UserX: UserX is no longer near the device
+    end
+
+    alt [B3] UserX is near the device
+        UserX->>Device: UserX calls an API to request a key from the device
+        opt UserX has no key yet and the device has a key
+            Note over UserX: Generate a key from the counter, save it for the user and device, then advance the counter.
+        end
+        Note over Device: No trust check, generating a key replaces the previous device key
+    end
+
+    alt [B4] UserX has key and the device exists
+        UserX->>Cloud: UserX calls an API to sign key for Device
+        opt The cloud trusts UserX for the device
+            Cloud-->>UserX: The cloud sends the signed key to UserX
+            opt UserX has no signed key yet
+                Note over UserX: UserX stores the signed key, which is key encrypted with the secret
+            end
+        end
+        Note over UserX,Cloud: Signing does not require the user to be nearby or the supplied key to match the current device key
+    end
+
+    alt [B5] UserX is near the device and has signed key M
+        UserX->>Device: UserX calls an API to bind the device using signed key M
+        opt M is the current device key encrypted with the secret and is the signed key stored by UserX
+            Note over Device: The device adds UserX as a trusted user
+        end
+    end
+
+    alt [B6] Existing distinct users UserX and UserY and Device
+        UserX->>Cloud: UserX calls an API to share access to Device with UserY
+        Note over Cloud: Add UserY as a trusted user for the device.
+    end
+    alt [B7] Existing distinct users UserX and UserY
+        UserX->>Cloud: UserX calls an API to revoke access for UserY
+        opt The cloud trusts both UserX and UserY for the device
+            Note over Cloud: The cloud removes UserY as a trusted user for the device
+        end
+    end
+```
+    
+--------------------------------------------------
+< userA | ('signedKey' : nils , 'near' : deviceA , 'key' : nils) > < userC | ('signedKey' : nils , 'near' : nils , 'key' : nils) > < deviceA | ('key' : '' , 'trusted' : (userA) , 'secret' : 'secret') > < cloudA | (deviceA : ('trusted' : (userA)) , 'secret' : 'secret') >
+
+==================================================
+---system---
+Imagine you are an engineering expert and you can help me generate event rules in a DSL
+
+# The syntax of the DSL is below
+
+<EventRule> ::= <InternalState>* "=>" <EventName> "."
+<EventDeclare> ::= "eq" <EventName> "=" <Event>  "."
+<EventName> ::= "ev" integer "(" <Item> ("," <Item>)* ")"   (* at least one argument *)
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+
+# The input contains the state template, event declarations, and natural language description about which independent events can happen under which circumstances
+
+# The input state template follows a grammar extended from the DSL, adding choices and type placeholders in attribute values.
+
+<Pair> ::= (<Qid> | <Principal>)  ":" (<Item> | <Choices>)
+<Choices> ::= "{" <Placeholder> ("," <Placeholder>)* "}"
+<Placeholder> ::= "[" <Type> "]" | Item
+<Type> ::= "Qid" | "Bool" | "Nat" | "Principal" | "User"
+         | "Device" | "Cloud" | "App" | "Server" | "Client"
+         | "Set" | "List" | "Item" | "Key" | "Action" | "Arguments" | "Attributes"
+
+## [A] means a placeholder of type A. E.g., `[Bool]` can be replaced by constants `true` or `false`.
+
+## {[A], [B], c} means choices where there are 3 possible replacements: a constant of type `A`, a constant of type `B`, and a constant `c`.
+
+E.g., the placeholder "{[Bool], 'foo'}" can either be replaced by `true`, `false`, `'foo'`.
+
+# By understanding the natural language description, choose one of choice from choices and replace all the placeholders with constants or variables.
+
+# Generate only independently initiable action rules, including explicitly independent
+cloud/device/self actions. Replies and forwarding are internal responses, not choices.
+Cover all supplied event forms described as independently enabled, including no-op attempts.
+Preserve exactly the supplied evN identifier and its parameter order/arity; instantiate
+arguments without renaming or renumbering declarations. Never use an identifier from a
+different template merely because the action names resemble one another.
+Use actual outer availability guards, not inner processing/success tests. Do not add
+ownership, permissions, acknowledgement, or sequencing requirements. Independent optional
+blocks are not a total schedule. Preserve generic roles as variables and named actors as
+constants. Match argument values to the stated state source (including nested records).
+Every variable in the generated event must be bound by a left-hand state pattern.
+A type declaration alone does not bind a value. Fresh-prefixed variables and CurrentTime
+are not exceptions for event rules. Use source-supported constants for literal arguments;
+do not invent knowledge attributes or availability guards to bind an unspecified argument.
+Conjoin guard facts with LHS patterns and shared variables; alternatives need separate
+rules. Use only conditions expressible by EventRule: it has no `if` clause. Do not drop
+unrepresentable guards or invent new schema keys to pretend to encode them.
+Use `< PrincipalX | ... >` for an explicit existence guard. Omit unrelated attributes;
+`...` belongs at the end of an attribute set, not as an attribute value.
+
+# `nils` is the empty value. It fits every attribute placeholder, whatever its type, and expresses absence such as 'not near any device' or 'holds no key' (e.g. `'near' : nils`).
+# Sets are unordered and `nils` is their identity, so membership is a pattern: `'members' : (UserY , Rest)` matches any set that contains UserY (Rest may be empty).
+# Each principal occurs once in the state, so separate patterns in one rule match different principals: `< UserX | ... > < UserY | ... >` already means two distinct users. A guard such as 'distinct users UserX and UserY' needs nothing more.
+# Output only event rules in one code block, without explanation or thinking tags.
+
+# Ensure that the output in code block should not contain any comments.
+
+# Reuse the exact matching attributes from the input template; do not substitute a merely similar fact or invent schema keys.
+
+# If the description specifies that a certain action can happen under certain circumstances, only use those circumstances explicitly mentioned, even if other attributes in the state template could hypothetically be relevant.
+ If an event does not depend on an attribute from the state template, do not include that attribute as a condition.
+
+# Ensure all the choices/placeholders are replaced by constants or variables in the output. 
+
+i.e., There must not be patterns like `[Device]`, `{[Bool]}`, `{true, false}` in the output.
+
+# Take your time, think step by step, no hurry to draw a conclusion
+
+Now, please answer:
+---user---
+[state template]
+< userA | ('token' : [Qid] , 'near' : [Principal]) > < userC | ('token' : [Qid] , 'near' : [Principal]) > < deviceB | ('token' : [Set] , 'locked' : [Bool]) > < cloudA | ([Principal] : ('token' : {[Qid] , [Set]})) >
+
+[events]
+eq ev1(UserX) = $ UserX 'walkUp' deviceB .
+eq ev2(UserX, Token) = $ UserX 'submitToken' deviceB | (Token) .
+eq ev3(UserX, Token) = $ UserX 'revokeToken' cloudA | (deviceB ; Token) .
+
+[description]
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    participant Cloud
+    Note over UserX,Cloud: Initially every user is away from the device and holds its own token.
+    alt [B1] The user is away from the device
+        UserX->>Device: The user walks up to the device
+        Note over UserX: The user is now next to the device.
+    end
+    alt [B2] The user is next to the device and holds a token
+        UserX->>Device: The user submits the token to the device
+        opt The device is unlocked
+            Note over Device: The device stores the token, replacing any stored token, and locks itself.
+            Device->>Cloud: The device uploads the token to the cloud
+            Note over Cloud: The cloud records the token for the device, replacing any earlier record.
+        end
+    end
+    alt [B3] The user holds a token
+        UserX->>Cloud: The user asks the cloud to revoke the device's token, presenting the token
+        opt The presented token matches the cloud record for the device
+            Note over Cloud: The cloud clears its token record for the device.
+            Cloud-->>UserX: The cloud confirms the revocation to the user
+            Note over UserX: The user discards its token.
+        end
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+---assistant---
+```
+[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .
+[B2] < UserX | 'near' : deviceB , 'token' : Token , ... > => ev2(UserX, Token) .
+[B3] < UserX | 'token' : Token , ... > => ev3(UserX, Token) .
+```---user---
+[state template]
+< userA | ('near' : [Principal]) > < userC | ('near' : [Principal]) > < deviceB | ('busy' : [Bool] , 'job' : [Qid]) >
+
+[events]
+eq ev1(UserX) = $ UserX 'walkAway' deviceB .
+eq ev2(UserX) = $ UserX 'ping' deviceB .
+eq ev3(UserX) = $ UserX 'pressReset' deviceB .
+
+[description]
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    alt [B1] The user is next to the device
+        UserX->>Device: The user walks away from the device
+        Note over UserX: The user is now away from the device.
+    end
+    UserX->>Device: [B2] The user pings the device
+    alt [B3] The user is next to the device
+        UserX->>Device: The user presses the reset button of the device
+        opt The device is busy
+            Note over Device: The device becomes idle and drops its current job.
+        end
+    end
+    alt [B4] The device is idle and holds a job
+        Note over Device: The device starts the job and becomes busy.
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+---assistant---
+```
+[B1] < UserX | 'near' : deviceB , ... > => ev1(UserX) .
+[B2] < UserX | ... > < deviceB | ... > => ev2(UserX) .
+[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .
+```---user---
+[state template]
+< userA | ('signedKey' : {[Funcall] , [Item]} , 'near' : [Principal] , 'key' : [Qid]) > < userC | ('signedKey' : {[Funcall] , [Item]} , 'near' : [Principal] , 'key' : [Qid]) > < deviceA | ('key' : [Qid] , 'trusted' : ([Set]) , 'secret' : [Qid]) > < cloudA | ([Principal] : ('trusted' : ([Set])) , 'secret' : [Qid]) >
+
+[events]
+eq ev1(UserX) = $ UserX 'approach' deviceA .
+eq ev2(UserX) = $ UserX 'leave' deviceA .
+eq ev3(UserX) = $ UserX 'requestKey' deviceA .
+eq ev4(UserX, Key) = $ UserX 'signKey' cloudA | (deviceA ; Key) .
+eq ev5(UserX, Key, Secret) = $ UserX 'bind' deviceA | (encrypt(Key, Secret)) .
+eq ev6(UserX, MessageA) = $ UserX 'bind' deviceA | (MessageA) .
+eq ev7(UserX, UserY) = $ UserX 'share' cloudA | (deviceA ; UserY) .
+eq ev8(UserX, UserY) = $ UserX 'revoke' cloudA | (deviceA ; UserY) .
+
+[description]
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially the device holds an empty-text key. The cloud signs keys with a secret, which the device also knows.
+
+    alt [B1] UserX is not near a device and the device exists
+        UserX->>Device: UserX approaches the device
+        Note over UserX: UserX is near the device
+    end
+    alt [B2] UserX is near the device
+        UserX->>Device: UserX leaves the device
+        Note over UserX: UserX is no longer near the device
+    end
+
+    alt [B3] UserX is near the device
+        UserX->>Device: UserX calls an API to request a key from the device
+        opt UserX has no key yet and the device has a key
+            Note over UserX: Generate a key from the counter, save it for the user and device, then advance the counter.
+        end
+        Note over Device: No trust check, generating a key replaces the previous device key
+    end
+
+    alt [B4] UserX has key and the device exists
+        UserX->>Cloud: UserX calls an API to sign key for Device
+        opt The cloud trusts UserX for the device
+            Cloud-->>UserX: The cloud sends the signed key to UserX
+            opt UserX has no signed key yet
+                Note over UserX: UserX stores the signed key, which is key encrypted with the secret
+            end
+        end
+        Note over UserX,Cloud: Signing does not require the user to be nearby or the supplied key to match the current device key
+    end
+
+    alt [B5] UserX is near the device and has signed key M
+        UserX->>Device: UserX calls an API to bind the device using signed key M
+        opt M is the current device key encrypted with the secret and is the signed key stored by UserX
+            Note over Device: The device adds UserX as a trusted user
+        end
+    end
+
+    alt [B6] Existing distinct users UserX and UserY and Device
+        UserX->>Cloud: UserX calls an API to share access to Device with UserY
+        Note over Cloud: Add UserY as a trusted user for the device.
+    end
+    alt [B7] Existing distinct users UserX and UserY
+        UserX->>Cloud: UserX calls an API to revoke access for UserY
+        opt The cloud trusts both UserX and UserY for the device
+            Note over Cloud: The cloud removes UserY as a trusted user for the device
+        end
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+    
+--------------------------------------------------
+[B1] < UserX | 'near' : nils , ... > < deviceA | ... > => ev1(UserX) .
+[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .
+[B3] < UserX | 'near' : deviceA , ... > => ev3(UserX) .
+[B4] < UserX | 'key' : Key , ... > < deviceA | ... > => ev4(UserX, Key) .
+[B5] < UserX | 'near' : deviceA , 'signedKey' : MessageA , ... > => ev6(UserX, MessageA) .
+[B6] < UserX | ... > < UserY | ... > < deviceA | ... > => ev7(UserX, UserY) .
+[B7] < UserX | ... > < UserY | ... > => ev8(UserX, UserY) .
+
+==================================================
+---system---
+Instantiate the state propositions of a predefined security property for a protocol model in a DSL.
+
+# Grammar
+<Proposition> ::= <PropName> "=|" <Constraint> "."
+<Constraint> ::= <InternalState> | <Event>
+
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+
+# The input has the state template of the model, its initial state, its state rules, the roles,
+# and the slots: each slot is a name and the fact it must express.
+# For every slot output exactly one proposition `name =| <InternalState> .` that holds exactly when
+# the fact holds. A slot is a state fact: never use an event.
+# Use only principals, attributes and record nesting that occur in the template, the initial state
+# and the rules; use the role constants given in [roles]; end every attribute set with `...`.
+# Pick the attribute whose value the rules update for that fact (e.g. the owner record that a bind
+# rule writes), not a similar-looking one.
+# `nils` is the empty value. Sets are unordered with identity `nils`, so membership is a pattern:
+# `'owner' : (userC , Rest)` holds whenever userC is among the owners (Rest may be empty).
+# A principal key takes a parenthesized value: `deviceB : ('owner' : (userC , Rest) , ...)`.
+# Output only the propositions in one code block, one per line, no explanation.
+---user---
+[state template]
+< userA | ('token' : [Qid] , 'near' : [Principal]) > < userC | ('token' : [Qid] , 'near' : [Principal]) > < deviceB | ('token' : [Set] , 'locked' : [Bool]) > < cloudA | ([Principal] : ('token' : {[Qid] , [Set]} , 'holders' : [Set])) >
+
+[initial state]
+< userA | ('near' : deviceB , 'token' : 'tokenA') > < userC | ('near' : nils , 'token' : 'tokenC') > < deviceB | ('locked' : false , 'token' : nils) > < cloudA | (deviceB : ('token' : nils , 'holders' : nils)) >
+
+[state rules]
+eq < cloudA | (deviceB : ('token' : Token , 'holders' : Holders , ..) , ...) > $ UserX 'claim' cloudA | (deviceB ; Token)
+= < cloudA | (deviceB : ('token' : Token , 'holders' : (Holders , UserX) , ..) , ...) > .
+eq < UserX | ('near' : OldNear , ..) > $ UserX 'walkUp' deviceB
+= < UserX | ('near' : deviceB , ..) > .
+
+[roles]
+attacker: userC
+victim: userA
+device: deviceB
+cloud: cloudA
+
+[slots]
+attackerLocal : the attacker is near / local to the device
+attackerOwner : the attacker is recorded as an owner of the device---assistant---
+```
+attackerLocal =| < userC | 'near' : deviceB , ... > .
+attackerOwner =| < cloudA | deviceB : ('holders' : (userC , Rest) , ...) , ... > .
+```---user---
+[state template]
+< userA | ('signedKey' : {[Funcall] , [Item]} , 'near' : [Principal] , 'key' : [Qid]) > < userC | ('signedKey' : {[Funcall] , [Item]} , 'near' : [Principal] , 'key' : [Qid]) > < deviceA | ('key' : [Qid] , 'trusted' : ([Set]) , 'secret' : [Qid]) > < cloudA | ([Principal] : ('trusted' : ([Set])) , 'secret' : [Qid]) >
+
+[initial state]
+< system | ('counter' : 0) > < userA | ('signedKey' : nils , 'near' : deviceA , 'key' : nils) > < userC | ('signedKey' : nils , 'near' : nils , 'key' : nils) > < deviceA | ('key' : '' , 'trusted' : (userA) , 'secret' : 'secret') > < cloudA | (deviceA : ('trusted' : (userA)) , 'secret' : 'secret') >
+
+[state rules]
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceA 
+= < UserX | ('near' : deviceA , ..) > .
+eq < UserX | ('near' : deviceA , ..) > $ UserX 'leave' deviceA 
+= < UserX | ('near' : nils , ..) > .
+eq < system | ('counter' : N , ..) > < UserX | ('key' : nils , ...) > < deviceA | ('key' : OldKey , ....) > $ UserX 'requestKey' deviceA 
+= < system | ('counter' : N + 1 , ..) > < UserX | ('key' : randomStr('Key', N) , ...) > < deviceA | ('key' : randomStr('Key', N) , ....) > .
+eq < cloudA | ('secret' : Secret , deviceA : ('trusted' : (UserX , Rest) , ..) , ...) > $ UserX 'signKey' cloudA | (deviceA ; Key) 
+= < cloudA | ('secret' : Secret , deviceA : ('trusted' : (UserX , Rest) , ..) , ...) > $ cloudA 'sendSignedKey' UserX | (deviceA ; encrypt(Key, Secret)) .
+eq < UserX | ('signedKey' : nils , ..) > $ cloudA 'sendSignedKey' UserX | (deviceA ; M) 
+= < UserX | ('signedKey' : M , ..) > .
+eq < UserX | ('signedKey' : encrypt(Key, Secret) , ..) > < deviceA | ('key' : Key , 'secret' : Secret , 'trusted' : Users , ...) > $ UserX 'bind' deviceA | (encrypt(Key, Secret)) 
+= < UserX | ('signedKey' : encrypt(Key, Secret) , ..) > < deviceA | ('key' : Key , 'secret' : Secret , 'trusted' : (UserX , Users) , ...) > .
+eq < cloudA | (deviceA : ('trusted' : Users , ..) , ...) > $ UserX 'share' cloudA | (deviceA ; UserY) 
+= < cloudA | (deviceA : ('trusted' : (UserY , Users) , ..) , ...) > .
+eq < cloudA | (deviceA : ('trusted' : (UserX , UserY , Rest) , ..) , ...) > $ UserX 'revoke' cloudA | (deviceA ; UserY) 
+= < cloudA | (deviceA : ('trusted' : (UserX , Rest) , ..) , ...) > .
+
+[roles]
+attacker: userC
+victim: userA
+device: deviceA
+cloud: cloudA
+
+[slots]
+deviceTrustsAttacker : the device trusts the attacker
+cloudRecordsTrust : the cloud records the device's trust in the attacker---user---
+[Original protocol input: preserve these facts during generation and repair]
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially the device holds an empty-text key. The cloud signs keys with a secret, which the device also knows.
+
+    alt [B1] UserX is not near a device and the device exists
+        UserX->>Device: UserX approaches the device
+        Note over UserX: UserX is near the device
+    end
+    alt [B2] UserX is near the device
+        UserX->>Device: UserX leaves the device
+        Note over UserX: UserX is no longer near the device
+    end
+
+    alt [B3] UserX is near the device
+        UserX->>Device: UserX calls an API to request a key from the device
+        opt UserX has no key yet and the device has a key
+            Note over UserX: Generate a key from the counter, save it for the user and device, then advance the counter.
+        end
+        Note over Device: No trust check, generating a key replaces the previous device key
+    end
+
+    alt [B4] UserX has key and the device exists
+        UserX->>Cloud: UserX calls an API to sign key for Device
+        opt The cloud trusts UserX for the device
+            Cloud-->>UserX: The cloud sends the signed key to UserX
+            opt UserX has no signed key yet
+                Note over UserX: UserX stores the signed key, which is key encrypted with the secret
+            end
+        end
+        Note over UserX,Cloud: Signing does not require the user to be nearby or the supplied key to match the current device key
+    end
+
+    alt [B5] UserX is near the device and has signed key M
+        UserX->>Device: UserX calls an API to bind the device using signed key M
+        opt M is the current device key encrypted with the secret and is the signed key stored by UserX
+            Note over Device: The device adds UserX as a trusted user
+        end
+    end
+
+    alt [B6] Existing distinct users UserX and UserY and Device
+        UserX->>Cloud: UserX calls an API to share access to Device with UserY
+        Note over Cloud: Add UserY as a trusted user for the device.
+    end
+    alt [B7] Existing distinct users UserX and UserY
+        UserX->>Cloud: UserX calls an API to revoke access for UserY
+        opt The cloud trusts both UserX and UserY for the device
+            Note over Cloud: The cloud removes UserY as a trusted user for the device
+        end
+    end
+```
+
+--------------------------------------------------
+deviceTrustsAttacker =| < deviceA | 'trusted' : (userC , Rest) , ... > .
+cloudRecordsTrust =| < cloudA | deviceA : ('trusted' : (userC , Rest) , ...) , ... > .
+
+==================================================
+---system---
+Imagine you are an engineering expert and you can help me determin variables types of a formalization in a DSL
+
+# The DSL grammar in EBNF
+<Proposition> ::= <PropName> "=|" <Constraint> "."
+<Constraint> ::= <InternalState> | <Event>
+
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+
+# Variables use capital strings.
+
+# The input contains a protocol text, the formalization in the DSL, and a list of variables.
+
+# You can determin the type of each variable according the the protocol text and its formalization.
+
+# Possible types
+<Type> ::= "Qid" | "Bool" | "Nat" | "Principal" | "User"
+         | "Device" | "Cloud" | "App" | "Server" | "Client"
+         | "Set" | "List" | "Item" | "Key" | "Action" | "Arguments" | "Attributes"
+
+# Meaning of each type
+- Qid: a quoted constant, e.g. 'secretA' or 'near'. A key, token, password or secret that must be present is a Qid.
+- Nat / Bool: a natural number / true or false.
+- User, Device, Cloud, App, Server, Client: one principal of that kind, e.g. userA, deviceB, cloudA.
+- Principal: a principal of any kind.
+- Item: any single value: a principal, a Qid, a Nat, a Bool, or a pair `a : b`.
+- Key: the name on the left of a pair `a : b`, such as the attribute name 'near', or deviceB in
+  `deviceB : (...)`. It is not a cryptographic key.
+- Set: zero or more items joined by `,`; `nils` is the empty set. Only Set matches `nils`, so a variable
+  whose value may be absent when the rule fires must be Set, e.g. an old value that is replaced whatever it
+  was, or a key the user may not have yet.
+- List: ordered items joined by `;`.
+- Action: the action name of an event. Arguments: the arguments of an event.
+  Attributes: all attributes of a principal.
+
+# Every sort except Set excludes the empty value `nils`: a variable of sort Item, Principal, User, Device,
+Qid, Key, Bool, ... never matches `nils`. Choose Set when the variable must also match an empty value,
+e.g. an old value that is overwritten whatever it was, including none. Choose a specific sort when the
+source requires a non-empty value, e.g. 'holds a key' or 'is associated with a device'.
+
+# The output should strictly be a json file in a code block, not anything else, without explanations.
+
+# Take your time, think step by step, no hurry to draw a conclusion
+
+Now, please answer:
+---user---
+[protocol]
+ap1 : userC is the owner of deviceB
+
+[formal]
+ap1 =| < cloudA | deviceB : ('key' : Qid , 'owner' : userC , ...) > .
+
+[variables] 
+["Qid"]---assistant---
+```
+{"Qid": "Qid"}
+```---user---
+[protocol]
+deviceTrustsAttacker : the device trusts the attacker
+cloudRecordsTrust : the cloud records the device's trust in the attacker
+
+[formal]
+deviceTrustsAttacker =| < deviceA | 'trusted' : (userC , Rest) , ... > .
+cloudRecordsTrust =| < cloudA | deviceA : ('trusted' : (userC , Rest) , ...) , ... > .
+
+[variables]
+['Rest']    ---user---
+[Original protocol input: preserve these facts during generation and repair]
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially the device holds an empty-text key. The cloud signs keys with a secret, which the device also knows.
+
+    alt [B1] UserX is not near a device and the device exists
+        UserX->>Device: UserX approaches the device
+        Note over UserX: UserX is near the device
+    end
+    alt [B2] UserX is near the device
+        UserX->>Device: UserX leaves the device
+        Note over UserX: UserX is no longer near the device
+    end
+
+    alt [B3] UserX is near the device
+        UserX->>Device: UserX calls an API to request a key from the device
+        opt UserX has no key yet and the device has a key
+            Note over UserX: Generate a key from the counter, save it for the user and device, then advance the counter.
+        end
+        Note over Device: No trust check, generating a key replaces the previous device key
+    end
+
+    alt [B4] UserX has key and the device exists
+        UserX->>Cloud: UserX calls an API to sign key for Device
+        opt The cloud trusts UserX for the device
+            Cloud-->>UserX: The cloud sends the signed key to UserX
+            opt UserX has no signed key yet
+                Note over UserX: UserX stores the signed key, which is key encrypted with the secret
+            end
+        end
+        Note over UserX,Cloud: Signing does not require the user to be nearby or the supplied key to match the current device key
+    end
+
+    alt [B5] UserX is near the device and has signed key M
+        UserX->>Device: UserX calls an API to bind the device using signed key M
+        opt M is the current device key encrypted with the secret and is the signed key stored by UserX
+            Note over Device: The device adds UserX as a trusted user
+        end
+    end
+
+    alt [B6] Existing distinct users UserX and UserY and Device
+        UserX->>Cloud: UserX calls an API to share access to Device with UserY
+        Note over Cloud: Add UserY as a trusted user for the device.
+    end
+    alt [B7] Existing distinct users UserX and UserY
+        UserX->>Cloud: UserX calls an API to revoke access for UserY
+        opt The cloud trusts both UserX and UserY for the device
+            Note over Cloud: The cloud removes UserY as a trusted user for the device
+        end
+    end
+```
+
+--------------------------------------------------
+{"Rest": "Set"}
+
+==================================================

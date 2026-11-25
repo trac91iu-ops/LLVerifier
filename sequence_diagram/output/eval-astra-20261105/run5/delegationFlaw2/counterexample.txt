@@ -1,0 +1,5 @@
+$ userA 'requestKey' cloudSmartThing
+$ userA 'delegateAccess' cloudSmartThing | (deviceSwitch ; userC)
+$ userC 'turnOn' deviceSwitch
+$ userC 'requestKey' cloudSmartThing
+$ userA 'revokeAccess' cloudSmartThing | (deviceSwitch ; userC)

@@ -1,0 +1,97 @@
+{
+  "protocol": "A2A",
+  "model_sha256": "ebffc9d3318ff5a1c13dd01ca0cb5d1cf997202090a1a391ba152e4696805b35",
+  "runs": [
+    "a2a-run1"
+  ],
+  "generated": "sequence_diagram/output/a2a-astra-v2-20261105/run1/A2A/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/A2A/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'returnHistory'": "'response'",
+      "'returnInitialContext'": "'response'",
+      "'sendWithContext'": null,
+      "'sendWithoutContext'": null,
+      "'snoop'": null
+    },
+    "attributes": {
+      "'authenticated'": null,
+      "'context'": null,
+      "'history'": null,
+      "'knowCtx'": null,
+      "'receivedHistory'": "'receivedHistory'"
+    },
+    "principals": {
+      "clientA": null,
+      "clientB": null,
+      "serverA": "serverA"
+    },
+    "constants": {
+      "'ctxX'": null,
+      "'msgA'": null,
+      "'msgA2'": null,
+      "'msgB'": null
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'response'"
+    ],
+    "attributes": [
+      "'receivedHistory'"
+    ],
+    "principals": [
+      "serverA"
+    ],
+    "constants": [
+      "'contextId'",
+      "'history'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'returnHistory'",
+      "'returnInitialContext'",
+      "'sendWithContext'",
+      "'sendWithoutContext'",
+      "'snoop'"
+    ],
+    "attributes": [
+      "'authenticated'",
+      "'context'",
+      "'history'",
+      "'knowCtx'",
+      "'receivedHistory'"
+    ],
+    "principals": [
+      "clientA",
+      "clientB",
+      "serverA"
+    ],
+    "constants": [
+      "'ctxX'",
+      "'msgA'",
+      "'msgA2'",
+      "'msgB'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T09:46:01+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 4637,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'returnHistory'\": \"'response'\",\n    \"'returnInitialContext'\": \"'response'\",\n    \"'sendWithContext'\": \"'SendMessage'\",\n    \"'sendWithoutContext'\": \"'SendMessage'\",\n    \"'snoop'\": null\n  },\n  \"attributes\": {\n    \"'authenticated'\": \"'authenticated'\",\n    \"'context'\": \"'contexts'\",\n    \"'history'\": \"'history'\",\n    \"'knowCtx'\": \"'knowCtx'\",\n    \"'receivedHistory'\": \"'receivedHistory'\"\n  },\n  \"principals\": {\n    \"clientA\": \"clientA\",\n    \"clientB\": \"clientB\",\n    \"serverA\": \"serverA\"\n  },\n  \"constants\": {\n    \"'ctxX'\": \"'ctxX'\",\n    \"'msgA'\": null,\n    \"'msgA2'\": null,\n    \"'msgB'\": null\n  },\n  \"values\": []\n}",
+        "error": "\"actions\" maps to names that are not gold actions: [\"'SendMessage'\", \"'SendMessage'\"]. \"attributes\" maps to names that are not gold attributes: [\"'authenticated'\", \"'contexts'\", \"'history'\", \"'knowCtx'\"]. \"principals\" maps to names that are not gold principals: ['clientA', 'clientB']. \"constants\" maps to names that are not gold constants: [\"'ctxX'\"]."
+      },
+      {
+        "response": "{\n  \"actions\": {\n    \"'returnHistory'\": \"'response'\",\n    \"'returnInitialContext'\": \"'response'\",\n    \"'sendWithContext'\": null,\n    \"'sendWithoutContext'\": null,\n    \"'snoop'\": null\n  },\n  \"attributes\": {\n    \"'authenticated'\": null,\n    \"'context'\": null,\n    \"'history'\": null,\n    \"'knowCtx'\": null,\n    \"'receivedHistory'\": \"'receivedHistory'\"\n  },\n  \"principals\": {\n    \"clientA\": null,\n    \"clientB\": null,\n    \"serverA\": \"serverA\"\n  },\n  \"constants\": {\n    \"'ctxX'\": null,\n    \"'msgA'\": null,\n    \"'msgA2'\": null,\n    \"'msgB'\": null\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

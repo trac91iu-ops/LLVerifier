@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:38:08.745Z",
+  "model": "6e2fba9d39ff",
+  "note": "",
+  "protocol": "Netvue",
+  "runs": [
+    "luna6-run2"
+  ],
+  "verdict": "absent"
+}

@@ -1,0 +1,75 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Expected exactly one complete output code block.
+[*] Diagram split into 9 blocks
+[*] Generating policy with LLM...
+[*] Total token: 5227
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB => < UserX | 'near' : deviceB , ... > .
+[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB => < UserX | 'near' : nils , ... > .
+[B3] < UserX | 'near' : deviceB , ... > < deviceB | 'key' : OldKey , ... > $ UserX 'pressButton' deviceB => < UserX | 'near' : deviceB , ... > < deviceB | 'key' : FreshKeyB , ... > .
+[B4] < UserX | 'key' : nils , ... > < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'retrieveKey' deviceB => < UserX | 'key' : Key , ... > < deviceB | 'locked' : false , 'key' : Key , ... > .
+[B5] < UserX | 'near' : deviceB , 'key' : Key , ... > < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'lock' deviceB => < UserX | 'near' : deviceB , 'key' : Key , ... > < deviceB | 'locked' : true , 'key' : Key , ... > .
+[B6] < UserX | 'key' : Key , ... > < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Key) => < UserX | 'key' : Key , ... > < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : Key , 'owners' : (UserX , Owners) , ...) , ... > .
+[B7] < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > $ userC 'invite' cloudA | (userA) => < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > .
+[B8] < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > $ userC 'remove' cloudA | (userA) => < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > .
+[B9] < UserY | ... > < cloudA | ... > $ UserY 'retrieveKey' cloudA | (deviceB) => < UserY | ... > < cloudA | ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3358
+--------------------------------------------------
+```json
+{
+  "FreshKeyB": "Qid",
+  "Key": "Qid",
+  "Members": "Set",
+  "OldKey": "Qid",
+  "Owners": "Set",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'FreshKeyB': 'Qid', 'Key': 'Qid', 'Members': 'Set', 'OldKey': 'Qid', 'Owners': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('near' : [Principal] , 'key' : [Qid]) > < userC | ('near' : [Principal] , 'key' : [Qid]) > < deviceB | ('key' : [Qid] , 'locked' : [Bool]) > < cloudA | ([Principal] : ('devices' : nils , 'members' : [Set] , 'key' : [Qid] , 'owners' : ([Set]))) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh True hasCurrentTime False
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+eq < system | ('counter' : N , ..) > < UserX | ('near' : deviceB , ...) > < deviceB | ('key' : OldKey , ....) > $ UserX 'pressButton' deviceB 
+= < system | ('counter' : N + 1 , ..) > < UserX | ('near' : deviceB , ...) > < deviceB | ('key' : randomStr('KeyB', N) , ....) > .
+eq < UserX | ('key' : nils , ..) > < deviceB | ('locked' : false , 'key' : Key , ...) > $ UserX 'retrieveKey' deviceB 
+= < UserX | ('key' : Key , ..) > < deviceB | ('locked' : false , 'key' : Key , ...) > .
+eq < UserX | ('near' : deviceB , 'key' : Key , ..) > < deviceB | ('locked' : false , 'key' : Key , ...) > $ UserX 'lock' deviceB 
+= < UserX | ('near' : deviceB , 'key' : Key , ..) > < deviceB | ('locked' : true , 'key' : Key , ...) > .
+eq < UserX | ('key' : Key , ..) > < deviceB | ('key' : Key , ...) > < cloudA | (deviceB : ('key' : Key , 'owners' : Owners , ....) , .....) > $ UserX 'bind' cloudA | (deviceB ; Key) 
+= < UserX | ('key' : Key , ..) > < deviceB | ('key' : Key , ...) > < cloudA | (deviceB : ('key' : Key , 'owners' : (UserX , Owners) , ....) , .....) > .
+eq < cloudA | (userC : ('devices' : nils , 'members' : Members , ..) , ...) > $ userC 'invite' cloudA | (userA) 
+= < cloudA | (userC : ('devices' : nils , 'members' : (userA , Members) , ..) , ...) > .
+eq < cloudA | (userC : ('devices' : nils , 'members' : (userA , Members) , ..) , ...) > $ userC 'remove' cloudA | (userA) 
+= < cloudA | (userC : ('devices' : nils , 'members' : Members , ..) , ...) > .
+eq < UserY | (..) > < cloudA | (...) > $ UserY 'retrieveKey' cloudA | (deviceB) 
+= < UserY | (..) > < cloudA | (...) > .
+$ UserX 'approach' deviceB
+$ UserX 'leave' deviceB
+$ UserX 'pressButton' deviceB
+$ UserX 'retrieveKey' deviceB
+$ UserX 'lock' deviceB
+$ UserX 'bind' cloudA | (deviceB ; Key)
+$ userC 'invite' cloudA | (userA)
+$ userC 'remove' cloudA | (userA)
+$ UserY 'retrieveKey' cloudA | (deviceB)
+[*] Total token: 2427
+--------------------------------------------------
+```[1, 2, 3, 4, 5, 6, 7, 8, 9]```
+==================================================

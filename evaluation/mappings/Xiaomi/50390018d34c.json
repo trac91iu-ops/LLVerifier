@@ -1,0 +1,105 @@
+{
+  "protocol": "Xiaomi",
+  "model_sha256": "50390018d34c27c1e1bfaf60e5eb839626faa7c8777faa15b0915572752d1270",
+  "runs": [
+    "a2-run5"
+  ],
+  "generated": "sequence_diagram/output/ablation-norepair-20261104/run5/Xiaomi/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Xiaomi/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'cloudTurnOn'": "'cloudAPI:toggle'",
+      "'invite'": "'callAPI:invite'",
+      "'removeMember'": "'callAPI:kick'",
+      "'requestKey'": "'callAPI:getKey'",
+      "'sendKey'": "'send'",
+      "'turnOn'": "'callAPI:toggle'"
+    },
+    "attributes": {
+      "'device'": "'device'",
+      "'key'": "'key'",
+      "'members'": "'members'",
+      "'on'": "'status'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'keyB'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'keyB'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'callAPI:getKey'",
+      "'callAPI:invite'",
+      "'callAPI:kick'",
+      "'callAPI:toggle'",
+      "'cloudAPI:toggle'",
+      "'send'"
+    ],
+    "attributes": [
+      "'device'",
+      "'key'",
+      "'members'",
+      "'status'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'cloudTurnOn'",
+      "'invite'",
+      "'removeMember'",
+      "'requestKey'",
+      "'sendKey'",
+      "'turnOn'"
+    ],
+    "attributes": [
+      "'device'",
+      "'key'",
+      "'members'",
+      "'on'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'keyB'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T04:16:23+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2163,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'cloudTurnOn'\": \"'cloudAPI:toggle'\",\n    \"'invite'\": \"'callAPI:invite'\",\n    \"'removeMember'\": \"'callAPI:kick'\",\n    \"'requestKey'\": \"'callAPI:getKey'\",\n    \"'sendKey'\": \"'send'\",\n    \"'turnOn'\": \"'callAPI:toggle'\"\n  },\n  \"attributes\": {\n    \"'device'\": \"'device'\",\n    \"'key'\": \"'key'\",\n    \"'members'\": \"'members'\",\n    \"'on'\": \"'status'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'keyB'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyB'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

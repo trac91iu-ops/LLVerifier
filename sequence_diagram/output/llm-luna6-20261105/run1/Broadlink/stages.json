@@ -1,0 +1,57 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:583944116376755b219a9138668cee716e85ea0551a451e7b8678524de77a57f"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n[B3] < UserX | 'near' : deviceB , ... > < deviceB | 'key' : OldKey , ... > $ UserX 'pressButton' deviceB\n=> < UserX | 'near' : deviceB , ... > < deviceB | 'key' : FreshKey , ... > .\n[B4] < UserX | 'key' : nils , ... > < deviceB | 'unlocked' : true , 'key' : Key , ... > $ UserX 'retrieveKey' deviceB\n=> < UserX | 'key' : Key , ... > < deviceB | 'unlocked' : true , 'key' : Key , ... > .\n[B5] < UserX | 'near' : deviceB , 'key' : Key , ... > < deviceB | 'unlocked' : true , 'key' : Key , ... > $ UserX 'lock' deviceB | (Key)\n=> < UserX | 'near' : deviceB , 'key' : Key , ... > < deviceB | 'unlocked' : false , 'key' : Key , ... > .\n[B6] < UserX | 'key' : Key , ... > < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : CloudKey , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Key)\n=> < UserX | 'key' : Key , ... > < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : CloudKey , 'owners' : (UserX) , ...) , ... > .\n[B7] < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > $ userC 'invite' cloudA | (userA)\n=> < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > .\n[B8] < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > $ userC 'remove' cloudA | (userA)\n=> < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > .\n[B9] < cloudA | ... > $ userY 'retrieveKey' cloudA | (deviceB)\n=> < cloudA | ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:21cd021f6e8a7cce74ce6f17e1c037dc2c793c3f1382373e7031b342ea325207"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"CloudKey\": \"Qid\",\n  \"FreshKey\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"OldKey\": \"Set\",\n  \"UserX\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:3d9f8b431dc8ae22955db77d450ba11c810a6b3779e1b94fa1ca078de6734945"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 4, 5, 6, 7, 8, 9]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:3c9411b712cc4ad60098743826721e41f1f37781ed5f5d6a25250fa069459901"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('key' : nils , 'near' : deviceB) > < userC | ('key' : nils , 'near' : nils) > < deviceB | ('key' : ('keyA') , 'unlocked' : true) > < cloudA | (userA : ('members' : nils , 'devices' : nils , 'owners' : nils , 'key' : nils) , userC : ('members' : nils , 'devices' : nils , 'owners' : nils , 'key' : nils) , deviceB : ('members' : nils , 'devices' : nils , 'owners' : nils , 'key' : 'keyA')) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:448fa6f8bd06b5dceb59d83d908276e7215705a0c9a213a72d2e010b39e2ed56"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B5] < UserX | 'key' : Key , 'near' : deviceB , ... > < deviceB | ... > => ev5(UserX, Key) .\n[B6] < UserX | 'key' : Key , ... > < deviceB | ... > => ev6(UserX, Key) .\n[B7] => ev7 .\n[B8] => ev8 .\n[B9] < userY | 'key' : Key , ... > < deviceB | ... > => ev9 .",
+    "error": "No terminal matches '.' in the current parser context, at line 7 col 8\n\n=> ev7 .\n       ^\nExpected one of: '\\\\('"
+  },
+  {
+    "attempt": 1,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B5] < UserX | 'key' : Key , 'near' : deviceB , ... > < deviceB | ... > => ev5(UserX, Key) .\n[B6] < UserX | 'key' : Key , ... > < deviceB | ... > => ev6(UserX, Key) .\n[B7] => ev7(userA) .\n[B8] => ev8(userA) .\n[B9] < userY | 'key' : Key , ... > < deviceB | ... > => ev9 .",
+    "error": "No terminal matches '.' in the current parser context, at line 9 col 56\n\n : Key , ... > < deviceB | ... > => ev9 .\n                                        ^\nExpected one of: '\\\\('"
+  },
+  {
+    "attempt": 2,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B5] < UserX | 'key' : Key , 'near' : deviceB , ... > < deviceB | ... > => ev5(UserX, Key) .\n[B6] < UserX | 'key' : Key , ... > < deviceB | ... > => ev6(UserX, Key) .\n[B7] => ev7(userA) .\n[B8] => ev8(userA) .\n[B9] < userY | 'key' : Key , ... > < deviceB | ... > => ev9(UserY) .",
+    "error": "[Errors]\nFind additional variables UserY in right-hand side of state rule rl [rev9]: E @ S < userY | ('key' : Key , ..) > < deviceB | (..) > \n=> ep: ev9(UserY) @ S < userY | ('key' : Key , ..) > < deviceB | (..) > ..\nThese variables should appear on the left-hand side (premise) first. To record them, possibly use an attribute in the internal states on the left-hand side."
+  }
+]

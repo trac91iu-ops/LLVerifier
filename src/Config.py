@@ -3,7 +3,8 @@ import yaml
 import os
 from utils import *
 import json
-from pydantic import BaseModel, PositiveInt
+from copy import deepcopy
+from pydantic import BaseModel, NonNegativeInt, PositiveInt
 from enum import Enum,auto
 from typing import Optional
 
@@ -24,7 +25,9 @@ def maskConfig(d):
             d[k] = mask(v)
 
 def maskConfigSafe(d):
-    return maskConfig(d.copy())
+    masked = deepcopy(d)
+    maskConfig(masked)
+    return masked
 
 class Strategy(BaseModel):
     provider: tuple[str,str]
@@ -49,7 +52,7 @@ class LLMProvider(BaseModel):
 class YAMLCONFIG(BaseModel):
     TIMEOUT_RETRY: PositiveInt = 3
     TOTAL_RETRY: PositiveInt = 2
-    ERROR_RETRY: PositiveInt = 2
+    ERROR_RETRY: NonNegativeInt = 2  # guardrail repairs after a failed check; 0 disables the repair loop (ablation)
     N_CHOICES: PositiveInt = 1
     TEMPERATURE: float = 0
     VERBOSE: int = 1
@@ -62,6 +65,7 @@ class YAMLCONFIG(BaseModel):
     STRATEGIES: dict[str, Strategy]
     LOG: bool = True
     DEBUG : bool = False
+    REQUEST_TIMEOUT: PositiveInt = 900
     VERSION: str
     MODE : MODE 
     RULES_NAME : str = 'rule.maude'
@@ -71,6 +75,7 @@ class CONFIGCLS(YAMLCONFIG):
     CONFIG_FILE : Optional[str] = None 
     @staticmethod
     def load(config_file='config.yaml'):
+        path = config_file
         if not os.path.isabs(config_file):
             path = os.path.join(_DIRNAME, 'configs/', config_file)
         with open(path,'r') as f:
@@ -97,9 +102,7 @@ class CONFIGCLS(YAMLCONFIG):
         s = json.dumps(j, indent=2)
         print(s)
 
-CONFIG = CONFIGCLS.load()
-if CONFIG.VERBOSE > 2:
-    CONFIG.show() 
+CONFIG = CONFIGCLS.load(os.environ.get('LLVERIFIER_CONFIG', 'config.yaml'))
 
 if __name__ == '__main__':
     print(LLMProvider(**{'models':['1'],'base_url':'2','api_key':'sk-asdsadweweqwe'}))

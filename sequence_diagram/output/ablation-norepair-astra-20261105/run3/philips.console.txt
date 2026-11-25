@@ -1,0 +1,39 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near
+[*] Diagram split into 7 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4523
+--------------------------------------------------
+```
+< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+
+< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+
+< deviceB | ... > $ UserX 'pressButton' deviceB
+=> < deviceB | ... > $ deviceB 'uploadSecret' cloudA | (deviceB ; FreshSecret) .
+
+< cloudA | deviceB : ('tickets' : Tickets , ...) , ... > $ deviceB 'uploadSecret' cloudA | (deviceB ; Secret)
+=> < cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : CurrentTime) , Tickets) , ...) , ... > .
+
+< cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ UserX 'getKey' cloudA | deviceB
+=> < cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ cloudA 'sendSecret' UserX | (deviceB ; Secret)
+if Issued == CurrentTime .
+
+< UserX | 'knowledge' : Knowledge , ... > $ cloudA 'sendSecret' UserX | (deviceB ; Secret)
+=> < UserX | 'knowledge' : (Secret , Knowledge) , ... > .
+
+< cloudA | deviceB : ('owners' : nils , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Secret)
+=> < cloudA | deviceB : ('owners' : (UserX) , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > .
+
+< cloudA | deviceB : ('owners' : (UserY , Owners) , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ UserX 'join' cloudA | (deviceB ; Secret)
+=> < cloudA | deviceB : ('owners' : (UserX , UserY , Owners) , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > .
+
+< cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... >
+=> < cloudA | deviceB : ('tickets' : nils , ...) , ... >
+if CurrentTime - Issued > 2 .
+```
+==================================================

@@ -1,0 +1,52 @@
+load rules .
+load model-checker .
+mod PREDS is
+pr TRANSITION * (sort State to State') .
+including SATISFACTION .
+pr BOOL-OPS .
+
+subsort Vertex < State .
+
+vars N : Nat .
+
+var Vtx : Vertex .
+var P : Prop .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+
+ops boundReached sp : -> Prop .
+ops deviceOn attackerAuthorized attackerActs : -> Prop .
+
+*** property template: CTRL-direct (attacker = userC)
+*** deviceOn : the device is on
+*** attackerAuthorized : the cloud records the attacker as authorized for the device (e.g. associated with it, or in its trusted set)
+*** attackerActs : userC performs an action
+
+eq E @ S < deviceB | ('power' : true , ..) > |= deviceOn = true .
+eq E @ S < cloudA | (userC : ('device' : deviceB , ..) , ...) > |= attackerAuthorized = true .
+ceq E @ S |= attackerActs = true if subject(E) == userC .
+
+*** predefined
+ceq E @ S |= sp = true if subject(E) == system . *** system performs actions
+ceq E @ S < system | 'counter' : N , ... > |= boundReached = true if N >= 5 . *** Max turns number
+ceq E @ S < system | 'time' : N , ... > |= boundReached = true if N >= 3 . *** time pass
+
+eq Vtx |= P = false [owise] .
+endm
+
+mod CHECK is
+pr PREDS .
+including MODEL-CHECKER .
+
+ops spec basic safety : -> Prop .
+
+eq basic = [] (~ boundReached) .
+
+eq safety = <> (~ deviceOn /\ ~ attackerAuthorized /\ O (attackerActs /\ deviceOn /\ ~ attackerAuthorized)) .
+
+*** security property specification
+eq spec = O ~ (safety /\ basic) .
+endm
+
+load ../lib/postProcess .

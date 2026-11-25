@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/CloudEdgeCAC/diagram.md",
+  "input_sha256": "2d94e002567a1cdfa90a9831015aabe08a950074511b97dde95d5fb355a8cc82",
+  "pipeline_id": "66e88a4c7bbadebbf49a6fe656d37afb804145cf376399b2fd30336d20237041",
+  "mode": "check",
+  "started_at": "2026-11-05T04:47:59.051141+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run2/CloudEdgeCAC/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(cloudB, _`,_(_:_('owner', nils), _:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')))), <_|_>(userA, _:_('near', deviceB)), <_|_>(userC, _:_('near', deviceD)), <_|_>(deviceB, _`,_(_:_('buttonPressed', false), _:_('key', nils)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 5,
+    "coverage_issues": []
+  },
+  "model_sha256": "ee13167f7c8b9dbc23ae39753618dd8fe32042d41f1b80f86f8c21c39def500f",
+  "check": {
+    "property": "OWN-remote",
+    "verdict": "counterexample",
+    "events": 25,
+    "at_init": {
+      "attackerLocal": false,
+      "attackerOwner": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 244.23,
+  "tokens_this_run": 23198,
+  "finished_at": "2026-11-05T04:52:03.284864+00:00"
+}

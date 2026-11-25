@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:cff417720bcd3ea200a595a71a588f42311ac04aa973c1f56074f01fe8100e17"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n\n[B2] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n\n[B3] < UserX | 'key' : nils , ... > < deviceB | 'key' : Key , ... > $ UserX 'requestKey' deviceB\n=> < UserX | 'key' : FreshKey , ... > < deviceB | 'key' : FreshKey , ... >\nif Key =/= nils .\n\n[B4] < cloudA | 'secret' : Secret , deviceB : ('trustedUsers' : (UserX , Rest) , ...) , ... > $ UserX 'signKey' cloudA | (deviceB ; Key)\n=> < cloudA | 'secret' : Secret , deviceB : ('trustedUsers' : (UserX , Rest) , ...) , ... > $ cloudA 'signedKey' UserX | (deviceB ; encrypt(Key,Secret)) .\n\n[B4] < UserX | 'signedKey' : nils , ... > $ cloudA 'signedKey' UserX | (deviceB ; SignedKey)\n=> < UserX | 'signedKey' : SignedKey , ... > .\n\n[B5] < UserX | 'signedKey' : encrypt(Key,Secret) , ... > < deviceB | 'key' : Key , 'secret' : Secret , 'trustedUsers' : TrustedUsers , ... > $ UserX 'bind' deviceB | encrypt(Key,Secret)\n=> < UserX | 'signedKey' : encrypt(Key,Secret) , ... > < deviceB | 'key' : Key , 'secret' : Secret , 'trustedUsers' : (UserX , TrustedUsers) , ... > .\n\n[B6] < cloudA | deviceB : ('trustedUsers' : TrustedUsers , ...) , ... > $ UserX 'shareAccess' cloudA | (deviceB ; UserY)\n=> < cloudA | deviceB : ('trustedUsers' : (UserY , TrustedUsers) , ...) , ... > .\n\n[B7] < cloudA | deviceB : ('trustedUsers' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revokeAccess' cloudA | (deviceB ; UserY)\n=> < cloudA | deviceB : ('trustedUsers' : (UserX , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:2814343fa8c46383228df708879c50ce020d5955d88106ac493201c3218deaad"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"FreshKey\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"OldNear\": \"Set\",\n  \"Rest\": \"Set\",\n  \"Secret\": \"Qid\",\n  \"SignedKey\": \"Qid\",\n  \"TrustedUsers\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:bde59bdd26772bbdd6587ee40369aa3bd50cc3189f78678d6534e3afca1fcaf9"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 4, 7, 8, 9]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:350f286f221c514daba73dd051560b6c08fa7667a083238c442ff47c574e0b27"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('signedKey' : nils , 'near' : deviceB , 'key' : nils) >\n< userC | ('signedKey' : nils , 'near' : nils , 'key' : nils) >\n< deviceB | ('secret' : 'secret' , 'trustedUsers' : (userA) , 'key' : '') >\n< cloudA | (deviceB : ('trustedUsers' : (userA)) , 'secret' : 'secret') >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:3438b0d4a63831301845965584862a94ead0f6071c2371191d3ffc5a0f6efc93"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > < deviceB | ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'key' : Key , ... > < deviceB | ... > => ev4(UserX, Key) .\n[B5] < UserX | 'near' : deviceB , 'signedKey' : encrypt(Key, Secret) , ... > => ev5(UserX, Key, Secret) .\n[B5] < UserX | 'near' : deviceB , 'signedKey' : MessageA , ... > => ev6(UserX, MessageA) .\n[B6] < UserX | ... > < UserY | ... > < deviceB | ... > => ev7(UserX, UserY) .\n[B7] < UserX | ... > < UserY | ... > => ev8(UserX, UserY) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:110b65a0645fd90c4c136131f530e5d91d7554ad02d684f026c515fb671da593"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceTrustsAttacker =| < deviceB | 'trustedUsers' : (userC , Rest) , ... > .\ncloudRecordsTrust =| < cloudA | deviceB : ('trustedUsers' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:942f3a6f55f14950ecad7557c7b90289326593480f4f32e49fec9b993b6aa2ff"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Rest\": \"Set\"\n}",
+    "error": null
+  }
+]

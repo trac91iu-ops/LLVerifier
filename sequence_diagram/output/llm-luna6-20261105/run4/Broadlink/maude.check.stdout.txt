@@ -1,0 +1,122 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'keyB', 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'keyB', 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'keyB', 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'keyB', 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'keyB', 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'keyB', 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 0 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'keyB', 'unlocked' : true >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'2357136044, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'2357136044, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'2357136044, 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 1 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2357136044, 'unlocked' : true >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2546248239, 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'2546248239, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'2546248239, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'2546248239, 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2546248239, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2546248239, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 2 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'2546248239, 'unlocked' : true >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'3071714933, 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'3071714933, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'3071714933, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'3071714933, 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'3071714933, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'3071714933, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 3 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'3071714933, 'unlocked' : true >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : nils, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev4} {$ userA 'retrieveKey' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : nils) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev6} {$ userA 'bind' cloudA | (deviceB ; 'KeyA'362609376e) @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : nils, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : nils, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev4} {$ userC 'retrieveKey' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : 'KeyA'362609376e, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : deviceB > < userC | 'key' : 'KeyA'362609376e, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : 'KeyA'362609376e, 'near' : deviceB > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : userA) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : 'KeyA'362609376e, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev6} {$ userC 'bind' cloudA | (deviceB ; 'KeyA'362609376e) @
+< system | 'counter' : 4 > < cloudA | userA : 'devices' : nils, userC : 'devices' : nils, deviceB : ('members' : nils, 'owners' : (userA, userC)) > < userA | 'key' : 'KeyA'362609376e, 'near' : nils > < userC | 'key' : 'KeyA'362609376e, 'near' : nils > < deviceB | 'key' : 'KeyA'362609376e, 'unlocked' : true >, 'rev1}
+idle
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'retrieveKey' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'KeyA'362609376e)
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userC 'approach' deviceB
+$ userC 'retrieveKey' deviceB
+$ userA 'approach' deviceB
+$ userA 'leave' deviceB
+$ userC 'leave' deviceB
+$ userC 'bind' cloudA | (deviceB ; 'KeyA'362609376e)
+rewrites: 5209 in 20ms cpu (20ms real) (256487 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'retrieveKey' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'bind' cloudA | (deviceB ; 'KeyA'362609376e) ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userC 'approach' deviceB ^ ($ userC 'retrieveKey' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userC 'leave' deviceB ^ ($ userC 'bind' cloudA | (deviceB ; 'KeyA'362609376e) ^ nile)))))))))))))))))))))))))))))))))))))))))))))))))))))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

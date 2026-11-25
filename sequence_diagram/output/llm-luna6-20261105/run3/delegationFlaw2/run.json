@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/delegationFlaw2/diagram.md",
+  "input_sha256": "8bb4debfafe23205f55f05fafe1e464e3175396be0543477c0062a44d176995c",
+  "pipeline_id": "a886d2fc8cad7e7bbae8e1823ff222ffc021528e26e7c523b73d9d5a841d2666",
+  "mode": "check",
+  "started_at": "2026-11-05T05:13:29.352023+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Expected exactly one complete output code block.",
+  "elapsed_seconds": 132.263,
+  "tokens_this_run": 11015,
+  "finished_at": "2026-11-05T05:15:41.616067+00:00"
+}

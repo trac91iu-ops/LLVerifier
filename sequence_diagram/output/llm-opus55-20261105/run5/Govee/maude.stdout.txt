@@ -1,0 +1,25 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var K : Qid .
+  var Near : Set .
+  var UserX : User .
+  eq init = idle @ < userA | ('key' : nils, 'near' : deviceA) > < userC | ('key' : nils, 'near' : nils) > < deviceA | ('key' : 'keyA') > < cloudA | (deviceA : ('key' : 'keyA', 'owner' : nils)) > .
+  eq < UserX | ('near' : Near, 'key' : nils, ..) > $ UserX 'approach' deviceA = < UserX | ('near' : deviceA, 'key' : nils, ..) > .
+  eq < UserX | ('near' : Near, ..) > $ UserX 'leave' deviceA = < UserX | ('near' : nils, ..) > .
+  eq < deviceA | ('key' : K, ..) > $ UserX 'pressButton' deviceA = < deviceA | ('key' : K, ..) > $ deviceA 'sendKey' UserX | (K) .
+  eq < UserX | ('key' : nils, ..) > $ deviceA 'sendKey' UserX | (K) = < UserX | ('key' : K, ..) > .
+  eq < cloudA | (deviceA : ('key' : K, 'owner' : nils, ..), ...) > $ UserX 'bind' cloudA | (deviceA ; K) = < cloudA | (deviceA : ('key' : K, 'owner' : UserX, ..), ...) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (41666 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _:_(deviceA, _`,_(_:_('key', 'keyA'), _:_('owner', nils)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceA))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceA, _:_('key', 'keyA'))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userC, 'approach', deviceA), __(<_|_>(cloudA, _:_(deviceA, _`,_(_:_('key', 'keyA'), _:_('owner', nils)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceA))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', deviceA))), <_|_>(deviceA, _:_('key', 'keyA'))))
+Bye.

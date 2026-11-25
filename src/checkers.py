@@ -4,11 +4,12 @@ import lark
 from DSLSyntax import CheckGrammar as cg
 from AST import * 
 from analyze import extractVarsFromAST
+import diagram
 import re
 
 def pruneErrorMessage(errors)->str:
     delim = 'Expected one of:'
-    h,_ = str(errors).split(delim, 1)
+    h = str(errors).split(delim, 1)[0]
     def replace(s:str):
         repls = [('dollar','$'), ('lessthan', '<'), ('equal','=')]
         for original, after in repls:
@@ -23,9 +24,8 @@ def pruneErrorMessage(errors)->str:
     
     #if 'expected' in errors.__dict__:
     #    el = errors.expected
-    if 'allowed' in errors.__dict__:
-        el = errors.allowed
-    patterns = [str(td[rule]) for rule in filter(exclude,el)]
+    el = getattr(errors, 'allowed', None) or getattr(errors, 'expected', [])
+    patterns = [str(td[rule]) for rule in filter(exclude,el) if rule in td]
     #print(patterns)
     #print(errors.char)
     t = delim + ' '+', '.join(set(patterns))
@@ -61,7 +61,7 @@ def uniqueVars(v:VARIABLE)->bool:
         return True
     return False
 
-def checkRhsNewVariables(code:str)->str|None:
+def checkRhsNewVariables(code:str, allow_special=True)->str|None:
     ast = parseAST(code)
     errors = []
     for rule in ast.rules:
@@ -69,10 +69,11 @@ def checkRhsNewVariables(code:str)->str|None:
         rhsVars:set[VARIABLE] = set()
         for i in rule.lhs:
             lhsVars = lhsVars.union(set(extractVarsFromAST(i)))
-        for i in rule.rhs:
+        for i in (rule.rhs if isinstance(rule.rhs, (list, tuple)) else [rule.rhs]):
             rhsVars = rhsVars.union(set(extractVarsFromAST(i)))
         #remove Fresh
-        addVars:str = ','.join([str(i) for i in rhsVars - lhsVars if not uniqueVars(i)])
+        addVars:str = ','.join(sorted({i.ident for i in rhsVars - lhsVars
+                                     if not (allow_special and uniqueVars(i))}))
         #addVars:str = ','.join([str(i) for i in rhsVars - lhsVars])
         if len(addVars) > 0 :
             err= f"Find additional variables {addVars} in right-hand side of state rule {str(rule)}."
@@ -91,6 +92,8 @@ def checkTypePlaceHolders(code:str)->str|None:
     return None
 
 def checkAST(s:str)->str|None:
+    if not isinstance(s, str) or not s.strip():
+        return 'Expected nonempty DSL rules.'
     try:
         parseAST(s)
     except lark.exceptions.UnexpectedCharacters as e:
@@ -102,6 +105,10 @@ def checkAST(s:str)->str|None:
     return None
 
 def checkINIT(s:str)->str|None:
+    if not isinstance(s, str) or not s.strip():
+        return 'Expected nonempty initial states.'
+    if empty := re.findall(r'<\s*(\w+)\s*\|\s*>', s):
+        return f'{empty} have no attributes; write a principal without attributes as `< {empty[0]} | nils >`.'
     try:
         ast = parseInitAST(s)
         vl = extractVarsFromAST(ast)
@@ -137,7 +144,50 @@ def checkPolicy(policy:str)->str|None:
     return (combine(checkComment, checkAnd, checkLhsIf,checkAST, checkRhsNewVariables))(policy)
 
 def checkTransitions(code:str)->str|None:
-    return (combine(checkComment, checkTypePlaceHolders, checkAST))(code)
+    return (combine(checkComment, checkTypePlaceHolders, checkAST,
+                    lambda s: checkRhsNewVariables(s, allow_special=False)))(code)
+
+def labeled(check:Callable[[str],str|None], blockIds:list[str])->Callable[[str],str|None]:
+    '''Wrap a rule checker for output where every rule is prefixed by its diagram block label.'''
+    def helper(s:str)->str|None:
+        if not isinstance(s, str) or not s.strip():
+            return 'Expected nonempty DSL rules.'
+        try:
+            code, labels = diagram.stripLabels(s)
+        except ValueError as e:
+            return str(e)
+        if unknown := sorted(set(labels) - set(blockIds)):
+            return f'Unknown block labels {unknown}; use only labels present in the diagram: {blockIds}.'
+        if e := check(code):
+            return e
+        for label, chunk in zip(labels, diagram.LABEL.split(s)[2::2]):
+            try:
+                n = len(parseAST(chunk).rules)
+            except Exception:
+                n = 0
+            if n != 1:
+                return f'Label [{label}] is followed by {n} rules; put exactly one rule after each label and repeat the label for further rules from the same block.'
+        return None
+    return helper
+
+def slots(required:list[str], model:str)->Callable[[str],str|None]:
+    '''Check property-slot propositions: one state proposition per slot, model vocabulary only.'''
+    def helper(s:str)->str|None:
+        if e := checkProp(s):
+            return e
+        props = parseAST(s).rules
+        names = [p.propname for p in props if isinstance(p, PROPOSITION)]
+        if sorted(names) != sorted(required):
+            return f'Output exactly one proposition for each slot {required}; got {names}.'
+        if events := [p.propname for p in props if not isinstance(p.constraint, INTERNAL_STATE)]:
+            return f'Slots {events} must be state facts `name =| <InternalState> .`, not events.'
+        body = re.sub(r'^\s*\w+\s*=\|', '', s, flags=re.M)  # slot names such as deviceOn are not principals
+        unknown = sorted({k for k in re.findall(r"('[^']+')\s*:", body) if k not in model} |
+                         {p for p in re.findall(r'\b(?:user|device|cloud|app|server|client)[A-Z]\w*', body) if p not in model})
+        if unknown:
+            return f'{unknown} do not occur in the model; use only attributes and principals of the template, initial state and rules.'
+        return None
+    return helper
 
 def combine(*fl:Callable[[str],str|None])->Callable[[str],str|None]:
     def helper(s:str)->str|None:

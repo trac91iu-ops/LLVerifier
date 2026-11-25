@@ -1,0 +1,13 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+rewrites: 346 in 0ms cpu (1ms real) (437974 rewrites/second)
+result Bool: true
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

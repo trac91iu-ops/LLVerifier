@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/Sunlogin/diagram.md",
+  "input_sha256": "7c4fee737063ae257d3ec7c183d0b26862ca5050b737a6fdc2a64cf19cc045ff",
+  "pipeline_id": "dfa9d30ba119e888c68770836ec155b3242bf62cbfc9f808e77e85c9d1f5e66c",
+  "mode": "check",
+  "started_at": "2026-11-05T06:47:50.072067+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/ablation-norepair-astra-20261105/run2/Sunlogin/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owner', nils)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _:_('key', 'deviceKey'))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 4,
+    "coverage_issues": []
+  },
+  "model_sha256": "a7ca3439a688d0e3cec48e782a83c2005608d1fdfbf9af3819fa9f04a3466e6f",
+  "check": {
+    "property": "OWN-remote",
+    "verdict": "counterexample",
+    "events": 6,
+    "at_init": {
+      "attackerLocal": false,
+      "attackerOwner": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 161.381,
+  "tokens_this_run": 18014,
+  "finished_at": "2026-11-05T06:50:31.460478+00:00"
+}

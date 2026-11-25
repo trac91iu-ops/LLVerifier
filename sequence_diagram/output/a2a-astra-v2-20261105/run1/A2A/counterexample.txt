@@ -1,0 +1,6 @@
+$ clientA 'sendWithoutContext' serverA | 'msgA'
+$ clientB 'snoop' serverA | 'ctxX'
+$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+$ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2')
+$ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB')

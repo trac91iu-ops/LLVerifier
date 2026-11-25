@@ -1,0 +1,23 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Msg : Qid .
+  var Rest : Set .
+  var UserX : User .
+  eq init = idle @ < cloudB | ('permission' : (userA, deviceA), 'buffer' : nils) > < deviceA | ('on' : false) > .
+  eq < cloudB | ('buffer' : nils, 'permission' : (UserX, Rest), ..) > $ UserX 'requestPublish' cloudB | ('toggle') = < cloudB | ('buffer' : 'toggle', 'permission' : (UserX, Rest), ..) > $ cloudB 'ack' UserX | ('toggle') .
+  eq < cloudB | ('permission' : (UserX, Rest), ..) > = < cloudB | ('permission' : Rest, ..) > .
+  eq < cloudB | ('buffer' : Msg, 'permission' : (deviceA, Rest), ..) > $ UserX 'release' cloudB = < cloudB | ('buffer' : nils, 'permission' : (deviceA, Rest), ..) > $ cloudB 'publish' deviceA | (Msg) .
+  eq < deviceA | ('on' : false, ..) > $ cloudB 'publish' deviceA | ('toggle') = < deviceA | ('on' : true, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 2 in 0ms cpu (0ms real) (80000 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_('permission', deviceA))), <_|_>(deviceA, _:_('on', false))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+No solution.
+states: 1  rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+Bye.

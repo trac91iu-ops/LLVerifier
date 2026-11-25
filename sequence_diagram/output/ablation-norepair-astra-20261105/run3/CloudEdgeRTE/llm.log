@@ -1,0 +1,283 @@
+---system---
+Generate state rules in the existing DSL from the supplied initial state and protocol description.
+
+# Grammar
+<StateRule> ::= <LogicalState> "=>" <LogicalState> ("if" <Condition>)? "."
+<LogicalState> ::= <InternalState>+ <Event>? <InternalState>*
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
+<Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)
+<Condition> ::= <Arith> <CMP> <Arith>   (* exactly one comparison; no "and"/"or" *)
+<Arith> ::= <Arith> <OP> <Arith> | "(" <Arith> ")" | integer | <Var> | <FunCall> | "nils"
+<OP> ::= "+" | "-" | "*" | "/"
+<CMP> ::= ">" | "<" | ">=" | "<=" | "==" | "=/="
+
+# Source fidelity
+Use only the supplied description, not a reference/gold model or assumed security policy.
+Preserve every explicit guard, state update, message direction, action name, and argument
+(including device identifiers, keys, context identifiers, payloads, and returned histories).
+Keep argument order and arity consistent across every occurrence of an event. Multiple
+arguments use a parenthesized semicolon list; omit `|` only for zero arguments.
+Map diagram aliases consistently. Generic roles such as any user are typed capitalized
+variables; explicitly named actors remain constants. Do not specialize a generic role to
+an owner or merge two distinct roles just because they can denote the same principal.
+Use only library principal constants: userA through userD, deviceA through deviceD,
+cloudA through cloudD, clientA through clientD, serverA through serverD, appA through
+appD, deviceLock, deviceSwitch, cloudGoogle, cloudSmartThing, cloudIFTTT.
+Other data names are quoted Qids, not new principal constants. Keep given library names.
+
+# State and conditions
+Represent explicitly described mutable values and guard facts as attributes. Retain initial
+facts and explicit conditions even if they do not change in this rule. Do not invent schema
+keys for ownership, authorization, acknowledgement, progress, phases, or scheduling.
+Use consistent attribute names; preserve distinct stores (e.g. a user's key and a cloud's
+record for that user). Do not merge distinct relationships to minimize the schema.
+Use only the attributes needed for the stated guard or update, with `...` for the rest.
+Keep each matched principal and attribute on both sides; unchanged values stay unchanged.
+For an overwritten value, match a variable on the LHS unless the source explicitly requires
+an empty or particular old value. Never invent an empty-value precondition.
+Express equality, membership and conjunctions of state facts by shared variables and LHS
+patterns. Use `if` for a supported comparison, including explicit inequality; the grammar
+supports one comparison, not arbitrary Boolean expressions. Express alternative cases as
+separate rules. Do not silently drop a condition or encode unsupported syntax or a made-up
+Boolean attribute to conceal a condition the grammar cannot express.
+`nils` denotes an empty value/set, `false` a false Boolean. Use comma-separated sets for
+unordered membership/history and semicolon-separated lists for ordered event arguments.
+Use variables for arbitrary old values and `Fresh`-prefixed variables only for explicitly
+fresh generated data. Other RHS variables must be bound by LHS state or event patterns;
+`CurrentTime` is the special current-time variable. Use only supported functions such as
+`encrypt(Qid1,Qid2)`, never invent helper functions.
+The DSL does not accept lowercase `system`, `randomStr(...)`, or arithmetic expressions
+as attribute values on the RHS. Lower explicit fresh/random generation to a `Fresh`-prefixed
+Qid variable (e.g. FreshKeyA), so the existing transformer introduces its counter and
+random-value machinery. Use `CurrentTime` for current-time values/comparisons so the
+transformer introduces time state. Do not delete freshness/time semantics, substitute a
+fixed secret, invent a principal for system, or manually emit counter arithmetic. Runtime
+counter/time bookkeeping is transformer-owned rather than a DSL principal to initialize.
+Ordered lists are not sets: preserve ordered event arguments with semicolons. Do not emit
+`list(L)` unless the supplied grammar supports it; do not silently replace ordered-list
+semantics by unordered sets.
+A snoop/discovery action that changes knowledge needs an event-driven state handler that
+updates the knowledge attribute. Its event-availability rule only enables the event and
+cannot mutate state. Preserve explicit authentication and context-existence guards without
+adding ownership checks.
+The DSL has no `owise` or branch priority. Encode response alternatives with disjoint LHS
+guards, e.g. an initial response for knowCtx=nils and receivedHistory=nils versus a
+continuation for knowCtx=Ctx where Ctx has type Qid (which excludes nils). Do not emit an
+unconstrained fallback overlapping the initial handler; cover other explicitly stated
+cases using their own disjoint patterns.
+
+# Actions and processing
+Independent optional blocks describe independently enabled actions, not a total schedule,
+mandatory execution, or fairness. Do not add ordering or progress state from their order.
+Distinguish outer action-availability guards from inner processing/effect guards. Outer
+availability guards (the condition of the outermost block) are formalized later as separate
+event rules; keep them out of state rules, and do not turn an inner success test into an
+availability restriction. No owner, authentication, key, proximity, or acknowledgement check is implied
+by an action name. In particular, do not repair an explicitly missing security check.
+An event-driven state rule has one incoming event on the LHS and at most one outgoing
+event on the RHS. Replies/forwarding are generated by the triggering rule and consumed by
+subsequent rules, with their actual senders, receivers and complete arguments. They are not
+independently initiated merely because they appear as arrows. Retain upstream updates when
+a downstream event has no matching processing rule.
+Automatic state changes with no triggering message use event-free state rules, as allowed
+by LogicalState. Do not invent a user event. Match an explicit old state/guard so the rule
+ceases to apply after its update; never emit an identical-state or endlessly reapplicable
+automatic equation. Do not impose priority on overlapping behaviors unless stated.
+For no-op attempts, do not invent error replies or state changes. The pipeline extracts its
+event inventory from these rules: preserve an otherwise unrepresented independent no-op
+event with a consuming rule, e.g. `< DeviceX | ... > $ UserX 'attempt' DeviceX
+=> < DeviceX | ... > .` The event disappears, so this is not a self-loop equation.
+If an event already occurs in another rule, unmatched attempts can use the runtime's
+normal event discard behavior. Never retain the same incoming event on an unchanged RHS.
+
+# Output
+Return only DSL state rules in one code block, with a single final `.` per rule.
+No Maude modules, declarations, prose, comments, properties, or new syntax.
+---user---
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    participant Cloud
+    Note over UserX,Cloud: Initially every user is away from the device and holds its own token.
+    alt [B1] The user is away from the device
+        UserX->>Device: The user walks up to the device
+        Note over UserX: The user is now next to the device.
+    end
+    alt [B2] The user is next to the device and holds a token
+        UserX->>Device: The user submits the token to the device
+        opt The device is unlocked
+            Note over Device: The device stores the token, replacing any stored token, and locks itself.
+            Device->>Cloud: The device uploads the token to the cloud
+            Note over Cloud: The cloud records the token for the device, replacing any earlier record.
+        end
+    end
+    alt [B3] The user holds a token
+        UserX->>Cloud: The user asks the cloud to revoke the device's token, presenting the token
+        opt The presented token matches the cloud record for the device
+            Note over Cloud: The cloud clears its token record for the device.
+            Cloud-->>UserX: The cloud confirms the revocation to the user
+            Note over UserX: The user discards its token.
+        end
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+---assistant---
+```
+[B1] < UserX | 'near' : nils , ... > $ UserX 'walkUp' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+[B2] < deviceB | 'locked' : false , 'token' : OldToken , ... > $ UserX 'submitToken' deviceB | (Token)
+=> < deviceB | 'locked' : true , 'token' : Token , ... > $ deviceB 'uploadToken' cloudA | (Token) .
+[B2] < cloudA | deviceB : ('token' : OldToken , ...) > $ deviceB 'uploadToken' cloudA | (Token)
+=> < cloudA | deviceB : ('token' : Token , ...) > .
+[B3] < cloudA | deviceB : ('token' : Token , ...) > $ UserX 'revokeToken' cloudA | (deviceB ; Token)
+=> < cloudA | deviceB : ('token' : nils , ...) > $ cloudA 'confirmRevoke' UserX | (deviceB) .
+[B3] < UserX | 'token' : Token , ... > $ cloudA 'confirmRevoke' UserX | (deviceB)
+=> < UserX | 'token' : nils , ... > .
+```---user---
+```mermaid
+sequenceDiagram
+    actor UserX
+    participant Device
+    alt [B1] The user is next to the device
+        UserX->>Device: The user walks away from the device
+        Note over UserX: The user is now away from the device.
+    end
+    UserX->>Device: [B2] The user pings the device
+    alt [B3] The user is next to the device
+        UserX->>Device: The user presses the reset button of the device
+        opt The device is busy
+            Note over Device: The device becomes idle and drops its current job.
+        end
+    end
+    alt [B4] The device is idle and holds a job
+        Note over Device: The device starts the job and becomes busy.
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+---assistant---
+```
+[B1] < UserX | 'near' : deviceB , ... > $ UserX 'walkAway' deviceB
+=> < UserX | 'near' : nils , ... > .
+[B2] < deviceB | ... > $ UserX 'ping' deviceB
+=> < deviceB | ... > .
+[B3] < deviceB | 'busy' : true , 'job' : Job , ... > $ UserX 'pressReset' deviceB
+=> < deviceB | 'busy' : false , 'job' : nils , ... > .
+[B4] < deviceB | 'busy' : false , 'job' : Job , ... >
+=> < deviceB | 'busy' : true , 'job' : Job , ... > .
+```---user---
+```mermaid
+sequenceDiagram
+    autonumber
+    actor UserX
+    actor UserY
+    participant Cloud
+    participant Device
+    Note over UserX,Device: Initially there are two devices, deviceB and deviceD: userA is near deviceB and userC is near deviceD. The cloud records a different key for each user.
+    alt [B1] The user is not near any device
+        UserX->>Device: The user approaches the device
+        Note over UserX: The user is now near the device.
+    end
+    alt [B2] The user is near the device
+        UserX->>Device: The user leaves the device
+        Note over UserX: The user is now away from the device.
+    end
+    alt [B3] The user is near the device
+        UserX->>Device: The user presses the button on the device
+        opt The device button has not been pressed
+            Note over Device: The device records the button press.
+        end
+    end
+    alt [B4] The user is near the device and the key is the cloud key of account UserY
+        UserX->>Device: The user sends the key to the device
+        opt The device button has been pressed and the device has no key yet
+            Note over Device: Store the key and clear the button press.
+        end
+    end
+    alt [B5] The user is near the device
+        UserX->>Device: The user calls an API to discover Device
+        opt The device has key
+            Device->>Cloud: The device calls an API to bind using key
+            opt The device has no cloud owner and the key matches the cloud key of account UserY
+                Note over Cloud: Record UserY as the device owner.
+            end
+        end
+    end
+```
+
+
+[Output labels]
+Each top-level block of the diagram above is tagged with a label such as `[B1]`; a message
+outside any block carries its label right after the colon. Prefix every rule you output with
+the label of the block it formalizes:
+[B1] <rule> .
+[B1] <another rule from the same block> .
+[B2] <rule> .
+Exactly one rule follows each label; repeat the label for further rules from the same block.
+A rule that handles a reply or forwarded message belongs to the block in which that message is sent.
+The labels are the only additions; the rules themselves keep the required DSL syntax.
+
+--------------------------------------------------
+< UserX | 'near' : Near , ... > $ UserX 'approach' DeviceX
+=> < UserX | 'near' : DeviceX , ... > .
+
+< UserX | 'near' : Near , ... > $ UserX 'leave' DeviceX
+=> < UserX | 'near' : nils , ... > .
+
+< DeviceX | 'buttonPressed' : false , ... > $ UserX 'pressButton' DeviceX
+=> < DeviceX | 'buttonPressed' : true , ... > .
+
+< DeviceX | 'buttonPressed' : true , 'key' : nils , ... > $ UserX 'sendKey' DeviceX | Key
+=> < DeviceX | 'buttonPressed' : false , 'key' : Key , ... > .
+
+< DeviceX | 'key' : Key , ... > $ UserX 'discover' DeviceX
+=> < DeviceX | 'key' : Key , ... > $ DeviceX 'bind' cloudA | Key
+if Key =/= nils .
+
+< cloudA | UserY : ('key' : Key , ...) , DeviceX : ('owner' : nils , ...) , ... > $ DeviceX 'bind' cloudA | Key
+=> < cloudA | UserY : ('key' : Key , ...) , DeviceX : ('owner' : UserY , ...) , ... > .
+
+==================================================

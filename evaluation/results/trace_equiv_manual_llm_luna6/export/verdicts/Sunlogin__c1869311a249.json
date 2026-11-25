@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:35:25.470Z",
+  "model": "c1869311a249",
+  "note": "",
+  "protocol": "Sunlogin",
+  "runs": [
+    "luna6-run1"
+  ],
+  "verdict": "absent"
+}

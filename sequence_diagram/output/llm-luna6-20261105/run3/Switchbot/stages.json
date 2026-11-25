@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:6092a1ad5bcf38e105dc9087df28768137c937ad5f54f3964aefe93b7a374624"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < deviceB | 'key' : Key, ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : Key, ... > $ deviceB 'sendKey' UserX | (Key) .\n[B1] < UserX | 'key' : nils, ... > $ deviceB 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key, ... > .\n[B2] < UserX | 'key' : Key, ... > < deviceB | ... > < cloudA | deviceB : ('bindingKey' : Key, 'owners' : Owners, ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Key)\n=> < UserX | 'key' : Key, ... > < deviceB | ... > < cloudA | deviceB : ('bindingKey' : Key, 'owners' : (UserX, Owners), ...) , ... > .\n[B2] < UserX | 'key' : Key, ... > < deviceB | ... > < cloudA | deviceB : ('bindingKey' : Key, 'owners' : Owners, ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Key)\n=> < UserX | 'key' : Key, ... > < deviceB | ... > < cloudA | deviceB : ('bindingKey' : Key, 'owners' : Owners, ...) , ... > .\n[B3] < UserX | 'devices' : nils, ... > < cloudA | UserX : ('members' : (UserY, Members), ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < UserX | 'devices' : nils, ... > < cloudA | UserX : ('members' : (UserY, Members), ...) , ... > .\n[B3] < UserX | 'devices' : nils, ... > < cloudA | UserX : ('members' : Members, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < UserX | 'devices' : nils, ... > < cloudA | UserX : ('members' : (UserY, Members), ...) , ... > .\n[B4] < UserX | 'devices' : nils, ... > < cloudA | UserX : ('members' : (UserY, Members), ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < UserX | 'devices' : nils, ... > < cloudA | UserX : ('members' : Members, ...) , ... > .\n[B5] < UserX | 'near' : nils, ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB, ... > .\n[B6] < UserX | 'near' : deviceB, ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils, ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:24914db8e83ae09237d67ecbfd406594adf6d3363558e28c414d14b02868cba9"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"Owners\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:8acf20fdddd03a5df86c80952c84993a3966990986546057c8694ff7a9d977d9"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3, 4, 5, 6, 7]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:40da7b1b5b4652ac4ef0916da3623d08138b5b5be49633fdf3998067e92d41f8"
+  },
+  {
+    "attempt": 0,
+    "output": "< deviceB | ('key' : 'keyA') > < userA | ('near' : deviceB , 'devices' : nils , 'key' : nils) > < userC | ('near' : nils , 'devices' : nils , 'key' : nils) > < cloudA | (userA : ('members' : nils) , userC : ('members' : nils) , deviceB : ('owners' : nils , 'bindingKey' : 'keyA')) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:d4b591c1cb9d643c69306f0fe10a6e8a877bea09da6b681915d4f17cbab35507"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : deviceB , ... > => ev1(UserX) .\n[B2] < UserX | 'key' : Key , ... > < deviceB | ... > => ev2(UserX, Key) .\n[B3] < UserX | ... > < UserY | ... > => ev3(UserX, UserY) .\n[B3] < UserY | ... > < UserX | ... > => ev3(UserX, UserY) .\n[B4] < UserX | ... > < UserY | ... > => ev4(UserX, UserY) .\n[B4] < UserY | ... > < UserX | ... > => ev4(UserX, UserY) .\n[B5] < UserX | 'near' : nils , ... > => ev5(UserX) .\n[B6] < UserX | 'near' : deviceB , ... > => ev6(UserX) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:aca4fcfaeaa1f4cd46e7c4c248e0209b79004cede73a6a362ffb1ae2ca911fb8"
+  },
+  {
+    "attempt": 0,
+    "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:6a014f71305a5f4d446499b6aac88499ef031ea321ea4065bb2267dd3471e520"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

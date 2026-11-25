@@ -1,0 +1,21 @@
+{
+  "runs": {
+    "run1": "sequence_diagram/output/eval-astra-20261105/run1",
+    "run2": "sequence_diagram/output/eval-astra-20261105/run2",
+    "run3": "sequence_diagram/output/eval-astra-20261105/run3",
+    "run4": "sequence_diagram/output/eval-astra-20261105/run4",
+    "run5": "sequence_diagram/output/eval-astra-20261105/run5"
+  },
+  "labels": {
+    "reproduced": 122,
+    "no counterexample (None)": 3,
+    "not reproduced": 10,
+    "no counterexample (holds)": 10
+  },
+  "mean_of_protocols": {
+    "acc": 92.6,
+    "rec": 84.1,
+    "protocols_with_counterexample": 27
+  },
+  "reproduced": 122
+}

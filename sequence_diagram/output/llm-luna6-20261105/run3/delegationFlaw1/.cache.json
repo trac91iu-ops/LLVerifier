@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "context_id": "a5f4c8ccd78ec677b4abdcad6ba23fe986c36cb32f93208d6fec6bbf39c57b2b",
+  "answers": {
+    "genPolicy:4af6f06c825654dab2e66341524bab42efc834bb64075ade06ed9fdb78272d1b": "[B1] < Cloud | deviceSwitch : ('trusted' : (UserX, Rest) , 'key' : Key , ...) , ... > $ UserX 'requestKey' Cloud\n=> < Cloud | deviceSwitch : ('trusted' : (UserX, Rest) , 'key' : Key , ...) , ... > $ Cloud 'sendKey' UserX | (Key) .\n[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key , ... > .\n[B2] < Cloud | Device : ('trusted' : (UserX, Rest) , ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, UserY, Rest) , ...) , ... > if UserX =/= UserY .\n[B3] < Cloud | Device : ('trusted' : (UserX, UserY, Rest) , ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, Rest) , ...) , ... > if UserX =/= UserY .\n[B4] < UserX | 'key' : Key , ... > < SmartThingsCloud | Device : ('key' : Key , 'trusted' : Trusted , ...) , ... > $ UserX 'provideKey' SmartThingsCloud | (Device ; Key)\n=> < UserX | 'key' : Key , ... > < SmartThingsCloud | Device : ('key' : Key , 'trusted' : (UserX, Trusted) , ...) , ... > .\n[B5] < Device | ... > $ UserX 'turnOn' Device\n=> < Device | ... > .\n[B6] < Cloud | Device : ('state' : 'off' , 'trusted' : (P, Rest) , ...) , ... > $ P 'turnOn' Cloud | (Device)\n=> < Cloud | Device : ('state' : 'on' , 'trusted' : (P, Rest) , ...) , ... > $ Cloud 'turnOn' Device .\n[B7] < SmartThingsCloud | Device : ('linkedLock' : Lock , ...) , ... > $ SmartThingsCloud 'turnOn' Device\n=> < SmartThingsCloud | Device : ('linkedLock' : Lock , ...) , ... > $ SmartThingsCloud 'turnOn' Lock .\n[B8] < Lock | 'trusted' : (P, Rest) , 'state' : 'off' , ... > $ P 'turnOn' Lock\n=> < Lock | 'trusted' : (P, Rest) , 'state' : 'on' , ... > .",
+    "genPolicyVars:0640b5c8be422e83296e73753f72e66dcb9a27f85e96b2016998c6dba3add471": "{\n  \"Cloud\": \"Cloud\",\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"Lock\": \"Device\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"SmartThingsCloud\": \"Cloud\",\n  \"Trusted\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:4af6f06c825654dab2e66341524bab42efc834bb64075ade06ed9fdb78272d1b"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < Cloud | deviceSwitch : ('trusted' : (UserX, Rest) , 'key' : Key , ...) , ... > $ UserX 'requestKey' Cloud\n=> < Cloud | deviceSwitch : ('trusted' : (UserX, Rest) , 'key' : Key , ...) , ... > $ Cloud 'sendKey' UserX | (Key) .\n[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key , ... > .\n[B2] < Cloud | Device : ('trusted' : (UserX, Rest) , ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, UserY, Rest) , ...) , ... > if UserX =/= UserY .\n[B3] < Cloud | Device : ('trusted' : (UserX, UserY, Rest) , ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, Rest) , ...) , ... > if UserX =/= UserY .\n[B4] < UserX | 'key' : Key , ... > < SmartThingsCloud | Device : ('key' : Key , 'trusted' : Trusted , ...) , ... > $ UserX 'provideKey' SmartThingsCloud | (Device ; Key)\n=> < UserX | 'key' : Key , ... > < SmartThingsCloud | Device : ('key' : Key , 'trusted' : (UserX, Trusted) , ...) , ... > .\n[B5] < Device | ... > $ UserX 'turnOn' Device\n=> < Device | ... > .\n[B6] < Cloud | Device : ('state' : 'off' , 'trusted' : (P, Rest) , ...) , ... > $ P 'turnOn' Cloud | (Device)\n=> < Cloud | Device : ('state' : 'on' , 'trusted' : (P, Rest) , ...) , ... > $ Cloud 'turnOn' Device .\n[B7] < SmartThingsCloud | Device : ('linkedLock' : Lock , ...) , ... > $ SmartThingsCloud 'turnOn' Device\n=> < SmartThingsCloud | Device : ('linkedLock' : Lock , ...) , ... > $ SmartThingsCloud 'turnOn' Lock .\n[B8] < Lock | 'trusted' : (P, Rest) , 'state' : 'off' , ... > $ P 'turnOn' Lock\n=> < Lock | 'trusted' : (P, Rest) , 'state' : 'on' , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:0640b5c8be422e83296e73753f72e66dcb9a27f85e96b2016998c6dba3add471"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Cloud\": \"Cloud\",\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"Lock\": \"Device\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"SmartThingsCloud\": \"Cloud\",\n  \"Trusted\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    }
+  ]
+}

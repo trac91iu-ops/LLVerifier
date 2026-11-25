@@ -1,0 +1,6 @@
+$ userA 'inviteUser' cloudA | userC
+$ userC 'inviteUser' cloudA | userA
+$ userA 'requestKey' cloudA | deviceA
+$ userC 'requestKey' cloudA | deviceA
+$ userA 'removeMember' cloudA | userC
+$ userC 'turnOnWithKey' deviceA | 'keyA'

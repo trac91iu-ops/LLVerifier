@@ -1,0 +1,115 @@
+{
+  "protocol": "Wemo",
+  "model_sha256": "f4123c41e4fc01e4b8825a2a2e421e2a4c0ff15a8cbcff2faf67c7983b99ab42",
+  "runs": [
+    "run2"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run2/Wemo/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Wemo/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'discover'": "'callAPI:discover'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'press'",
+      "'sendKey'": "'callAPI:setKey'"
+    },
+    "attributes": {
+      "'accountKey'": "'key'",
+      "'buttonPressed'": "'pressed'",
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'accountKeyA'": "'secretA'",
+      "'accountKeyC'": "'secretC'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'accountKeyA'",
+        "gold": "'secretA'"
+      },
+      {
+        "attribute": "'key'",
+        "generated": "'accountKeyC'",
+        "gold": "'secretC'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:discover'",
+      "'callAPI:setKey'",
+      "'leaves'",
+      "'press'"
+    ],
+    "attributes": [
+      "'key'",
+      "'localTo'",
+      "'owner'",
+      "'pressed'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secretA'",
+      "'secretC'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'discover'",
+      "'leave'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'accountKey'",
+      "'buttonPressed'",
+      "'key'",
+      "'near'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'accountKeyA'",
+      "'accountKeyC'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:01:35+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1719,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'discover'\": \"'callAPI:discover'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'press'\",\n    \"'sendKey'\": \"'callAPI:setKey'\"\n  },\n  \"attributes\": {\n    \"'accountKey'\": \"'key'\",\n    \"'buttonPressed'\": \"'pressed'\",\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'accountKeyA'\": \"'secretA'\",\n    \"'accountKeyC'\": \"'secretC'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'accountKeyA'\",\n      \"gold\": \"'secretA'\"\n    },\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'accountKeyC'\",\n      \"gold\": \"'secretC'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

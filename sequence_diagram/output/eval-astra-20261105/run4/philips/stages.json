@@ -1,0 +1,74 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:271dea8c5aeb8e035dce4c1a3c0169b97ad80c0f88a57ecc2cf75ac7d7ce439d"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n\n[B2] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n\n[B3] < deviceB | ... > $ UserX 'pressButton' deviceB\n=> < deviceB | ... > $ deviceB 'uploadSecret' cloudA | FreshSecret .\n\n[B3] < cloudA | deviceB : ('tickets' : Tickets , ...) , ... > $ deviceB 'uploadSecret' cloudA | Secret\n=> < cloudA | deviceB : ('tickets' : ((Secret , CurrentTime) , Tickets) , ...) , ... > .\n\n[B4] < cloudA | deviceB : ('tickets' : ((Secret , CurrentTime) , RestTickets) , ...) , ... > $ UserX 'getKey' cloudA | deviceB\n=> < cloudA | deviceB : ('tickets' : ((Secret , CurrentTime) , RestTickets) , ...) , ... > $ cloudA 'sendSecret' UserX | (deviceB ; Secret) .\n\n[B4] < UserX | 'knows' : Knowledge , ... > $ cloudA 'sendSecret' UserX | (deviceB ; Secret)\n=> < UserX | 'knows' : (Secret , Knowledge) , ... > .\n\n[B5] < cloudA | deviceB : ('owners' : nils , 'tickets' : ((Secret , IssuedTime) , RestTickets) , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Secret)\n=> < cloudA | deviceB : ('owners' : (UserX) , 'tickets' : ((Secret , IssuedTime) , RestTickets) , ...) , ... > .\n\n[B6] < cloudA | deviceB : ('owners' : (UserOwner , RestOwners) , 'tickets' : ((Secret , IssuedTime) , RestTickets) , ...) , ... > $ UserX 'join' cloudA | (deviceB ; Secret)\n=> < cloudA | deviceB : ('owners' : (UserX , UserOwner , RestOwners) , 'tickets' : ((Secret , IssuedTime) , RestTickets) , ...) , ... > .\n\n[B7] < cloudA | deviceB : ('tickets' : ((Secret , IssuedTime) , RestTickets) , ...) , ... >\n=> < cloudA | deviceB : ('tickets' : nils , ...) , ... > if CurrentTime - IssuedTime > 2 .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:03fa55b0e7bc7998c0e66ac03ae588d90d86b1869229925447336f9bc8bf4340"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"CurrentTime\": \"Nat\",\n  \"FreshSecret\": \"Qid\",\n  \"IssuedTime\": \"Nat\",\n  \"Knowledge\": \"Set\",\n  \"OldNear\": \"Set\",\n  \"RestOwners\": \"Set\",\n  \"RestTickets\": \"Set\",\n  \"Secret\": \"Qid\",\n  \"Tickets\": \"Set\",\n  \"UserOwner\": \"User\",\n  \"UserX\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:46a8709969c024633e428048ed7189ab9672c7ccc2661eb29d8e83beaeb64720"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 6, 8, 9]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:f22cb20d5b0e3208590e2b0475158077ca341cf4ade2b2b0233335ffdd6d244c"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('knows' : nils , 'near' : deviceB) >\n< userC | ('knows' : nils , 'near' : nils) >\n< deviceB | nils >\n< cloudA | (deviceB : ('tickets' : nils , 'owners' : nils)) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:542fa6e565835a6bfc9f11420f5b7e10458b9d119c93216276b123410ef61e1e"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B5] < UserX | 'knows' : (Secret , Rest) , ... > => ev5(UserX, Secret) .\n[B6] < UserX | 'knows' : (Secret , Rest) , ... > => ev6(UserX, Secret) .",
+    "error": null
+  },
+  {
+    "stage": "genEventVars",
+    "prompt_hash": "genEventVars:8036a58a7e092d0811e497884303c4d50241c37915faf1154301eb657860628b"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:8e23ab5b3f7dd9571a3abd00e1be7bdf213218f6b7bd3b115dd08c116b418087"
+  },
+  {
+    "attempt": 0,
+    "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:54acf183d2ce083f3d21c523d3b86d8ceefc24fdc682ef9caa2906ca80237ac3"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Rest\": \"Set\"\n}",
+    "error": null
+  }
+]

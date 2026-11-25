@@ -402,7 +402,7 @@ class FUNCALL(AST):
         self.funcname = funcname
         self.params = params
     def __repr__(self):
-        params_s = ', '.join([param.__repr__() for param in self.params])
+        params_s = ', '.join(str(param) for param in self.params)
         return f'{self.funcname}({params_s})'
 
 class EVENT_NAME(FUNCALL):
@@ -714,6 +714,12 @@ class DSLBaseTransformer(Transformer):
     
     def funcall(self,items):
         return FUNCALL(items[0],items[1:])
+
+    def ordered_items(self, items):
+        return LIST(items)
+
+    def listcall(self, items):
+        return FUNCALL('list', items)
 
     def qid(self, items):
         i = items[0]

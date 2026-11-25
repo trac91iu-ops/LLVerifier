@@ -1,0 +1,79 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | ('near' : nils , 'cachedCommand' : nils) > < userC | ('near' : nils , 'cachedCommand' : nils) > < cloudB | ('cloudKey' : 'secret' , deviceB : ('trusted' : userA)) > < deviceB | ('trusted' : (userA)) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars CachingRelayUser : User .
+vars Cloud : Cloud .
+vars Command : List .
+vars Device : Device .
+vars L : List .
+vars RelayUser : User .
+vars UserX : User .
+vars UserY : User .
+vars Users : Set .
+*** policy
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' Device 
+= < UserX | ('near' : Device , ..) > .
+eq < UserX | ('near' : Device , ..) > $ UserX 'leave' Device 
+= < UserX | ('near' : nils , ..) > .
+eq < Cloud | ('cloudKey' : 'secret' , Device : ('trusted' : (UserX) , ..) , ...) > < RelayUser | ('near' : Device , ....) > $ UserX 'shareAccess' Cloud | (Device ; UserY) 
+= < Cloud | ('cloudKey' : 'secret' , Device : ('trusted' : (UserX , UserY , ..) , ..) , ...) > < RelayUser | ('near' : Device , ....) > $ Cloud 'deliverCommand' RelayUser | (Device ; encrypt('auth', 'secret') ; 'share' ; UserY) .
+eq < Cloud | ('cloudKey' : 'secret' , Device : ('trusted' : (UserX , UserY , ..) , ...) , ....) > < RelayUser | ('near' : Device , .....) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) 
+= < Cloud | ('cloudKey' : 'secret' , Device : ('trusted' : (UserX) , ...) , ....) > < RelayUser | ('near' : Device , .....) > $ Cloud 'deliverCommand' RelayUser | (Device ; encrypt('auth', 'secret') ; 'revoke' ; UserY) .
+eq < RelayUser | ('near' : Device , ..) > < Device | (...) > $ RelayUser 'forwardCommand' Device | (L) 
+= < RelayUser | ('near' : Device , ..) > < Device | (...) > $ RelayUser 'proxy' Device | (L) .
+eq < CachingRelayUser | ('near' : Device , 'cachedCommand' : nils , ..) > $ Cloud 'deliverCommand' CachingRelayUser | (Device ; Command) 
+= < CachingRelayUser | ('near' : Device , 'cachedCommand' : Command , ..) > .
+eq < CachingRelayUser | ('near' : Device , 'cachedCommand' : L , ..) > < Device | (...) > $ CachingRelayUser 'forwardCommand' Device | (L) 
+= < CachingRelayUser | ('near' : Device , 'cachedCommand' : nils , ..) > < Device | (...) > $ CachingRelayUser 'proxy' Device | (L) .
+eq < Device | ('trusted' : Users , ..) > $ RelayUser 'proxy' Device | (encrypt('auth', 'secret') ; 'share' ; UserY) 
+= < Device | ('trusted' : (Users , UserY) , ..) > .
+eq < Device | ('trusted' : (Users , UserY) , ..) > $ RelayUser 'proxy' Device | (encrypt('auth', 'secret') ; 'revoke' ; UserY) 
+= < Device | ('trusted' : Users , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars CachingRelayUser : User .
+vars Cloud : Cloud .
+vars Command : List .
+vars Device : Device .
+vars L : List .
+vars RelayUser : User .
+vars UserX : User .
+vars UserY : User .
+vars Users : Set .
+vars MessageA : Qid .
+vars Trusted : Set .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device -> Event .
+ops ev3 : User Cloud Device User -> Event .
+ops ev4 : User Cloud Device User -> Event .
+ops ev5 : User Device List -> Event .
+*** events
+eq ev1(UserX, Device) = $ UserX 'approach' Device .
+eq ev2(UserX, Device) = $ UserX 'leave' Device .
+eq ev3(UserX, Cloud, Device, UserY) = $ UserX 'shareAccess' Cloud | (Device ; UserY) .
+eq ev4(UserX, Cloud, Device, UserY) = $ UserX 'revokeAccess' Cloud | (Device ; UserY) .
+eq ev5(RelayUser, Device, L) = $ RelayUser 'forwardCommand' Device | (L) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < Device | (...) > 
+=> ep: ev1(UserX, Device) @ S < UserX | ('near' : nils , ..) > < Device | (...) > .
+rl [rev2]: E @ S < UserX | ('near' : Device , ..) > 
+=> ep: ev2(UserX, Device) @ S < UserX | ('near' : Device , ..) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > < cloudB | (Device : ('trusted' : Trusted , ....) , .....) > 
+=> ep: ev3(UserX, cloudB, Device, UserY) @ S < UserX | (..) > < UserY | (...) > < cloudB | (Device : ('trusted' : Trusted , ....) , .....) > .
+rl [rev4]: E @ S < UserX | (..) > < UserY | (...) > < cloudB | (Device : ('trusted' : Trusted , ....) , .....) > 
+=> ep: ev4(UserX, cloudB, Device, UserY) @ S < UserX | (..) > < UserY | (...) > < cloudB | (Device : ('trusted' : Trusted , ....) , .....) > .
+
+endm

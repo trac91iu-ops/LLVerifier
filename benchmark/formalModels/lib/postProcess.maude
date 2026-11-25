@@ -10,6 +10,9 @@ op op _^_ : EList EList -> EList [ctor id: nile format (d n n n d)] .
 op pp : ModelCheckResult ~> PPResult .
 op pph : TransitionList Soup -> EList .
 op printEList : EList -> EList .
+*** trace cut point: a checker may give stopAt truth equations; the event trace stops at the first state satisfying it
+op stopAt : -> Prop .
+op pphc : Bool TransitionList Soup -> EList .
 
 var B : Bool .
 vars TL TL' : TransitionList .
@@ -22,7 +25,9 @@ eq pp(counterexample(TL , TL')) = pph(TL , null) [print TL] .
 
 eq pph(nil , S) = nile .
 eq pph({E @ S , RN} TL , S) = pph(TL , S)  .
-eq pph({E @ S , RN} TL , S') = E ^ (pph(TL , S)) [print E ] .
+eq pph({E @ S , RN} TL , S') = E ^ pphc(((E @ S) |= stopAt) == true , TL , S) [print E ] .
+eq pphc(true , TL , S) = nile .
+eq pphc(false , TL , S) = pph(TL , S) .
 
 eq printEList(nile) = nile [owise] .
 eq printEList(E EL) = printEList(EL) [print E] .

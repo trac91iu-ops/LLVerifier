@@ -1,0 +1,172 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 7 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4466
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+
+[B2] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+
+[B3] < UserX | 'key' : nils , ... > < deviceB | 'key' : DeviceKey , ... > $ UserX 'requestKey' deviceB
+=> < UserX | 'key' : FreshKey , ... > < deviceB | 'key' : FreshKey , ... >
+if DeviceKey =/= nils .
+
+[B4] < cloudA | 'secret' : Secret , deviceB : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'signKey' cloudA | (deviceB ; Key)
+=> < cloudA | 'secret' : Secret , deviceB : ('trusted' : (UserX , Rest) , ...) , ... > $ cloudA 'signedKey' UserX | (deviceB ; encrypt(Key , Secret)) .
+
+[B4] < UserX | 'signedKey' : nils , ... > $ cloudA 'signedKey' UserX | (deviceB ; SignedKey)
+=> < UserX | 'signedKey' : SignedKey , ... > .
+
+[B5] < UserX | 'signedKey' : encrypt(Key , Secret) , ... > < deviceB | 'key' : Key , 'secret' : Secret , 'trusted' : Trusted , ... > $ UserX 'bind' deviceB | encrypt(Key , Secret)
+=> < UserX | 'signedKey' : encrypt(Key , Secret) , ... > < deviceB | 'key' : Key , 'secret' : Secret , 'trusted' : (UserX , Trusted) , ... > .
+
+[B6] < cloudA | deviceB : ('trusted' : Trusted , ...) , ... > $ UserX 'shareAccess' cloudA | (deviceB ; UserY)
+=> < cloudA | deviceB : ('trusted' : (UserY , Trusted) , ...) , ... > .
+
+[B7] < cloudA | deviceB : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revokeAccess' cloudA | (deviceB ; UserY)
+=> < cloudA | deviceB : ('trusted' : (UserX , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3094
+--------------------------------------------------
+```json
+{
+  "DeviceKey": "Qid",
+  "FreshKey": "Qid",
+  "Key": "Qid",
+  "OldNear": "Set",
+  "Rest": "Set",
+  "Secret": "Qid",
+  "SignedKey": "Item",
+  "Trusted": "Set",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'DeviceKey': 'Qid', 'FreshKey': 'Qid', 'Key': 'Qid', 'OldNear': 'Set', 'Rest': 'Set', 'Secret': 'Qid', 'SignedKey': 'Item', 'Trusted': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('signedKey' : {[Funcall] , [Item]} , 'near' : {[Principal] , [Set]} , 'key' : [Qid]) > < userC | ('signedKey' : {[Funcall] , [Item]} , 'near' : {[Principal] , [Set]} , 'key' : [Qid]) > < deviceB | ('key' : [Qid] , 'secret' : [Qid] , 'trusted' : ([Set])) > < cloudA | ([Principal] : ('trusted' : ([Set])) , 'secret' : [Qid]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh True hasCurrentTime False
+eq < UserX | ('near' : OldNear , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : OldNear , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+ceq < system | ('counter' : N , ..) > < UserX | ('key' : nils , ...) > < deviceB | ('key' : DeviceKey , ....) > $ UserX 'requestKey' deviceB 
+= < system | ('counter' : N + 1 , ..) > < UserX | ('key' : randomStr('Key', N) , ...) > < deviceB | ('key' : randomStr('Key', N) , ....) > if DeviceKey =/= nils .
+eq < cloudA | ('secret' : Secret , deviceB : ('trusted' : (UserX , Rest) , ..) , ...) > $ UserX 'signKey' cloudA | (deviceB ; Key) 
+= < cloudA | ('secret' : Secret , deviceB : ('trusted' : (UserX , Rest) , ..) , ...) > $ cloudA 'signedKey' UserX | (deviceB ; encrypt(Key, Secret)) .
+eq < UserX | ('signedKey' : nils , ..) > $ cloudA 'signedKey' UserX | (deviceB ; SignedKey) 
+= < UserX | ('signedKey' : SignedKey , ..) > .
+eq < UserX | ('signedKey' : encrypt(Key, Secret) , ..) > < deviceB | ('key' : Key , 'secret' : Secret , 'trusted' : Trusted , ...) > $ UserX 'bind' deviceB | (encrypt(Key, Secret)) 
+= < UserX | ('signedKey' : encrypt(Key, Secret) , ..) > < deviceB | ('key' : Key , 'secret' : Secret , 'trusted' : (UserX , Trusted) , ...) > .
+eq < cloudA | (deviceB : ('trusted' : Trusted , ..) , ...) > $ UserX 'shareAccess' cloudA | (deviceB ; UserY) 
+= < cloudA | (deviceB : ('trusted' : (UserY , Trusted) , ..) , ...) > .
+eq < cloudA | (deviceB : ('trusted' : (UserX , UserY , Rest) , ..) , ...) > $ UserX 'revokeAccess' cloudA | (deviceB ; UserY) 
+= < cloudA | (deviceB : ('trusted' : (UserX , Rest) , ..) , ...) > .
+$ UserX 'approach' deviceB
+$ UserX 'leave' deviceB
+$ UserX 'requestKey' deviceB
+$ UserX 'signKey' cloudA | (deviceB ; Key)
+$ cloudA 'signedKey' UserX | (deviceB ; encrypt(Key, Secret))
+$ cloudA 'signedKey' UserX | (deviceB ; SignedKey)
+$ UserX 'bind' deviceB | (encrypt(Key, Secret))
+$ UserX 'shareAccess' cloudA | (deviceB ; UserY)
+$ UserX 'revokeAccess' cloudA | (deviceB ; UserY)
+[*] Total token: 1968
+--------------------------------------------------
+```
+[1, 2, 3, 4, 7, 8, 9]
+```
+==================================================
+[1, 2, 3, 4, 7, 8, 9]
+[$ UserX 'approach' deviceB, $ UserX 'leave' deviceB, $ UserX 'requestKey' deviceB, $ UserX 'signKey' cloudA | (deviceB ; Key), $ UserX 'bind' deviceB | (encrypt(Key, Secret)), $ UserX 'shareAccess' cloudA | (deviceB ; UserY), $ UserX 'revokeAccess' cloudA | (deviceB ; UserY)]
+[eq ev1(UserX) = $ UserX 'approach' deviceB ., eq ev2(UserX) = $ UserX 'leave' deviceB ., eq ev3(UserX) = $ UserX 'requestKey' deviceB ., eq ev4(UserX, Key) = $ UserX 'signKey' cloudA | (deviceB ; Key) ., eq ev5(UserX, Key, Secret) = $ UserX 'bind' deviceB | (encrypt(Key, Secret)) ., eq ev6(UserX, MessageA) = $ UserX 'bind' deviceB | (MessageA) ., eq ev7(UserX, UserY) = $ UserX 'shareAccess' cloudA | (deviceB ; UserY) ., eq ev8(UserX, UserY) = $ UserX 'revokeAccess' cloudA | (deviceB ; UserY) .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3130
+--------------------------------------------------
+```
+< userA | ('signedKey' : nils , 'near' : deviceB , 'key' : nils) >
+< userC | ('signedKey' : nils , 'near' : nils , 'key' : nils) >
+< deviceB | ('key' : '' , 'secret' : 'secret' , 'trusted' : (userA)) >
+< cloudA | (deviceB : ('trusted' : (userA)) , 'secret' : 'secret') >
+```
+==================================================
+< system | ('counter' : 0) > < userA | ('signedKey' : nils , 'near' : deviceB , 'key' : nils) > < userC | ('signedKey' : nils , 'near' : nils , 'key' : nils) > < deviceB | ('key' : '' , 'secret' : 'secret' , 'trusted' : (userA)) > < cloudA | (deviceB : ('trusted' : (userA)) , 'secret' : 'secret') >
+[*] Generating event rules with LLM...
+[*] Total token: 3952
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : nils , ... > < deviceB | ... > => ev1(UserX) .
+[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .
+[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .
+[B4] < UserX | 'key' : Key , ... > < deviceB | ... > => ev4(UserX, Key) .
+[B5] < UserX | 'near' : deviceB , 'signedKey' : encrypt(Key, Secret) , ... > => ev5(UserX, Key, Secret) .
+[B5] < UserX | 'near' : deviceB , 'signedKey' : MessageA , ... > => ev6(UserX, MessageA) .
+[B6] < UserX | ... > < UserY | ... > < deviceB | ... > => ev7(UserX, UserY) .
+[B7] < UserX | ... > < UserY | ... > => ev8(UserX, UserY) .
+```
+==================================================
+< UserX | 'near' : nils , ... > < deviceB | ... > => ev1(UserX) .
+< UserX | 'near' : deviceB , ... > => ev2(UserX) .
+< UserX | 'near' : deviceB , ... > => ev3(UserX) .
+< UserX | 'key' : Key , ... > < deviceB | ... > => ev4(UserX, Key) .
+< UserX | 'near' : deviceB , 'signedKey' : encrypt(Key, Secret) , ... > => ev5(UserX, Key, Secret) .
+< UserX | 'near' : deviceB , 'signedKey' : MessageA , ... > => ev6(UserX, MessageA) .
+< UserX | ... > < UserY | ... > < deviceB | ... > => ev7(UserX, UserY) .
+< UserX | ... > < UserY | ... > => ev8(UserX, UserY) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev2(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > 
+=> ep: ev4(UserX, Key) @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > .
+rl [rev5]: E @ S < UserX | ('near' : deviceB , 'signedKey' : encrypt(Key, Secret) , ..) > 
+=> ep: ev5(UserX, Key, Secret) @ S < UserX | ('near' : deviceB , 'signedKey' : encrypt(Key, Secret) , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceB , 'signedKey' : MessageA , ..) > 
+=> ep: ev6(UserX, MessageA) @ S < UserX | ('near' : deviceB , 'signedKey' : MessageA , ..) > .
+rl [rev7]: E @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > 
+=> ep: ev7(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > < deviceB | (....) > .
+rl [rev8]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev8(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 2761
+--------------------------------------------------
+```
+deviceTrustsAttacker =| < deviceB | 'trusted' : (userC , Rest) , ... > .
+cloudRecordsTrust =| < cloudA | deviceB : ('trusted' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 1873
+--------------------------------------------------
+```json
+{
+  "Rest": "Set"
+}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check OWN-stealth: counterexample (69 events)
+[+] Model written: sequence_diagram/output/ablation-norepair-astra-20261105/run5/MaagKwikset/rules.maude; status: validated

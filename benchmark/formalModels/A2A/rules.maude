@@ -1,0 +1,87 @@
+load ../lib/Iot . 
+mod SYSTEM is --- importing library then use functional module for deterministic rules
+protecting Iot . --- importing library but not extend/modify sorts
+
+eq init = idle @ 
+  < clientA | ('authenticated' : true , 'knowCtx' : nils , 'receivedHistory' : nils) >
+  < clientB | ('authenticated' : true , 'knowCtx' : nils , 'receivedHistory' : nils) >
+  < serverA | ('contexts' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars MsgA MsgNew Hist HistA : Set .
+vars CtxX CtxY : Qid .
+vars ClientX ClientY : Client .
+vars ServerX : Server .
+
+--- 1. Context creation
+eq < serverA | ('contexts' : nils , ..) > 
+   < ClientX | ('authenticated' : true , ...) > 
+   $ ClientX 'SendMessage' serverA | ('contextId' : nils ; 'payload' : MsgA)
+ = < serverA | ('contexts' : ('ctxX' : ('history' : MsgA)) , ..) > 
+   < ClientX | ('authenticated' : true , ...) > 
+   $ serverA 'response' ClientX | ('contextId' : 'ctxX' ; 'history' : MsgA) .
+
+--- 2. Context continuation (without ownership check)
+eq < serverA | ('contexts' : ('ctxX' : ('history' : HistA , ..) , ..) , ...) > 
+   < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ....) > 
+   $ ClientY 'SendMessage' serverA | ('contextId' : 'ctxX' ; 'payload' : MsgNew)
+ = < serverA | ('contexts' : ('ctxX' : ('history' : (HistA , MsgNew) , ..) , ..) , ...) > 
+   < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ....) > 
+   $ serverA 'response' ClientY | ('contextId' : 'ctxX' ; 'history' : (HistA , MsgNew)) .
+
+
+--- 3. Client receives response
+eq < ClientX | ('knowCtx' : nils , 'receivedHistory' : nils , ..) > 
+   $ serverA 'response' ClientX | ('contextId' : CtxY ; 'history' : Hist)
+ = < ClientX | ('knowCtx' : CtxY , 'receivedHistory' : Hist , ..) > .
+
+ eq < ClientX | ('receivedHistory' : HistA , ..) > 
+   $ serverA 'response' ClientX | ('contextId' : CtxY ; 'history' : Hist)
+ = < ClientX | ('receivedHistory' : Hist , ..) > [owise] .
+
+endm
+
+
+
+
+mod TRANSITION is
+including SYSTEM .
+
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars Hist : Set .
+vars CtxX : Qid .
+vars Msg : Item .
+vars ClientX : Client .
+
+ops ev1 : Client -> Event .
+ops ev2 : Client Qid Set -> Event .
+ops evSnoop : Client Qid -> Event .
+
+eq ev1(ClientX) = $ ClientX 'SendMessage' serverA | ('contextId' : nils ; 'payload' : 'msgA') .
+eq ev2(ClientX, CtxX, Msg) = $ ClientX 'SendMessage' serverA | ('contextId' : CtxX ; 'payload' : Msg) .
+eq evSnoop(ClientX, CtxX) = $ ClientX 'snoopContext' serverA | ('contextId' : CtxX) .
+
+rl [rev_init_A]: E @ S < clientA | ('authenticated' : true , 'knowCtx' : nils , ..) > 
+=> ep: ev1(clientA) @ S < clientA | ('authenticated' : true , 'knowCtx' : nils , ..) > .
+
+rl [rev_snoop_B]: E @ S < clientB | ('authenticated' : true , 'knowCtx' : nils , ..) > 
+                        < serverA | ('contexts' : (CtxX : ('history' : Hist , ..) , ..)) >
+=> ep: evSnoop(clientB, CtxX) @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > 
+                                  < serverA | ('contexts' : (CtxX : ('history' : Hist , ..) , ..)) > .
+
+crl [rev_snoop_B]: E @ S < clientB | ('authenticated' : true , 'knowCtx' : nils , ..) > 
+                         < serverA | ('contexts' : (CtxX : ('history' : Hist))) >
+=> ep: evSnoop(clientB, CtxX) @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > 
+                                  < serverA | ('contexts' : (CtxX : ('history' : Hist))) >
+ if CtxX =/= nils .
+
+rl [rev_inject_B]: E @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > 
+=> ep: ev2(clientB, CtxX, 'msgB') @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > .
+
+rl [rev_continue_A]: E @ S < clientA | ('authenticated' : true , 'knowCtx' : CtxX , ..) > 
+=> ep: ev2(clientA, CtxX, 'msgA2') @ S < clientA | ('authenticated' : true , 'knowCtx' : CtxX , ..) > .
+
+endm

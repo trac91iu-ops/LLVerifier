@@ -1,0 +1,46 @@
+{
+  "input": "sequence_diagram/input/MaagLevel/diagram.md",
+  "input_sha256": "3b3c393483c1a82fe354f57c8444a2de6bf0f7f3696df03386654baec1c01700",
+  "pipeline_id": "2e114202ef5d4e1c96dec922194d8998f222b6077f242559eb7978c46b4af3e4",
+  "mode": "check",
+  "started_at": "2026-11-05T04:52:10.316573+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run2/MaagLevel/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(cloudA, _`,_(_:_('cloudKey', 'cloudKey'), _:_(deviceB, _:_('trusted', userA)))), <_|_>(userA, _`,_(_:_('cachedCommand', nils), _:_('near', nils))), <_|_>(userC, _`,_(_:_('cachedCommand', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('cloudKey', nils), _:_('trusted', userA)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 9,
+    "coverage_issues": [
+      "B5 (action, line 38): no event rule for the initiated message",
+      "B7 (action, line 46): no event rule for the initiated message"
+    ]
+  },
+  "model_sha256": "f5256af47b43142d584accaf7d77602276297431820e8d6bd81ee212b444c9eb",
+  "check": {
+    "property": "OWN-stealth",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceTrustsAttacker": false,
+      "cloudRecordsTrust": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 287.094,
+  "tokens_this_run": 24496,
+  "finished_at": "2026-11-05T04:56:57.396445+00:00"
+}

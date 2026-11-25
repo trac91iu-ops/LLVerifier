@@ -1,0 +1,8 @@
+$ userA 'pressButton' deviceA
+$ userC 'approach' deviceA
+$ userC 'sendKey' deviceA | 'keyC'
+$ userA 'pressButton' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'discover' deviceA

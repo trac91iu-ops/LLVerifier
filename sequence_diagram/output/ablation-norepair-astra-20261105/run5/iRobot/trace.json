@@ -1,0 +1,187 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        8,
+        13
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        0
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        14,
+        21
+      ],
+      "head": "alt The user is near the device and holds key",
+      "state_rules": [
+        1,
+        2
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        22,
+        29
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        3,
+        4
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        30,
+        35
+      ],
+      "head": "alt The user holds key and the device exists",
+      "state_rules": [
+        5
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        36,
+        42
+      ],
+      "head": "alt The user holds key and the device exists",
+      "state_rules": [
+        6
+      ],
+      "event_rules": [
+        4
+      ]
+    },
+    {
+      "id": "B6",
+      "kind": "action",
+      "lines": [
+        43,
+        46
+      ],
+      "head": "alt The user is away and the device exists",
+      "state_rules": [
+        7
+      ],
+      "event_rules": [
+        5
+      ]
+    },
+    {
+      "id": "B7",
+      "kind": "action",
+      "lines": [
+        47,
+        50
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        8
+      ],
+      "event_rules": [
+        6
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < deviceB | ('buttonPressed' : false , ..) > $ UserX 'pressButton' deviceB \n= < deviceB | ('buttonPressed' : true , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < deviceB | ('buttonPressed' : true , 'key' : OldKey , ..) > $ UserX 'setKey' deviceB | (Key) \n= < deviceB | ('buttonPressed' : false , 'key' : Key , ..) > $ deviceB 'sendBindingKey' cloudA | (deviceB ; Key) ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < cloudA | (deviceB : ('bindingKey' : OldKey , ..) , ...) > $ deviceB 'sendBindingKey' cloudA | (deviceB ; Key) \n= < cloudA | (deviceB : ('bindingKey' : Key , ..) , ...) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "ceq < deviceB | ('buttonPressed' : true , 'key' : Key , ..) > $ UserX 'retrieveKey' deviceB \n= < deviceB | ('buttonPressed' : false , 'key' : Key , ..) > $ deviceB 'sendKey' UserX | (Key) if Key =/= nils ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < UserX | ('key' : OldKey , ..) > $ deviceB 'sendKey' UserX | (Key) \n= < UserX | ('key' : Key , ..) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < cloudA | (deviceB : ('bindingKey' : Key , 'owner' : nils , ..) , ...) > $ UserX 'bindDevice' cloudA | (deviceB ; Key) \n= < cloudA | (deviceB : ('bindingKey' : Key , 'owner' : UserX , ..) , ...) > ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < cloudA | (deviceB : ('bindingKey' : Key , 'owner' : UserX , ..) , ...) > $ UserX 'resetDevice' cloudA | (deviceB ; Key) \n= < cloudA | (deviceB : ('bindingKey' : '' , 'owner' : nils , ..) , ...) > ."
+    },
+    {
+      "block": "B6",
+      "rule": "eq < UserX | ('near' : OldNear , ..) > $ UserX 'approach' deviceB \n= < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B7",
+      "rule": "eq < UserX | ('near' : OldNear , ..) > $ UserX 'leave' deviceB \n= < UserX | ('near' : nils , ..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | ('near' : deviceB , 'key' : Key , ..) > \n=> ep: ev2(UserX, Key) @ S < UserX | ('near' : deviceB , 'key' : Key , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev3(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > \n=> ep: ev4(UserX, Key) @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > \n=> ep: ev5(UserX, Key) @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B6",
+      "label": "rev6",
+      "rule": "rl [rev6]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > \n=> ep: ev6(UserX) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B7",
+      "label": "rev7",
+      "rule": "rl [rev7]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev7(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    }
+  ],
+  "coverage_issues": []
+}

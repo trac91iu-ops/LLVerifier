@@ -1,0 +1,162 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4150
+--------------------------------------------------
+```
+[B1] < deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB
+=> < deviceB | 'key' : Key , ... > $ deviceB 'sendEncryptedText' UserX | encrypt(FreshR, Key) .
+[B1] < UserX | 'message' : nils , ... > $ deviceB 'sendEncryptedText' UserX | Message
+=> < UserX | 'message' : Message , ... > .
+[B2] < cloudA | deviceB : ('key' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, Key))
+=> < cloudA | deviceB : ('key' : Key , 'owners' : (UserX, Owners) , ...) , ... > .
+[B3] < cloudA | deviceB : ('owners' : (UserX, Owners) , ...) , ... > $ UserX 'resetDevice' cloudA | deviceB
+=> < cloudA | deviceB : ('owners' : (nils, Owners) , ...) , ... > .
+[B4] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+[B5] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2612
+--------------------------------------------------
+```json
+{
+  "FreshR": "Qid",
+  "Key": "Qid",
+  "Message": "Item",
+  "OldNear": "Set",
+  "Owners": "Set",
+  "R": "Qid",
+  "UserX": "User"
+}
+```
+==================================================
+{'FreshR': 'Qid', 'Key': 'Qid', 'Message': 'Item', 'OldNear': 'Set', 'Owners': 'Set', 'R': 'Qid', 'UserX': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< deviceB | ('key' : [Qid]) > < userA | ('near' : {[Set] , [Principal]} , 'message' : [Item]) > < userC | ('near' : {[Set] , [Principal]} , 'message' : [Item]) > < cloudA | ([Principal] : ('owners' : {[Set] , [User]} , 'key' : [Qid])) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh True hasCurrentTime False
+eq < system | ('counter' : N , ..) > < deviceB | ('key' : Key , ...) > $ UserX 'pressButton' deviceB 
+= < system | ('counter' : N + 1 , ..) > < deviceB | ('key' : Key , ...) > $ deviceB 'sendEncryptedText' UserX | (encrypt(randomStr('R', N), Key)) .
+eq < UserX | ('message' : nils , ..) > $ deviceB 'sendEncryptedText' UserX | (Message) 
+= < UserX | ('message' : Message , ..) > .
+eq < cloudA | (deviceB : ('key' : Key , 'owners' : Owners , ..) , ...) > $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, Key)) 
+= < cloudA | (deviceB : ('key' : Key , 'owners' : (UserX , Owners) , ..) , ...) > .
+eq < cloudA | (deviceB : ('owners' : (UserX , Owners) , ..) , ...) > $ UserX 'resetDevice' cloudA | (deviceB) 
+= < cloudA | (deviceB : ('owners' : (nils , Owners) , ..) , ...) > .
+eq < UserX | ('near' : OldNear , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : OldNear , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+$ UserX 'pressButton' deviceB
+$ deviceB 'sendEncryptedText' UserX | (encrypt(randomStr('R', N), Key))
+$ deviceB 'sendEncryptedText' UserX | (Message)
+$ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, Key))
+$ UserX 'resetDevice' cloudA | (deviceB)
+$ UserX 'approach' deviceB
+$ UserX 'leave' deviceB
+[*] Total token: 1723
+--------------------------------------------------
+```
+[1, 4, 5, 6, 7]
+```
+==================================================
+[1, 4, 5, 6, 7]
+[$ UserX 'pressButton' deviceB, $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, Key)), $ UserX 'resetDevice' cloudA | (deviceB), $ UserX 'approach' deviceB, $ UserX 'leave' deviceB]
+[eq ev1(UserX) = $ UserX 'pressButton' deviceB ., eq ev2(UserX, R, Key) = $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(R, Key)) ., eq ev3(UserX, MessageA) = $ UserX 'bindDevice' cloudA | (MessageA) ., eq ev4(UserX) = $ UserX 'resetDevice' cloudA | (deviceB) ., eq ev5(UserX) = $ UserX 'approach' deviceB ., eq ev6(UserX) = $ UserX 'leave' deviceB .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 2848
+--------------------------------------------------
+```
+< deviceB | ('key' : 'keyB') >
+< userA | ('near' : deviceB , 'message' : nils) >
+< userC | ('near' : nils , 'message' : nils) >
+< cloudA | (deviceB : ('owners' : nils , 'key' : 'keyB')) >
+```
+==================================================
+< system | ('counter' : 0) > < deviceB | ('key' : 'keyB') > < userA | ('near' : deviceB , 'message' : nils) > < userC | ('near' : nils , 'message' : nils) > < cloudA | (deviceB : ('owners' : nils , 'key' : 'keyB')) >
+[*] Generating event rules with LLM...
+[*] Total token: 3636
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : deviceB , ... > => ev1(UserX) .
+[B1] < UserX | 'near' : (deviceB , Rest) , ... > => ev1(UserX) .
+[B2] < UserX | 'message' : encrypt(R, Key) , ... > => ev2(UserX, R, Key) .
+[B2] < UserX | 'message' : MessageA , ... > => ev3(UserX, MessageA) .
+[B3] < UserX | ... > => ev4(UserX) .
+[B4] < UserX | 'near' : nils , ... > => ev5(UserX) .
+[B5] < UserX | 'near' : deviceB , ... > => ev6(UserX) .
+[B5] < UserX | 'near' : (deviceB , Rest) , ... > => ev6(UserX) .
+```
+==================================================
+< UserX | 'near' : deviceB , ... > => ev1(UserX) .
+< UserX | 'near' : (deviceB , Rest) , ... > => ev1(UserX) .
+< UserX | 'message' : encrypt(R, Key) , ... > => ev2(UserX, R, Key) .
+< UserX | 'message' : MessageA , ... > => ev3(UserX, MessageA) .
+< UserX | ... > => ev4(UserX) .
+< UserX | 'near' : nils , ... > => ev5(UserX) .
+< UserX | 'near' : deviceB , ... > => ev6(UserX) .
+< UserX | 'near' : (deviceB , Rest) , ... > => ev6(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2101
+--------------------------------------------------
+```json
+{
+  "Rest": "Set"
+}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev1]: E @ S < UserX | ('near' : (deviceB , Rest) , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : (deviceB , Rest) , ..) > .
+rl [rev2]: E @ S < UserX | ('message' : encrypt(R, Key) , ..) > 
+=> ep: ev2(UserX, R, Key) @ S < UserX | ('message' : encrypt(R, Key) , ..) > .
+rl [rev3]: E @ S < UserX | ('message' : MessageA , ..) > 
+=> ep: ev3(UserX, MessageA) @ S < UserX | ('message' : MessageA , ..) > .
+rl [rev4]: E @ S < UserX | (..) > 
+=> ep: ev4(UserX) @ S < UserX | (..) > .
+rl [rev5]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : (deviceB , Rest) , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : (deviceB , Rest) , ..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 2247
+--------------------------------------------------
+```
+attackerLocal =| < userC | 'near' : deviceB , ... > .
+attackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 1663
+--------------------------------------------------
+```json
+{
+  "Rest": "Set"
+}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check OWN-remote: counterexample (22 events)
+[+] Model written: sequence_diagram/output/eval-astra-20261105/run3/Netvue/rules.maude; status: validated

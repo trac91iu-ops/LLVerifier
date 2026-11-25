@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:4af6f06c825654dab2e66341524bab42efc834bb64075ade06ed9fdb78272d1b"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > $ UserX 'requestKey' Cloud\n=> < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > $ Cloud 'sendKey' UserX | (Key) .\n[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | (Key)\n=> < UserX | 'key' : Key , ... > .\n[B2] < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, UserY, Rest), 'key' : Key, ...) , ... > .\n[B3] < Cloud | Device : ('trusted' : (UserX, UserY, Rest), 'key' : Key, ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY)\n=> < Cloud | Device : ('trusted' : (UserX, Rest), 'key' : Key, ...) , ... > .\n[B4] < SmartThingsCloud | Device : ('key' : Key, 'trusted' : Trusted, ...) , ... > $ UserX 'provideKey' SmartThingsCloud | (Device ; Key)\n=> < SmartThingsCloud | Device : ('key' : Key, 'trusted' : (UserX, Trusted), ...) , ... > .\n[B5] < Device | ... > $ UserX 'turnOn' Device\n=> < Device | ... > .\n[B6] < Cloud | Device : ('state' : 'off', 'trusted' : (P, Rest), ...) , ... > $ P 'toggle' Device\n=> < Cloud | Device : ('state' : 'on', 'trusted' : (P, Rest), ...) , ... > $ Cloud 'turnOn' Device .\n[B7] < SmartThingsCloud | Device : ('linkedLock' : Lock, ...) , ... > $ SmartThingsCloud 'turnOn' Device\n=> < SmartThingsCloud | Device : ('linkedLock' : Lock, ...) , ... > $ SmartThingsCloud 'turnOn' Lock .\n[B8] < Lock | 'trusted' : (P, Rest), 'state' : 'off', ... > $ P 'turnOn' Lock\n=> < Lock | 'trusted' : (P, Rest), 'state' : 'on', ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:4f1cdbebfbcd0461c80a462d9269ea82a900204a0af71875a297d9b36983c032"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Cloud\": \"Cloud\",\n  \"Device\": \"Device\",\n  \"Key\": \"Qid\",\n  \"Lock\": \"Device\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"SmartThingsCloud\": \"Cloud\",\n  \"Trusted\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:76fc2849c4b1d2b0df012ad870377cc9acec30e9e13dd87566b3ea700fe76431"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3, 4, 5, 6, 8]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:8414b1c1dafe031f2f312f5c4e18b010ec3053fcefa414d03ae779f166548c00"
+  },
+  {
+    "attempt": 0,
+    "output": "< cloudGoogle | (deviceSwitch : ('linkedLock' : nils , 'state' : nils , 'trusted' : (userA) , 'key' : 'key1')) > < cloudSmartThing | (deviceSwitch : ('linkedLock' : deviceLock , 'state' : nils , 'trusted' : (cloudGoogle) , 'key' : 'key1')) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceSwitch | ('trusted' : nils , 'state' : nils) > < deviceLock | ('trusted' : (cloudSmartThing) , 'state' : nils) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:bda64d455bc4490b01c5988aeec1524d187fc0380e5d32acd51c7cc1511093b3"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | ... > < cloudB | ... > => ev1(UserX, cloudB) .\n[B2] < UserX | ... > < UserY | ... > < cloudB | ... > < deviceB | ... > => ev2(UserX, cloudB, deviceB, UserY) .\n[B3] < UserX | ... > < UserY | ... > < cloudB | ... > < deviceB | ... > => ev3(UserX, cloudB, deviceB, UserY) .\n[B4] < UserX | 'key' : Key , ... > < cloudB | ... > < deviceB | ... > => ev4(UserX, cloudB, deviceB, Key) .\n[B5] < UserX | ... > < deviceB | ... > => ev5(UserX, deviceB) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:b16e7dd6259460ac85c7ba05a36480129b7f5d406fea9bc13ec2694daddbc3f1"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceOn =| < cloudGoogle | deviceSwitch : ('state' : 'on' , ...) , ... > .\nattackerAuthorized =| < cloudGoogle | deviceSwitch : ('trusted' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:35bbf0562e58c3102abb3458fe8d27a4a6290a119e3b5145efece772151cdfb4"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

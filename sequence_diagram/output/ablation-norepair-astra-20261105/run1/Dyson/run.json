@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/Dyson/diagram.md",
+  "input_sha256": "a9284a443e793d22818eb216d40bd0df8c250590bb022ba7b6a61a870749a28a",
+  "pipeline_id": "a31b55942400e0933376be8c0fd7845c95ae501304c64c85bec26633d281a77e",
+  "mode": "check",
+  "started_at": "2026-11-05T06:35:43.954566+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA |",
+  "elapsed_seconds": 16.921,
+  "tokens_this_run": 4317,
+  "finished_at": "2026-11-05T06:36:00.876560+00:00"
+}

@@ -1,0 +1,26 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Key : Qid .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < deviceA | ('key' : nils, 'pressed' : false) > < cloudA | (deviceA : ('owner' : nils), userA : ('key' : 'keyA'), userC : ('key' : 'keyC')) > < userA | ('near' : deviceA) > < userC | ('near' : nils) > .
+  eq < deviceA | ('pressed' : false, ..) > $ UserX 'pressButton' deviceA = < deviceA | ('pressed' : true, ..) > .
+  eq < deviceA | ('pressed' : true, 'key' : nils, ..) > $ UserX 'sendKey' deviceA | (Key) = < deviceA | ('pressed' : false, 'key' : Key, ..) > .
+  eq < deviceA | ('key' : Key, ..) > $ UserX 'discover' deviceA = < deviceA | ('key' : Key, ..) > $ deviceA 'bind' cloudA | (Key) .
+  eq < cloudA | (UserY : ('key' : Key, ..), deviceA : ('owner' : nils, ...), ....) > $ deviceA 'bind' cloudA | (Key) = < cloudA | (UserY : ('key' : Key, ..), deviceA : ('owner' : UserY, ...), ....) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' deviceA = < UserX | ('near' : deviceA, ..) > .
+  eq < UserX | ('near' : deviceA, ..) > $ UserX 'leave' deviceA = < UserX | ('near' : nils, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (41666 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')), _:_(deviceA, _:_('owner', nils)))), <_|_>(userA, _:_('near', deviceA)), <_|_>(userC, _:_('near', nils)), <_|_>(deviceA, _`,_(_:_('key', nils), _:_('pressed', false)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'pressButton', deviceA), __(<_|_>(cloudA, _`,_(_:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')), _:_(deviceA, _:_('owner', nils)))), <_|_>(userA, _:_('near', deviceA)), <_|_>(userC, _:_('near', nils)), <_|_>(deviceA, _`,_(_:_('key', nils), _:_('pressed', true)))))
+Bye.

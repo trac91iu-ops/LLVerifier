@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/A2A/diagram.md",
+  "input_sha256": "8cec6526140559c8d8e951999767985e9f927935baaebc62bd6a29e54068e719",
+  "pipeline_id": "ea40af76701a6ed69853d2e9b76e05d7854a57347d14ed1386429028012dbff6",
+  "mode": "check",
+  "started_at": "2026-11-05T09:44:17.663327+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 2 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: The parser requires at least one argument, but the supplied declarations define ",
+  "elapsed_seconds": 71.768,
+  "tokens_this_run": 24732,
+  "finished_at": "2026-11-05T09:45:29.444425+00:00"
+}

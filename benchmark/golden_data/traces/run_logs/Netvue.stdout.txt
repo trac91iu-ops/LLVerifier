@@ -1,0 +1,242 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Sun Oct 25 23:37:14 2026
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : nils > < userC |
+    'localTo' : nils, 'message' : nils > < deviceB | 'key' : 'secret' >, 'rev1}
+    {$ userA 'pressButton' deviceB @
+< system | 'counter' : 1 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton'
+    deviceB @
+< system | 'counter' : 2 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton'
+    deviceB @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind'
+    cloudA | encrypt('RandomString'2357136044, 'secret') @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA) > < userA | 'localTo' : deviceB, 'message' :
+    encrypt('RandomString'2357136044, 'secret') > < userC | 'localTo' : nils,
+    'message' : nils > < deviceB | 'key' : 'secret' >, 'rev4} {$ userA
+    'callAPI:reset' cloudA @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev4} {$ userC 'callAPI:reset'
+    cloudA @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev5} {$ userA 'leaves' deviceB @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind'
+    cloudA | encrypt('RandomString'2357136044, 'secret') @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev4} {$ userA 'callAPI:reset'
+    cloudA @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev4} {$ userC 'callAPI:reset'
+    cloudA @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev6} {$ userA 'approaches'
+    deviceB @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : nils > < deviceB | 'key' : 'secret' >, 'rev6} {$ userC 'approaches'
+    deviceB @
+< system | 'counter' : 3 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : nils > < deviceB | 'key' : 'secret' >, 'rev1} {$ userC
+    'pressButton' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev3} {$ userA 'callAPI:bind' cloudA | encrypt(
+    'RandomString'2357136044, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA) > < userA | 'localTo' : deviceB, 'message' :
+    encrypt('RandomString'2357136044, 'secret') > < userC | 'localTo' :
+    deviceB, 'message' : encrypt('RandomString'362609376e, 'secret') > <
+    deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA |
+    encrypt('RandomString'362609376e, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA, 'owner' : userC) > < userA | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'2357136044, 'secret') > < userC |
+    'localTo' : deviceB, 'message' : encrypt('RandomString'362609376e,
+    'secret') > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind'
+    cloudA | encrypt('RandomString'2357136044, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA, 'owner' : userC) > < userA | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'2357136044, 'secret') > < userC |
+    'localTo' : deviceB, 'message' : encrypt('RandomString'362609376e,
+    'secret') > < deviceB | 'key' : 'secret' >, 'rev4} {$ userA 'callAPI:reset'
+    cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userC) > < userA | 'localTo' : deviceB, 'message' :
+    encrypt('RandomString'2357136044, 'secret') > < userC | 'localTo' :
+    deviceB, 'message' : encrypt('RandomString'362609376e, 'secret') > <
+    deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA |
+    encrypt('RandomString'362609376e, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userC) > < userA | 'localTo' : deviceB, 'message' :
+    encrypt('RandomString'2357136044, 'secret') > < userC | 'localTo' :
+    deviceB, 'message' : encrypt('RandomString'362609376e, 'secret') > <
+    deviceB | 'key' : 'secret' >, 'rev4} {$ userC 'callAPI:reset' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev4} {$ userA 'callAPI:reset' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : deviceB, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev5} {$ userA 'leaves' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev3} {$ userA 'callAPI:bind' cloudA | encrypt(
+    'RandomString'2357136044, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA | encrypt(
+    'RandomString'362609376e, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA, 'owner' : userC) > < userA | 'localTo' : nils,
+    'message' : encrypt('RandomString'2357136044, 'secret') > < userC |
+    'localTo' : deviceB, 'message' : encrypt('RandomString'362609376e,
+    'secret') > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'callAPI:bind'
+    cloudA | encrypt('RandomString'2357136044, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA, 'owner' : userC) > < userA | 'localTo' : nils,
+    'message' : encrypt('RandomString'2357136044, 'secret') > < userC |
+    'localTo' : deviceB, 'message' : encrypt('RandomString'362609376e,
+    'secret') > < deviceB | 'key' : 'secret' >, 'rev4} {$ userA 'callAPI:reset'
+    cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userC) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA | encrypt(
+    'RandomString'362609376e, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userC) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev4} {$ userC 'callAPI:reset' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev4} {$ userA 'callAPI:reset' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : deviceB,
+    'message' : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key'
+    : 'secret' >, 'rev5} {$ userC 'leaves' deviceB @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key' :
+    'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA | encrypt(
+    'RandomString'362609376e, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userC) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key' :
+    'secret' >, 'rev3} {$ userA 'callAPI:bind' cloudA | encrypt(
+    'RandomString'2357136044, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA, 'owner' : userC) > < userA | 'localTo' : nils,
+    'message' : encrypt('RandomString'2357136044, 'secret') > < userC |
+    'localTo' : nils, 'message' : encrypt('RandomString'362609376e, 'secret') >
+    < deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'callAPI:bind' cloudA |
+    encrypt('RandomString'362609376e, 'secret') @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userA, 'owner' : userC) > < userA | 'localTo' : nils,
+    'message' : encrypt('RandomString'2357136044, 'secret') > < userC |
+    'localTo' : nils, 'message' : encrypt('RandomString'362609376e, 'secret') >
+    < deviceB | 'key' : 'secret' >, 'rev4} {$ userA 'callAPI:reset' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils, 'owner' : userC) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key' :
+    'secret' >, 'rev4} {$ userC 'callAPI:reset' cloudA @
+< system | 'counter' : 4 > < cloudA | deviceB : ('key' : 'secret', 'owner' :
+    nils) > < userA | 'localTo' : nils, 'message' : encrypt(
+    'RandomString'2357136044, 'secret') > < userC | 'localTo' : nils, 'message'
+    : encrypt('RandomString'362609376e, 'secret') > < deviceB | 'key' :
+    'secret' >, 'rev3}
+idle
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret')
+$ userA 'callAPI:reset' cloudA
+$ userA 'leaves' deviceB
+$ userA 'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret')
+$ userA 'callAPI:reset' cloudA
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userA 'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret')
+$ userC 'callAPI:bind' cloudA | encrypt('RandomString'362609376e, 'secret')
+$ userA 'callAPI:reset' cloudA
+$ userC 'callAPI:reset' cloudA
+$ userA 'leaves' deviceB
+$ userA 'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret')
+$ userC 'callAPI:bind' cloudA | encrypt('RandomString'362609376e, 'secret')
+$ userA 'callAPI:reset' cloudA
+$ userC 'callAPI:reset' cloudA
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | encrypt('RandomString'362609376e, 'secret')
+$ userA 'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret')
+$ userA 'callAPI:reset' cloudA
+$ userC 'callAPI:reset' cloudA
+rewrites: 3244 in 12ms cpu (12ms real) (258630 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userA 'pressButton' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userA
+    'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret') ^ ($
+    userA 'callAPI:reset' cloudA ^ ($ userA 'leaves' deviceB ^ ($ userA
+    'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret') ^ ($
+    userA 'callAPI:reset' cloudA ^ ($ userA 'approaches' deviceB ^ ($ userC
+    'approaches' deviceB ^ ($ userC 'pressButton' deviceB ^ ($ userA
+    'callAPI:bind' cloudA | encrypt('RandomString'2357136044, 'secret') ^ ($
+    userC 'callAPI:bind' cloudA | encrypt('RandomString'362609376e, 'secret') ^
+    ($ userA 'callAPI:reset' cloudA ^ ($ userC 'callAPI:reset' cloudA ^ ($
+    userA 'leaves' deviceB ^ ($ userA 'callAPI:bind' cloudA | encrypt(
+    'RandomString'2357136044, 'secret') ^ ($ userC 'callAPI:bind' cloudA |
+    encrypt('RandomString'362609376e, 'secret') ^ ($ userA 'callAPI:reset'
+    cloudA ^ ($ userC 'callAPI:reset' cloudA ^ ($ userC 'leaves' deviceB ^ ($
+    userC 'callAPI:bind' cloudA | encrypt('RandomString'362609376e, 'secret') ^
+    ($ userA 'callAPI:bind' cloudA | encrypt('RandomString'2357136044,
+    'secret') ^ ($ userA 'callAPI:reset' cloudA ^ ($ userC 'callAPI:reset'
+    cloudA ^ nile)))))))))))))))))))))))))
+Bye.

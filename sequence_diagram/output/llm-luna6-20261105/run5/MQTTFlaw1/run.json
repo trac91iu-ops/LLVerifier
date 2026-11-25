@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/MQTTFlaw1/diagram.md",
+  "input_sha256": "4295ef0afe6c632063b1fe618e75daeead682e9c8c7c136063ae76b013a8103d",
+  "pipeline_id": "bf7eddd3d9bbe638e002cb3e092229f75c6bccc5d410fa4b06949a17462d0841",
+  "mode": "check",
+  "started_at": "2026-11-05T05:37:49.136746+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Expected exactly one complete output code block.",
+  "elapsed_seconds": 124.845,
+  "tokens_this_run": 8843,
+  "finished_at": "2026-11-05T05:39:53.983536+00:00"
+}

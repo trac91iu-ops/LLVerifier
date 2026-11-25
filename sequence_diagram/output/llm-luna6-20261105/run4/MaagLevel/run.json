@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/MaagLevel/diagram.md",
+  "input_sha256": "3b3c393483c1a82fe354f57c8444a2de6bf0f7f3696df03386654baec1c01700",
+  "pipeline_id": "2e114202ef5d4e1c96dec922194d8998f222b6077f242559eb7978c46b4af3e4",
+  "mode": "check",
+  "started_at": "2026-11-05T05:22:34.713038+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run4/MaagLevel/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(cloudB, _`,_(_:_('key', 'cloudKey'), _:_(deviceB, _:_('trusted', userA)))), <_|_>(userA, _`,_(_:_('cachedCommand', nils), _:_('near', nils))), <_|_>(userC, _`,_(_:_('cachedCommand', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('command', nils), _:_('key', nils), _:_('trusted', userA)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 9,
+    "coverage_issues": []
+  },
+  "model_sha256": "39e66d8cb1827d4825f74cb0b27dc9f1113bf97953dd080bc45eabccfc99749c",
+  "check": {
+    "property": "OWN-stealth",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceTrustsAttacker": false,
+      "cloudRecordsTrust": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 294.57,
+  "tokens_this_run": 24826,
+  "finished_at": "2026-11-05T05:27:29.305484+00:00"
+}

@@ -1,0 +1,126 @@
+{
+  "protocol": "Kevo",
+  "model_sha256": "68b28c05bc1fae1e26192fa952f670d29ff1058014cf1853ce38a0154089bb9d",
+  "runs": [
+    "a2-run2"
+  ],
+  "generated": "sequence_diagram/output/ablation-norepair-20261104/run2/Kevo/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Kevo/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'deliverMessage'": "'send'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'reset'": "'callAPI:reset'"
+    },
+    "attributes": {
+      "'counter'": "'counter'",
+      "'key'": "'key'",
+      "'message'": "'message'",
+      "'near'": "'localTo'",
+      "'owners'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "system": "system",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'R'": "'RandomString'",
+      "'keyB'": "'secret'",
+      "'owner'": null
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'keyB'",
+        "gold": "'secret'"
+      },
+      {
+        "attribute": "'owner'",
+        "generated": "(UserX : ('owner' : UserX , ..) , Owners)",
+        "gold": "UserX"
+      },
+      {
+        "attribute": "'owner'",
+        "generated": "(UserX : ('owner' : nils , ..) , Owners)",
+        "gold": "nils"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:reset'",
+      "'leaves'",
+      "'pressButton'",
+      "'send'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'key'",
+      "'localTo'",
+      "'message'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'RandomString'",
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'deliverMessage'",
+      "'leave'",
+      "'pressButton'",
+      "'reset'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'key'",
+      "'message'",
+      "'near'",
+      "'owners'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'R'",
+      "'keyB'",
+      "'owner'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T04:13:59+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1899,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'deliverMessage'\": \"'send'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'reset'\": \"'callAPI:reset'\"\n  },\n  \"attributes\": {\n    \"'counter'\": \"'counter'\",\n    \"'key'\": \"'key'\",\n    \"'message'\": \"'message'\",\n    \"'near'\": \"'localTo'\",\n    \"'owners'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"system\": \"system\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'R'\": \"'RandomString'\",\n    \"'keyB'\": \"'secret'\",\n    \"'owner'\": null\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyB'\",\n      \"gold\": \"'secret'\"\n    },\n    {\n      \"attribute\": \"'owner'\",\n      \"generated\": \"(UserX : ('owner' : UserX , ..) , Owners)\",\n      \"gold\": \"UserX\"\n    },\n    {\n      \"attribute\": \"'owner'\",\n      \"generated\": \"(UserX : ('owner' : nils , ..) , Owners)\",\n      \"gold\": \"nils\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Key : Qid .
+  var UserX : User .
+  eq init = idle @ < deviceB | ('online' : false, 'key' : 'deviceKey') > < userA | ('near' : deviceB, 'key' : nils) > < userC | ('near' : nils, 'key' : nils) > < cloudA | (deviceB : ('owner' : nils, 'key' : 'deviceKey')) > .
+  eq < deviceB | ('online' : false, 'key' : Key, ..) > $ UserX 'pressButton' deviceB = < deviceB | ('online' : true, 'key' : Key, ..) > $ deviceB 'sendKey' UserX | (Key) .
+  eq < UserX | ('key' : nils, ..) > $ deviceB 'sendKey' UserX | (Key) = < UserX | ('key' : Key, ..) > .
+  eq < UserX | ('key' : Key, ..) > < cloudA | (deviceB : ('key' : Key, 'owner' : nils, ...), ....) > < deviceB | ('online' : true, .....) > $ UserX 'bind' cloudA | (deviceB ; Key) = < UserX | ('key' : Key, ..) > < cloudA | (deviceB : ('key' : Key, 'owner' : UserX, ...), ....) > < deviceB | ('online' : true, .....) > .
+  eq < cloudA | (deviceB : ('owner' : UserX, ..), ...) > < deviceB | ('online' : true, ....) > $ UserX 'reset' cloudA | (deviceB) = < cloudA | (deviceB : ('owner' : nils, ..), ...) > < deviceB | ('online' : false, ....) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' deviceB = < UserX | ('near' : deviceB, ..) > .
+  eq < UserX | ('near' : deviceB, ..) > $ UserX 'leave' deviceB = < UserX | ('near' : nils, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (41666 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owner', nils)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('online', false)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'pressButton', deviceB), __(<_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owner', nils)))), <_|_>(userA, _`,_(_:_('key', 'deviceKey'), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('online', true)))))
+Bye.

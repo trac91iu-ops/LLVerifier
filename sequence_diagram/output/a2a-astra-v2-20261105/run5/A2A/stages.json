@@ -1,0 +1,57 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:191b828da6891700fad49b3e2e0a93158d6b954c36ae6012b530015a3d5dbb60"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < serverA | 'contexts' : nils , ... > $ clientA 'sendWithoutContext' serverA | 'msgA'\n=> < serverA | 'contexts' : ('ctxX' : ('msgA')) , ... > $ serverA 'returnInitialHistory' clientA | ('ctxX' ; ('msgA')) .\n\n[B1] < clientA | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialHistory' clientA | (Ctx ; Hist)\n=> < clientA | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > .\n\n[B1] < clientA | 'knowCtx' : Ctx , 'receivedHistory' : OldHist , ... > $ serverA 'returnInitialHistory' clientA | (ReturnedCtx ; Hist)\n=> < clientA | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > if Ctx =/= nils .\n\n[B1] < clientA | 'knowCtx' : nils , 'receivedHistory' : OldHist , ... > $ serverA 'returnInitialHistory' clientA | (Ctx ; Hist)\n=> < clientA | 'knowCtx' : nils , 'receivedHistory' : Hist , ... > if OldHist =/= nils .\n\n[B2] < clientB | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ clientB 'snoop' serverA | 'ctxX'\n=> < clientB | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > < serverA | 'contexts' : ('ctxX' : Hist) , ... > .\n\n[B3] < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB')\n=> < serverA | 'contexts' : ('ctxX' : ('msgB' , Hist)) , ... > $ serverA 'returnHistory' clientB | ('ctxX' ; ('msgB' , Hist)) .\n\n[B3] < clientB | 'receivedHistory' : OldHist , ... > $ serverA 'returnHistory' clientB | (Ctx ; Hist)\n=> < clientB | 'receivedHistory' : Hist , ... > .\n\n[B4] < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2')\n=> < serverA | 'contexts' : ('ctxX' : ('msgA2' , Hist)) , ... > $ serverA 'returnHistory' clientA | ('ctxX' ; ('msgA2' , Hist)) .\n\n[B4] < clientA | 'receivedHistory' : OldHist , ... > $ serverA 'returnHistory' clientA | (Ctx ; Hist)\n=> < clientA | 'receivedHistory' : Hist , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:447d0791492a4a80c50dbeea2c85bd393ca0598337729111d1eeec3e8134df80"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Ctx\": \"Qid\",\n  \"Hist\": \"Set\",\n  \"OldHist\": \"Set\",\n  \"ReturnedCtx\": \"Qid\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:fb4d5005b4c6c70d324e6ea977ac95488464b397df8f199d796736850356a9b8"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 4, 5, 8]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:1285464ac59545e84403bbeb863328f766a5a7033117b053a6f51d6b43bcabc6"
+  },
+  {
+    "attempt": 0,
+    "output": "< serverA | ('contexts' : nils) >\n< clientA | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >\n< clientB | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:41ca3a68fdb1b77372f577662e5ca222ce9ddc0a4a2a9f836eb1428dd87bf78e"
+  },
+  {
+    "attempt": 0,
+    "output": "[B2] < clientB | 'knowCtx' : nils , 'authenticated' : true , ... > < serverA | 'contexts' : 'ctxX' : Hist , ... > => ev2 .\n[B3] < clientB | 'knowCtx' : 'ctxX' , 'authenticated' : true , ... > => ev3 .",
+    "error": "No terminal matches '.' in the current parser context, at line 1 col 117\n\nontexts' : 'ctxX' : Hist , ... > => ev2 .\n                                        ^\nExpected one of: '\\\\('"
+  },
+  {
+    "attempt": 1,
+    "output": "[B2] < clientB | 'knowCtx' : nils , 'authenticated' : true , ... > < serverA | 'contexts' : 'ctxX' : Hist , ... > => ev2() .\n[B3] < clientB | 'knowCtx' : 'ctxX' , 'authenticated' : true , ... > => ev3() .",
+    "error": "No terminal matches ')' in the current parser context, at line 1 col 117\n\nontexts' : 'ctxX' : Hist , ... > => ev2() .\n                                        ^\nExpected one of: '\\\\(', 'client[A-Z][a-zA-Z0-9]*', '[0-9]+', 'cloud[A-Z][a-zA-Z0-9]*', 'nils', 'user[A-Z][a-zA-Z0-9]*', 'server[A-Z][a-zA-Z0-9]*', 'app[A-Z][a-zA-Z0-9]*', '(?:encrypt|decrypt)', 'list', 'device[A-Z][a-zA-Z0-9]*', '\\\\.\\\\.\\\\.(?:\\\\.)*', '(?:false|true)', '[A-Z](?:[a-zA-Z0-9_])*'"
+  },
+  {
+    "attempt": 2,
+    "output": "The parser requires at least one argument, but the supplied declarations define `ev2` and `ev3` with zero arguments. Adding `nils` or another argument would violate the requirement to preserve their arity.\n\nA valid revision requires either allowing zero-argument event names in the grammar or updating the event declarations to specify arguments. Neither `ev2` nor `ev2()` is accepted by the current grammar.",
+    "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: The parser requires at least one argument, but the supplied declarations define "
+  }
+]

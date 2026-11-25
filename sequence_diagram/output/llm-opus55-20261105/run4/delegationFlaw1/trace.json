@@ -1,0 +1,188 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        12,
+        21
+      ],
+      "head": "alt Any existing UserX and Cloud",
+      "state_rules": [
+        0,
+        1
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        23,
+        28
+      ],
+      "head": "alt Existing distinct users UserX and UserY, Cloud, and Device",
+      "state_rules": [
+        2
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        29,
+        34
+      ],
+      "head": "alt Existing distinct users UserX and UserY, Cloud, and Device",
+      "state_rules": [
+        3
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        36,
+        42
+      ],
+      "head": "alt UserX has key and the device exists",
+      "state_rules": [
+        4
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        44,
+        46
+      ],
+      "head": "alt Any existing UserX and Device",
+      "state_rules": [],
+      "event_rules": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": "B6",
+      "kind": "action",
+      "lines": [
+        49,
+        53
+      ],
+      "head": "alt A toggle request from P to the device is pending, the cloud records the device as off, and the cloud trusts P for the device",
+      "state_rules": [
+        5
+      ],
+      "event_rules": []
+    },
+    {
+      "id": "B7",
+      "kind": "action",
+      "lines": [
+        54,
+        57
+      ],
+      "head": "alt A toggle request from SmartThingsCloud to the device is pending and SmartThingsCloud links that device to B",
+      "state_rules": [
+        6
+      ],
+      "event_rules": []
+    },
+    {
+      "id": "B8",
+      "kind": "auto",
+      "lines": [
+        58,
+        60
+      ],
+      "head": "alt A toggle request from P to the Lock is pending, the Lock trusts P, and the Lock is off",
+      "state_rules": [
+        7
+      ],
+      "event_rules": []
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < CloudX | (DeviceX : ('trust' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ UserX 'requestKey' CloudX \n= < CloudX | (DeviceX : ('trust' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ CloudX 'sendKey' UserX | (Key) ."
+    },
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('key' : nils , ..) > $ CloudX 'sendKey' UserX | (Key) \n= < UserX | ('key' : Key , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < CloudX | (DeviceX : ('trust' : (UserX , Rest) , ..) , ...) > $ UserX 'delegate' CloudX | (DeviceX ; UserY) \n= < CloudX | (DeviceX : ('trust' : (UserX , Rest , UserY) , ..) , ...) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < CloudX | (DeviceX : ('trust' : (UserX , UserY , Rest) , ..) , ...) > $ UserX 'revoke' CloudX | (DeviceX ; UserY) \n= < CloudX | (DeviceX : ('trust' : (UserX , Rest) , ..) , ...) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < cloudSmartThing | (DeviceX : ('trust' : Trust , 'key' : Key , ..) , ...) > $ UserX 'provideKey' cloudSmartThing | (DeviceX ; Key) \n= < cloudSmartThing | (DeviceX : ('trust' : (Trust , UserX) , 'key' : Key , ..) , ...) > ."
+    },
+    {
+      "block": "B6",
+      "rule": "eq < CloudX | (DeviceX : ('trust' : (P , Rest) , 'on' : false , ..) , ...) > $ P 'turnOn' DeviceX \n= < CloudX | (DeviceX : ('trust' : (P , Rest) , 'on' : true , ..) , ...) > $ CloudX 'turnOn' DeviceX ."
+    },
+    {
+      "block": "B7",
+      "rule": "eq < cloudSmartThing | (DeviceX : ('bind' : DeviceY , ..) , ...) > $ cloudSmartThing 'turnOn' DeviceY \n= < cloudSmartThing | (DeviceX : ('bind' : DeviceY , ..) , ...) > $ cloudSmartThing 'turnOn' DeviceY ."
+    },
+    {
+      "block": "B8",
+      "rule": "eq < deviceLock | ('trust' : (P , Rest) , 'on' : false , ..) > $ P 'turnOn' deviceLock \n= < deviceLock | ('trust' : (P , Rest) , 'on' : true , ..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | (..) > < CloudX | (...) > \n=> ep: ev1(UserX, CloudX) @ S < UserX | (..) > < CloudX | (...) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | ..... > \n=> ep: ev2(UserX, CloudX, DeviceX, UserY) @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | ..... > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | ..... > \n=> ep: ev3(UserX, CloudX, DeviceX, UserY) @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | ..... > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < cloudSmartThing | (...) > < DeviceX | .... > \n=> ep: ev4(UserX, DeviceX, Key) @ S < UserX | ('key' : Key , ..) > < cloudSmartThing | (...) > < DeviceX | .... > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | (..) > < CloudX | (...) > < DeviceX | .... > \n=> ep: ev5(UserX, DeviceX) @ S < UserX | (..) > < CloudX | (...) > < DeviceX | .... > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | (..) > < DeviceX | (...) > \n=> ep: ev5(UserX, DeviceX) @ S < UserX | (..) > < DeviceX | (...) > ."
+    }
+  ],
+  "coverage_issues": [
+    "B6 (action, line 49): no event rule for the initiated message",
+    "B7 (action, line 54): no event rule for the initiated message"
+  ]
+}

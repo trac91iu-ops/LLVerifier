@@ -1,0 +1,139 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        10,
+        12
+      ],
+      "head": "alt The user is away from the device",
+      "state_rules": [
+        0
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        15,
+        17
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        1
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        20,
+        32
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        2,
+        3
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        35,
+        40
+      ],
+      "head": "alt The user has key and the device exists",
+      "state_rules": [
+        4
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        43,
+        52
+      ],
+      "head": "alt The user has a key",
+      "state_rules": [
+        5,
+        6
+      ],
+      "event_rules": [
+        4
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('near' : false , ..) > $ UserX 'approach' Device \n= < UserX | ('near' : true , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < UserX | ('near' : true , ..) > $ UserX 'leave' Device \n= < UserX | ('near' : false , ..) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < Device | ('owner' : nils , 'online' : false , 'key' : Key , .. , 'buttonPressed' : true) > $ UserX 'pressButton' Device \n= < Device | ('owner' : nils , 'online' : true , 'key' : Key , 'buttonPressed' : true , ..) > $ Device 'sendKey' UserX | (Key) ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < UserX | ('key' : nils , ..) > $ Device 'sendKey' UserX | (Key) \n= < UserX | ('key' : Key , ..) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < UserX | ('key' : Key , ..) > < Device | ('owner' : nils , 'online' : true , 'key' : Key , ...) > < Cloud | (Device : ('owner' : nils , 'key' : Key , ....) , .....) > $ UserX 'bind' Cloud | (Device ; Key) \n= < UserX | ('key' : Key , ..) > < Device | ('owner' : UserX , 'online' : true , 'key' : Key , ...) > < Cloud | (Device : ('owner' : UserX , 'key' : Key , ....) , .....) > ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < UserX | ('key' : Key , ..) > < Cloud | (Device : ('owner' : UserX , 'key' : CloudKey , ...) , ....) > $ UserX 'reset' Cloud | (Device ; Key) \n= < UserX | ('key' : Key , ..) > < Cloud | (Device : ('owner' : nils , 'key' : CloudKey , ...) , ....) > $ Cloud 'resetDevice' Device ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < Device | ('online' : true , 'owner' : UserX , ..) > $ Cloud 'resetDevice' Device \n= < Device | ('online' : false , 'owner' : nils , ..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | ('near' : false , ..) > \n=> ep: ev1(UserX, deviceB) @ S < UserX | ('near' : false , ..) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | ('near' : true , ..) > \n=> ep: ev2(UserX, deviceB) @ S < UserX | ('near' : true , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | ('near' : true , ..) > \n=> ep: ev3(UserX, deviceB) @ S < UserX | ('near' : true , ..) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > \n=> ep: ev4(UserX, cloudB, deviceB, Key) @ S < UserX | ('key' : Key , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | ('key' : Key , ..) > \n=> ep: ev5(UserX, cloudB, deviceB, Key) @ S < UserX | ('key' : Key , ..) > ."
+    }
+  ],
+  "coverage_issues": []
+}

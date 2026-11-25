@@ -1,0 +1,37 @@
+{
+  "input": "sequence_diagram/input/MQTTFlaw1/diagram.md",
+  "input_sha256": "4295ef0afe6c632063b1fe618e75daeead682e9c8c7c136063ae76b013a8103d",
+  "pipeline_id": "bf7eddd3d9bbe638e002cb3e092229f75c6bccc5d410fa4b06949a17462d0841",
+  "mode": "check",
+  "started_at": "2026-11-05T04:51:59.129671+00:00",
+  "status": "validation_failed",
+  "validation": {
+    "status": "error",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run2/MQTTFlaw1/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.",
+      "Warning: \"rules.maude\", line 46 (mod TRANSITION): didn't expect token cloudB:",
+      "Warning: \"rules.maude\", line 45 (mod TRANSITION): no parse for statement"
+    ],
+    "errors": [
+      "Warning: \"rules.maude\", line 46 (mod TRANSITION): didn't expect token cloudB:",
+      "Warning: \"rules.maude\", line 45 (mod TRANSITION): no parse for statement"
+    ],
+    "initial_term": "_@_(idle, __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_(userA, _:_('permission', true)), _:_(userC, _:_('permission', false)), _:_(deviceB, _:_('permission', true)))), <_|_>(userA, nils), <_|_>(userC, nils), <_|_>(deviceA, _:_('on', false))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 3,
+    "coverage_issues": []
+  },
+  "model_sha256": "2d467821cc38ef6bdbef5ace04dc75f55a81552529d28cd754bb17ab6fee6cd7",
+  "elapsed_seconds": 270.617,
+  "tokens_this_run": 27998,
+  "finished_at": "2026-11-05T04:56:29.736172+00:00"
+}

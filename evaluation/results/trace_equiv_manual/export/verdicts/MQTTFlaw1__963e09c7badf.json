@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:12:26.099Z",
+  "model": "963e09c7badf",
+  "note": "",
+  "protocol": "MQTTFlaw1",
+  "runs": [
+    "run1"
+  ],
+  "verdict": "present"
+}

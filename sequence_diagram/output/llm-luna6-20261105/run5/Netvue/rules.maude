@@ -1,0 +1,82 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('counter' : 0) > < deviceB | ('key' : 'keyB') > < userA | ('near' : deviceB , 'message' : nils) > < userC | ('near' : nils , 'message' : nils) > < cloudA | (deviceB : ('owners' : nils , 'key' : 'keyB')) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars DeviceKey : Qid .
+vars FreshText : Qid .
+vars Message : Item .
+vars Owners : Set .
+vars Rest : Set .
+vars StoredMessage : Item .
+vars Text : Qid .
+vars UserX : User .
+*** policy
+eq < system | ('counter' : N , ..) > < deviceB | ('key' : DeviceKey , ...) > $ UserX 'pressButton' deviceB 
+= < system | ('counter' : N + 1 , ..) > < deviceB | ('key' : DeviceKey , ...) > $ deviceB 'sendMessage' UserX | (encrypt(randomStr('Text', N), DeviceKey)) .
+eq < UserX | ('message' : nils , ..) > $ deviceB 'sendMessage' UserX | (Message) 
+= < UserX | ('message' : Message , ..) > .
+eq < UserX | ('message' : StoredMessage , ..) > $ deviceB 'sendMessage' UserX | (Message) 
+= < UserX | ('message' : StoredMessage , ..) > .
+ceq < UserX | ('message' : Message , ..) > < cloudA | (deviceB : ('key' : DeviceKey , 'owners' : Owners , ...) , ....) > $ UserX 'bindDevice' cloudA | (deviceB ; Message) 
+= < UserX | ('message' : Message , ..) > < cloudA | (deviceB : ('key' : DeviceKey , 'owners' : (UserX , Owners) , ...) , ....) > if Owners == nils .
+eq < UserX | ('message' : Message , ..) > < cloudA | (deviceB : ('key' : DeviceKey , 'owners' : (Owners) , ...) , ....) > $ UserX 'bindDevice' cloudA | (deviceB ; Message) 
+= < UserX | ('message' : Message , ..) > < cloudA | (deviceB : ('key' : DeviceKey , 'owners' : (UserX , Owners) , ...) , ....) > .
+eq < UserX | ('message' : Message , ..) > < cloudA | (deviceB : ('key' : DeviceKey , 'owners' : Owners , ...) , ....) > $ UserX 'bindDevice' cloudA | (deviceB ; encrypt(Text, DeviceKey)) 
+= < UserX | ('message' : Message , ..) > < cloudA | (deviceB : ('key' : DeviceKey , 'owners' : Owners , ...) , ....) > .
+eq < UserX | (..) > < cloudA | (deviceB : ('owners' : (UserX , Rest) , ...) , ....) > $ UserX 'resetDevice' cloudA | (deviceB) 
+= < UserX | (..) > < cloudA | (deviceB : ('owners' : Rest , ...) , ....) > .
+eq < UserX | (..) > < cloudA | (deviceB : ('owners' : (UserX) , ...) , ....) > $ UserX 'resetDevice' cloudA | (deviceB) 
+= < UserX | (..) > < cloudA | (deviceB : ('owners' : nils , ...) , ....) > .
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars DeviceKey : Qid .
+vars FreshText : Qid .
+vars Message : Item .
+vars Owners : Set .
+vars Rest : Set .
+vars StoredMessage : Item .
+vars Text : Qid .
+vars UserX : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User Item -> Event .
+ops ev3 : User Item -> Event .
+ops ev4 : User -> Event .
+ops ev5 : User -> Event .
+ops ev6 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'pressButton' deviceB .
+eq ev2(UserX, Message) = $ deviceB 'sendMessage' UserX | (Message) .
+eq ev3(UserX, Message) = $ UserX 'bindDevice' cloudA | (deviceB ; Message) .
+eq ev4(UserX) = $ UserX 'resetDevice' cloudA | (deviceB) .
+eq ev5(UserX) = $ UserX 'approach' deviceB .
+eq ev6(UserX) = $ UserX 'leave' deviceB .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | ('message' : Message , ..) > 
+=> ep: ev3(UserX, Message) @ S < UserX | ('message' : Message , ..) > .
+rl [rev4]: E @ S < UserX | (..) > 
+=> ep: ev4(UserX) @ S < UserX | (..) > .
+rl [rev5]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+
+endm

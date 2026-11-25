@@ -1,0 +1,116 @@
+{
+  "protocol": "CloudEdgeCAC",
+  "model_sha256": "76a8c926e2fd6cc086ae4ec2a43f526d5244ffa82c5976a28d30a747d9500213",
+  "runs": [
+    "a2-run1"
+  ],
+  "generated": "sequence_diagram/output/ablation-norepair-20261104/run1/CloudEdgeCAC/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/CloudEdgeCAC/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'discover'": "'callAPI:discover'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'sendKey'": "'callAPI:setKey'"
+    },
+    "attributes": {
+      "'buttonPressed'": "'pressed'",
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "deviceD": "deviceD",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'keyA'": "'phoneMacA'",
+      "'keyC'": "'phoneMacC'"
+    },
+    "values": [
+      {
+        "attribute": "'key'",
+        "generated": "'keyA'",
+        "gold": "'phoneMacA'"
+      },
+      {
+        "attribute": "'key'",
+        "generated": "'keyC'",
+        "gold": "'phoneMacC'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:discover'",
+      "'callAPI:setKey'",
+      "'leaves'",
+      "'pressButton'"
+    ],
+    "attributes": [
+      "'key'",
+      "'localTo'",
+      "'owner'",
+      "'pressed'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "deviceD",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'phoneMacA'",
+      "'phoneMacC'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'discover'",
+      "'leave'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'buttonPressed'",
+      "'key'",
+      "'near'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "deviceD",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'keyA'",
+      "'keyC'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T04:12:57+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1740,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'discover'\": \"'callAPI:discover'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'sendKey'\": \"'callAPI:setKey'\"\n  },\n  \"attributes\": {\n    \"'buttonPressed'\": \"'pressed'\",\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"deviceD\": \"deviceD\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'keyA'\": \"'phoneMacA'\",\n    \"'keyC'\": \"'phoneMacC'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyA'\",\n      \"gold\": \"'phoneMacA'\"\n    },\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyC'\",\n      \"gold\": \"'phoneMacC'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

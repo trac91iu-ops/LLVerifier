@@ -1,0 +1,130 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        9,
+        22
+      ],
+      "head": "alt ClientX is authenticated and does not know a context identifier",
+      "state_rules": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        24,
+        28
+      ],
+      "head": "alt ClientY is authenticated, knows no context identifier, and a context Ctx exists",
+      "state_rules": [
+        4
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        30,
+        40
+      ],
+      "head": "alt ClientY is authenticated and knows context identifier Ctx",
+      "state_rules": [
+        5,
+        6
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        42,
+        51
+      ],
+      "head": "alt ClientX is authenticated and knows context identifier Ctx",
+      "state_rules": [
+        7,
+        8
+      ],
+      "event_rules": [
+        3
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < serverA | ('context' : nils , 'history' : OldHistory , ..) > $ ClientX 'sendWithoutContext' serverA | ('msgA') \n= < serverA | ('context' : 'ctxX' , 'history' : ('msgA') , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) ."
+    },
+    {
+      "block": "B1",
+      "rule": "eq < ClientX | ('knowCtx' : nils , 'receivedHistory' : nils , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) \n= < ClientX | ('knowCtx' : 'ctxX' , 'receivedHistory' : History , ..) > ."
+    },
+    {
+      "block": "B1",
+      "rule": "ceq < ClientX | ('knowCtx' : Ctx , 'receivedHistory' : OldHistory , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) \n= < ClientX | ('knowCtx' : Ctx , 'receivedHistory' : History , ..) > if Ctx =/= nils ."
+    },
+    {
+      "block": "B1",
+      "rule": "ceq < ClientX | ('knowCtx' : nils , 'receivedHistory' : OldHistory , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) \n= < ClientX | ('knowCtx' : nils , 'receivedHistory' : History , ..) > if OldHistory =/= nils ."
+    },
+    {
+      "block": "B2",
+      "rule": "ceq < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > $ ClientY 'snoop' serverA | (Ctx) \n= < ClientY | ('authenticated' : true , 'knowCtx' : Ctx , ..) > < serverA | ('context' : Ctx , ...) > if Ctx =/= nils ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < serverA | ('context' : 'ctxX' , 'history' : Hist , ..) > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB') \n= < serverA | ('context' : 'ctxX' , 'history' : ('msgB' , Hist) , ..) > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < ClientY | ('receivedHistory' : OldHistory , ..) > $ serverA 'returnHistory' ClientY | ('ctxX' ; History) \n= < ClientY | ('receivedHistory' : History , ..) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < serverA | ('context' : 'ctxX' , 'history' : Hist , ..) > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2') \n= < serverA | ('context' : 'ctxX' , 'history' : ('msgA2' , Hist) , ..) > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < ClientX | ('receivedHistory' : OldHistory , ..) > $ serverA 'returnHistory' ClientX | ('ctxX' ; History) \n= < ClientX | ('receivedHistory' : History , ..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > \n=> ep: ev1(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > \n=> ep: ev2(ClientY, Ctx) @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > \n=> ep: ev3(ClientY) @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > \n=> ep: ev4(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > ."
+    }
+  ],
+  "coverage_issues": []
+}

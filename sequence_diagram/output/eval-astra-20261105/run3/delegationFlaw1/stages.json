@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:347ac1bb03a04142fe745ac2dc4e32f07c6bc8208b6b0a5a94b5eaaa40de1d84"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < CloudX | DeviceX : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ UserX 'requestKey' CloudX\n=> < CloudX | DeviceX : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ CloudX 'sendKey' UserX | Key if Key =/= nils .\n[B1] < UserX | 'key' : nils , ... > $ CloudX 'sendKey' UserX | Key\n=> < UserX | 'key' : Key , ... > .\n[B2] < CloudX | DeviceX : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'delegateAccess' CloudX | (DeviceX ; UserY)\n=> < CloudX | DeviceX : ('trusted' : (UserX , UserY , Rest) , ...) , ... > .\n[B3] < CloudX | DeviceX : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revokeAccess' CloudX | (DeviceX ; UserY)\n=> < CloudX | DeviceX : ('trusted' : (UserX , Rest) , ...) , ... > .\n[B4] < cloudSmartThing | DeviceX : ('key' : Key , 'trusted' : Trusted , ...) , ... > $ UserX 'provideKey' cloudSmartThing | (DeviceX ; Key)\n=> < cloudSmartThing | DeviceX : ('key' : Key , 'trusted' : (UserX , Trusted) , ...) , ... > .\n[B5] < DeviceX | ... > $ UserX 'turnOn' DeviceX\n=> < DeviceX | ... > .\n[B6] < CloudX | DeviceX : ('on' : false , 'trusted' : (P , Rest) , ...) , ... > $ P 'turnOn' DeviceX\n=> < CloudX | DeviceX : ('on' : true , 'trusted' : (P , Rest) , ...) , ... > $ CloudX 'turnOn' DeviceX .\n[B7] < cloudSmartThing | DeviceX : ('bound' : B , ...) , ... > $ cloudSmartThing 'turnOn' DeviceX\n=> < cloudSmartThing | DeviceX : ('bound' : B , ...) , ... > $ cloudSmartThing 'turnOn' B .\n[B8] < deviceLock | 'trusted' : (P , Rest) , 'on' : false , ... > $ P 'turnOn' deviceLock\n=> < deviceLock | 'trusted' : (P , Rest) , 'on' : true , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:e0416fbadd8a9554d51104d5b44169a42e1acbcc1e10eb60961bd512a6b66037"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"B\": \"Device\",\n  \"CloudX\": \"Cloud\",\n  \"DeviceX\": \"Device\",\n  \"Key\": \"Qid\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"Trusted\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:c179165a3efe7d0761aa2cb794264b7ef6b21241c58334d82c5035a60c59576c"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3, 4, 5, 6, 7, 10]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:adc52db5a548a6864e28be5fc3519659e59f676e3d882af6c0fcec354bdf7f6d"
+  },
+  {
+    "attempt": 0,
+    "output": "< cloudGoogle | (deviceSwitch : ('on' : false , 'trusted' : (userA) , 'key' : 'key')) >\n< userA | ('key' : nils) >\n< userC | ('key' : nils) >\n< cloudSmartThing | (deviceSwitch : ('bound' : deviceLock , 'key' : 'key' , 'trusted' : (cloudGoogle))) >\n< deviceSwitch | nils >\n< deviceLock | ('trusted' : (cloudSmartThing) , 'on' : false) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:9033a04b296994bf242dd60791115f0cf9285933612ea9d21bdccfd1e90260bd"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | ... > < CloudX | ... > => ev1(UserX, CloudX) .\n[B2] < UserX | ... > < UserY | ... > < CloudX | ... > < DeviceX | ... > => ev2(UserX, CloudX, DeviceX, UserY) .\n[B3] < UserX | ... > < UserY | ... > < CloudX | ... > < DeviceX | ... > => ev3(UserX, CloudX, DeviceX, UserY) .\n[B4] < UserX | 'key' : Key , ... > < DeviceX | ... > => ev4(UserX, DeviceX, Key) .\n[B5] < UserX | ... > < DeviceX | ... > => ev5(UserX, DeviceX) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:d87d41464c68db3c75546c41039abba5859a4edbc076eff69799ac309d5fe7e5"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceOn =| < cloudGoogle | deviceSwitch : ('on' : true , ...) , ... > .\nattackerAuthorized =| < cloudGoogle | deviceSwitch : ('trusted' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:2d8df1505b0cf53f35d98b0e5779a78e3a4aa433cd34dd2df0f3f50e8d330de2"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Rest\": \"Set\"\n}",
+    "error": null
+  }
+]

@@ -1,0 +1,4 @@
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.
+Warning: "rules.maude", line 45 (mod TRANSITION): redeclaration of variable alias S.

@@ -1,0 +1,165 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : nils) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : nils) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : nils) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : nils) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : nils) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : nils) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : nils) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev3} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : nils, 'near' : nils > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : nils, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev4} {$ userA 'getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : nils, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev5} {$ userA 'bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : nils, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : nils, 'near' : deviceB > < deviceB | nils >, 'rev4} {$ userC 'getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : userA, 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev6} {$ userC 'join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev5} {$ userA 'bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev5} {$ userC 'bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev6} {$ userA 'join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rtp} {timepass @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev1} {$ userA 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : deviceB > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev2} {$ userA 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev1} {$ userC 'approach' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : deviceB > < deviceB | nils >, 'rev2} {$ userC 'leave' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev5} {$ userA 'bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev5} {$ userC 'bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev6} {$ userA 'join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev6} {$ userC 'join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rtp} {timepass @
+< system | 'counter' : 4, 'time' : 2 > < cloudA | deviceB : ('owners' : (userA, userC), 'tickets' : (0, 'Secret'2357136044, 'Secret'2546248239, 'Secret'3071714933, 'Secret'362609376e)) > < userA | 'knows' : 'Secret'2357136044, 'near' : nils > < userC | 'knows' : 'Secret'2357136044, 'near' : nils > < deviceB | nils >, 'rev1}
+idle
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'getKey' cloudA | deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'Secret'2357136044)
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userC 'approach' deviceB
+$ userC 'getKey' cloudA | deviceB
+$ userA 'approach' deviceB
+$ userA 'leave' deviceB
+$ userC 'leave' deviceB
+$ userC 'join' cloudA | (deviceB ; 'Secret'2357136044)
+$ userA 'approach' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userC 'approach' deviceB
+$ userC 'leave' deviceB
+timepass
+$ userA 'approach' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userC 'approach' deviceB
+$ userC 'leave' deviceB
+timepass
+rewrites: 17698 in 28ms cpu (28ms real) (619439 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'getKey' cloudA | deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'bind' cloudA | (deviceB ; 'Secret'2357136044) ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userC 'approach' deviceB ^ ($ userC 'getKey' cloudA | deviceB ^ ($ userA 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userC 'leave' deviceB ^ ($ userC 'join' cloudA | (deviceB ; 'Secret'2357136044) ^ ($ userA 'approach' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userC 'approach' deviceB ^ ($ userC 'leave' deviceB ^ (timepass ^ ($ userA 'approach' deviceB ^ ($ userC 'approach' deviceB ^ ($ userA 'leave' deviceB ^ ($ userA 'approach' deviceB ^ ($ userC 'leave' deviceB ^ ($ userA 'leave' deviceB ^ ($ userC 'approach' deviceB ^ ($ userC 'leave' deviceB ^ (timepass ^ nile)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (2000000 rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:12:59.830Z",
+  "model": "48b9b769ac60",
+  "note": "",
+  "protocol": "philips",
+  "runs": [
+    "run2"
+  ],
+  "verdict": "present"
+}

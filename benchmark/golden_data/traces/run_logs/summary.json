@@ -1,0 +1,176 @@
+[
+  {
+    "protocol": "Aqara",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Aqara.txt",
+    "stderr_file": "run_logs/Aqara.stderr.txt"
+  },
+  {
+    "protocol": "August",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "August.txt",
+    "stderr_file": "run_logs/August.stderr.txt"
+  },
+  {
+    "protocol": "Beurer",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Beurer.txt",
+    "stderr_file": "run_logs/Beurer.stderr.txt"
+  },
+  {
+    "protocol": "Broadlink",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Broadlink.txt",
+    "stderr_file": "run_logs/Broadlink.stderr.txt"
+  },
+  {
+    "protocol": "CloudEdgeCAC",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "CloudEdgeCAC.txt",
+    "stderr_file": "run_logs/CloudEdgeCAC.stderr.txt"
+  },
+  {
+    "protocol": "CloudEdgeRTE",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "CloudEdgeRTE.txt",
+    "stderr_file": "run_logs/CloudEdgeRTE.stderr.txt"
+  },
+  {
+    "protocol": "Dyson",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Dyson.txt",
+    "stderr_file": "run_logs/Dyson.stderr.txt"
+  },
+  {
+    "protocol": "Ezviz",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Ezviz.txt",
+    "stderr_file": "run_logs/Ezviz.stderr.txt"
+  },
+  {
+    "protocol": "Govee",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Govee.txt",
+    "stderr_file": "run_logs/Govee.stderr.txt"
+  },
+  {
+    "protocol": "Huawei",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Huawei.txt",
+    "stderr_file": "run_logs/Huawei.stderr.txt"
+  },
+  {
+    "protocol": "Imou",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Imou.txt",
+    "stderr_file": "run_logs/Imou.stderr.txt"
+  },
+  {
+    "protocol": "Kevo",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Kevo.txt",
+    "stderr_file": "run_logs/Kevo.stderr.txt"
+  },
+  {
+    "protocol": "MQTTFlaw1",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "MQTTFlaw1.txt",
+    "stderr_file": "run_logs/MQTTFlaw1.stderr.txt"
+  },
+  {
+    "protocol": "MaagKwikset",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "MaagKwikset.txt",
+    "stderr_file": "run_logs/MaagKwikset.stderr.txt"
+  },
+  {
+    "protocol": "MaagLevel",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "MaagLevel.txt",
+    "stderr_file": "run_logs/MaagLevel.stderr.txt"
+  },
+  {
+    "protocol": "Meross",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Meross.txt",
+    "stderr_file": "run_logs/Meross.stderr.txt"
+  },
+  {
+    "protocol": "Midea",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Midea.txt",
+    "stderr_file": "run_logs/Midea.stderr.txt"
+  },
+  {
+    "protocol": "Netvue",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Netvue.txt",
+    "stderr_file": "run_logs/Netvue.stderr.txt"
+  },
+  {
+    "protocol": "Philips",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "philips.txt",
+    "stderr_file": "run_logs/Philips.stderr.txt"
+  },
+  {
+    "protocol": "Sunlogin",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Sunlogin.txt",
+    "stderr_file": "run_logs/Sunlogin.stderr.txt"
+  },
+  {
+    "protocol": "Switchbot",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Switchbot.txt",
+    "stderr_file": "run_logs/Switchbot.stderr.txt"
+  },
+  {
+    "protocol": "TPLink",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "TPLink.txt",
+    "stderr_file": "run_logs/TPLink.stderr.txt"
+  },
+  {
+    "protocol": "TuyaCAC",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "TuyaCAC.txt",
+    "stderr_file": "run_logs/TuyaCAC.stderr.txt"
+  },
+  {
+    "protocol": "TuyaMatter",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "TuyaMatter.txt",
+    "stderr_file": "run_logs/TuyaMatter.stderr.txt"
+  },
+  {
+    "protocol": "Wemo",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Wemo.txt",
+    "stderr_file": "run_logs/Wemo.stderr.txt"
+  },
+  {
+    "protocol": "Xiaomi",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "Xiaomi.txt",
+    "stderr_file": "run_logs/Xiaomi.stderr.txt"
+  },
+  {
+    "protocol": "delegationFlaw1",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "delegationFlaw1.txt",
+    "stderr_file": "run_logs/delegationFlaw1.stderr.txt"
+  },
+  {
+    "protocol": "delegationFlaw2",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "delegationFlaw2.txt",
+    "stderr_file": "run_logs/delegationFlaw2.stderr.txt"
+  },
+  {
+    "protocol": "iRobot",
+    "status": "trace_with_runtime_warning",
+    "trace_file": "irobot.txt",
+    "stderr_file": "run_logs/iRobot.stderr.txt"
+  }
+]

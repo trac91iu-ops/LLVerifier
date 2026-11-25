@@ -1,0 +1,121 @@
+{
+  "protocol": "August",
+  "model_sha256": "d49711e476b397a463a8efa8b34c9d2cddd13e38bae768c5f614fbb3c370b0aa",
+  "runs": [
+    "run1"
+  ],
+  "generated": "sequence_diagram/output/eval-astra-20261105/run1/August/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/August/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'callAPI:bind'": "'callAPI:bind'",
+      "'callAPI:reset'": "'callAPI:reset'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'reset'": "'resetDevice'",
+      "'sendKey'": "'sendKey'"
+    },
+    "attributes": {
+      "'buttonPressed'": "'pressed'",
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'online'": "'online'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'keyB'": "'secret'"
+    },
+    "values": [
+      {
+        "attribute": "'pressed'",
+        "generated": "nils",
+        "gold": "false"
+      },
+      {
+        "attribute": "'pressed'",
+        "generated": "true",
+        "gold": "true"
+      },
+      {
+        "attribute": "'key'",
+        "generated": "'keyB'",
+        "gold": "'secret'"
+      }
+    ]
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:reset'",
+      "'leaves'",
+      "'pressButton'",
+      "'resetDevice'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'key'",
+      "'localTo'",
+      "'online'",
+      "'owner'",
+      "'pressed'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'callAPI:bind'",
+      "'callAPI:reset'",
+      "'leave'",
+      "'pressButton'",
+      "'reset'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'buttonPressed'",
+      "'key'",
+      "'near'",
+      "'online'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'keyB'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T07:20:09+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2018,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'callAPI:bind'\": \"'callAPI:bind'\",\n    \"'callAPI:reset'\": \"'callAPI:reset'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'reset'\": \"'resetDevice'\",\n    \"'sendKey'\": \"'sendKey'\"\n  },\n  \"attributes\": {\n    \"'buttonPressed'\": \"'pressed'\",\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'online'\": \"'online'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'keyB'\": \"'secret'\"\n  },\n  \"values\": [\n    {\n      \"attribute\": \"'pressed'\",\n      \"generated\": \"nils\",\n      \"gold\": \"false\"\n    },\n    {\n      \"attribute\": \"'pressed'\",\n      \"generated\": \"true\",\n      \"gold\": \"true\"\n    },\n    {\n      \"attribute\": \"'key'\",\n      \"generated\": \"'keyB'\",\n      \"gold\": \"'secret'\"\n    }\n  ]\n}",
+        "error": null
+      }
+    ]
+  }
+}

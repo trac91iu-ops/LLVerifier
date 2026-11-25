@@ -1,0 +1,29 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : Near , ... > $ UserX 'approach' DeviceX
+=> < UserX | 'near' :
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4086
+--------------------------------------------------
+```
+< UserX | 'near' : Near , ... > $ UserX 'approach' DeviceX
+=> < UserX | 'near' : DeviceX , ... > .
+
+< UserX | 'near' : Near , ... > $ UserX 'leave' DeviceX
+=> < UserX | 'near' : nils , ... > .
+
+< DeviceX | 'buttonPressed' : false , ... > $ UserX 'pressButton' DeviceX
+=> < DeviceX | 'buttonPressed' : true , ... > .
+
+< DeviceX | 'buttonPressed' : true , 'key' : nils , ... > $ UserX 'sendKey' DeviceX | Key
+=> < DeviceX | 'buttonPressed' : false , 'key' : Key , ... > .
+
+< DeviceX | 'key' : Key , ... > $ UserX 'discover' DeviceX
+=> < DeviceX | 'key' : Key , ... > $ DeviceX 'bind' cloudA | Key
+if Key =/= nils .
+
+< cloudA | UserY : ('key' : Key , ...) , DeviceX : ('owner' : nils , ...) , ... > $ DeviceX 'bind' cloudA | Key
+=> < cloudA | UserY : ('key' : Key , ...) , DeviceX : ('owner' : UserY , ...) , ... > .
+```
+==================================================

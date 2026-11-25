@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:aa783572ad42b3ba21407882e715e7ab71e9d5311e389b041d3830d15a93b17e"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA\n=> < UserX | 'near' : deviceA , ... > .\n[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA\n=> < UserX | 'near' : nils , ... > .\n[B3] < cloudA | 'key' : 'secret' , deviceA : ('users' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'shareAccess' cloudA | UserY\n=> < cloudA | 'key' : 'secret' , deviceA : ('users' : (UserX , UserY) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'proxy' RelayUser | (deviceA ; list(encrypt('auth', 'secret') ; 'share' ; UserY)) .\n[B4] < cloudA | 'key' : 'secret' , deviceA : ('users' : (UserX , UserY , Rest) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ UserX 'revokeAccess' cloudA | UserY\n=> < cloudA | 'key' : 'secret' , deviceA : ('users' : (UserX) , ...) , ... > < RelayUser | 'near' : deviceA , ... > $ cloudA 'proxy' RelayUser | (deviceA ; list(encrypt('auth', 'secret') ; 'revoke' ; UserY)) .\n[B5] < ImmediateRelayUser | 'near' : deviceA , ... > $ cloudA 'proxy' RelayUser | (deviceA ; L)\n=> < ImmediateRelayUser | 'near' : deviceA , ... > $ RelayUser 'forward' deviceA | L .\n[B6] < CachingRelayUser | 'near' : deviceA , 'cache' : nils , ... > $ cloudA 'proxy' RelayUser | (deviceA ; L)\n=> < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... > .\n[B7] < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... >\n=> < CachingRelayUser | 'near' : deviceA , 'cache' : nils , ... > $ CachingRelayUser 'forward' deviceA | L .\n[B8] < deviceA | 'users' : Users , ... > $ RelayUser 'forward' deviceA | list(encrypt('auth', 'secret') ; 'share' ; UserY)\n=> < deviceA | 'users' : (Users , UserY) , ... > .\n[B9] < deviceA | 'users' : (UserY , Rest) , ... > $ RelayUser 'forward' deviceA | list(encrypt('auth', 'secret') ; 'revoke' ; UserY)\n=> < deviceA | 'users' : Rest , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:8905dcf64b15e058c7dff22039db2681443bb7fa300a5488e77aafb58adac9e8"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"CachingRelayUser\": \"User\", \"ImmediateRelayUser\": \"User\", \"L\": \"Item\", \"RelayUser\": \"User\", \"Rest\": \"Set\", \"UserX\": \"User\", \"UserY\": \"User\", \"Users\": \"Set\"}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:738d1bff06e85f1eb9eb0a35785a43540034a12c681c9c17d3a3c710241fdc5c"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 5, 8]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:8b62830e2e77bf599677d46c52b943d398b0af7a1c75d72fe91659028cbc3f51"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('near' : nils , 'cache' : nils) > < userC | ('near' : nils , 'cache' : nils) > < cloudA | ('key' : 'secret' , deviceA : ('users' : (userA))) > < deviceA | ('users' : (userA)) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:59d3e80dec74bd141dd1bb2329cf795fe63e11d395f330394e7a871f2b580b71"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > < deviceA | ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .\n[B3] < UserX | ... > < UserY | ... > => ev3(UserX, UserY) .\n[B4] < UserX | ... > < UserY | ... > => ev4(UserX, UserY) .\n[B7] < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... > => ev5(CachingRelayUser, L) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:2c596fa668ae0ffeb0ed4e4c41874e3b168cae8e2da55ae114b026cebefb02e1"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceTrustsAttacker =| < deviceA | 'users' : (userC , Rest) , ... > .\ncloudRecordsTrust =| < cloudA | deviceA : ('users' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:fb4da5f7a865cc5c03d35018678e29c71fbb19dbd5c380d34e33a0d760e163a4"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

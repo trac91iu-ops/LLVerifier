@@ -1,0 +1,21 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX
+[*] Diagram split into 3 blocks
+[*] Generating policy with LLM...
+[*] Total token: 3861
+--------------------------------------------------
+```
+< cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX 'requestPublish' cloudB | 'toggle'
+=> < cloudB | 'buffer' : 'toggle' , UserX : ('permission' : true , ...) , ... > $ cloudB 'acknowledge' UserX .
+
+< cloudB | UserX : ('permission' : Permission , ...) , ... > $ cloudB 'revokePermission' cloudB | UserX
+=> < cloudB | UserX : ('permission' : false , ...) , ... > .
+
+< cloudB | 'buffer' : Message , deviceB : ('permission' : true , ...) , ... > $ UserX 'releaseMessage' cloudB
+=> < cloudB | 'buffer' : nils , deviceB : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceB | Message if Message =/= nils .
+
+< deviceB | 'on' : false , ... > $ cloudB 'publish' deviceB | 'toggle'
+=> < deviceB | 'on' : true , ... > .
+```
+==================================================

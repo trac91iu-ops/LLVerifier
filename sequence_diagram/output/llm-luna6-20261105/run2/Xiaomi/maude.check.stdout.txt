@@ -1,0 +1,13 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+rewrites: 3116 in 17ms cpu (17ms real) (178485 rewrites/second)
+result Bool: true
+==========================================
+reduce in CHECK : init |= deviceOn .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerAuthorized .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

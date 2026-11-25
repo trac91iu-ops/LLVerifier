@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:00:44.175Z",
+  "model": "34f57f69090a",
+  "note": "",
+  "protocol": "Dyson",
+  "runs": [
+    "opus55-run2"
+  ],
+  "verdict": "present"
+}

@@ -1,0 +1,163 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 8 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4681
+--------------------------------------------------
+```text
+[B1] < Cloud | Device : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ UserX 'requestKey' Cloud
+=> < Cloud | Device : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ Cloud 'sendKey' UserX | Key if Key =/= nils .
+
+[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | Key
+=> < UserX | 'key' : Key , ... > .
+
+[B2] < Cloud | Device : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY)
+=> < Cloud | Device : ('trusted' : (UserX , UserY , Rest) , ...) , ... > .
+
+[B3] < Cloud | Device : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY)
+=> < Cloud | Device : ('trusted' : (UserX , Rest) , ...) , ... > .
+
+[B4] < cloudSmartThing | Device : ('key' : Key , 'on' : false , ...) , ... > $ UserX 'turnOnWithKey' cloudSmartThing | (Device ; Key)
+=> < cloudSmartThing | Device : ('key' : Key , 'on' : true , ...) , ... > $ cloudSmartThing 'turnOn' Device .
+
+[B6] < Cloud | Device : ('on' : false , 'trusted' : (P , Rest) , ...) , ... > $ P 'turnOn' Device
+=> < Cloud | Device : ('on' : true , 'trusted' : (P , Rest) , ...) , ... > $ Cloud 'turnOn' Device .
+
+[B7] < cloudSmartThing | Device : ('boundTo' : B , ...) , ... > $ cloudSmartThing 'turnOn' Device
+=> < cloudSmartThing | Device : ('boundTo' : B , ...) , ... > $ cloudSmartThing 'turnOn' B .
+
+[B8] < deviceLock | 'trusted' : (P , Rest) , 'on' : false , ... > $ P 'turnOn' deviceLock
+=> < deviceLock | 'trusted' : (P , Rest) , 'on' : true , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3176
+--------------------------------------------------
+```json
+{
+  "B": "Device",
+  "Cloud": "Cloud",
+  "Device": "Device",
+  "Key": "Qid",
+  "P": "Principal",
+  "Rest": "Set",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'B': 'Device', 'Cloud': 'Cloud', 'Device': 'Device', 'Key': 'Qid', 'P': 'Principal', 'Rest': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< cloudB | ([Device] : ('on' : [Bool] , 'trusted' : {[Set] , [Principal] , [User]} , 'key' : [Qid])) > < userA | ('key' : [Qid]) > < userC | ('key' : [Qid]) > < cloudSmartThing | ([Device] : ('boundTo' : [Device] , 'key' : [Qid] , 'on' : [Bool])) > < deviceLock | ('trusted' : ([Set]) , 'on' : [Bool]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+ceq < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ UserX 'requestKey' Cloud 
+= < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ Cloud 'sendKey' UserX | (Key) if Key =/= nils .
+eq < UserX | ('key' : nils , ..) > $ Cloud 'sendKey' UserX | (Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < Cloud | (Device : ('trusted' : (UserX , Rest) , ..) , ...) > $ UserX 'delegateAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , ..) , ...) > .
+eq < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , ..) , ...) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserX , Rest) , ..) , ...) > .
+eq < cloudSmartThing | (Device : ('key' : Key , 'on' : false , ..) , ...) > $ UserX 'turnOnWithKey' cloudSmartThing | (Device ; Key) 
+= < cloudSmartThing | (Device : ('key' : Key , 'on' : true , ..) , ...) > $ cloudSmartThing 'turnOn' Device .
+eq < Cloud | (Device : ('on' : false , 'trusted' : (P , Rest) , ..) , ...) > $ P 'turnOn' Device 
+= < Cloud | (Device : ('on' : true , 'trusted' : (P , Rest) , ..) , ...) > $ Cloud 'turnOn' Device .
+eq < cloudSmartThing | (Device : ('boundTo' : B , ..) , ...) > $ cloudSmartThing 'turnOn' Device 
+= < cloudSmartThing | (Device : ('boundTo' : B , ..) , ...) > $ cloudSmartThing 'turnOn' B .
+eq < deviceLock | ('trusted' : (P , Rest) , 'on' : false , ..) > $ P 'turnOn' deviceLock 
+= < deviceLock | ('trusted' : (P , Rest) , 'on' : true , ..) > .
+$ UserX 'requestKey' Cloud
+$ Cloud 'sendKey' UserX | (Key)
+$ UserX 'delegateAccess' Cloud | (Device ; UserY)
+$ UserX 'revokeAccess' Cloud | (Device ; UserY)
+$ UserX 'turnOnWithKey' cloudSmartThing | (Device ; Key)
+$ cloudSmartThing 'turnOn' Device
+$ P 'turnOn' Device
+$ Cloud 'turnOn' Device
+$ P 'turnOn' deviceLock
+[*] Total token: 2160
+--------------------------------------------------
+```
+[1, 3, 4, 5, 7, 9]
+```
+==================================================
+[1, 3, 4, 5, 7, 9]
+[$ UserX 'requestKey' Cloud, $ UserX 'delegateAccess' Cloud | (Device ; UserY), $ UserX 'revokeAccess' Cloud | (Device ; UserY), $ UserX 'turnOnWithKey' cloudSmartThing | (Device ; Key), $ P 'turnOn' Device, $ P 'turnOn' deviceLock]
+[eq ev1(UserX, Cloud) = $ UserX 'requestKey' Cloud ., eq ev2(UserX, Cloud, Device, UserY) = $ UserX 'delegateAccess' Cloud | (Device ; UserY) ., eq ev3(UserX, Cloud, Device, UserY) = $ UserX 'revokeAccess' Cloud | (Device ; UserY) ., eq ev4(UserX, Device, Key) = $ UserX 'turnOnWithKey' cloudSmartThing | (Device ; Key) ., eq ev5(P, Device) = $ P 'turnOn' Device ., eq ev6(P) = $ P 'turnOn' deviceLock .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3339
+--------------------------------------------------
+```
+< cloudB | deviceLock : ('on' : false, 'trusted' : (cloudSmartThing), 'key' : 'key') >
+< userA | 'key' : nils >
+< userC | 'key' : nils >
+< cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock, 'key' : 'key', 'on' : false, 'trusted' : (userA)) >
+< deviceLock | 'trusted' : (cloudB), 'on' : false >
+< deviceSwitch | nils >
+```
+==================================================
+< cloudB | (deviceLock : ('on' : false , 'trusted' : (cloudSmartThing) , 'key' : 'key')) > < userA | ('key' : nils) > < userC | ('key' : nils) > < cloudSmartThing | (deviceSwitch : ('boundTo' : deviceLock , 'key' : 'key' , 'on' : false , 'trusted' : (userA))) > < deviceLock | ('trusted' : (cloudB) , 'on' : false) > < deviceSwitch | (nils) >
+[*] Generating event rules with LLM...
+[*] Total token: 4077
+--------------------------------------------------
+```
+[B1] < UserX | ... > < Cloud | ... > => ev1(UserX, Cloud) .
+[B2] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev2(UserX, Cloud, Device, UserY) .
+[B3] < UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev3(UserX, Cloud, Device, UserY) .
+[B4] < UserX | 'key' : Key , ... > < Device | ... > => ev4(UserX, Device, Key) .
+[B5] < UserX | ... > < Device | ... > => ev5(UserX, Device) .
+[B5] < UserX | ... > < deviceLock | ... > => ev6(UserX) .
+```
+==================================================
+< UserX | ... > < Cloud | ... > => ev1(UserX, Cloud) .
+< UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev2(UserX, Cloud, Device, UserY) .
+< UserX | ... > < UserY | ... > < Cloud | ... > < Device | ... > => ev3(UserX, Cloud, Device, UserY) .
+< UserX | 'key' : Key , ... > < Device | ... > => ev4(UserX, Device, Key) .
+< UserX | ... > < Device | ... > => ev5(UserX, Device) .
+< UserX | ... > < deviceLock | ... > => ev6(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | (..) > < Cloud | (...) > 
+=> ep: ev1(UserX, Cloud) @ S < UserX | (..) > < Cloud | (...) > .
+rl [rev2]: E @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > 
+=> ep: ev2(UserX, Cloud, Device, UserY) @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > 
+=> ep: ev3(UserX, Cloud, Device, UserY) @ S < UserX | (..) > < UserY | (...) > < Cloud | (....) > < Device | (.....) > .
+rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < Device | (...) > 
+=> ep: ev4(UserX, Device, Key) @ S < UserX | ('key' : Key , ..) > < Device | (...) > .
+rl [rev5]: E @ S < UserX | (..) > < Device | (...) > 
+=> ep: ev5(UserX, Device) @ S < UserX | (..) > < Device | (...) > .
+rl [rev6]: E @ S < UserX | (..) > < deviceLock | (...) > 
+=> ep: ev6(UserX) @ S < UserX | (..) > < deviceLock | (...) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 2901
+--------------------------------------------------
+```
+deviceOn =| < deviceLock | 'on' : true , ... > .
+attackerAuthorized =| < cloudB | deviceLock : ('trusted' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2065
+--------------------------------------------------
+```json
+{
+  "Rest": "Set"
+}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check CTRL-direct: counterexample (5 events)
+[+] Model written: sequence_diagram/output/eval-astra-20261105/run5/delegationFlaw2/rules.maude; status: validated

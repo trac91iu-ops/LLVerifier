@@ -1,0 +1,74 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:5c97941808809d9533ea6a15e4ac3344d513137d7b38abc50b7c7cfb41a5040f"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceB | ... > $ UserX 'pressButton' deviceB\n=> < deviceB | ... > $ deviceB 'uploadSecret' cloudA | (FreshSecret) .\n[B3] < cloudA | deviceB : ('tickets' : Tickets , ...) > $ deviceB 'uploadSecret' cloudA | (Secret)\n=> < cloudA | deviceB : ('tickets' : (Tickets , list (Secret ; CurrentTime)) , ...) > .\n[B4] < cloudA | deviceB : ('tickets' : (Tickets , list (Secret ; T)) , ...) > $ UserX 'getKey' cloudA | (deviceB)\n=> < cloudA | deviceB : ('tickets' : (Tickets , list (Secret ; T)) , ...) > $ cloudA 'sendSecret' UserX | (Secret) if T == CurrentTime .\n[B4] < UserX | 'knows' : Known , ... > $ cloudA 'sendSecret' UserX | (Secret)\n=> < UserX | 'knows' : (Known , Secret) , ... > .\n[B5] < cloudA | deviceB : ('owners' : nils , 'tickets' : (Tickets , list (Secret ; T)) , ...) > $ UserX 'bind' cloudA | (deviceB ; Secret)\n=> < cloudA | deviceB : ('owners' : (UserX) , 'tickets' : (Tickets , list (Secret ; T)) , ...) > .\n[B6] < cloudA | deviceB : ('owners' : Owners , 'tickets' : (Tickets , list (Secret ; T)) , ...) > $ UserX 'join' cloudA | (deviceB ; Secret)\n=> < cloudA | deviceB : ('owners' : (Owners , UserX) , 'tickets' : (Tickets , list (Secret ; T)) , ...) > if Owners =/= nils .\n[B7] < cloudA | deviceB : ('tickets' : (Tickets , list (Secret ; T)) , ...) >\n=> < cloudA | deviceB : ('tickets' : nils , ...) > if CurrentTime - T > 2 .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:3afa042a8b49f0434f54543c5ac5781ab36249784b1f2381e6a2bb2f4a8876e1"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"CurrentTime\": \"Nat\", \"FreshSecret\": \"Qid\", \"Known\": \"Set\", \"Owners\": \"Set\", \"Secret\": \"Qid\", \"T\": \"Nat\", \"Tickets\": \"Set\", \"UserX\": \"User\"}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:975b66be02258292634a40a8a0355fbe86beb5f453eb6059533710b9f468a8a0"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 6, 8, 9]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:b7bb3bc733480cd4ea5f5d1280704cb7f4b959c770fdc32cf45012b3e4c0e88d"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('knows' : nils , 'near' : deviceB) > < userC | ('knows' : nils , 'near' : nils) > < deviceB | nils > < cloudA | (deviceB : ('tickets' : nils , 'owners' : nils)) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:58e35d76bb843e110e18ae7cf7618247ab2e03a554f579f42aaed9162c5079f3"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev4(UserX) .\n[B5] < UserX | 'knows' : (Secret , Rest) , ... > => ev5(UserX, Secret) .\n[B6] < UserX | 'knows' : (Secret , Rest) , ... > => ev6(UserX, Secret) .",
+    "error": null
+  },
+  {
+    "stage": "genEventVars",
+    "prompt_hash": "genEventVars:ca33af4e6476aa726a5db81bf69c6528f2f5ffdd982a0f4cc87ff54f18a02890"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:9e43a44e0ae60a10f1f352ccea1bfb345d28ed1f391cd2a847ad79f9c9338612"
+  },
+  {
+    "attempt": 0,
+    "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:446b0931c41772c7130e6872eff002f40569a8a561cf908e89d007ae451b766f"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

@@ -1,0 +1,70 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Expected exactly one complete output code block.
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4606
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+[B3] < deviceB | 'owner' : nils , 'online' : false , 'key' : Key , ... > $ UserX 'pressButton' deviceB
+=> < deviceB | 'owner' : nils , 'online' : true , 'key' : Key , 'button' : true , ... > $ deviceB 'sendKey' UserX | (Key) .
+[B3] < UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | (Key)
+=> < UserX | 'key' : Key , ... > .
+[B4] < UserX | 'key' : Key , ... > < deviceB | 'owner' : nils , 'online' : true , 'key' : Key , ... > < cloudA | deviceB : ('owner' : nils , 'key' : Key , ...) > $ UserX 'callAPI:bind' cloudA | (deviceB ; Key)
+=> < UserX | 'key' : Key , ... > < deviceB | 'owner' : UserX , 'online' : true , 'key' : Key , ... > < cloudA | deviceB : ('owner' : UserX , 'key' : Key , ...) > .
+[B5] < UserX | 'key' : Key , ... > < cloudA | deviceB : ('owner' : UserX , ...) > $ UserX 'callAPI:reset' cloudA | (deviceB)
+=> < UserX | 'key' : Key , ... > < cloudA | deviceB : ('owner' : nils , ...) > $ cloudA 'reset' deviceB .
+[B5] < deviceB | 'online' : true , 'owner' : Owner, ... > $ cloudA 'reset' deviceB
+=> < deviceB | 'online' : false , 'owner' : nils , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2882
+--------------------------------------------------
+```json
+{
+  "Key": "Qid",
+  "Owner": "User",
+  "UserX": "User"
+}
+```
+==================================================
+{'Key': 'Qid', 'Owner': 'User', 'UserX': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('key' : [Qid] , 'near' : [Principal]) > < userC | ('key' : [Qid] , 'near' : [Principal]) > < deviceB | ('owner' : [User] , 'online' : [Bool] , 'key' : [Qid] , 'button' : [Bool]) > < cloudA | ([Principal] : ('owner' : [User] , 'key' : [Qid])) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+eq < deviceB | ('owner' : nils , 'online' : false , 'key' : Key , .. , 'button' : true) > $ UserX 'pressButton' deviceB 
+= < deviceB | ('owner' : nils , 'online' : true , 'key' : Key , 'button' : true , ..) > $ deviceB 'sendKey' UserX | (Key) .
+eq < UserX | ('key' : nils , ..) > $ deviceB 'sendKey' UserX | (Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < UserX | ('key' : Key , ..) > < deviceB | ('owner' : nils , 'online' : true , 'key' : Key , ...) > < cloudA | (deviceB : ('owner' : nils , 'key' : Key , ....) , .....) > $ UserX 'callAPI:bind' cloudA | (deviceB ; Key) 
+= < UserX | ('key' : Key , ..) > < deviceB | ('owner' : UserX , 'online' : true , 'key' : Key , ...) > < cloudA | (deviceB : ('owner' : UserX , 'key' : Key , ....) , .....) > .
+eq < UserX | ('key' : Key , ..) > < cloudA | (deviceB : ('owner' : UserX , ...) , ....) > $ UserX 'callAPI:reset' cloudA | (deviceB) 
+= < UserX | ('key' : Key , ..) > < cloudA | (deviceB : ('owner' : nils , ...) , ....) > $ cloudA 'reset' deviceB .
+eq < deviceB | ('online' : true , 'owner' : Owner , ..) > $ cloudA 'reset' deviceB 
+= < deviceB | ('online' : false , 'owner' : nils , ..) > .
+$ UserX 'approach' deviceB
+$ UserX 'leave' deviceB
+$ UserX 'pressButton' deviceB
+$ deviceB 'sendKey' UserX | (Key)
+$ UserX 'callAPI:bind' cloudA | (deviceB ; Key)
+$ UserX 'callAPI:reset' cloudA | (deviceB)
+$ cloudA 'reset' deviceB
+[*] Total token: 1896
+--------------------------------------------------
+```[1, 2, 3, 5, 6]```
+==================================================

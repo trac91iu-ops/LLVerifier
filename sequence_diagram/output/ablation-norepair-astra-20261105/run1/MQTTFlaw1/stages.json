@@ -1,0 +1,56 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:ac41869a9474ee3896db85b290d6c4760bc23152a9f7c0d63c003a0f4041969e"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX 'requestPublish' cloudB | 'toggle'\n=> < cloudB | 'buffer' : 'toggle' , UserX : ('permission' : true , ...) , ... > $ cloudB 'acknowledgeReceipt' UserX .\n\n[B2] < cloudB | UserX : ('permission' : OldPermission , ...) , ... > $ cloudB 'revokePermission' cloudB | UserX\n=> < cloudB | UserX : ('permission' : false , ...) , ... > .\n\n[B3] < cloudB | 'buffer' : Message , deviceB : ('permission' : true , ...) , ... > $ UserX 'releaseBufferedMessage' cloudB\n=> < cloudB | 'buffer' : nils , deviceB : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceB | Message if Message =/= nils .\n\n[B3] < deviceB | 'on' : false , ... > $ cloudB 'publish' deviceB | 'toggle'\n=> < deviceB | 'on' : true , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:0f5b40a5a58ebe2bdef7707fd086b804c5b333e6d7d34eca6af57385a8b2a148"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Message\": \"Qid\",\n  \"OldPermission\": \"Bool\",\n  \"UserX\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:762630cb6fa38548d2b584018298c0a6814a1d4deebcf0f72c5e465cdfc34bf4"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 3, 4]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:1ef7eacb915723a7fde91505aa37d53d03795b370ca78ea122ffaf477efcbf46"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | nils >\n< cloudB | ('buffer' : nils , deviceB : ('permission' : true) , userA : ('permission' : true)) >\n< deviceB | ('on' : false) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:32737198f494fcec306ef2eb0f4aebbe7f4af8c0db4097fb167151d21482f016"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | ... > => ev1(UserX) .\n[B2] < cloudB | UserX : ('permission' : true , ...) , ... > => ev2(UserX) .\n[B3] < UserX | ... > => ev3(UserX) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:8d6ceeb63772d0a0726da960170410094ef2a84e224b40642892e2bfade0ef79"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceOn =| < deviceB | 'on' : true , ... > .\nattackerAuthorized =| < cloudB | userA : ('permission' : true , ...) , ... > .",
+    "error": null
+  }
+]

@@ -1,0 +1,70 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:aa783572ad42b3ba21407882e715e7ab71e9d5311e389b041d3830d15a93b17e"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA\n=> < UserX | 'near' : deviceA , ... > .\n[B2] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA\n=> < UserX | 'near' : nils , ... > .\n[B3] < cloudA | 'key' : K , deviceA : ('trusted' : (UserX) , ...) > < RelayUser | 'near' : deviceA , ... > $ UserX 'shareAccess' cloudA | (deviceA ; UserY)\n=> < cloudA | 'key' : K , deviceA : ('trusted' : (UserX , UserY) , ...) > < RelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; list(encrypt('auth', K) ; 'share' ; UserY)) .\n[B4] < cloudA | 'key' : K , deviceA : ('trusted' : (UserX , UserY , Others) , ...) > < RelayUser | 'near' : deviceA , ... > $ UserX 'revokeAccess' cloudA | (deviceA ; UserY)\n=> < cloudA | 'key' : K , deviceA : ('trusted' : (UserX) , ...) > < RelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; list(encrypt('auth', K) ; 'revoke' ; UserY)) .\n[B5] < ImmediateRelayUser | 'near' : deviceA , ... > $ cloudA 'command' RelayUser | (deviceA ; L)\n=> < ImmediateRelayUser | 'near' : deviceA , ... > $ RelayUser 'forward' deviceA | (L) .\n[B6] < CachingRelayUser | 'near' : deviceA , 'cache' : nils , ... > $ cloudA 'command' RelayUser | (deviceA ; L)\n=> < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... > .\n[B7] < CachingRelayUser | 'near' : deviceA , 'cache' : L , ... >\n=> < CachingRelayUser | 'near' : deviceA , 'cache' : nils , ... > $ CachingRelayUser 'forward' deviceA | (L) .\n[B8] < cloudA | 'key' : K , ... > < deviceA | 'trusted' : Trusted , ... > $ Sender 'forward' deviceA | (list(encrypt('auth', K) ; 'share' ; UserY))\n=> < cloudA | 'key' : K , ... > < deviceA | 'trusted' : (Trusted , UserY) , ... > .\n[B9] < cloudA | 'key' : K , ... > < deviceA | 'trusted' : (UserY , Rest) , ... > $ Sender 'forward' deviceA | (list(encrypt('auth', K) ; 'revoke' ; UserY))\n=> < cloudA | 'key' : K , ... > < deviceA | 'trusted' : Rest , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:3fbe291304e1e9ef66ec75727f888b7282ec92c7e5a69b038c1a184384c07dde"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"CachingRelayUser\": \"User\", \"ImmediateRelayUser\": \"User\", \"K\": \"Qid\", \"L\": \"Item\", \"Others\": \"Set\", \"RelayUser\": \"User\", \"Rest\": \"Set\", \"Sender\": \"User\", \"Trusted\": \"Set\", \"UserX\": \"User\", \"UserY\": \"User\"}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:e6e63d67dddac0c7caa7365a679f60bc650774789e974c0db953c8560623e721"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 2, 3, 5, 9, 10]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:4c082872f53eda0b51c96d01e0249740e34e68ec96390c7e7ebbf8f8039fd13d"
+  },
+  {
+    "attempt": 0,
+    "output": "< userA | ('near' : nils , 'cache' : nils) > < userC | ('near' : nils , 'cache' : nils) > < cloudA | ('key' : 'secret' , deviceA : ('trusted' : (userA))) > < deviceA | ('trusted' : (userA)) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:6f6bdb484c651a64e28ea275d5e78f4ee0c532cdc5ecbfc9716697997c40ce8b"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > < deviceA | ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .\n[B3] < UserX | ... > < UserY | ... > => ev3(UserX, UserY) .\n[B4] < UserX | ... > < UserY | ... > => ev4(UserX, UserY) .\n[B7] < UserX | 'near' : deviceA , 'cache' : list((encrypt('auth', K) ; 'share' ; UserY)) , ... > => ev5(UserX, K, UserY) .\n[B7] < UserX | 'near' : deviceA , 'cache' : list((encrypt('auth', K) ; 'revoke' ; UserY)) , ... > => ev6(UserX, K, UserY) .",
+    "error": "No terminal matches ';' in the current parser context, at line 5 col 65\n\neA , 'cache' : list((encrypt('auth', K) ; 'share' ; UserY)) , ... > => ev5(UserX\n                                        ^\nExpected one of: '\\\\)', ','"
+  },
+  {
+    "attempt": 1,
+    "output": "[B1] < UserX | 'near' : nils , ... > < deviceA | ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceA , ... > => ev2(UserX) .\n[B3] < UserX | ... > < UserY | ... > => ev3(UserX, UserY) .\n[B4] < UserX | ... > < UserY | ... > => ev4(UserX, UserY) .\n[B7] < UserX | 'near' : deviceA , 'cache' : list(encrypt('auth', K) ; 'share' ; UserY) , ... > => ev5(UserX, K, UserY) .\n[B7] < UserX | 'near' : deviceA , 'cache' : list(encrypt('auth', K) ; 'revoke' ; UserY) , ... > => ev6(UserX, K, UserY) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:06eb8234080697b8979686fb12cc0185b50c82fcfdd2c8fd5cd31f39d21aecee"
+  },
+  {
+    "attempt": 0,
+    "output": "deviceTrustsAttacker =| < deviceA | 'trusted' : (userC , Rest) , ... > .\ncloudRecordsTrust =| < cloudA | deviceA : ('trusted' : (userC , Rest) , ...) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:dffd1f2f3431d1e3ed2112973176fdd9120044045501a79439f3773ed92c0fa6"
+  },
+  {
+    "attempt": 0,
+    "output": "{\"Rest\": \"Set\"}",
+    "error": null
+  }
+]

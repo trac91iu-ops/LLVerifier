@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "context_id": "f913ba78e6805a3408ae841cf3d830a1e308dd9dab6f2a1ce6be79e306e19a1f",
+  "answers": {
+    "genPolicy:0fc331064a8a7de68a7465f383a8e0fa7fc1f85b1f148a9f8882a6b7fed87d1a": "[B1] < cloudA | ... > < UserX | 'key' : OldKey , ... > $ UserX 'openWindow' cloudA\n=> < cloudA | ... > < UserX | 'key' : FreshKey , ... > $ cloudA 'openBindWindow' deviceA | (FreshKey) .\n[B1] < deviceA | 'key' : nils , ... > $ cloudA 'openBindWindow' deviceA | (Key)\n=> < deviceA | 'key' : Key , ... > .\n[B2] < deviceA | 'key' : Key , 'trusted' : (Trusted) , ... > $ UserX 'bind' deviceA | (Key)\n=> < deviceA | 'key' : Key , 'trusted' : (Trusted , UserX) , ... > .\n[B3] < deviceA | 'trusted' : (UserX , Rest) , 'on' : false , ... > $ UserX 'turnOn' deviceA\n=> < deviceA | 'trusted' : (UserX , Rest) , 'on' : true , ... > .\n[B4] < cloudA | UserX : ('device' : deviceA , ...) , ... > $ UserX 'cloudTurnOn' cloudA\n=> < cloudA | UserX : ('device' : deviceA , ...) , ... > $ cloudA 'turnOn' deviceA .\n[B4] < deviceA | 'trusted' : (cloudA , Rest) , 'on' : false , ... > $ cloudA 'turnOn' deviceA\n=> < deviceA | 'trusted' : (cloudA , Rest) , 'on' : true , ... > .\n[B5] < cloudA | UserX : ('device' : deviceA , 'members' : (Members) , ...) , UserY : ('device' : nils , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : deviceA , 'members' : (Members , UserY) , ...) , UserY : ('device' : deviceA , ...) , ... > .\n[B5] < cloudA | UserX : ('device' : deviceA , 'members' : (Members) , ...) , UserY : ('device' : DeviceY , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : deviceA , 'members' : (Members , UserY) , ...) , UserY : ('device' : DeviceY , ...) , ... > .\n[B5] < cloudA | UserX : ('device' : nils , 'members' : (Members) , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : nils , 'members' : (Members , UserY) , ...) , ... > .\n[B6] < cloudA | UserX : ('members' : (UserY , Rest) , ...) , UserY : ('device' : DeviceY , ...) , ... > $ UserX 'kick' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (Rest) , ...) , UserY : ('device' : nils , ...) , ... > .",
+    "genPolicyVars:cfe8410e51c2334ad882ef17164066671168cd48b8ac4f527bf87bb2f84ae8bf": "{\"DeviceY\": \"Device\", \"FreshKey\": \"Qid\", \"Key\": \"Qid\", \"Members\": \"Set\", \"OldKey\": \"Set\", \"Rest\": \"Set\", \"Trusted\": \"Set\", \"UserX\": \"User\", \"UserY\": \"User\"}",
+    "filterEvents:9ea027e964a9cdd6dfa32f8de0feb06c0d5f137ab3760971b1969aaaf1f7b40b": "[1, 4, 5, 6, 8, 9]",
+    "genInit:96001a2a062c9576a12351c71afb2c9b6556c0b5cb9ade2bd90c9db39173bf9e": "< cloudA | (userA : ('members' : nils , 'device' : deviceA) , userC : ('members' : nils , 'device' : nils)) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceA | ('trusted' : cloudA , 'on' : false , 'key' : nils) >",
+    "genRRLs:b80dc9753c7dbd137a72ec6d1f7baa63b03cdacf7dd2860b63d9af628b0998a4": "[B1] < cloudA | UserX : ('device' : deviceA , ...) , ... > < UserX | 'key' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'key' : (Key , Rest) , ... > => ev2(UserX, Key) .\n[B3] < UserX | ... > < deviceA | ... > => ev3(UserX) .\n[B4] < UserX | ... > => ev4(UserX) .\n[B5] < UserX | ... > < UserY | ... > => ev5(UserX, UserY) .\n[B6] < cloudA | UserX : ('members' : (UserY , Rest) , 'device' : DeviceZ , ...) , UserY : ('device' : DeviceZ , ...) , ... > => ev6(UserX, UserY) .",
+    "genEventVars:63a97b403347e8185e3cf06bc77f2cec1e5db1d3cabbbd07a9f7892fff98755e": "{\"DeviceZ\": \"Device\"}",
+    "genSlots:9585fba84677fde6612d766f0f0e6396668e5646055022730c8cdd8136ad7e3c": "deviceOn =| < deviceA | 'on' : true , ... > .\nattackerAuthorized =| < cloudA | userC : ('device' : deviceA , ...) , ... > ."
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:0fc331064a8a7de68a7465f383a8e0fa7fc1f85b1f148a9f8882a6b7fed87d1a"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < cloudA | ... > < UserX | 'key' : OldKey , ... > $ UserX 'openWindow' cloudA\n=> < cloudA | ... > < UserX | 'key' : FreshKey , ... > $ cloudA 'openBindWindow' deviceA | (FreshKey) .\n[B1] < deviceA | 'key' : nils , ... > $ cloudA 'openBindWindow' deviceA | (Key)\n=> < deviceA | 'key' : Key , ... > .\n[B2] < deviceA | 'key' : Key , 'trusted' : (Trusted) , ... > $ UserX 'bind' deviceA | (Key)\n=> < deviceA | 'key' : Key , 'trusted' : (Trusted , UserX) , ... > .\n[B3] < deviceA | 'trusted' : (UserX , Rest) , 'on' : false , ... > $ UserX 'turnOn' deviceA\n=> < deviceA | 'trusted' : (UserX , Rest) , 'on' : true , ... > .\n[B4] < cloudA | UserX : ('device' : deviceA , ...) , ... > $ UserX 'cloudTurnOn' cloudA\n=> < cloudA | UserX : ('device' : deviceA , ...) , ... > $ cloudA 'turnOn' deviceA .\n[B4] < deviceA | 'trusted' : (cloudA , Rest) , 'on' : false , ... > $ cloudA 'turnOn' deviceA\n=> < deviceA | 'trusted' : (cloudA , Rest) , 'on' : true , ... > .\n[B5] < cloudA | UserX : ('device' : deviceA , 'members' : (Members) , ...) , UserY : ('device' : nils , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : deviceA , 'members' : (Members , UserY) , ...) , UserY : ('device' : deviceA , ...) , ... > .\n[B5] < cloudA | UserX : ('device' : deviceA , 'members' : (Members) , ...) , UserY : ('device' : DeviceY , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : deviceA , 'members' : (Members , UserY) , ...) , UserY : ('device' : DeviceY , ...) , ... > .\n[B5] < cloudA | UserX : ('device' : nils , 'members' : (Members) , ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('device' : nils , 'members' : (Members , UserY) , ...) , ... > .\n[B6] < cloudA | UserX : ('members' : (UserY , Rest) , ...) , UserY : ('device' : DeviceY , ...) , ... > $ UserX 'kick' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (Rest) , ...) , UserY : ('device' : nils , ...) , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:cfe8410e51c2334ad882ef17164066671168cd48b8ac4f527bf87bb2f84ae8bf"
+    },
+    {
+      "attempt": 0,
+      "output": "{\"DeviceY\": \"Device\", \"FreshKey\": \"Qid\", \"Key\": \"Qid\", \"Members\": \"Set\", \"OldKey\": \"Set\", \"Rest\": \"Set\", \"Trusted\": \"Set\", \"UserX\": \"User\", \"UserY\": \"User\"}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:9ea027e964a9cdd6dfa32f8de0feb06c0d5f137ab3760971b1969aaaf1f7b40b"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 4, 5, 6, 8, 9]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:96001a2a062c9576a12351c71afb2c9b6556c0b5cb9ade2bd90c9db39173bf9e"
+    },
+    {
+      "attempt": 0,
+      "output": "< cloudA | (userA : ('members' : nils , 'device' : deviceA) , userC : ('members' : nils , 'device' : nils)) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceA | ('trusted' : cloudA , 'on' : false , 'key' : nils) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:b80dc9753c7dbd137a72ec6d1f7baa63b03cdacf7dd2860b63d9af628b0998a4"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < cloudA | UserX : ('device' : deviceA , ...) , ... > < UserX | 'key' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'key' : (Key , Rest) , ... > => ev2(UserX, Key) .\n[B3] < UserX | ... > < deviceA | ... > => ev3(UserX) .\n[B4] < UserX | ... > => ev4(UserX) .\n[B5] < UserX | ... > < UserY | ... > => ev5(UserX, UserY) .\n[B6] < cloudA | UserX : ('members' : (UserY , Rest) , 'device' : DeviceZ , ...) , UserY : ('device' : DeviceZ , ...) , ... > => ev6(UserX, UserY) .",
+      "error": null
+    },
+    {
+      "stage": "genEventVars",
+      "prompt_hash": "genEventVars:63a97b403347e8185e3cf06bc77f2cec1e5db1d3cabbbd07a9f7892fff98755e"
+    },
+    {
+      "attempt": 0,
+      "output": "{\"DeviceZ\": \"Device\"}",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:9585fba84677fde6612d766f0f0e6396668e5646055022730c8cdd8136ad7e3c"
+    },
+    {
+      "attempt": 0,
+      "output": "deviceOn =| < deviceA | 'on' : true , ... > .\nattackerAuthorized =| < cloudA | userC : ('device' : deviceA , ...) , ... > .",
+      "error": null
+    }
+  ]
+}

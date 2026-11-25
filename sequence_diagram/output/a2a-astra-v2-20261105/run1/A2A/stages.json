@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:191b828da6891700fad49b3e2e0a93158d6b954c36ae6012b530015a3d5dbb60"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < serverA | 'context' : nils , 'history' : OldHistory , ... > $ ClientX 'sendWithoutContext' serverA | 'msgA'\n=> < serverA | 'context' : 'ctxX' , 'history' : ('msgA') , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History)\n=> < ClientX | 'knowCtx' : 'ctxX' , 'receivedHistory' : History , ... > .\n[B1] < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : History , ... > if Ctx =/= nils .\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History)\n=> < ClientX | 'knowCtx' : nils , 'receivedHistory' : History , ... > if OldHistory =/= nils .\n[B2] < ClientY | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'context' : Ctx , ... > $ ClientY 'snoop' serverA | Ctx\n=> < ClientY | 'authenticated' : true , 'knowCtx' : Ctx , ... > < serverA | 'context' : Ctx , ... > if Ctx =/= nils .\n[B3] < serverA | 'context' : 'ctxX' , 'history' : Hist , ... > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB')\n=> < serverA | 'context' : 'ctxX' , 'history' : ('msgB' , Hist) , ... > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) .\n[B3] < ClientY | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientY | ('ctxX' ; History)\n=> < ClientY | 'receivedHistory' : History , ... > .\n[B4] < serverA | 'context' : 'ctxX' , 'history' : Hist , ... > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2')\n=> < serverA | 'context' : 'ctxX' , 'history' : ('msgA2' , Hist) , ... > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) .\n[B4] < ClientX | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientX | ('ctxX' ; History)\n=> < ClientX | 'receivedHistory' : History , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:2ac17dca87b1fd38cd2cad5a60f47ac4cd4dc2ed17de53c3b1574a0de4e8e310"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"ClientX\": \"Client\",\n  \"ClientY\": \"Client\",\n  \"Ctx\": \"Qid\",\n  \"Hist\": \"Set\",\n  \"History\": \"Set\",\n  \"OldHistory\": \"Set\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:f6e37904c1755c9c02ed67052440b662e060155a67f102e8b8b1a69e69c33c52"
+  },
+  {
+    "attempt": 0,
+    "output": "[1, 4, 5, 8]",
+    "error": null
+  },
+  {
+    "stage": "genInit",
+    "prompt_hash": "genInit:9c3ea3c186eeebc5002fe0fd82f9525f3e31db2403a02e30ce5e09c266c8292e"
+  },
+  {
+    "attempt": 0,
+    "output": "< serverA | ('history' : nils , 'context' : nils) >\n< clientA | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >\n< clientB | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >",
+    "error": null
+  },
+  {
+    "stage": "genRRLs",
+    "prompt_hash": "genRRLs:e60b87e801bdf3319b639d06ceb0bc1a4231fed2dae26882e1d660ce3f564586"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < ClientX | 'authenticated' : true , 'knowCtx' : nils , ... > => ev1(ClientX) .\n[B2] < ClientY | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'context' : Ctx , ... > => ev2(ClientY, Ctx) .\n[B3] < ClientY | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > => ev3(ClientY) .\n[B4] < ClientX | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > => ev4(ClientX) .",
+    "error": null
+  },
+  {
+    "stage": "genSlots",
+    "prompt_hash": "genSlots:18bd0bc7d46b159fe64f52a6a1365b053be70817b4da5ae552092f7de6156853"
+  },
+  {
+    "attempt": 0,
+    "output": "attackerReadsVictimData =| < clientB | 'receivedHistory' : ('msgA' , Rest) , ... > .\nvictimContextTampered =| < serverA | 'context' : 'ctxX' , 'history' : ('msgB' , Rest) , ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPropVars",
+    "prompt_hash": "genPropVars:5e943f71b7a0b7a71da476d17e0ec727d584510b6c1bc326c396b1ab8364e424"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"Rest\": \"Set\"\n}",
+    "error": null
+  }
+]

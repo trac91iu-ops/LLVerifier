@@ -1,0 +1,90 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | ('cachedCommand' : nils , 'near' : nils) > < userC | ('near' : nils , 'cachedCommand' : nils) > < deviceB | ('trusted' : (userA) , 'key' : nils , 'command' : nils) > < cloudB | (deviceB : ('trusted' : userA) , 'key' : 'cloudKey') > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars CachingRelayUser : User .
+vars Cloud : Cloud .
+vars Device : Device .
+vars L : List .
+vars RelayUser : User .
+vars Secret : Qid .
+vars TrustedUsers : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < UserX | ('near' : nils , ..) > < Device | (...) > $ UserX 'approach' Device 
+= < UserX | ('near' : Device , ..) > < Device | (...) > .
+eq < UserX | ('near' : Device , ..) > $ UserX 'leave' Device 
+= < UserX | ('near' : nils , ..) > .
+ceq < Cloud | ('key' : Secret , Device : ('trusted' : (UserX) , ..) , ...) > < RelayUser | ('near' : Device , ....) > $ UserX 'shareAccess' Cloud | (Device ; UserY) 
+= < Cloud | ('key' : Secret , Device : ('trusted' : (UserX , UserY , ..) , ..) , ...) > < RelayUser | ('near' : Device , ....) > $ Cloud 'sendCommand' RelayUser | (Device ; encrypt('auth', Secret) ; 'share' ; UserY) if 1 == 1 .
+ceq < Cloud | ('key' : Secret , Device : ('trusted' : (UserX , UserY , ..) , ...) , ....) > < RelayUser | ('near' : Device , .....) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) 
+= < Cloud | ('key' : Secret , Device : ('trusted' : (UserX) , ...) , ....) > < RelayUser | ('near' : Device , .....) > $ Cloud 'sendCommand' RelayUser | (Device ; encrypt('auth', Secret) ; 'revoke' ; UserY) if 1 == 1 .
+eq < RelayUser | ('near' : Device , ..) > $ RelayUser 'forwardCommand' Device | (L) 
+= < RelayUser | ('near' : Device , ..) > $ RelayUser 'proxyCommand' Device | (L) .
+eq < CachingRelayUser | ('near' : Device , 'cachedCommand' : nils , ..) > < Device | ('command' : L , ...) > 
+= < CachingRelayUser | ('near' : Device , 'cachedCommand' : L , ..) > < Device | ('command' : L , ...) > .
+eq < CachingRelayUser | ('near' : Device , 'cachedCommand' : L , ..) > $ CachingRelayUser 'forwardCommand' Device | (L) 
+= < CachingRelayUser | ('near' : Device , 'cachedCommand' : nils , ..) > $ CachingRelayUser 'proxyCommand' Device | (L) .
+eq < Device | ('key' : Secret , 'trusted' : TrustedUsers , ..) > $ RelayUser 'proxyCommand' Device | (encrypt('auth', Secret) ; 'share' ; UserY) 
+= < Device | ('key' : Secret , 'trusted' : (TrustedUsers , UserY) , ..) > .
+eq < Device | ('key' : Secret , 'trusted' : (TrustedUsers , UserY) , ..) > $ RelayUser 'proxyCommand' Device | (encrypt('auth', Secret) ; 'revoke' ; UserY) 
+= < Device | ('key' : Secret , 'trusted' : TrustedUsers , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars CachingRelayUser : User .
+vars Cloud : Cloud .
+vars Device : Device .
+vars L : List .
+vars RelayUser : User .
+vars Secret : Qid .
+vars TrustedUsers : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User Device -> Event .
+ops ev2 : User Device -> Event .
+ops ev3 : User Cloud Device User -> Event .
+ops ev4 : User Cloud Device User -> Event .
+ops ev5 : User Device List -> Event .
+ops ev6 : User Device Qid User -> Event .
+ops ev7 : User Device Qid -> Event .
+ops ev8 : User Device Qid User -> Event .
+ops ev9 : User Device Qid -> Event .
+*** events
+eq ev1(UserX, Device) = $ UserX 'approach' Device .
+eq ev2(UserX, Device) = $ UserX 'leave' Device .
+eq ev3(UserX, Cloud, Device, UserY) = $ UserX 'shareAccess' Cloud | (Device ; UserY) .
+eq ev4(UserX, Cloud, Device, UserY) = $ UserX 'revokeAccess' Cloud | (Device ; UserY) .
+eq ev5(RelayUser, Device, L) = $ RelayUser 'forwardCommand' Device | (L) .
+eq ev6(RelayUser, Device, Secret, UserY) = $ RelayUser 'proxyCommand' Device | (encrypt('auth', Secret) ; 'share' ; UserY) .
+eq ev7(RelayUser, Device, MessageA) = $ RelayUser 'proxyCommand' Device | (MessageA) .
+eq ev8(RelayUser, Device, Secret, UserY) = $ RelayUser 'proxyCommand' Device | (encrypt('auth', Secret) ; 'revoke' ; UserY) .
+eq ev9(RelayUser, Device, MessageA) = $ RelayUser 'proxyCommand' Device | (MessageA) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > 
+=> ep: ev1(UserX, deviceB) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev2(UserX, deviceB) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev3(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev4]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev4(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev5]: E @ S < RelayUser | ('near' : deviceB , ..) > < deviceB | ('command' : L , ...) > 
+=> ep: ev5(RelayUser, deviceB, L) @ S < RelayUser | ('near' : deviceB , ..) > < deviceB | ('command' : L , ...) > .
+rl [rev5]: E @ S < CachingRelayUser | ('near' : deviceB , 'cachedCommand' : L , ..) > 
+=> ep: ev5(CachingRelayUser, deviceB, L) @ S < CachingRelayUser | ('near' : deviceB , 'cachedCommand' : L , ..) > .
+
+endm

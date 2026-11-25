@@ -1,0 +1,43 @@
+{
+  "input": "sequence_diagram/input/Netvue/diagram.md",
+  "input_sha256": "2befc59018b2e95e5b9cdc864587b3743110f0af97f1264c35bba87125365998",
+  "pipeline_id": "1b1c6ab83fcfb28a63a7d7591929373cb9a07fe1358f4918c725b0394c6a2cbc",
+  "mode": "check",
+  "started_at": "2026-11-05T04:39:56.161610+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run1/Netvue/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owners', nils)))), <_|_>(userA, _`,_(_:_('message', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('message', nils), _:_('near', nils))), <_|_>(deviceB, _:_('key', 'deviceKey'))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 5,
+    "coverage_issues": []
+  },
+  "model_sha256": "441bb69787b34695a1c54fef105874f4213b00c4466373f74a24b031a184992c",
+  "check": {
+    "property": "OWN-remote",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "attackerLocal": false,
+      "attackerOwner": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 151.746,
+  "tokens_this_run": 20817,
+  "finished_at": "2026-11-05T04:42:27.909447+00:00"
+}

@@ -1,0 +1,134 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | deviceA : ('bindKey' : '', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : nils, 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : '', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : nils, 'pressed' : true >, 'rev2} {$ userA 'setKey' deviceA | 'keyA' @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : true >, 'rev3} {$ userA 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev4} {$ userA 'bind' cloudA | (deviceA ; 'keyA') @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : userA) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : userA) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : true >, 'rev2} {$ userA 'setKey' deviceA | 'keyA' @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : userA) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev3} {$ userA 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : userA) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev4} {$ userC 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : userA) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev5} {$ userA 'reset' cloudA | (deviceA ; 'keyA') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : true >, 'rev3} {$ userA 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev2} {$ userA 'setKey' deviceA | 'keyA' @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev4} {$ userA 'bind' cloudA | (deviceA ; 'keyA') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev4} {$ userC 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev5} {$ userC 'reset' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev6} {$ userC 'approach' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyA', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyA', 'pressed' : true >, 'rev2} {$ userA 'setKey' deviceA | 'keyA' @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyA', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyA', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyA', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyA', 'pressed' : true >, 'rev2} {$ userC 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyA', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev3} {$ userA 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userA 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev2} {$ userC 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev3} {$ userC 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userA 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userA 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev2} {$ userC 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev3} {$ userA 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev3} {$ userC 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userC 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev5} {$ userA 'reset' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev3} {$ userA 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev2} {$ userA 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev2} {$ userC 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev3} {$ userC 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userA 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userC 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev5} {$ userC 'reset' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev7} {$ userA 'leave' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userC 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev3} {$ userC 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userA 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userC 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userC 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev3} {$ userC 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userC 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userA) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev5} {$ userA 'reset' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev2} {$ userC 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev3} {$ userC 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userA 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userC 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev5} {$ userC 'reset' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : nils > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev6} {$ userA 'approach' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : deviceA > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev7} {$ userC 'leave' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userA 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userC 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userC) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1} {$ userA 'pressButton' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userC) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : true >, 'rev2} {$ userA 'setKey' deviceA | 'keyC' @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userC) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev3} {$ userA 'getKey' deviceA @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userC) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev4} {$ userA 'bind' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userC) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev5} {$ userA 'reset' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : 'keyC', 'owner' : userC) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev5} {$ userC 'reset' cloudA | (deviceA ; 'keyC') @
+< cloudA | deviceA : ('bindKey' : nils, 'owner' : nils) > < userA | 'key' : 'keyC', 'near' : deviceA > < userC | 'key' : 'keyC', 'near' : nils > < deviceA | 'key' : 'keyC', 'pressed' : false >, 'rev1}
+idle
+$ userA 'pressButton' deviceA
+$ userA 'setKey' deviceA | 'keyA'
+$ userA 'pressButton' deviceA
+$ userA 'getKey' deviceA
+$ userA 'bind' cloudA | (deviceA ; 'keyA')
+$ userA 'pressButton' deviceA
+$ userA 'setKey' deviceA | 'keyA'
+$ userA 'reset' cloudA | (deviceA ; 'keyA')
+$ userA 'pressButton' deviceA
+$ userA 'getKey' deviceA
+$ userC 'approach' deviceA
+$ userA 'pressButton' deviceA
+$ userA 'setKey' deviceA | 'keyA'
+$ userA 'pressButton' deviceA
+$ userC 'setKey' deviceA | 'keyC'
+$ userA 'pressButton' deviceA
+$ userA 'getKey' deviceA
+$ userA 'pressButton' deviceA
+$ userA 'setKey' deviceA | 'keyC'
+$ userA 'bind' cloudA | (deviceA ; 'keyC')
+$ userA 'pressButton' deviceA
+$ userA 'setKey' deviceA | 'keyC'
+$ userA 'reset' cloudA | (deviceA ; 'keyC')
+$ userA 'pressButton' deviceA
+$ userA 'getKey' deviceA
+$ userA 'leave' deviceA
+$ userC 'pressButton' deviceA
+$ userC 'setKey' deviceA | 'keyC'
+$ userC 'pressButton' deviceA
+$ userC 'getKey' deviceA
+$ userA 'bind' cloudA | (deviceA ; 'keyC')
+$ userC 'pressButton' deviceA
+$ userC 'setKey' deviceA | 'keyC'
+$ userA 'reset' cloudA | (deviceA ; 'keyC')
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'pressButton' deviceA
+$ userA 'setKey' deviceA | 'keyC'
+$ userC 'bind' cloudA | (deviceA ; 'keyC')
+$ userA 'pressButton' deviceA
+$ userA 'setKey' deviceA | 'keyC'
+$ userC 'reset' cloudA | (deviceA ; 'keyC')
+rewrites: 2480 in 6ms cpu (6ms real) (411345 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceA ^ ($ userA 'setKey' deviceA | 'keyA' ^ ($ userA 'pressButton' deviceA ^ ($ userA 'getKey' deviceA ^ ($ userA 'bind' cloudA | (deviceA ; 'keyA') ^ ($ userA 'pressButton' deviceA ^ ($ userA 'setKey' deviceA | 'keyA' ^ ($ userA 'reset' cloudA | (deviceA ; 'keyA') ^ ($ userA 'pressButton' deviceA ^ ($ userA 'getKey' deviceA ^ ($ userC 'approach' deviceA ^ ($ userA 'pressButton' deviceA ^ ($ userA 'setKey' deviceA | 'keyA' ^ ($ userA 'pressButton' deviceA ^ ($ userC 'setKey' deviceA | 'keyC' ^ ($ userA 'pressButton' deviceA ^ ($ userA 'getKey' deviceA ^ ($ userA 'pressButton' deviceA ^ ($ userA 'setKey' deviceA | 'keyC' ^ ($ userA 'bind' cloudA | (deviceA ; 'keyC') ^ ($ userA 'pressButton' deviceA ^ ($ userA 'setKey' deviceA | 'keyC' ^ ($ userA 'reset' cloudA | (deviceA ; 'keyC') ^ ($ userA 'pressButton' deviceA ^ ($ userA 'getKey' deviceA ^ ($ userA 'leave' deviceA ^ ($ userC 'pressButton' deviceA ^ ($ userC 'setKey' deviceA | 'keyC' ^ ($ userC 'pressButton' deviceA ^ ($ userC 'getKey' deviceA ^ ($ userA 'bind' cloudA | (deviceA ; 'keyC') ^ ($ userC 'pressButton' deviceA ^ ($ userC 'setKey' deviceA | 'keyC' ^ ($ userA 'reset' cloudA | (deviceA ; 'keyC') ^ ($ userA 'approach' deviceA ^ ($ userC 'leave' deviceA ^ ($ userA 'pressButton' deviceA ^ ($ userA 'setKey' deviceA | 'keyC' ^ ($ userC 'bind' cloudA | (deviceA ; 'keyC') ^ ($ userA 'pressButton' deviceA ^ ($ userA 'setKey' deviceA | 'keyC' ^ ($ userC 'reset' cloudA | (deviceA ; 'keyC') ^ nile))))))))))))))))))))))))))))))))))))))))))
+==========================================
+reduce in CHECK : init |= attackerLocal .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= attackerOwner .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

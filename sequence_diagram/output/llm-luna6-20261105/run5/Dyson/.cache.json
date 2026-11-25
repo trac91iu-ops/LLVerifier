@@ -1,0 +1,93 @@
+{
+  "schema_version": 2,
+  "context_id": "29c749e32bdd43fffb331529e786ed797b75d6ec9198937acf8dca25fe2bf071",
+  "answers": {
+    "genPolicy:ebd4201fced0ea69add8179ca89c2ec2bf8b291e97abbe0c95d5ecad716215f6": "[B1] < cloudA | UserX : ('members' : Members, 'device' : UserDevice, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (UserY, Members), 'device' : UserDevice, ...) , ... > .\n[B1] < cloudA | UserX : ('members' : Members, 'device' : DeviceX, ...) , UserY : ('device' : nils, ...) , ... >\n=> < cloudA | UserX : ('members' : Members, 'device' : DeviceX, ...) , UserY : ('device' : DeviceX, ...) , ... > .\n[B2] < cloudA | UserX : ('device' : DeviceX, ...) , ... > < DeviceX | 'key' : Key, ... > $ UserX 'requestKey' cloudA | (DeviceX)\n=> < cloudA | UserX : ('device' : DeviceX, ...) , ... > < DeviceX | 'key' : Key, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key) .\n[B2] < UserX | 'key' : nils, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : Key, ... > .\n[B2] < UserX | 'key' : OldKey, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : OldKey, ... > .\n[B3] < deviceA | 'key' : Key, 'on' : false, ... > $ UserX 'turnOn' deviceA | (Key)\n=> < deviceA | 'key' : Key, 'on' : true, ... > .\n[B4] < cloudA | UserX : ('device' : deviceA, ...) , ... > < deviceA | 'on' : false, ... > $ UserX 'cloudTurnOn' cloudA | (deviceA)\n=> < cloudA | UserX : ('device' : deviceA, ...) , ... > < deviceA | 'on' : true, ... > .\n[B5] < cloudA | UserX : ('members' : Members, ...) , UserY : ('device' : DeviceX, ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : Members, ...) , UserY : ('device' : nils, ...) , ... > .",
+    "genPolicyVars:10b2fce4c78925437bd1480d9c357770dbbccf1a1f04c468d8416d08aa754153": "{\n  \"DeviceX\": \"Device\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"OldKey\": \"Qid\",\n  \"UserDevice\": \"Device\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "filterEvents:5c6055a4b969c685787730beeb503b0cf110ac789d992f2f52327b04a1d4d3e8": "[1, 2, 4, 5, 6]",
+    "genInit:8d342f35883d081603b31748f01db9e1a89bd1c795bfd5504378f7c3b60936bd": "< cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils)) > < deviceB | ('key' : 'keyB') > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceA | ('on' : false , 'key' : nils) >",
+    "genRRLs:c3c51e9d7205a672cbcfa6269b09deb7538828e0bf8be39e6038c227f6a242b1": "[B1] < cloudA | UserX : ('members' : Members , 'device' : DeviceValue) , UserY : ('device' : nils) , ... > => ev1(UserX, UserY) .\n[B2] < cloudA | UserX : ('members' : Members , 'device' : DeviceX) , ... > < DeviceX | ... > => ev2(UserX, DeviceX) .\n[B2] < cloudA | UserX : ('members' : Members , 'device' : DeviceX) , ... > < UserX | ... > => ev2(UserX, DeviceX) .\n[B3] < UserX | 'key' : Key , ... > < deviceA | 'key' : DeviceKey , 'on' : On , ... > => ev3(UserX, Key) .\n[B4] < cloudA | UserX : ('members' : Members , 'device' : DeviceX) , ... > < DeviceX | ... > => ev4(UserX) .\n[B5] < cloudA | UserX : ('members' : (UserY , Rest) , 'device' : DeviceX) , ... > => ev5(UserX, UserY) .",
+    "genEventVars:6864b15ed3ac07853f05761a83763fdbbc8049397c35c46f8731369b2989d2ed": "{\n  \"DeviceKey\": \"Qid\",\n  \"DeviceValue\": \"Set\",\n  \"On\": \"Bool\",\n  \"Rest\": \"Set\"\n}",
+    "genSlots:e401daf8534d34d406e26676a28a174ae9007c69ba45a7948b963cefc1d74e6e": "deviceOn =| < deviceA | 'on' : true , ... > .\nattackerAuthorized =| < cloudA | userA : ('members' : (userC , Rest) , ...) , ... > .",
+    "genPropVars:fadf27b3f9eab7941a81f457bffe0fc9744ef36ee09ee458ff006443e4cf46b1": "{\"Rest\": \"Set\"}"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:ebd4201fced0ea69add8179ca89c2ec2bf8b291e97abbe0c95d5ecad716215f6"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < cloudA | UserX : ('members' : Members, 'device' : UserDevice, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (UserY, Members), 'device' : UserDevice, ...) , ... > .\n[B1] < cloudA | UserX : ('members' : Members, 'device' : DeviceX, ...) , UserY : ('device' : nils, ...) , ... >\n=> < cloudA | UserX : ('members' : Members, 'device' : DeviceX, ...) , UserY : ('device' : DeviceX, ...) , ... > .\n[B2] < cloudA | UserX : ('device' : DeviceX, ...) , ... > $ UserX 'requestKey' cloudA | (DeviceX)\n=> < cloudA | UserX : ('device' : DeviceX, ...) , ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key) .\n[B2] < UserX | 'key' : nils, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : Key, ... > .\n[B2] < UserX | 'key' : OldKey, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : OldKey, ... > .\n[B3] < deviceA | 'key' : Key, 'on' : false, ... > $ UserX 'turnOn' deviceA | (Key)\n=> < deviceA | 'key' : Key, 'on' : true, ... > .\n[B4] < cloudA | UserX : ('device' : deviceA, ...) , ... > < deviceA | 'on' : false, ... > $ UserX 'cloudTurnOn' cloudA | (deviceA)\n=> < cloudA | UserX : ('device' : deviceA, ...) , ... > < deviceA | 'on' : true, ... > .\n[B5] < cloudA | UserX : ('members' : Members, ...) , UserY : ('device' : DeviceX, ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : Members, ...) , UserY : ('device' : nils, ...) , ... > .",
+      "error": "[Errors]\nFind additional variables Key in right-hand side of state rule eq < cloudA | (UserX : ('device' : DeviceX , ..) , ..) > $ UserX 'requestKey' cloudA | (DeviceX) \n= < cloudA | (UserX : ('device' : DeviceX , ..) , ..) > $ cloudA 'sendKey' UserX | (DeviceX ; Key) ..\nThese variables should appear on the left-hand side (premise) first. To record them, possibly use an attribute in the internal states on the left-hand side."
+    },
+    {
+      "attempt": 1,
+      "output": "[B1] < cloudA | UserX : ('members' : Members, 'device' : UserDevice, ...) , ... > $ UserX 'invite' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : (UserY, Members), 'device' : UserDevice, ...) , ... > .\n[B1] < cloudA | UserX : ('members' : Members, 'device' : DeviceX, ...) , UserY : ('device' : nils, ...) , ... >\n=> < cloudA | UserX : ('members' : Members, 'device' : DeviceX, ...) , UserY : ('device' : DeviceX, ...) , ... > .\n[B2] < cloudA | UserX : ('device' : DeviceX, ...) , ... > < DeviceX | 'key' : Key, ... > $ UserX 'requestKey' cloudA | (DeviceX)\n=> < cloudA | UserX : ('device' : DeviceX, ...) , ... > < DeviceX | 'key' : Key, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key) .\n[B2] < UserX | 'key' : nils, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : Key, ... > .\n[B2] < UserX | 'key' : OldKey, ... > $ cloudA 'sendKey' UserX | (DeviceX ; Key)\n=> < UserX | 'key' : OldKey, ... > .\n[B3] < deviceA | 'key' : Key, 'on' : false, ... > $ UserX 'turnOn' deviceA | (Key)\n=> < deviceA | 'key' : Key, 'on' : true, ... > .\n[B4] < cloudA | UserX : ('device' : deviceA, ...) , ... > < deviceA | 'on' : false, ... > $ UserX 'cloudTurnOn' cloudA | (deviceA)\n=> < cloudA | UserX : ('device' : deviceA, ...) , ... > < deviceA | 'on' : true, ... > .\n[B5] < cloudA | UserX : ('members' : Members, ...) , UserY : ('device' : DeviceX, ...) , ... > $ UserX 'removeMember' cloudA | (UserY)\n=> < cloudA | UserX : ('members' : Members, ...) , UserY : ('device' : nils, ...) , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:10b2fce4c78925437bd1480d9c357770dbbccf1a1f04c468d8416d08aa754153"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"DeviceX\": \"Device\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"OldKey\": \"Qid\",\n  \"UserDevice\": \"Device\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:5c6055a4b969c685787730beeb503b0cf110ac789d992f2f52327b04a1d4d3e8"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 2, 4, 5, 6]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:8d342f35883d081603b31748f01db9e1a89bd1c795bfd5504378f7c3b60936bd"
+    },
+    {
+      "attempt": 0,
+      "output": "< cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils)) > < deviceB | ('key' : 'keyB') > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceA | ('on' : false , 'key' : nils) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:c3c51e9d7205a672cbcfa6269b09deb7538828e0bf8be39e6038c227f6a242b1"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < cloudA | UserX : ('members' : Members , 'device' : DeviceValue) , UserY : ('device' : nils) , ... > => ev1(UserX, UserY) .\n[B2] < cloudA | UserX : ('members' : Members , 'device' : DeviceX) , ... > < DeviceX | ... > => ev2(UserX, DeviceX) .\n[B2] < cloudA | UserX : ('members' : Members , 'device' : DeviceX) , ... > < UserX | ... > => ev2(UserX, DeviceX) .\n[B3] < UserX | 'key' : Key , ... > < deviceA | 'key' : DeviceKey , 'on' : On , ... > => ev3(UserX, Key) .\n[B4] < cloudA | UserX : ('members' : Members , 'device' : DeviceX) , ... > < DeviceX | ... > => ev4(UserX) .\n[B5] < cloudA | UserX : ('members' : (UserY , Rest) , 'device' : DeviceX) , ... > => ev5(UserX, UserY) .",
+      "error": null
+    },
+    {
+      "stage": "genEventVars",
+      "prompt_hash": "genEventVars:6864b15ed3ac07853f05761a83763fdbbc8049397c35c46f8731369b2989d2ed"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"DeviceKey\": \"Qid\",\n  \"DeviceValue\": \"Set\",\n  \"On\": \"Bool\",\n  \"Rest\": \"Set\"\n}",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:e401daf8534d34d406e26676a28a174ae9007c69ba45a7948b963cefc1d74e6e"
+    },
+    {
+      "attempt": 0,
+      "output": "deviceOn =| < deviceA | 'on' : true , ... > .\nattackerAuthorized =| < cloudA | userA : ('members' : (userC , Rest) , ...) , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPropVars",
+      "prompt_hash": "genPropVars:fadf27b3f9eab7941a81f457bffe0fc9744ef36ee09ee458ff006443e4cf46b1"
+    },
+    {
+      "attempt": 0,
+      "output": "{\"Rest\": \"Set\"}",
+      "error": null
+    }
+  ]
+}

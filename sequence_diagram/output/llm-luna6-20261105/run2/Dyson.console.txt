@@ -1,0 +1,78 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 2 repairs: Expected nonempty DSL rules.
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4140
+--------------------------------------------------
+```text
+[B1] < Cloud | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' Cloud | (UserY)
+=> < Cloud | UserX : ('members' : (UserY , Members) , ...) , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2435
+--------------------------------------------------
+```json
+{
+  "Cloud": "Cloud",
+  "Members": "Set",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'Cloud': 'Cloud', 'Members': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< cloudB | ([User] : ('members' : ([Set]))) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < Cloud | (UserX : ('members' : Members , ..) , ...) > $ UserX 'invite' Cloud | (UserY) 
+= < Cloud | (UserX : ('members' : (UserY , Members) , ..) , ...) > .
+$ UserX 'invite' Cloud | (UserY)
+[*] Total token: 1703
+--------------------------------------------------
+``` 
+[]
+```
+==================================================
+[*] Total token: 1904
+--------------------------------------------------
+```python
+[1]
+```
+==================================================
+[1]
+[$ UserX 'invite' Cloud | (UserY)]
+[eq ev1(UserX, Cloud, UserY) = $ UserX 'invite' Cloud | (UserY) .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3126
+--------------------------------------------------
+``` 
+< cloudB | (userA : ('members' : (deviceB)) , userC : ('members' : nils)) >
+```
+==================================================
+< cloudB | (userA : ('members' : (deviceB)) , userC : ('members' : nils)) >
+[*] Generating event rules with LLM...
+[*] Total token: 3349
+--------------------------------------------------
+``` 
+[B1] < cloudB | UserX : ('members' : Members) , ... > => ev1(UserX, cloudB, UserY) .
+```
+==================================================
+[*] Total token: 3555
+--------------------------------------------------
+```text
+```
+==================================================
+[*] Total token: 3565
+--------------------------------------------------
+```text
+```
+==================================================

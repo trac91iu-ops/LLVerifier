@@ -1,0 +1,117 @@
+{
+  "protocol": "philips",
+  "model_sha256": "60a5d72199a591b47af033ebd26642bdedc0b7623adb81bd9eec120e37f49112",
+  "runs": [
+    "run2"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run2/philips/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Philips/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'getKey'": "'callAPI:getKey'",
+      "'join'": "'callAPI:join'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'sendSecret'": "'send'",
+      "'uploadSecret'": "'callAPI:setKey'"
+    },
+    "attributes": {
+      "'counter'": "'counter'",
+      "'knownSecrets'": "'knowledge'",
+      "'near'": "'localTo'",
+      "'owners'": "'owner'",
+      "'tickets'": "'tickets'",
+      "'time'": "'time'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "system": "system",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'Secret'": "'Secret'",
+      "'secret'": "'key'"
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:getKey'",
+      "'callAPI:join'",
+      "'callAPI:setKey'",
+      "'leaves'",
+      "'pressButton'",
+      "'send'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'knowledge'",
+      "'localTo'",
+      "'owner'",
+      "'tickets'",
+      "'time'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'Secret'",
+      "'key'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'getKey'",
+      "'join'",
+      "'leave'",
+      "'pressButton'",
+      "'sendSecret'",
+      "'uploadSecret'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'knownSecrets'",
+      "'near'",
+      "'owners'",
+      "'tickets'",
+      "'time'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'Secret'",
+      "'secret'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:01:53+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2675,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'getKey'\": \"'callAPI:getKey'\",\n    \"'join'\": \"'callAPI:join'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'sendSecret'\": \"'send'\",\n    \"'uploadSecret'\": \"'callAPI:setKey'\"\n  },\n  \"attributes\": {\n    \"'counter'\": \"'counter'\",\n    \"'knownSecrets'\": \"'knowledge'\",\n    \"'near'\": \"'localTo'\",\n    \"'owners'\": \"'owner'\",\n    \"'tickets'\": \"'tickets'\",\n    \"'time'\": \"'time'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"system\": \"system\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'Secret'\": \"'Secret'\",\n    \"'secret'\": \"'key'\"\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

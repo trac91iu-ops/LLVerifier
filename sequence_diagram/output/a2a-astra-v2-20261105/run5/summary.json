@@ -1,0 +1,17 @@
+[
+  {
+    "protocol": "A2A",
+    "subtype": "CTX-isolation",
+    "attacker": "clientB",
+    "exit": 1,
+    "status": "failed",
+    "error": "ValueError: Validation failed after 2 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: The parser requires at least one argument, but the supplied declarations define ",
+    "verdict": null,
+    "events": 0,
+    "golden_verdict": "counterexample",
+    "golden_events": 4,
+    "true_at_init": null,
+    "coverage_issues": null,
+    "calls": null
+  }
+]

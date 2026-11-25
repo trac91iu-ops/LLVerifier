@@ -1,0 +1,5 @@
+$ userA 'invite' cloudA | userC
+$ userC 'turnOn' deviceB
+$ userC 'invite' cloudA | userA
+$ userA 'openWindow' cloudA | deviceB
+$ userA 'bind' deviceB | 'KeyA'2357136044

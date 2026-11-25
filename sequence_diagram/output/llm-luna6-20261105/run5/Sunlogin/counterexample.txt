@@ -1,0 +1,6 @@
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userC 'pressButton' deviceB
+$ userA 'leave' deviceB
+$ userC 'leave' deviceB
+$ userC 'bind' cloudA | (deviceB ; 'deviceKeyA')

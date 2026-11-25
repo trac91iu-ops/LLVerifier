@@ -1,0 +1,34 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var FreshKey : Qid .
+  var Key : Qid .
+  var Members : Set .
+  var OldKey : Qid .
+  var OldNear : Set .
+  var Owners : Set .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < system | ('counter' : 0) > < userA | ('key' : nils, 'near' : deviceB) > < userC | ('key' : nils, 'near' : nils) > < deviceB | ('key' : 'keyB', 'locked' : false) > < cloudA | (userA : ('devices' : nils, 'members' : nils, 'owners' : nils), userC : ('devices' : nils, 'members' : nils, 'owners' : nils), deviceB : ('devices' : nils, 'members' : nils, 'owners' : nils, 'key' : 'keyB')) > .
+  eq < UserX | ('near' : OldNear, ..) > $ UserX 'approach' deviceB = < UserX | ('near' : deviceB, ..) > .
+  eq < UserX | ('near' : OldNear, ..) > $ UserX 'leave' deviceB = < UserX | ('near' : nils, ..) > .
+  eq < system | ('counter' : N, ..) > < deviceB | ('key' : OldKey, ...) > $ UserX 'pressButton' deviceB = < system | ('counter' : N + 1, ..) > < deviceB | ('key' : randomStr ('Key', N), ...) > .
+  eq < UserX | ('key' : nils, ..) > < deviceB | ('locked' : false, 'key' : Key, ...) > $ UserX 'retrieveKey' deviceB = < UserX | ('key' : Key, ..) > < deviceB | ('locked' : false, 'key' : Key, ...) > .
+  eq < deviceB | ('locked' : false, 'key' : Key, ..) > $ UserX 'lock' deviceB | (Key) = < deviceB | ('locked' : true, 'key' : Key, ..) > .
+  eq < deviceB | ('key' : Key, ..) > < cloudA | (deviceB : ('owners' : Owners, ...), ....) > $ UserX 'bind' cloudA | (deviceB ; Key) = < deviceB | ('key' : Key, ..) > < cloudA | (deviceB : ('owners' : (UserX, Owners), ...), ....) > .
+  eq < cloudA | (userC : ('devices' : nils, 'members' : Members, ..), ...) > $ userC 'invite' cloudA | (userA) = < cloudA | (userC : ('devices' : nils, 'members' : (userA, Members), ..), ...) > .
+  eq < cloudA | (userC : ('devices' : nils, 'members' : (userA, Members), ..), ...) > $ userC 'remove' cloudA | (userA) = < cloudA | (userC : ('devices' : nils, 'members' : Members, ..), ...) > .
+  eq < cloudA | (..) > $ UserY 'retrieveCloudKey' cloudA | (deviceB ; Key) = < cloudA | (..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (37037 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(userC, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(deviceB, _`,_(_:_('devices', nils), _:_('key', 'keyB'), _:_('members', nils), _:_('owners', nils))))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('key', 'keyB'), _:_('locked', false)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userC, 'approach', deviceB), __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(userC, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(deviceB, _`,_(_:_('devices', nils), _:_('key', 'keyB'), _:_('members', nils), _:_('owners', nils))))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(deviceB, _`,_(_:_('key', 'keyB'), _:_('locked', false)))))
+Bye.

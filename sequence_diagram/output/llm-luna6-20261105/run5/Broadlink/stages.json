@@ -1,0 +1,24 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:583944116376755b219a9138668cee716e85ea0551a451e7b8678524de77a57f"
+  },
+  {
+    "attempt": 0,
+    "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB => < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB => < UserX | 'near' : nils , ... > .\n[B3] < UserX | 'near' : deviceB , ... > < deviceB | 'key' : OldKey , ... > $ UserX 'pressButton' deviceB => < UserX | 'near' : deviceB , ... > < deviceB | 'key' : FreshKeyB , ... > .\n[B4] < UserX | 'key' : nils , ... > < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'retrieveKey' deviceB => < UserX | 'key' : Key , ... > < deviceB | 'locked' : false , 'key' : Key , ... > .\n[B5] < UserX | 'near' : deviceB , 'key' : Key , ... > < deviceB | 'locked' : false , 'key' : Key , ... > $ UserX 'lock' deviceB => < UserX | 'near' : deviceB , 'key' : Key , ... > < deviceB | 'locked' : true , 'key' : Key , ... > .\n[B6] < UserX | 'key' : Key , ... > < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Key) => < UserX | 'key' : Key , ... > < deviceB | 'key' : Key , ... > < cloudA | deviceB : ('key' : Key , 'owners' : (UserX , Owners) , ...) , ... > .\n[B7] < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > $ userC 'invite' cloudA | (userA) => < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > .\n[B8] < cloudA | userC : ('devices' : nils , 'members' : (userA , Members) , ...) , ... > $ userC 'remove' cloudA | (userA) => < cloudA | userC : ('devices' : nils , 'members' : Members , ...) , ... > .\n[B9] < UserY | ... > < cloudA | ... > $ UserY 'retrieveKey' cloudA | (deviceB) => < UserY | ... > < cloudA | ... > .",
+    "error": null
+  },
+  {
+    "stage": "genPolicyVars",
+    "prompt_hash": "genPolicyVars:07e0d48e53072a11ff39f278dc2e57186a414a59b385703bd1cc696000f97d1f"
+  },
+  {
+    "attempt": 0,
+    "output": "{\n  \"FreshKeyB\": \"Qid\",\n  \"Key\": \"Qid\",\n  \"Members\": \"Set\",\n  \"OldKey\": \"Qid\",\n  \"Owners\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "error": null
+  },
+  {
+    "stage": "filterEvents",
+    "prompt_hash": "filterEvents:1a0c307db53faf308bc86403e3cc0e1b64c9103ec13cf8d61a11b53959cac43e"
+  }
+]

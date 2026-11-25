@@ -1,0 +1,55 @@
+load rules .
+load model-checker .
+
+mod PREDS is
+pr TRANSITION * (sort State to State') .
+including SATISFACTION .
+pr BOOL-OPS .
+
+subsort Vertex < State .
+
+vars N : Nat .
+vars CtxX : Qid .
+var Vtx : Vertex .
+var P : Prop .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... : Set .
+
+ops boundReached : -> Prop .
+
+*** Declarations of atomic propositions
+ops ap4 ap5 : -> Prop .
+
+*** ap4 (Confidentiality violation): Client B receives Client A's history ('msgA')
+eq E @ S < clientB | ('receivedHistory' : ('msgA' , ..) , ...) > |= ap4 = true .
+
+*** ap5 (Integrity violation): Context history on server accumulates both msgA and msgB
+eq E @ S < serverA | ('contexts' : (CtxX : ('history' : ('msgA' , 'msgB' , ..)))) > |= ap5 = true .
+
+*** Search depth bound control
+ceq E @ S < system | 'counter' : N , ... > |= boundReached = true if N >= 5 .
+
+--- eq Vtx |= P = false [owise] .
+
+endm
+
+mod CHECK is
+pr PREDS .
+including MODEL-CHECKER .
+
+ops basic safety spec : -> Prop .
+
+*** Bound constraint
+eq basic = [] (~ boundReached) .
+
+*** Attack pattern (as in every checker, spec = O ~ (safety /\ basic) returns a path where it holds):
+*** information leakage (ap4) or context poisoning (ap5) eventually happens
+eq safety = <> (ap4 \/ ap5) . 
+
+*** Verification target formula: Search for counterexample violating safety
+eq spec = O ~ (safety /\ basic) .
+
+endm
+
+load ../lib/postProcess .

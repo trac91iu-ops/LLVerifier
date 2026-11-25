@@ -1,0 +1,24 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Msg : Qid .
+  var Rest : Set .
+  var UserX : User .
+  eq init = idle @ < cloudB | ('permission' : (userA, deviceA), 'buffer' : nils) > < deviceA | ('on' : false) > .
+  eq < cloudB | ('buffer' : nils, 'permission' : (UserX, Rest), ..) > $ UserX 'publish' cloudB | ('toggle') = < cloudB | ('buffer' : 'toggle', 'permission' : (UserX, Rest), ..) > $ cloudB 'ack' UserX | ('toggle') .
+  eq < cloudB | ('permission' : (UserX, Rest), ..) > $ cloudB 'revokePermission' cloudB | (UserX) = < cloudB | ('permission' : (Rest), ..) > .
+  eq < cloudB | ('buffer' : Msg, 'permission' : (deviceA, Rest), ..) > $ UserX 'release' cloudB = < cloudB | ('buffer' : nils, 'permission' : (deviceA, Rest), ..) > $ cloudB 'publishMsg' deviceA | (Msg) .
+  eq < deviceA | ('on' : false, ..) > $ cloudB 'publishMsg' deviceA | ('toggle') = < deviceA | ('on' : true, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (30303 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_('permission', _`,_(userA, deviceA)))), <_|_>(deviceA, _:_('on', false))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___|_(cloudB, 'revokePermission', cloudB, userA), __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_('permission', deviceA))), <_|_>(deviceA, _:_('on', false))))
+Bye.

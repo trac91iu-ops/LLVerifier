@@ -1,12 +1,14 @@
 #!/bin/python3
+# Kept consistent with DSLSyntax.ParseGrammar (the parser behind every syntax check);
+# tests/test_model_pipeline.py checks the examples below against the parser.
 StateRule = '''\
-<StateRule> ::= <LogicalState> "=>" <LogicalState> "."
-<LogicalState> ::= <InternalState>+ <Event>?\
+<StateRule> ::= <LogicalState> "=>" <LogicalState> ("if" <Condition>)? "."
+<LogicalState> ::= <InternalState>+ <Event>? <InternalState>*\
 '''
 
 EventDecl = '''\
 <EventDeclare> ::= "eq" <EventName> "=" <Event>  "."
-<EventName> ::= "ev" integer "(" <Var> ("," <Var>)* ")"\
+<EventName> ::= "ev" integer "(" <Item> ("," <Item>)* ")"   (* at least one argument *)\
 '''
 
 EventRule = f'''\
@@ -23,25 +25,29 @@ VarDecl = '''\
 '''
 
 Base= '''\
-<InternalState> ::= "< " <Principal> " | " <Attributes> " >"
-<Event> ::= "$ " <Principal> <Action> <Principal> (" | " <Arguments>)?
-<Var> ::= /A-Z/ Identifier
+<InternalState> ::= "<" <Principal> "|" <Attributes>? ">"
+<Event> ::= "$" <Principal> <Action> <Principal> ("|" <Arguments>)?
 <Principal> ::= <User> | <Device> | <Cloud> | <App> | <Server> | <Client> | <Var>
-<Pair> ::= <Qid>  ":" <Item> | <Qid> ":" <Set> |  <Principal> ":" <Set>
-<Item> ::= Bool | <Qid> | integer | <Principal> | <Pair> | <Var>
-<List> ::= "(" <Item> (";" <Item>)* ")" 
-<Set> ::=  "(" <Item> ("," <Item>)* ")" | "nils"
-<Arguments> ::= <Item> | <List> 
-<Attributes> ::= <Pair> ("," <Pair>)* ("," "...")? | "..."
-<Action> ::= <Qid>
-<Qid> ::= "'" Identifier "'"
-<User> ::= "user" Identifier
-<Device> ::= "device" Identifier
-<Cloud> ::= "cloud" Identifier
-<App> ::= "app" Identifier
-<Server> ::= "server" Identifier
-<Client> ::= "client" Identifier
-Identifier ::= /[a-zA-Z0-9_:]+/\
+<Attributes> ::= (<Pair> | "...") ("," (<Pair> | "..."))* | <Set>
+<Pair> ::= <Qid> ":" <Item> | <Principal> ":" "(" <Attributes> ")"
+<Item> ::= <Bool> | <Qid> | integer | <Principal> | <Pair> | <Set> | <FunCall> | "..."
+<Set> ::= "nils" | "(" <Item> ("," <Item>)* ")"
+<List> ::= "(" <Item> (";" <Item>)* ")"
+<FunCall> ::= ("encrypt" | "decrypt") "(" <Item> ("," <Item>)* ")" | "list" <List>
+<Arguments> ::= <Item> | <List>
+<Action> ::= <Qid> | <Var>
+<Qid> ::= /'[^']*'/
+<Bool> ::= "true" | "false"
+<Var> ::= /[A-Z][a-zA-Z0-9_]*/
+<User> ::= "user" /[A-Z][a-zA-Z0-9_]*/
+<Device> ::= "device" /[A-Z][a-zA-Z0-9_]*/
+<Cloud> ::= "cloud" /[A-Z][a-zA-Z0-9_]*/
+<App> ::= "app" /[A-Z][a-zA-Z0-9_]*/
+<Server> ::= "server" /[A-Z][a-zA-Z0-9_]*/
+<Client> ::= "client" /[A-Z][a-zA-Z0-9_]*/
+(* A principal key always takes a parenthesized value: `DeviceX : ('key' : K , ...)`,
+   `UserX : ((UserY , Rest))` for a set, `UserX : (nils)` when empty. *)
+(* In <Arguments>, `;` separates ordered arguments; `(A , B)` is one set-valued argument. *)\
 '''
 
 BaseBak= '''\
@@ -67,17 +73,17 @@ Identifier ::= /[a-zA-Z0-9_:]+/\
 '''
 
 Condition = '''\
-<CS> ::= <LogicalState> "=>" <LogicalState> "if" <Condition> "."
-<Condition> ::= <Arith> <CMP> <Arith>
-<Arith> ::= <Arith> <OP> <Arith> | integer | <Var>
-<OP> ::= "+" | "-" | "*"
+<Condition> ::= <Arith> <CMP> <Arith>   (* exactly one comparison; no "and"/"or" *)
+<Arith> ::= <Arith> <OP> <Arith> | "(" <Arith> ")" | integer | <Var> | <FunCall> | "nils"
+<OP> ::= "+" | "-" | "*" | "/"
 <CMP> ::= ">" | "<" | ">=" | "<=" | "==" | "=/="\
 '''
 
+# Same sorts as the variable-type validator in LLMInterface._variableTypes.
 Types = '''\
-<Type> ::= "Qid" | "Bool" | "Nat"| "Principal" |  "User"
+<Type> ::= "Qid" | "Bool" | "Nat" | "Principal" | "User"
          | "Device" | "Cloud" | "App" | "Server" | "Client"
-         | "Set" | "List" | "Event" | "Action"\
+         | "Set" | "List" | "Item" | "Key" | "Action" | "Arguments" | "Attributes"\
 '''
 
 Template = '''\

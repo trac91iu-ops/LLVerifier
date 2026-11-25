@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "context_id": "430eab734034a0b732116025242d6ec6b73af72e2f5c172b13145267c1e16efb",
+  "answers": {},
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:271dea8c5aeb8e035dce4c1a3c0169b97ad80c0f88a57ecc2cf75ac7d7ce439d"
+    },
+    {
+      "attempt": 0,
+      "output": "< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n\n< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n\n< deviceB | ... > $ UserX 'pressButton' deviceB\n=> < deviceB | ... > $ deviceB 'uploadSecret' cloudA | (deviceB ; FreshSecret) .\n\n< cloudA | deviceB : ('tickets' : Tickets , ...) , ... > $ deviceB 'uploadSecret' cloudA | (deviceB ; Secret)\n=> < cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : CurrentTime) , Tickets) , ...) , ... > .\n\n< cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ UserX 'getKey' cloudA | deviceB\n=> < cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ cloudA 'sendSecret' UserX | (deviceB ; Secret)\nif Issued == CurrentTime .\n\n< UserX | 'knowledge' : Knowledge , ... > $ cloudA 'sendSecret' UserX | (deviceB ; Secret)\n=> < UserX | 'knowledge' : (Secret , Knowledge) , ... > .\n\n< cloudA | deviceB : ('owners' : nils , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; Secret)\n=> < cloudA | deviceB : ('owners' : (UserX) , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > .\n\n< cloudA | deviceB : ('owners' : (UserY , Owners) , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > $ UserX 'join' cloudA | (deviceB ; Secret)\n=> < cloudA | deviceB : ('owners' : (UserX , UserY , Owners) , 'tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... > .\n\n< cloudA | deviceB : ('tickets' : (('secret' : Secret , 'issued' : Issued) , Tickets) , ...) , ... >\n=> < cloudA | deviceB : ('tickets' : nils , ...) , ... >\nif CurrentTime - Issued > 2 .",
+      "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near"
+    }
+  ]
+}

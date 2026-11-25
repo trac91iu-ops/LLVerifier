@@ -1,0 +1,104 @@
+{
+  "protocol": "Meross",
+  "model_sha256": "2cb48d43a42da58b2907ca2373b0fa80f65a5ea9ec64c602c49f202c026bf843",
+  "runs": [
+    "run2"
+  ],
+  "generated": "sequence_diagram/output/eval-v1-20261102/run2/Meross/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/Meross/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'bindDevice'": "'callAPI:bind'",
+      "'leave'": "'leaves'",
+      "'pressButton'": "'pressButton'",
+      "'sendDeviceKey'": "'sendKey'"
+    },
+    "attributes": {
+      "'key'": "'key'",
+      "'keys'": "'keys'",
+      "'near'": "'localTo'",
+      "'owner'": "'owner'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "'deviceKeyB'": "'secret'",
+      "'userKeyA'": "'UIDA'",
+      "'userKeyC'": "'UIDC'"
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'leaves'",
+      "'pressButton'",
+      "'sendKey'"
+    ],
+    "attributes": [
+      "'key'",
+      "'keys'",
+      "'localTo'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'UIDA'",
+      "'UIDC'",
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'bindDevice'",
+      "'leave'",
+      "'pressButton'",
+      "'sendDeviceKey'"
+    ],
+    "attributes": [
+      "'key'",
+      "'keys'",
+      "'near'",
+      "'owner'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "'deviceKeyB'",
+      "'userKeyA'",
+      "'userKeyC'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-04T05:01:15+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 1914,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'bindDevice'\": \"'callAPI:bind'\",\n    \"'leave'\": \"'leaves'\",\n    \"'pressButton'\": \"'pressButton'\",\n    \"'sendDeviceKey'\": \"'sendKey'\"\n  },\n  \"attributes\": {\n    \"'key'\": \"'key'\",\n    \"'keys'\": \"'keys'\",\n    \"'near'\": \"'localTo'\",\n    \"'owner'\": \"'owner'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"'deviceKeyB'\": \"'secret'\",\n    \"'userKeyA'\": \"'UIDA'\",\n    \"'userKeyC'\": \"'UIDC'\"\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

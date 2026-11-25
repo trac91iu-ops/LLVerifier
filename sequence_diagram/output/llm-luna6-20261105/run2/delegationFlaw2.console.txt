@@ -1,0 +1,82 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Expected exactly one complete output code block.
+[*] Diagram split into 8 blocks
+[*] Generating policy with LLM...
+[*] Total token: 5321
+--------------------------------------------------
+```text
+[B1] < UserX | 'key' : UserKey , ... > < Cloud | Device : ('trusted' : (UserX, ...) , 'key' : Key , ...) , ... > $ UserX 'requestKey' Cloud => < UserX | 'key' : UserKey , ... > < Cloud | Device : ('trusted' : (UserX, ...) , 'key' : Key , ...) , ... > $ Cloud 'sendKey' UserX | (Key) .
+[B1] < UserX | 'key' : nils , ... > $ Cloud 'sendKey' UserX | (Key) => < UserX | 'key' : Key , ... > .
+[B2] < UserX | ... > < UserY | ... > < Cloud | Device : ('trusted' : (UserX, Rest) , ...) , ... > $ UserX 'delegateAccess' Cloud | (Device ; UserY) => < UserX | ... > < UserY | ... > < Cloud | Device : ('trusted' : (UserX, UserY, Rest) , ...) , ... > .
+[B3] < UserX | ... > < UserY | ... > < Cloud | Device : ('trusted' : (UserX, UserY, Rest) , ...) , ... > $ UserX 'revokeAccess' Cloud | (Device ; UserY) => < UserX | ... > < UserY | ... > < Cloud | Device : ('trusted' : (UserX, Rest) , ...) , ... > .
+[B4] < UserX | 'key' : Key , ... > < SmartThingsCloud | deviceSwitch : ('key' : Key , 'state' : 'off' , ...) , ... > $ UserX 'turnOn' SmartThingsCloud | (deviceSwitch ; Key) => < UserX | 'key' : Key , ... > < SmartThingsCloud | deviceSwitch : ('key' : Key , 'state' : 'on' , ...) , ... > $ SmartThingsCloud 'turnOn' deviceSwitch .
+[B4] < deviceSwitch | ... > $ SmartThingsCloud 'turnOn' deviceSwitch => < deviceSwitch | ... > .
+[B5] < deviceSwitch | ... > $ UserX 'turnOn' deviceSwitch => < deviceSwitch | ... > .
+[B6] < Cloud | Device : ('trusted' : (P, ...) , 'state' : 'off' , ...) , ... > $ P 'turnOn' Cloud | (Device) => < Cloud | Device : ('trusted' : (P, ...) , 'state' : 'on' , ...) , ... > $ Cloud 'turnOn' Device .
+[B7] < SmartThingsCloud | deviceSwitch : ('linkedLock' : deviceLock , ...) , ... > $ SmartThingsCloud 'turnOn' deviceSwitch => < SmartThingsCloud | deviceSwitch : ('linkedLock' : deviceLock , ...) , ... > $ SmartThingsCloud 'turnOn' deviceLock .
+[B8] < deviceLock | 'trusted' : (P, ...) , 'state' : 'off' , ... > $ P 'turnOn' deviceLock => < deviceLock | 'trusted' : (P, ...) , 'state' : 'on' , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3482
+--------------------------------------------------
+```json
+{
+  "Cloud": "Cloud",
+  "Device": "Device",
+  "Key": "Qid",
+  "P": "Principal",
+  "Rest": "Set",
+  "SmartThingsCloud": "Cloud",
+  "UserKey": "Qid",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'Cloud': 'Cloud', 'Device': 'Device', 'Key': 'Qid', 'P': 'Principal', 'Rest': 'Set', 'SmartThingsCloud': 'Cloud', 'UserKey': 'Qid', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | ('key' : [Qid]) > < userC | ('key' : [Qid]) > < cloudB | ([Principal] : ('linkedLock' : [Principal] , 'state' : {'on' , 'off'} , 'key' : [Qid]) , [Device] : ('state' : {'on' , 'off'} , 'trusted' : {[Principal] , [User] , [Set]} , 'key' : [Qid])) > < deviceSwitch | nils > < deviceLock | ('state' : {'on' , 'off'} , 'trusted' : ([Principal])) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < UserX | ('key' : UserKey , ..) > < Cloud | (Device : ('trusted' : (UserX , ...) , 'key' : Key , ....) , .....) > $ UserX 'requestKey' Cloud 
+= < UserX | ('key' : UserKey , ..) > < Cloud | (Device : ('trusted' : (UserX , ...) , 'key' : Key , ....) , .....) > $ Cloud 'sendKey' UserX | (Key) .
+eq < UserX | ('key' : nils , ..) > $ Cloud 'sendKey' UserX | (Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < UserX | (..) > < UserY | (...) > < Cloud | (Device : ('trusted' : (UserX , Rest) , ....) , .....) > $ UserX 'delegateAccess' Cloud | (Device ; UserY) 
+= < UserX | (..) > < UserY | (...) > < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , ....) , .....) > .
+eq < UserX | (..) > < UserY | (...) > < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , ....) , .....) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) 
+= < UserX | (..) > < UserY | (...) > < Cloud | (Device : ('trusted' : (UserX , Rest) , ....) , .....) > .
+eq < UserX | ('key' : Key , ..) > < SmartThingsCloud | (deviceSwitch : ('key' : Key , 'state' : 'off' , ...) , ....) > $ UserX 'turnOn' SmartThingsCloud | (deviceSwitch ; Key) 
+= < UserX | ('key' : Key , ..) > < SmartThingsCloud | (deviceSwitch : ('key' : Key , 'state' : 'on' , ...) , ....) > $ SmartThingsCloud 'turnOn' deviceSwitch .
+eq < deviceSwitch | (..) > $ SmartThingsCloud 'turnOn' deviceSwitch 
+= < deviceSwitch | (..) > .
+eq < deviceSwitch | (..) > $ UserX 'turnOn' deviceSwitch 
+= < deviceSwitch | (..) > .
+eq < Cloud | (Device : ('trusted' : (P , ..) , 'state' : 'off' , ...) , ....) > $ P 'turnOn' Cloud | (Device) 
+= < Cloud | (Device : ('trusted' : (P , ..) , 'state' : 'on' , ...) , ....) > $ Cloud 'turnOn' Device .
+eq < SmartThingsCloud | (deviceSwitch : ('linkedLock' : deviceLock , ..) , ...) > $ SmartThingsCloud 'turnOn' deviceSwitch 
+= < SmartThingsCloud | (deviceSwitch : ('linkedLock' : deviceLock , ..) , ...) > $ SmartThingsCloud 'turnOn' deviceLock .
+eq < deviceLock | ('trusted' : (P , ..) , 'state' : 'off' , ...) > $ P 'turnOn' deviceLock 
+= < deviceLock | ('trusted' : (P , ..) , 'state' : 'on' , ...) > .
+$ UserX 'requestKey' Cloud
+$ Cloud 'sendKey' UserX | (Key)
+$ UserX 'delegateAccess' Cloud | (Device ; UserY)
+$ UserX 'revokeAccess' Cloud | (Device ; UserY)
+$ UserX 'turnOn' SmartThingsCloud | (deviceSwitch ; Key)
+$ SmartThingsCloud 'turnOn' deviceSwitch
+$ UserX 'turnOn' deviceSwitch
+$ P 'turnOn' Cloud | (Device)
+$ Cloud 'turnOn' Device
+$ SmartThingsCloud 'turnOn' deviceLock
+$ P 'turnOn' deviceLock
+[*] Total token: 2624
+--------------------------------------------------
+```[1, 3, 4, 5, 7, 11]```
+==================================================

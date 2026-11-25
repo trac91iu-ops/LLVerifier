@@ -2,7 +2,7 @@
 PROVIDERS:
   openrouter:
     base_url: "https://openrouter.ai/api/v1/"
-    api_key: "sk-or-v1-XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    api_key: "YOUR_API_KEY"
     models: 
       - "deepseek/deepseek-r1:free"
       - "tngtech/deepseek-r1t-chimera:free" #164K
@@ -20,7 +20,7 @@ PROVIDERS:
       - "qwen2.5:7b-instruct"
   Xai:
     base_url: "https://api.x.ai/v1"
-    api_key: "xai-XXXXXXXXXXXXXXXXXXXXXXXXxxx"
+    api_key: "YOUR_API_KEY"
     models:
       - "grok-3-mini-beta" #131K
       - "grok-3-mini" #131K
@@ -28,7 +28,7 @@ PROVIDERS:
     proxy: "http://127.0.0.1:20171" #optional
   Cloudflare:
     base_url: "https://api.cloudflare.com/client/v4/accounts/XXXXXXXXXXX/ai/v1"
-    api_key: "xxxxxxxxxxx"
+    api_key: "YOUR_API_KEY"
     models:
       - "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
       - "@cf/meta/llama-4-scout-17b-16e-instruct"

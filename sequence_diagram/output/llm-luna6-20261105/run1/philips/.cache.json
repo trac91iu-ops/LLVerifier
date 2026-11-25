@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "context_id": "d000e77e414045456cdc8cfb8d631b5c67478a9c6e732e582f1185dfc9c7c4da",
+  "answers": {
+    "genPolicy:e5e76049de0091dd0f40c55e414a329361abd3a7d5ae318d9aed776905677883": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceB | ... > $ UserX 'pressButton' deviceB\n=> < deviceB | ... > $ deviceB 'uploadSecret' cloudA | (FreshSecret ; CurrentTime) .\n[B3] < cloudA | deviceB : ('tickets' : Tickets , ...) , ... > $ deviceB 'uploadSecret' cloudA | (Secret ; IssuedAt)\n=> < cloudA | deviceB : ('tickets' : (Tickets , (Secret , IssuedAt)) , ...) , ... > .\n[B4] < cloudA | deviceB : ('tickets' : (Tickets , (Secret , CurrentTime)) , ...) , ... > $ UserX 'getKey' cloudA\n=> < cloudA | deviceB : ('tickets' : (Tickets , (Secret , CurrentTime)) , ...) , ... > $ cloudA 'sendSecret' UserX | (Secret) .\n[B4] < UserX | 'knows' : Knowns , ... > $ cloudA 'sendSecret' UserX | (Secret)\n=> < UserX | 'knows' : (Knowns , Secret) , ... > .\n[B5] < cloudA | deviceB : ('owner' : nils , 'tickets' : Tickets , ...) , ... > $ UserX 'bind' cloudA | (Secret)\n=> < cloudA | deviceB : ('owner' : UserX , 'tickets' : Tickets , ...) , ... > .\n[B6] < cloudA | deviceB : ('owner' : Owner , 'owners' : Owners , 'tickets' : Tickets , ...) , ... > $ UserX 'join' cloudA | (Secret)\n=> < cloudA | deviceB : ('owner' : Owner , 'owners' : (Owners , UserX) , 'tickets' : Tickets , ...) , ... > .\n[B7] < cloudA | deviceB : ('tickets' : (Tickets , (Secret , IssuedAt)) , ...) , ... >\n=> < cloudA | deviceB : ('tickets' : nils , ...) , ... > if CurrentTime - IssuedAt > 2 .",
+    "genPolicyVars:09eeae0dde5341f72dec3dc5ca129923ed7edcc76e8d5f38ce624c62961f51dc": "{\n  \"CurrentTime\": \"Nat\",\n  \"FreshSecret\": \"Qid\",\n  \"IssuedAt\": \"Nat\",\n  \"Knowns\": \"Set\",\n  \"Owner\": \"User\",\n  \"Owners\": \"Set\",\n  \"Secret\": \"Qid\",\n  \"Tickets\": \"Set\",\n  \"UserX\": \"User\"\n}",
+    "filterEvents:e1f4cc0247cfc6c43c816e1c5a852763959393aca6a92a36a6042e3fd6a5c664": "[1, 2, 3, 4, 5, 6, 8, 9]",
+    "genInit:8496b3f7d452f65b49a781fb89e4e9f656a62aed0956c5e20362a2d2432ad52c": "< userA | ('knows' : (nils) , 'near' : deviceB) > < userC | ('knows' : (nils) , 'near' : nils) > < deviceB | nils > < cloudA | (deviceB : ('tickets' : nils , 'owners' : (nils) , 'owner' : nils)) >",
+    "genRRLs:90d73d79cf8590e5fcf62609e22c2298cdd898856bb9b3a5fbd46ef5cbf907fb": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev6(UserX) .\n[B5] < UserX | 'knows' : (Secret , Rest) , ... > => ev7(UserX, Secret) .\n[B6] < UserX | 'knows' : (Secret , Rest) , ... > => ev8(UserX, Secret) .",
+    "genEventVars:8788821292a3493292eabbcc9123d9a099b95ca98e67ae2fa789df78222942cc": "{\"Rest\": \"Set\"}",
+    "genSlots:38d058b46afd2558b34b1c37f2daa39d4bb65fe31ef51dce07651f9fa1d7c48d": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owner' : userC , ...) , ... > ."
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:e5e76049de0091dd0f40c55e414a329361abd3a7d5ae318d9aed776905677883"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B2] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n[B3] < deviceB | ... > $ UserX 'pressButton' deviceB\n=> < deviceB | ... > $ deviceB 'uploadSecret' cloudA | (FreshSecret ; CurrentTime) .\n[B3] < cloudA | deviceB : ('tickets' : Tickets , ...) , ... > $ deviceB 'uploadSecret' cloudA | (Secret ; IssuedAt)\n=> < cloudA | deviceB : ('tickets' : (Tickets , (Secret , IssuedAt)) , ...) , ... > .\n[B4] < cloudA | deviceB : ('tickets' : (Tickets , (Secret , CurrentTime)) , ...) , ... > $ UserX 'getKey' cloudA\n=> < cloudA | deviceB : ('tickets' : (Tickets , (Secret , CurrentTime)) , ...) , ... > $ cloudA 'sendSecret' UserX | (Secret) .\n[B4] < UserX | 'knows' : Knowns , ... > $ cloudA 'sendSecret' UserX | (Secret)\n=> < UserX | 'knows' : (Knowns , Secret) , ... > .\n[B5] < cloudA | deviceB : ('owner' : nils , 'tickets' : Tickets , ...) , ... > $ UserX 'bind' cloudA | (Secret)\n=> < cloudA | deviceB : ('owner' : UserX , 'tickets' : Tickets , ...) , ... > .\n[B6] < cloudA | deviceB : ('owner' : Owner , 'owners' : Owners , 'tickets' : Tickets , ...) , ... > $ UserX 'join' cloudA | (Secret)\n=> < cloudA | deviceB : ('owner' : Owner , 'owners' : (Owners , UserX) , 'tickets' : Tickets , ...) , ... > .\n[B7] < cloudA | deviceB : ('tickets' : (Tickets , (Secret , IssuedAt)) , ...) , ... >\n=> < cloudA | deviceB : ('tickets' : nils , ...) , ... > if CurrentTime - IssuedAt > 2 .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:09eeae0dde5341f72dec3dc5ca129923ed7edcc76e8d5f38ce624c62961f51dc"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"CurrentTime\": \"Nat\",\n  \"FreshSecret\": \"Qid\",\n  \"IssuedAt\": \"Nat\",\n  \"Knowns\": \"Set\",\n  \"Owner\": \"User\",\n  \"Owners\": \"Set\",\n  \"Secret\": \"Qid\",\n  \"Tickets\": \"Set\",\n  \"UserX\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:e1f4cc0247cfc6c43c816e1c5a852763959393aca6a92a36a6042e3fd6a5c664"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 2, 3, 4, 5, 6, 8, 9]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:8496b3f7d452f65b49a781fb89e4e9f656a62aed0956c5e20362a2d2432ad52c"
+    },
+    {
+      "attempt": 0,
+      "output": "< userA | ('knows' : (nils) , 'near' : deviceB) > < userC | ('knows' : (nils) , 'near' : nils) > < deviceB | nils > < cloudA | (deviceB : ('tickets' : nils , 'owners' : (nils) , 'owner' : nils)) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:90d73d79cf8590e5fcf62609e22c2298cdd898856bb9b3a5fbd46ef5cbf907fb"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : nils , ... > => ev1(UserX) .\n[B2] < UserX | 'near' : deviceB , ... > => ev2(UserX) .\n[B3] < UserX | 'near' : deviceB , ... > => ev3(UserX) .\n[B4] < UserX | 'near' : deviceB , ... > => ev6(UserX) .\n[B5] < UserX | 'knows' : (Secret , Rest) , ... > => ev7(UserX, Secret) .\n[B6] < UserX | 'knows' : (Secret , Rest) , ... > => ev8(UserX, Secret) .",
+      "error": null
+    },
+    {
+      "stage": "genEventVars",
+      "prompt_hash": "genEventVars:8788821292a3493292eabbcc9123d9a099b95ca98e67ae2fa789df78222942cc"
+    },
+    {
+      "attempt": 0,
+      "output": "{\"Rest\": \"Set\"}",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:38d058b46afd2558b34b1c37f2daa39d4bb65fe31ef51dce07651f9fa1d7c48d"
+    },
+    {
+      "attempt": 0,
+      "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owner' : userC , ...) , ... > .",
+      "error": null
+    }
+  ]
+}

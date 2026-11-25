@@ -1,5 +1,0 @@
-idle
-$ userA 'cloud:publish' cloudB | 'toggle'
-$ cloudB 'cloud:revoke' cloudB | userA
-$ userA 'cloud:pubrel' cloudB
-

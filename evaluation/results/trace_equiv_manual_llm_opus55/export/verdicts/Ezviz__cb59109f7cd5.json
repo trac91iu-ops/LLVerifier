@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:00:23.247Z",
+  "model": "cb59109f7cd5",
+  "note": "",
+  "protocol": "Ezviz",
+  "runs": [
+    "opus55-run1"
+  ],
+  "verdict": "present"
+}

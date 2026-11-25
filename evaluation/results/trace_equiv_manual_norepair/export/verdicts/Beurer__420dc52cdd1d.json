@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-05T08:16:35.310Z",
+  "model": "420dc52cdd1d",
+  "note": "",
+  "protocol": "Beurer",
+  "runs": [
+    "nr-run2",
+    "nr-run4"
+  ],
+  "verdict": "present"
+}

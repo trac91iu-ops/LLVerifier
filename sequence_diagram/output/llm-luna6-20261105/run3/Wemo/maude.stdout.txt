@@ -1,0 +1,27 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Key : Qid .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < userA | ('near' : deviceB, 'knownDevice' : false, 'accountKey' : 'keyA') > < userC | ('near' : nils, 'knownDevice' : false, 'accountKey' : 'keyC') > < deviceB | ('owner' : nils, 'key' : nils, 'buttonPressed' : false) > < cloudA | (userA : ('accountKey' : 'keyA'), userC : ('accountKey' : 'keyC')) > .
+  eq < UserX | ('near' : deviceB, ..) > $ UserX 'pressButton' deviceB = < UserX | ('near' : deviceB, ..) > .
+  eq < deviceB | ('buttonPressed' : false, ..) > $ UserX 'pressButton' deviceB = < deviceB | ('buttonPressed' : true, ..) > .
+  eq < UserX | ('near' : deviceB, 'accountKey' : Key, ..) > < deviceB | ('buttonPressed' : true, 'key' : nils, ...) > $ UserX 'sendKey' deviceB | (Key) = < UserX | ('near' : deviceB, 'accountKey' : Key, ..) > < deviceB | ('buttonPressed' : false, 'key' : Key, ...) > .
+  eq < UserX | ('near' : deviceB, 'knownDevice' : false, ..) > < deviceB | ('key' : Key, ...) > $ UserX 'discover' deviceB = < UserX | ('near' : deviceB, 'knownDevice' : true, ..) > < deviceB | ('key' : Key, ...) > $ deviceB 'bind' cloudA | (Key) .
+  eq < deviceB | ('key' : Key, 'owner' : nils, ..) > < cloudA | (UserY : ('accountKey' : Key, ...), ....) > $ deviceB 'bind' cloudA | (Key) = < deviceB | ('key' : Key, 'owner' : UserY, ..) > < cloudA | (UserY : ('accountKey' : Key, ...), ....) > .
+  eq < UserX | ('near' : nils, ..) > < deviceB | (...) > $ UserX 'approach' deviceB = < UserX | ('near' : deviceB, ..) > < deviceB | (...) > .
+  eq < UserX | ('near' : deviceB, ..) > $ UserX 'leave' deviceB = < UserX | ('near' : nils, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (41666 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _:_('accountKey', 'keyA')), _:_(userC, _:_('accountKey', 'keyC')))), <_|_>(userA, _`,_(_:_('accountKey', 'keyA'), _:_('knownDevice', false), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('accountKey', 'keyC'), _:_('knownDevice', false), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('buttonPressed', false), _:_('key', nils), _:_('owner', nils)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'pressButton', deviceB), __(<_|_>(cloudA, _`,_(_:_(userA, _:_('accountKey', 'keyA')), _:_(userC, _:_('accountKey', 'keyC')))), <_|_>(userA, _`,_(_:_('accountKey', 'keyA'), _:_('knownDevice', false), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('accountKey', 'keyC'), _:_('knownDevice', false), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('buttonPressed', false), _:_('key', nils), _:_('owner', nils)))))
+Bye.

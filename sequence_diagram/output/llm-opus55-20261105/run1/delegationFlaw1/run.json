@@ -1,0 +1,46 @@
+{
+  "input": "sequence_diagram/input/delegationFlaw1/diagram.md",
+  "input_sha256": "d23fb8b026bacab34da6274259fff9166492dad7cc5b0e80072a63c21169f71c",
+  "pipeline_id": "3128c0dfae61280a65b3a53779d4c69eb95d2bd65bbe8647d90b13f9065e2466",
+  "mode": "check",
+  "started_at": "2026-11-05T04:38:19.078964+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-opus55-20261105/run1/delegationFlaw1/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceLock, _`,_(_:_('on', false), _:_('trust', cloudSmartThing))), <_|_>(cloudGoogle, _:_(deviceSwitch, _`,_(_:_('key', 'keySwitch'), _:_('on', false), _:_('trust', userA)))), <_|_>(cloudSmartThing, _:_(deviceSwitch, _`,_(_:_('bind', deviceLock), _:_('key', 'keySwitch'), _:_('trust', cloudGoogle))))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 8,
+    "coverage_issues": [
+      "B6 (action, line 49): no event rule for the initiated message",
+      "B7 (action, line 54): no event rule for the initiated message"
+    ]
+  },
+  "model_sha256": "29b6e3172212e6c31c0528a66b151f4ce7d9df4b59ba98edf6b3a0ead86cc685",
+  "check": {
+    "property": "CTRL-direct",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceOn": false,
+      "attackerAuthorized": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 162.41,
+  "tokens_this_run": 38854,
+  "finished_at": "2026-11-05T04:41:01.491801+00:00"
+}

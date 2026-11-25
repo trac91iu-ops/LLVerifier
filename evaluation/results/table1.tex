@@ -1,0 +1,48 @@
+\begin{table*}[t]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{0pt}
+  \caption{End-to-end evaluation over five independent runs per protocol. Acc.\ and Rec.\ are accuracy and recall in percent. The row All IoT counts the protocols that succeed in all five runs.}
+  \label{tab:pilot_eval_matrix}
+  \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} l c cccc cc c ccc @{}}
+  \hline\hline
+  \rule{0pt}{2.5ex} & \textbf{Grammar} & \multicolumn{4}{c}{\textbf{Semantic Fidelity vs.\ $M_{\mathrm{gold}}$}} & \multicolumn{3}{c}{\textbf{Verification}} & \multicolumn{3}{c}{\textbf{Performance}} \\
+  \cline{2-2} \cline{3-6} \cline{7-9} \cline{10-12}
+  \rule{0pt}{2.3ex}\textbf{Protocol} & \textbf{Compile} & \multicolumn{2}{c}{\textbf{Principals}} & \multicolumn{2}{c}{\textbf{Attributes}} & \multicolumn{2}{c}{\textbf{Prop. Proposition}} & \textbf{Flaw} & \textbf{Time} & \textbf{Tokens} & \textbf{States} \\
+   & \textbf{($k$/5)} & \textbf{Acc. (\%)} & \textbf{Rec. (\%)} & \textbf{Acc. (\%)} & \textbf{Rec. (\%)} & \textbf{Acc.} & \textbf{Rec.} & \textbf{Repro.\ ($k$/5)} & \textbf{(s)} & \textbf{(k)} & \textbf{Ave.} \\
+  \hline
+  \multicolumn{12}{l}{\rule{0pt}{2.5ex}\textit{\textbf{IoT Protocol}}} \\
+  \hline
+  Aqara & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 173.5 & 24.0 & 90.0 \\
+  August & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 133.1 & 19.0 & 44.0 \\
+  Beurer & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 139.6 & 17.6 & 32.0 \\
+  Broadlink & 2/5 & 100 & 100 & 72.7 & 88.9 & 20.0 & 40.0 & 2/5 & 193.3 & 27.4 & 2983.0 \\
+  CloudEdgeCAC & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 127.9 & 17.4 & 900.0 \\
+  delegationFlaw1 & 5/5 & 100 & 100 & 100 & 81.8 & 100 & 50.0 & 0/5 & 126.8 & 23.3 & 62.4 \\
+  delegationFlaw2 & 5/5 & 100 & 100 & 100 & 90.9 & 50.0 & 50.0 & 0/5 & 111.3 & 23.6 & 21.6 \\
+  Dyson & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 130.0 & 18.4 & 72.0 \\
+  Ezviz & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 141.3 & 18.6 & 20.0 \\
+  Govee & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 131.0 & 17.7 & 32.0 \\
+  Huawei & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 128.9 & 18.0 & 72.0 \\
+  Imou & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 128.4 & 16.7 & 10.0 \\
+  iRobot & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 94.8 & 19.7 & 136.0 \\
+  Kevo & 5/5 & 100 & 100 & 100 & 100 & 50.0 & 100 & 5/5 & 176.4 & 21.8 & 485.6 \\
+  MaagKwikset & 5/5 & 100 & 100 & 75.0 & 100 & 100 & 100 & 5/5 & 159.2 & 21.3 & 216.0 \\
+  MaagLevel & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 0/5 & 163.3 & 23.9 & 12.0 \\
+  Meross & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 141.1 & 20.5 & 48.0 \\
+  Midea & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 142.4 & 19.1 & 44.0 \\
+  MQTTFlaw1 & 5/5 & 100 & 100 & 100 & 80.0 & 100 & 100 & 5/5 & 129.8 & 15.9 & 8.0 \\
+  Netvue & 5/5 & 100 & 100 & 96.0 & 96.0 & 90.0 & 90.0 & 5/5 & 172.1 & 20.6 & 348.0 \\
+  Philips Hue & 5/5 & 100 & 100 & 100 & 100 & 100 & 66.7 & 5/5 & 87.9 & 22.7 & 2113.0 \\
+  Sunlogin & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 136.1 & 17.2 & 32.0 \\
+  Switchbot & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 168.5 & 21.7 & 144.0 \\
+  TPLink & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 159.2 & 21.1 & 40.0 \\
+  TuyaCAC & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 142.4 & 19.5 & 40.0 \\
+  TuyaMatter & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 132.3 & 19.4 & 90.0 \\
+  Wemo & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 141.2 & 19.2 & 40.0 \\
+  Xiaomi & 5/5 & 100 & 100 & 100 & 100 & 100 & 100 & 5/5 & 118.2 & 19.0 & 72.0 \\
+  \hline
+  \textbf{All IoT (28)} & 27/28 & 100 & 100 & 98.0 & 97.8 & 93.2 & 92.7 & 24/28 & 140.4 & 20.2 & 293.1 \\
+  \hline\hline
+  \end{tabular*}
+\end{table*}

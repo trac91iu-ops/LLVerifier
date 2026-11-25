@@ -1,0 +1,25 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Key : Qid .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < userA | ('near' : deviceB) > < userC | ('near' : nils) > < deviceB | ('owner' : nils, 'key' : nils, 'buttonPressed' : false) > < cloudA | (userA : ('accountKey' : 'keyA'), userC : ('accountKey' : 'keyC')) > .
+  eq < UserX | ('near' : deviceA, ..) > < deviceA | ('buttonPressed' : false, ...) > $ UserX 'pressButton' deviceA = < UserX | ('near' : deviceA, ..) > < deviceA | ('buttonPressed' : true, ...) > .
+  eq < UserX | ('near' : deviceA, ..) > < cloudA | (UserX : ('accountKey' : Key, ...), ....) > < deviceA | ('key' : nils, 'buttonPressed' : true, .....) > $ UserX 'sendKey' deviceA | (Key) = < UserX | ('near' : deviceA, ..) > < cloudA | (UserX : ('accountKey' : Key, ...), ....) > < deviceA | ('key' : Key, 'buttonPressed' : false, .....) > .
+  eq < UserX | ('near' : deviceA, ..) > < deviceA | ('key' : Key, ...) > $ UserX 'discover' deviceA = < UserX | ('near' : deviceA, ..) > < deviceA | ('key' : Key, ...) > $ deviceA 'bind' cloudA | (Key) .
+  eq < cloudA | (UserY : ('accountKey' : Key, ..), ...) > < deviceA | ('key' : Key, 'owner' : nils, ....) > $ deviceA 'bind' cloudA | (Key) = < cloudA | (UserY : ('accountKey' : Key, ..), ...) > < deviceA | ('key' : Key, 'owner' : UserY, ....) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' deviceA = < UserX | ('near' : deviceA, ..) > .
+  eq < UserX | ('near' : deviceA, ..) > $ UserX 'leave' deviceA = < UserX | ('near' : nils, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (34482 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _`,_(_:_(userA, _:_('accountKey', 'keyA')), _:_(userC, _:_('accountKey', 'keyC')))), <_|_>(userA, _:_('near', deviceB)), <_|_>(userC, _:_('near', nils)), <_|_>(deviceB, _`,_(_:_('buttonPressed', false), _:_('key', nils), _:_('owner', nils)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+No solution.
+states: 1  rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
+Bye.

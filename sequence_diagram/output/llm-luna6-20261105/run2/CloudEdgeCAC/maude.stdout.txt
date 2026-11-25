@@ -1,0 +1,28 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Cloud : Cloud .
+  var Device : Device .
+  var Key : Qid .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < userA | ('near' : deviceB) > < userC | ('near' : deviceD) > < deviceB | ('key' : nils, 'buttonPressed' : false) > < cloudB | (userA : ('key' : 'keyA'), userC : ('key' : 'keyC'), 'owner' : nils) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' Device = < UserX | ('near' : Device, ..) > .
+  eq < UserX | ('near' : Device, ..) > $ UserX 'leave' Device = < UserX | ('near' : nils, ..) > .
+  eq < Device | ('buttonPressed' : false, ..) > $ UserX 'pressButton' Device = < Device | ('buttonPressed' : true, ..) > .
+  eq < UserX | ('near' : Device, ..) > < Device | ('buttonPressed' : true, 'key' : nils, ...) > < Cloud | (UserY : ('key' : Key, ....), .....) > $ UserX 'sendKey' Device | (Key) = < UserX | ('near' : Device, ..) > < Device | ('buttonPressed' : false, 'key' : Key, ...) > < Cloud | (UserY : ('key' : Key, ....), .....) > .
+  eq < UserX | ('near' : Device, ..) > < Device | ('key' : Key, ...) > < Cloud | (....) > $ UserX 'discover' Device = < UserX | ('near' : Device, ..) > < Device | ('key' : Key, ...) > $ Device 'bind' Cloud | (Key) < Cloud | (....) > .
+  eq < Device | ('key' : Key, ..) > < Cloud | ('owner' : nils, UserY : ('key' : Key, ...), ....) > $ Device 'bind' Cloud | (Key) = < Device | ('key' : Key, ..) > < Cloud | ('owner' : UserY, UserY : ('key' : Key, ...), ....) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (37037 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudB, _`,_(_:_('owner', nils), _:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')))), <_|_>(userA, _:_('near', deviceB)), <_|_>(userC, _:_('near', deviceD)), <_|_>(deviceB, _`,_(_:_('buttonPressed', false), _:_('key', nils)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'leave', deviceB), __(<_|_>(cloudB, _`,_(_:_('owner', nils), _:_(userA, _:_('key', 'keyA')), _:_(userC, _:_('key', 'keyC')))), <_|_>(userA, _:_('near', nils)), <_|_>(userC, _:_('near', deviceD)), <_|_>(deviceB, _`,_(_:_('buttonPressed', false), _:_('key', nils)))))
+Bye.

@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "context_id": "ea40af76701a6ed69853d2e9b76e05d7854a57347d14ed1386429028012dbff6",
+  "answers": {
+    "genPolicy:191b828da6891700fad49b3e2e0a93158d6b954c36ae6012b530015a3d5dbb60": "[B1] < serverA | 'contexts' : nils , ... > $ ClientX 'sendWithoutContext' serverA | 'msgA'\n=> < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgA')) , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > .\n\n[B1] < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | (ReturnedCtx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > if Ctx =/= nils .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : nils , 'receivedHistory' : Hist , ... > if OldHistory =/= nils .\n\n[B2] < ClientY | 'knowCtx' : OldCtx , ... > < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > $ ClientY 'snoop' serverA | Ctx\n=> < ClientY | 'knowCtx' : Ctx , ... > < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > .\n\n[B3] < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : Hist) , ... > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB')\n=> < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgB' , Hist)) , ... > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) .\n\n[B3] < ClientY | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientY | (Ctx ; Hist)\n=> < ClientY | 'receivedHistory' : Hist , ... > .\n\n[B4] < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : Hist) , ... > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2')\n=> < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgA2' , Hist)) , ... > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) .\n\n[B4] < ClientX | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientX | (Ctx ; Hist)\n=> < ClientX | 'receivedHistory' : Hist , ... > .",
+    "genPolicyVars:bda024d3b362f23df114e0c0fb3128aed9b987e46709a3b33af1aaf38f3c0e85": "{\n  \"ClientX\": \"Client\",\n  \"ClientY\": \"Client\",\n  \"Ctx\": \"Qid\",\n  \"Hist\": \"Set\",\n  \"OldCtx\": \"Set\",\n  \"OldHistory\": \"Set\",\n  \"ReturnedCtx\": \"Qid\"\n}",
+    "filterEvents:d7af05803a08c59bc3102d7b4d34da67793d2ca3ed4d79de1c2672c498cec514": "[1, 4, 5, 8]",
+    "genInit:32bddf1fd7ca5c304f53e08637c4549b89aa5ccea5570e8ec8db7f9561b506dc": "< serverA | ('contexts' : nils) >\n< clientA | ('receivedHistory' : nils , 'knowCtx' : nils) >\n< clientB | ('receivedHistory' : nils , 'knowCtx' : nils) >"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:191b828da6891700fad49b3e2e0a93158d6b954c36ae6012b530015a3d5dbb60"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < serverA | 'contexts' : nils , ... > $ ClientX 'sendWithoutContext' serverA | 'msgA'\n=> < serverA | 'contexts' : ('ctxX' : ('msgA')) , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > .\n\n[B1] < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | (ReturnedCtx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > if Ctx =/= nils .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : nils , 'receivedHistory' : Hist , ... > if OldHistory =/= nils .\n\n[B2] < ClientY | 'knowCtx' : OldCtx , ... > < serverA | 'contexts' : (Ctx : Hist) , ... > $ ClientY 'snoop' serverA | Ctx\n=> < ClientY | 'knowCtx' : Ctx , ... > < serverA | 'contexts' : (Ctx : Hist) , ... > .\n\n[B3] < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB')\n=> < serverA | 'contexts' : ('ctxX' : ('msgB' , Hist)) , ... > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) .\n\n[B3] < ClientY | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientY | (Ctx ; Hist)\n=> < ClientY | 'receivedHistory' : Hist , ... > .\n\n[B4] < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2')\n=> < serverA | 'contexts' : ('ctxX' : ('msgA2' , Hist)) , ... > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) .\n\n[B4] < ClientX | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientX | (Ctx ; Hist)\n=> < ClientX | 'receivedHistory' : Hist , ... > .",
+      "error": "No terminal matches 'H' in the current parser context, at line 9 col 72\n\n, ... > < serverA | 'contexts' : (Ctx : Hist) , ... > $ ClientY 'snoop' serverA \n                                        ^\nExpected one of: '\\\\('"
+    },
+    {
+      "attempt": 1,
+      "output": "[B1] < serverA | 'contexts' : nils , ... > $ ClientX 'sendWithoutContext' serverA | 'msgA'\n=> < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgA')) , ... > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > .\n\n[B1] < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | (ReturnedCtx ; Hist)\n=> < ClientX | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > if Ctx =/= nils .\n\n[B1] < ClientX | 'knowCtx' : nils , 'receivedHistory' : OldHistory , ... > $ serverA 'returnInitialContext' ClientX | (Ctx ; Hist)\n=> < ClientX | 'knowCtx' : nils , 'receivedHistory' : Hist , ... > if OldHistory =/= nils .\n\n[B2] < ClientY | 'knowCtx' : OldCtx , ... > < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > $ ClientY 'snoop' serverA | Ctx\n=> < ClientY | 'knowCtx' : Ctx , ... > < serverA | 'contexts' : ('id' : Ctx , 'history' : Hist) , ... > .\n\n[B3] < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : Hist) , ... > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB')\n=> < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgB' , Hist)) , ... > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) .\n\n[B3] < ClientY | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientY | (Ctx ; Hist)\n=> < ClientY | 'receivedHistory' : Hist , ... > .\n\n[B4] < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : Hist) , ... > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2')\n=> < serverA | 'contexts' : ('id' : 'ctxX' , 'history' : ('msgA2' , Hist)) , ... > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) .\n\n[B4] < ClientX | 'receivedHistory' : OldHistory , ... > $ serverA 'returnHistory' ClientX | (Ctx ; Hist)\n=> < ClientX | 'receivedHistory' : Hist , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:bda024d3b362f23df114e0c0fb3128aed9b987e46709a3b33af1aaf38f3c0e85"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"ClientX\": \"Client\",\n  \"ClientY\": \"Client\",\n  \"Ctx\": \"Qid\",\n  \"Hist\": \"Set\",\n  \"OldCtx\": \"Set\",\n  \"OldHistory\": \"Set\",\n  \"ReturnedCtx\": \"Qid\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:d7af05803a08c59bc3102d7b4d34da67793d2ca3ed4d79de1c2672c498cec514"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 4, 5, 8]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:32bddf1fd7ca5c304f53e08637c4549b89aa5ccea5570e8ec8db7f9561b506dc"
+    },
+    {
+      "attempt": 0,
+      "output": "< serverA | ('contexts' : nils) >\n< clientA | ('receivedHistory' : nils , 'knowCtx' : nils) >\n< clientB | ('receivedHistory' : nils , 'knowCtx' : nils) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:f9762801a7cd2f218c4fa896113cdde425c8f6f5a07b993a9f9e92467b427e49"
+    },
+    {
+      "attempt": 0,
+      "output": "",
+      "error": "Expected nonempty DSL rules."
+    },
+    {
+      "attempt": 1,
+      "output": "",
+      "error": "Expected nonempty DSL rules."
+    },
+    {
+      "attempt": 2,
+      "output": "",
+      "error": "Expected nonempty DSL rules."
+    }
+  ]
+}

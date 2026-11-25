@@ -1,0 +1,84 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < cloudGoogle | (deviceSwitch : ('linkedLock' : nils , 'state' : nils , 'trusted' : (userA) , 'key' : 'key1')) > < cloudSmartThing | (deviceSwitch : ('linkedLock' : deviceLock , 'state' : nils , 'trusted' : (cloudGoogle) , 'key' : 'key1')) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceSwitch | ('trusted' : nils , 'state' : nils) > < deviceLock | ('trusted' : (cloudSmartThing) , 'state' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Cloud : Cloud .
+vars Device : Device .
+vars Key : Qid .
+vars Lock : Device .
+vars P : Principal .
+vars Rest : Set .
+vars SmartThingsCloud : Cloud .
+vars Trusted : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ UserX 'requestKey' Cloud 
+= < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ Cloud 'sendKey' UserX | (Key) .
+eq < UserX | ('key' : nils , ..) > $ Cloud 'sendKey' UserX | (Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ UserX 'delegateAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , 'key' : Key , ..) , ...) > .
+eq < Cloud | (Device : ('trusted' : (UserX , UserY , Rest) , 'key' : Key , ..) , ...) > $ UserX 'revokeAccess' Cloud | (Device ; UserY) 
+= < Cloud | (Device : ('trusted' : (UserX , Rest) , 'key' : Key , ..) , ...) > .
+eq < SmartThingsCloud | (Device : ('key' : Key , 'trusted' : Trusted , ..) , ...) > $ UserX 'provideKey' SmartThingsCloud | (Device ; Key) 
+= < SmartThingsCloud | (Device : ('key' : Key , 'trusted' : (UserX , Trusted) , ..) , ...) > .
+eq < Device | (..) > $ UserX 'turnOn' Device 
+= < Device | (..) > .
+eq < Cloud | (Device : ('state' : 'off' , 'trusted' : (P , Rest) , ..) , ...) > $ P 'toggle' Device 
+= < Cloud | (Device : ('state' : 'on' , 'trusted' : (P , Rest) , ..) , ...) > $ Cloud 'turnOn' Device .
+eq < SmartThingsCloud | (Device : ('linkedLock' : Lock , ..) , ...) > $ SmartThingsCloud 'turnOn' Device 
+= < SmartThingsCloud | (Device : ('linkedLock' : Lock , ..) , ...) > $ SmartThingsCloud 'turnOn' Lock .
+eq < Lock | ('trusted' : (P , Rest) , 'state' : 'off' , ..) > $ P 'turnOn' Lock 
+= < Lock | ('trusted' : (P , Rest) , 'state' : 'on' , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Cloud : Cloud .
+vars Device : Device .
+vars Key : Qid .
+vars Lock : Device .
+vars P : Principal .
+vars Rest : Set .
+vars SmartThingsCloud : Cloud .
+vars Trusted : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User Cloud -> Event .
+ops ev2 : User Cloud Device User -> Event .
+ops ev3 : User Cloud Device User -> Event .
+ops ev4 : User Cloud Device Qid -> Event .
+ops ev5 : User Device -> Event .
+ops ev6 : Cloud Device -> Event .
+*** events
+eq ev1(UserX, Cloud) = $ UserX 'requestKey' Cloud .
+eq ev2(UserX, Cloud, Device, UserY) = $ UserX 'delegateAccess' Cloud | (Device ; UserY) .
+eq ev3(UserX, Cloud, Device, UserY) = $ UserX 'revokeAccess' Cloud | (Device ; UserY) .
+eq ev4(UserX, SmartThingsCloud, Device, Key) = $ UserX 'provideKey' SmartThingsCloud | (Device ; Key) .
+eq ev5(UserX, Device) = $ UserX 'turnOn' Device .
+eq ev6(Cloud, Device) = $ Cloud 'turnOn' Device .
+*** transitions
+rl [rev1]: E @ S < UserX | (..) > < cloudB | (...) > 
+=> ep: ev1(UserX, cloudB) @ S < UserX | (..) > < cloudB | (...) > .
+rl [rev2]: E @ S < UserX | (..) > < UserY | (...) > < cloudB | (....) > < deviceB | (.....) > 
+=> ep: ev2(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > < cloudB | (....) > < deviceB | (.....) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > < cloudB | (....) > < deviceB | (.....) > 
+=> ep: ev3(UserX, cloudB, deviceB, UserY) @ S < UserX | (..) > < UserY | (...) > < cloudB | (....) > < deviceB | (.....) > .
+rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < cloudB | (...) > < deviceB | (....) > 
+=> ep: ev4(UserX, cloudB, deviceB, Key) @ S < UserX | ('key' : Key , ..) > < cloudB | (...) > < deviceB | (....) > .
+rl [rev5]: E @ S < UserX | (..) > < deviceB | (...) > 
+=> ep: ev5(UserX, deviceB) @ S < UserX | (..) > < deviceB | (...) > .
+
+endm

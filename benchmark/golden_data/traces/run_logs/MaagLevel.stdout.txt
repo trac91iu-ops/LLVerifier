@@ -1,0 +1,278 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Sun Oct 25 23:37:14 2026
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev1} {$ userA
+    'callAPI:share' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev1} {$ userC
+    'callAPI:share' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev2} {$ userA
+    'callAPI:revoke' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev2} {$ userC
+    'callAPI:revoke' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev5} {$ userA
+    'approaches' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev1} {$ userA
+    'callAPI:share' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : nils, 'localTo' : nils > < deviceB | 'trustSet' : (userA, userC) >,
+    'rev1} {$ userC 'callAPI:share' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : nils, 'localTo' : nils > < deviceB | 'trustSet' : (userA, userC) >,
+    'rev2} {$ userA 'callAPI:revoke' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev1} {$ userC
+    'callAPI:share' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev2} {$ userC
+    'callAPI:revoke' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev4} {$ userA
+    'leaves' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : nils > < deviceB | 'trustSet' : userA >, 'rev5} {$ userC
+    'approaches' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : deviceB > < deviceB | 'trustSet' : userA >, 'rev1} {$ userA
+    'callAPI:share' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : nils > < userC | 'commandList' :
+    list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : userA >, 'rev1} {$ userC 'callAPI:share' cloudA |
+    userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : nils > < userC | 'commandList' :
+    list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : userA >, 'rev2} {$ userA 'callAPI:revoke' cloudA |
+    userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : userA >, 'rev3} {$ userC 'callAPI:proxy' deviceB | (
+    encrypt('secret', 'auth') ; 'share' ; userC) @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : deviceB > < deviceB | 'trustSet' : (userA, userC) >, 'rev1} {$
+    userA 'callAPI:share' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : nils > < userC | 'commandList' :
+    list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : (userA, userC) >, 'rev1} {$ userC 'callAPI:share'
+    cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : nils > < userC | 'commandList' :
+    list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : (userA, userC) >, 'rev2} {$ userA 'callAPI:revoke'
+    cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : (userA, userC) >, 'rev1} {$ userC 'callAPI:share'
+    cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : (userA, userC) >, 'rev2} {$ userC 'callAPI:revoke'
+    cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : (userA, userC) >, 'rev4} {$ userC 'leaves' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : (userA, userC) >, 'rev1} {$ userA 'callAPI:share' cloudA |
+    userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : (userA, userC) >, 'rev1} {$ userC 'callAPI:share' cloudA |
+    userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : (userA, userC) >, 'rev2} {$ userA 'callAPI:revoke' cloudA |
+    userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : (userA, userC) >, 'rev2} {$ userC 'callAPI:revoke' cloudA |
+    userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : (userA, userC) >, 'rev5} {$ userA 'approaches' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : (userA, userC) >, 'rev1} {$ userA 'callAPI:share' cloudA |
+    userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > <
+    deviceB | 'trustSet' : (userA, userC) >, 'rev1} {$ userC 'callAPI:share'
+    cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > <
+    deviceB | 'trustSet' : (userA, userC) >, 'rev2} {$ userA 'callAPI:revoke'
+    cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev1} {$ userC 'callAPI:share' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev2} {$ userC 'callAPI:revoke' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev4} {$ userA 'leaves' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev1} {$ userA 'callAPI:share' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev1} {$ userC 'callAPI:share' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev2} {$ userA 'callAPI:revoke' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev2} {$ userC 'callAPI:revoke' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev5} {$ userA 'approaches' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : nils > < deviceB
+    | 'trustSet' : userA >, 'rev5} {$ userC 'approaches' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : userA >, 'rev1} {$ userA 'callAPI:share' cloudA |
+    userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB >
+    < deviceB | 'trustSet' : (userA, userC) >, 'rev1} {$ userC 'callAPI:share'
+    cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : list(encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB >
+    < deviceB | 'trustSet' : (userA, userC) >, 'rev2} {$ userA 'callAPI:revoke'
+    cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : userA >, 'rev1} {$ userC 'callAPI:share' cloudA |
+    userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : userA >, 'rev2} {$ userC 'callAPI:revoke' cloudA |
+    userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : list(
+    encrypt('secret', 'auth') ; 'share' ; userC), 'localTo' : deviceB > <
+    deviceB | 'trustSet' : userA >, 'rev3} {$ userC 'callAPI:proxy' deviceB | (
+    encrypt('secret', 'auth') ; 'share' ; userC) @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : deviceB > < deviceB | 'trustSet' : (userA, userC) >, 'rev1} {$
+    userA 'callAPI:share' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : nils, 'localTo' : deviceB > < deviceB | 'trustSet' : (userA, userC) >,
+    'rev1} {$ userC 'callAPI:share' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : (userA, userC) > <
+    userA | 'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList'
+    : nils, 'localTo' : deviceB > < deviceB | 'trustSet' : (userA, userC) >,
+    'rev2} {$ userA 'callAPI:revoke' cloudA | userC @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : deviceB > < deviceB | 'trustSet' : userA >, 'rev1} {$ userC
+    'callAPI:share' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : deviceB > < deviceB | 'trustSet' : userA >, 'rev2} {$ userC
+    'callAPI:revoke' cloudA | userA @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : deviceB > < userC | 'commandList' : nils,
+    'localTo' : deviceB > < deviceB | 'trustSet' : userA >, 'rev4} {$ userA
+    'leaves' deviceB @
+< cloudA | 'cloudKey' : 'secret', deviceB : 'trustSet' : userA > < userA |
+    'commandList' : nils, 'localTo' : nils > < userC | 'commandList' : nils,
+    'localTo' : deviceB > < deviceB | 'trustSet' : userA >, 'rev1}
+idle
+$ userA 'approaches' deviceB
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userA 'leaves' deviceB
+$ userC 'approaches' deviceB
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ; 'share' ; userC)
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userC 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userA 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ; 'share' ; userC)
+$ userA 'callAPI:share' cloudA | userC
+$ userA 'callAPI:revoke' cloudA | userC
+$ userA 'leaves' deviceB
+rewrites: 1359 in 8ms cpu (8ms real) (159003 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'approaches' deviceB ^ ($
+    userA 'callAPI:share' cloudA | userC ^ ($ userA 'callAPI:revoke' cloudA |
+    userC ^ ($ userA 'leaves' deviceB ^ ($ userC 'approaches' deviceB ^ ($
+    userA 'callAPI:share' cloudA | userC ^ ($ userA 'callAPI:revoke' cloudA |
+    userC ^ ($ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ;
+    'share' ; userC) ^ ($ userA 'callAPI:share' cloudA | userC ^ ($ userA
+    'callAPI:revoke' cloudA | userC ^ ($ userC 'leaves' deviceB ^ ($ userA
+    'approaches' deviceB ^ ($ userA 'callAPI:share' cloudA | userC ^ ($ userA
+    'callAPI:revoke' cloudA | userC ^ ($ userA 'leaves' deviceB ^ ($ userA
+    'approaches' deviceB ^ ($ userC 'approaches' deviceB ^ ($ userA
+    'callAPI:share' cloudA | userC ^ ($ userA 'callAPI:revoke' cloudA | userC ^
+    ($ userC 'callAPI:proxy' deviceB | (encrypt('secret', 'auth') ; 'share' ;
+    userC) ^ ($ userA 'callAPI:share' cloudA | userC ^ ($ userA
+    'callAPI:revoke' cloudA | userC ^ ($ userA 'leaves' deviceB ^
+    nile)))))))))))))))))))))))
+Bye.

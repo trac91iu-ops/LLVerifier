@@ -1,0 +1,324 @@
+{
+ "runs": {
+  "a2a-run1": "sequence_diagram/output/a2a-astra-v2-20261105/run1",
+  "a2a-run2": "sequence_diagram/output/a2a-astra-v2-20261105/run2",
+  "a2a-run3": "sequence_diagram/output/a2a-astra-v2-20261105/run3",
+  "a2a-run4": "sequence_diagram/output/a2a-astra-v2-20261105/run4",
+  "a2a-run5": "sequence_diagram/output/a2a-astra-v2-20261105/run5"
+ },
+ "protocols": [
+  {
+   "protocol": "A2A",
+   "display": "A2A",
+   "subtype": "CTX-isolation",
+   "attacker": "clientB",
+   "diagram": "```mermaid\nsequenceDiagram\n    autonumber\n    participant ClientX\n    participant ClientY\n    participant Server\n\n\n    alt ClientX is authenticated and does not know a context identifier\n        ClientX->>Server: ClientX sends message msgA to the server without a context identifier\n        alt The server has no contexts\n            Note over Server: Create context ctxX with msgA as its history.\n            Server-->>ClientX: The server returns context identifier ctxX and history containing msgA to ClientX\n            alt ClientX has neither a known context identifier nor any received history\n                Note over ClientX: ClientX saves context identifier ctxX and the received history msgA.\n            else Otherwise\n                Note over ClientX: Replace ClientX\u2019s received history with msgA.\n            end\n        else A context already exists\n            Note over ClientX,Server: Ignore the request without a response.\n        end\n    end\n\n    alt ClientY is authenticated, knows no context identifier, and a context Ctx exists\n        ClientY->>Server: ClientY snoops on the server to learn context identifier Ctx\n        Note over ClientY: ClientY learns context identifier Ctx.\n        Note over ClientY,Server: Discovering the context identifier requires no server response or ownership check.\n    end\n\n    alt ClientY is authenticated and knows context identifier Ctx\n        ClientY->>Server: ClientY sends message msgB to the server using context identifier Ctx\n        alt Ctx identifies the existing context ctxX, whose history is Hist\n            Note over Server: Add msgB to the context\u2019s history.\n            Server-->>ClientY: The server returns context identifier ctxX and the history including msgB to ClientY\n            Note over ClientY: Replace the client\u2019s received history with the returned history.\n            Note over ClientY,Server: Authentication and knowledge of ctxX are sufficient, context ownership is not checked.\n        else No matching context\n            Note over ClientY,Server: Ignore the request without a response.\n        end\n    end\n\n    alt ClientX is authenticated and knows context identifier Ctx\n        ClientX->>Server: ClientX sends message msgA2 to the server using context identifier Ctx\n        alt Ctx identifies the existing context ctxX, whose history is Hist\n            Note over Server: Add msgA2 to the context\u2019s history.\n            Server-->>ClientX: The server returns context identifier ctxX and the history including msgA2 to ClientX\n            Note over ClientX: Replace the client\u2019s received history with the returned history.\n        else No matching context\n            Note over ClientX,Server: Ignore the request without a response.\n        end\n    end\n\n    Note over ClientX,ClientY: A client must know a context identifier before continuing a conversation.\n```\n",
+   "gold": {
+    "property": "<> (attackerReadsVictimData \\/ victimContextTampered)",
+    "slots": {
+     "attackerReadsVictimData": "< clientB | ('receivedHistory' : ('msgA' , ..) , ...) >",
+     "victimContextTampered": "< serverA | ('contexts' : (CtxX : ('history' : ('msgA' , 'msgB' , ..)))) >"
+    },
+    "rules": [
+     {
+      "label": "rev_init_A",
+      "action": "'SendMessage'",
+      "equation": "eq ev1(ClientX) = $ ClientX 'SendMessage' serverA | ('contextId' : nils ; 'payload' : 'msgA') .",
+      "text": "rl [rev_init_A]: E @ S < clientA | ('authenticated' : true , 'knowCtx' : nils , ..) > \n=> ep: ev1(clientA) @ S < clientA | ('authenticated' : true , 'knowCtx' : nils , ..) > ."
+     },
+     {
+      "label": "rev_snoop_B",
+      "action": null,
+      "equation": "",
+      "text": "rl [rev_snoop_B]: E @ S < clientB | ('authenticated' : true , 'knowCtx' : nils , ..) > \n                        < serverA | ('contexts' : (CtxX : ('history' : Hist , ..) , ..)) >\n=> ep: evSnoop(clientB, CtxX) @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > \n                                  < serverA | ('contexts' : (CtxX : ('history' : Hist , ..) , ..)) > ."
+     },
+     {
+      "label": "rev_snoop_B",
+      "action": null,
+      "equation": "",
+      "text": "crl [rev_snoop_B]: E @ S < clientB | ('authenticated' : true , 'knowCtx' : nils , ..) > \n                         < serverA | ('contexts' : (CtxX : ('history' : Hist))) >\n=> ep: evSnoop(clientB, CtxX) @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > \n                                  < serverA | ('contexts' : (CtxX : ('history' : Hist))) >\n if CtxX =/= nils ."
+     },
+     {
+      "label": "rev_inject_B",
+      "action": "'SendMessage'",
+      "equation": "eq ev2(ClientX, CtxX, Msg) = $ ClientX 'SendMessage' serverA | ('contextId' : CtxX ; 'payload' : Msg) .",
+      "text": "rl [rev_inject_B]: E @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > \n=> ep: ev2(clientB, CtxX, 'msgB') @ S < clientB | ('authenticated' : true , 'knowCtx' : CtxX , ..) > ."
+     },
+     {
+      "label": "rev_continue_A",
+      "action": "'SendMessage'",
+      "equation": "eq ev2(ClientX, CtxX, Msg) = $ ClientX 'SendMessage' serverA | ('contextId' : CtxX ; 'payload' : Msg) .",
+      "text": "rl [rev_continue_A]: E @ S < clientA | ('authenticated' : true , 'knowCtx' : CtxX , ..) > \n=> ep: ev2(clientA, CtxX, 'msgA2') @ S < clientA | ('authenticated' : true , 'knowCtx' : CtxX , ..) > ."
+     }
+    ],
+    "attack": [
+     {
+      "event": "$ clientA 'SendMessage' serverA | ('contextId' : nils ; 'payload' : 'msgA')",
+      "changes": [
+       "clientA . 'knowCtx': nils -> 'ctxX'",
+       "clientA . 'receivedHistory': nils -> 'msgA'",
+       "serverA . 'contexts': nils -> (none)",
+       "serverA . 'contexts' . 'ctxX' . 'history': (none) -> 'msgA'"
+      ]
+     },
+     {
+      "event": "$ clientB 'snoopContext' serverA | ('contextId' : 'ctxX')",
+      "changes": [
+       "clientB . 'knowCtx': nils -> 'ctxX'"
+      ]
+     },
+     {
+      "event": "$ clientB 'SendMessage' serverA | ('contextId' : 'ctxX' ; 'payload' : 'msgB')",
+      "changes": [
+       "clientB . 'receivedHistory': nils -> {'msgA', 'msgB'}",
+       "serverA . 'contexts' . 'ctxX' . 'history': 'msgA' -> {'msgA', 'msgB'}"
+      ]
+     }
+    ]
+   },
+   "models": [
+    {
+     "id": "ebffc9d3318f",
+     "runs": [
+      "a2a-run1"
+     ],
+     "mapping": {
+      "actions": {
+       "'returnHistory'": "'response'",
+       "'returnInitialContext'": "'response'",
+       "'sendWithContext'": null,
+       "'sendWithoutContext'": null,
+       "'snoop'": null
+      },
+      "attributes": {
+       "'authenticated'": null,
+       "'context'": null,
+       "'history'": null,
+       "'knowCtx'": null,
+       "'receivedHistory'": "'receivedHistory'"
+      },
+      "principals": {
+       "clientA": null,
+       "clientB": null,
+       "serverA": "serverA"
+      },
+      "constants": {
+       "'ctxX'": null,
+       "'msgA'": null,
+       "'msgA2'": null,
+       "'msgB'": null
+      },
+      "values": []
+     },
+     "rules": [
+      {
+       "label": "rev1",
+       "action": "'sendWithoutContext'",
+       "equation": "eq ev1(ClientX) = $ ClientX 'sendWithoutContext' serverA | ('msgA') .",
+       "text": "rl [rev1]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > \n=> ep: ev1(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > ."
+      },
+      {
+       "label": "rev2",
+       "action": "'snoop'",
+       "equation": "eq ev2(ClientY, Ctx) = $ ClientY 'snoop' serverA | (Ctx) .",
+       "text": "rl [rev2]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > \n=> ep: ev2(ClientY, Ctx) @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > ."
+      },
+      {
+       "label": "rev3",
+       "action": "'sendWithContext'",
+       "equation": "eq ev3(ClientY) = $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB') .",
+       "text": "rl [rev3]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > \n=> ep: ev3(ClientY) @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > ."
+      },
+      {
+       "label": "rev4",
+       "action": "'sendWithContext'",
+       "equation": "eq ev4(ClientX) = $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2') .",
+       "text": "rl [rev4]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > \n=> ep: ev4(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > ."
+      }
+     ],
+     "property": "eq E @ S < clientB | ('receivedHistory' : ('msgA' , Rest) , ..) > |= attackerReadsVictimData = true .\neq E @ S < serverA | ('context' : 'ctxX' , 'history' : ('msgB' , Rest) , ..) > |= victimContextTampered = true .\neq safety = <> (attackerReadsVictimData \\/ victimContextTampered) .",
+     "property_run": "a2a-run1",
+     "verdict": "counterexample",
+     "counterexample": [
+      {
+       "event": "$ clientA 'sendWithoutContext' serverA | 'msgA'",
+       "changes": [
+        "clientA . 'knowCtx': nils -> 'ctxX'",
+        "clientA . 'receivedHistory': nils -> 'msgA'",
+        "serverA . 'context': nils -> 'ctxX'",
+        "serverA . 'history': nils -> 'msgA'"
+       ]
+      },
+      {
+       "event": "$ clientB 'sendWithoutContext' serverA | 'msgA'",
+       "changes": []
+      },
+      {
+       "event": "$ clientB 'snoop' serverA | 'ctxX'",
+       "changes": [
+        "clientB . 'knowCtx': nils -> 'ctxX'"
+       ]
+      },
+      {
+       "event": "$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB')",
+       "changes": [
+        "clientA . 'receivedHistory': 'msgA' -> {'msgA', 'msgB'}",
+        "serverA . 'history': 'msgA' -> {'msgA', 'msgB'}"
+       ]
+      }
+     ],
+     "candidates": [
+      {
+       "actions": [],
+       "rules": []
+      },
+      {
+       "actions": [],
+       "rules": []
+      },
+      {
+       "actions": [],
+       "rules": []
+      }
+     ]
+    },
+    {
+     "id": "7366df5aab09",
+     "runs": [
+      "a2a-run3"
+     ],
+     "mapping": {
+      "actions": {
+       "'returnHistory'": "'response'",
+       "'returnInitialContext'": "'response'",
+       "'sendWithContext'": null,
+       "'sendWithoutContext'": null,
+       "'snoop'": null
+      },
+      "attributes": {
+       "'authenticated'": null,
+       "'contexts'": null,
+       "'history'": null,
+       "'id'": null,
+       "'knowCtx'": null,
+       "'receivedHistory'": "'receivedHistory'"
+      },
+      "principals": {
+       "clientA": null,
+       "clientB": null,
+       "serverA": "serverA"
+      },
+      "constants": {
+       "'ctxX'": null,
+       "'msgA'": null,
+       "'msgA2'": null,
+       "'msgB'": null
+      },
+      "values": []
+     },
+     "rules": [
+      {
+       "label": "rev1",
+       "action": "'sendWithoutContext'",
+       "equation": "eq ev1(ClientX) = $ ClientX 'sendWithoutContext' serverA | ('msgA') .",
+       "text": "rl [rev1]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > \n=> ep: ev1(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > ."
+      },
+      {
+       "label": "rev2",
+       "action": "'snoop'",
+       "equation": "eq ev2(ClientY, Ctx) = $ ClientY 'snoop' serverA | (Ctx) .",
+       "text": "rl [rev2]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('contexts' : ('id' : Ctx , ...) , ....) > \n=> ep: ev2(ClientY, Ctx) @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('contexts' : ('id' : Ctx , ...) , ....) > ."
+      },
+      {
+       "label": "rev3",
+       "action": "'sendWithContext'",
+       "equation": "eq ev3(ClientY, Ctx) = $ ClientY 'sendWithContext' serverA | (Ctx ; 'msgB') .",
+       "text": "rl [rev3]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : (Ctx , Rest) , ..) > \n=> ep: ev3(ClientY, Ctx) @ S < ClientY | ('authenticated' : true , 'knowCtx' : (Ctx , Rest) , ..) > ."
+      },
+      {
+       "label": "rev4",
+       "action": "'sendWithContext'",
+       "equation": "eq ev4(ClientX, Ctx) = $ ClientX 'sendWithContext' serverA | (Ctx ; 'msgA2') .",
+       "text": "rl [rev4]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : (Ctx , Rest) , ..) > \n=> ep: ev4(ClientX, Ctx) @ S < ClientX | ('authenticated' : true , 'knowCtx' : (Ctx , Rest) , ..) > ."
+      }
+     ],
+     "property": "eq E @ S < clientB | ('receivedHistory' : ('msgA' , Rest) , ..) > |= attackerReadsVictimData = true .\neq E @ S < serverA | ('contexts' : ('id' : 'ctxX' , 'history' : ('msgB' , Rest) , ..) , ...) > |= victimContextTampered = true .\neq safety = <> (attackerReadsVictimData \\/ victimContextTampered) .",
+     "property_run": "a2a-run3",
+     "verdict": "counterexample",
+     "counterexample": [
+      {
+       "event": "$ clientA 'sendWithoutContext' serverA | 'msgA'",
+       "changes": [
+        "clientA . 'knowCtx': nils -> 'ctxX'",
+        "clientA . 'receivedHistory': nils -> 'msgA'",
+        "serverA . 'contexts': nils -> (none)",
+        "serverA . 'contexts' . 'history': (none) -> 'msgA'",
+        "serverA . 'contexts' . 'id': (none) -> 'ctxX'"
+       ]
+      },
+      {
+       "event": "$ clientB 'sendWithoutContext' serverA | 'msgA'",
+       "changes": []
+      },
+      {
+       "event": "$ clientB 'snoop' serverA | 'ctxX'",
+       "changes": [
+        "clientB . 'knowCtx': nils -> 'ctxX'"
+       ]
+      },
+      {
+       "event": "$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgB')",
+       "changes": [
+        "clientA . 'receivedHistory': 'msgA' -> {'msgA', 'msgB'}",
+        "serverA . 'contexts' . 'history': 'msgA' -> {'msgA', 'msgB'}"
+       ]
+      }
+     ],
+     "candidates": [
+      {
+       "actions": [],
+       "rules": []
+      },
+      {
+       "actions": [],
+       "rules": []
+      },
+      {
+       "actions": [],
+       "rules": []
+      }
+     ]
+    }
+   ],
+   "runs": [
+    {
+     "run": "a2a-run1",
+     "status": "validated",
+     "verdict": "counterexample",
+     "model": "ebffc9d3318f"
+    },
+    {
+     "run": "a2a-run2",
+     "status": "failed",
+     "verdict": null
+    },
+    {
+     "run": "a2a-run3",
+     "status": "validated",
+     "verdict": "counterexample",
+     "model": "7366df5aab09"
+    },
+    {
+     "run": "a2a-run4",
+     "status": "failed",
+     "verdict": null
+    },
+    {
+     "run": "a2a-run5",
+     "status": "failed",
+     "verdict": null
+    }
+   ]
+  }
+ ]
+}

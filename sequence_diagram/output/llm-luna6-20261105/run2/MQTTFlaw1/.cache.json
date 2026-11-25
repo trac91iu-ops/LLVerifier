@@ -1,0 +1,73 @@
+{
+  "schema_version": 2,
+  "context_id": "bf7eddd3d9bbe638e002cb3e092229f75c6bccc5d410fa4b06949a17462d0841",
+  "answers": {
+    "genPolicy:e17c46ea8610618236e5b651dfaedfe34976fa4883b6c856f1a8d82b95539c7a": "[B1] < UserX | ... > < cloudB | UserX : ('permission' : true , ...) , 'buffer' : nils , ... > $ UserX 'publishToggle' cloudB => < UserX | ... > < cloudB | UserX : ('permission' : true , ...) , 'buffer' : 'toggle' , ... > $ cloudB 'acknowledge' UserX .\n[B2] < cloudB | UserX : ('permission' : true , ...) , ... > $ cloudB 'revokePermission' cloudB => < cloudB | UserX : ('permission' : false , ...) , ... > .\n[B3] < UserX | ... > < cloudB | 'buffer' : Message , deviceA : ('permission' : true , ...) , ... > $ UserX 'releaseBufferedMessage' cloudB => < UserX | ... > < cloudB | 'buffer' : nils , deviceA : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceA | (Message) .\n[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | ('toggle') => < deviceA | 'on' : true , ... > .\n[B3] < deviceA | 'on' : true , ... > $ cloudB 'publish' deviceA | ('toggle') => < deviceA | 'on' : true , ... > .",
+    "genPolicyVars:0a5e88780a60613176c41f5e8cfab765112af057234713f24fddc738125b041f": "{\"Message\":\"Qid\",\"UserX\":\"User\"}",
+    "filterEvents:5962313ec424c1ca92b3583c54ead863140ff51402279d9b9fdfc068738acb9c": "[1, 3, 4]",
+    "genInit:9cb498f82ff8a6b15b2eba89df28137701b95ef2656404144bbfa00a71dee667": "< userA | nils > < userC | nils > < cloudB | (deviceB : ('permission' : true) , 'buffer' : nils , userA : ('permission' : true) , userC : ('permission' : false)) > < deviceA | ('on' : false) >",
+    "genRRLs:2dade07f4abba8e69aadd8381afc3a818ce25e1c4273cfd0c2517ae6cf74db3a": "[B1] < UserX | ... > => ev1(UserX) .\n[B2] < cloudB | UserX : ('permission' : true) , ... > => ev2(cloudB) .\n[B3] < UserX | ... > => ev3(UserX) ."
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:e17c46ea8610618236e5b651dfaedfe34976fa4883b6c856f1a8d82b95539c7a"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | ... > < cloudB | UserX : ('permission' : true , ...) , 'buffer' : nils , ... > $ UserX 'publishToggle' cloudB => < UserX | ... > < cloudB | UserX : ('permission' : true , ...) , 'buffer' : 'toggle' , ... > $ cloudB 'acknowledge' UserX .\n[B2] < cloudB | UserX : ('permission' : true , ...) , ... > $ cloudB 'revokePermission' cloudB => < cloudB | UserX : ('permission' : false , ...) , ... > .\n[B3] < UserX | ... > < cloudB | 'buffer' : Message , deviceA : ('permission' : true , ...) , ... > $ UserX 'releaseBufferedMessage' cloudB => < UserX | ... > < cloudB | 'buffer' : nils , deviceA : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceA | (Message) .\n[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | ('toggle') => < deviceA | 'on' : true , ... > .\n[B3] < deviceA | 'on' : true , ... > $ cloudB 'publish' deviceA | ('toggle') => < deviceA | 'on' : true , ... > .\n[B3] < deviceA | 'on' : On , ... > $ cloudB 'publish' deviceA | (Message) => < deviceA | 'on' : On , ... > if Message =/= 'toggle' .",
+      "error": "No terminal matches ''' in the current parser context, at line 6 col 118\n\niceA | 'on' : On , ... > if Message =/= 'toggle' .\n                                        ^\nExpected one of: '[A-Z](?:[a-zA-Z0-9_])*', '(?:encrypt|decrypt)', '[0-9]+', '\\\\(', 'nils', 'list'"
+    },
+    {
+      "attempt": 1,
+      "output": "[B1] < UserX | ... > < cloudB | UserX : ('permission' : true , ...) , 'buffer' : nils , ... > $ UserX 'publishToggle' cloudB => < UserX | ... > < cloudB | UserX : ('permission' : true , ...) , 'buffer' : 'toggle' , ... > $ cloudB 'acknowledge' UserX .\n[B2] < cloudB | UserX : ('permission' : true , ...) , ... > $ cloudB 'revokePermission' cloudB => < cloudB | UserX : ('permission' : false , ...) , ... > .\n[B3] < UserX | ... > < cloudB | 'buffer' : Message , deviceA : ('permission' : true , ...) , ... > $ UserX 'releaseBufferedMessage' cloudB => < UserX | ... > < cloudB | 'buffer' : nils , deviceA : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceA | (Message) .\n[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | ('toggle') => < deviceA | 'on' : true , ... > .\n[B3] < deviceA | 'on' : true , ... > $ cloudB 'publish' deviceA | ('toggle') => < deviceA | 'on' : true , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:0a5e88780a60613176c41f5e8cfab765112af057234713f24fddc738125b041f"
+    },
+    {
+      "attempt": 0,
+      "output": "{\"Message\":\"Qid\",\"UserX\":\"User\"}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:5962313ec424c1ca92b3583c54ead863140ff51402279d9b9fdfc068738acb9c"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 3, 4]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:9cb498f82ff8a6b15b2eba89df28137701b95ef2656404144bbfa00a71dee667"
+    },
+    {
+      "attempt": 0,
+      "output": "< userA | nils > < userC | nils > < cloudB | (deviceB : ('permission' : true) , 'buffer' : nils , userA : ('permission' : true) , userC : ('permission' : false)) > < deviceA | ('on' : false) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:2dade07f4abba8e69aadd8381afc3a818ce25e1c4273cfd0c2517ae6cf74db3a"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | ... > => ev1(UserX) .\n[B2] < cloudB | UserX : ('permission' : true) , ... > => ev2 .\n[B3] < UserX | ... > => ev3(UserX) .",
+      "error": "No terminal matches '.' in the current parser context, at line 2 col 57\n\n : ('permission' : true) , ... > => ev2 .\n                                        ^\nExpected one of: '\\\\('"
+    },
+    {
+      "attempt": 1,
+      "output": "[B1] < UserX | ... > => ev1(UserX) .\n[B2] < cloudB | UserX : ('permission' : true) , ... > => ev2 .\n[B3] < UserX | ... > => ev3(UserX) .",
+      "error": "No terminal matches '.' in the current parser context, at line 2 col 57\n\n : ('permission' : true) , ... > => ev2 .\n                                        ^\nExpected one of: '\\\\('"
+    },
+    {
+      "attempt": 2,
+      "output": "[B1] < UserX | ... > => ev1(UserX) .\n[B2] < cloudB | UserX : ('permission' : true) , ... > => ev2(cloudB) .\n[B3] < UserX | ... > => ev3(UserX) .",
+      "error": null
+    }
+  ]
+}

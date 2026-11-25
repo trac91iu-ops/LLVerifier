@@ -1,0 +1,246 @@
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : nils > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev1} {$ userA 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : nils > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev1} {$ userC 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : nils > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev1} {$ userA 'callAPI:getKey' cloudSmartThing @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev1} {$ userA 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev1} {$ userC 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev1} {$ userC 'callAPI:getKey' cloudSmartThing @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev2} {$ userA 'callAPI:delegate' cloudB | (userC ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudB | (userA ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev2} {$ userA 'callAPI:delegate' cloudB | (userC ; deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudB | (userA ; deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev2} {$ userA 'callAPI:delegate' cloudSmartThing | (userC ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev2} {$ userC 'callAPI:delegate' cloudSmartThing | (userA ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev2} {$ userA 'callAPI:delegate' cloudSmartThing | (userC ; deviceSwitch)
+    @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev1} {$ userA 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev1} {$ userC 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev1} {$ userA 'callAPI:getKey' cloudSmartThing @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : nils > <
+    deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev1} {$ userC 'callAPI:getKey' cloudSmartThing @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev1} {$ userA 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev1} {$ userC 'callAPI:getKey' cloudB @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev1} {$ userA 'callAPI:getKey' cloudSmartThing @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userA 'callAPI:delegate' cloudB | (userC ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userC 'callAPI:delegate' cloudB | (userA ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userA 'callAPI:delegate' cloudB | (userC ; deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userC 'callAPI:delegate' cloudB | (userA ; deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userA 'callAPI:delegate' cloudSmartThing | (userC ;
+    deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userC 'callAPI:delegate' cloudSmartThing | (userA ;
+    deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userA 'callAPI:delegate' cloudSmartThing | (userC ;
+    deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev2} {$ userC 'callAPI:delegate' cloudSmartThing | (userA ;
+    deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev3} {$ userA 'callAPI:revoke' cloudB | (userC ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev3} {$ userC 'callAPI:revoke' cloudB | (userA ; deviceLock) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev3} {$ userA 'callAPI:revoke' cloudB | (userC ; deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev3} {$ userC 'callAPI:revoke' cloudB | (userA ; deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev3} {$ userA 'callAPI:revoke' cloudSmartThing | (userC ; deviceLock)
+    @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev3} {$ userC 'callAPI:revoke' cloudSmartThing | (userA ; deviceLock)
+    @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : (userA, userC))
+    >, 'rev3} {$ userA 'callAPI:revoke' cloudSmartThing | (userC ;
+    deviceSwitch) @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : false, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : false, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : false, 'trustSet' : userA) >,
+    'rev4} {$ userC 'callAPI:cloudAPI:toggle' cloudSmartThing | (deviceSwitch ;
+    'secret') @
+< cloudB | deviceLock : ('key' : 'secret', 'state' : true, 'trustSet' :
+    cloudSmartThing) > < userA | 'key' : 'secret' > < userC | 'key' : 'secret'
+    > < deviceLock | 'state' : true, 'trustSet' : cloudB > < deviceSwitch |
+    'state' : false > < cloudSmartThing | deviceSwitch : ('boundTo' :
+    deviceLock, 'key' : 'secret', 'state' : true, 'trustSet' : userA) >, 'rev1}
+idle
+$ userA 'callAPI:getKey' cloudSmartThing
+$ userA 'callAPI:delegate' cloudSmartThing | (userC ; deviceSwitch)
+$ userC 'callAPI:getKey' cloudSmartThing
+$ userA 'callAPI:revoke' cloudSmartThing | (userC ; deviceSwitch)
+$ userC 'callAPI:cloudAPI:toggle' cloudSmartThing | (deviceSwitch ; 'secret')
+rewrites: 5162 in 43ms cpu (43ms real) (119154 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'callAPI:getKey'
+    cloudSmartThing ^ ($ userA 'callAPI:delegate' cloudSmartThing | (userC ;
+    deviceSwitch) ^ ($ userC 'callAPI:getKey' cloudSmartThing ^ ($ userA
+    'callAPI:revoke' cloudSmartThing | (userC ; deviceSwitch) ^ ($ userC
+    'callAPI:cloudAPI:toggle' cloudSmartThing | (deviceSwitch ; 'secret') ^
+    nile)))))

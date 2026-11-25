@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/A2A/diagram.md",
+  "input_sha256": "8cec6526140559c8d8e951999767985e9f927935baaebc62bd6a29e54068e719",
+  "pipeline_id": "ea40af76701a6ed69853d2e9b76e05d7854a57347d14ed1386429028012dbff6",
+  "mode": "check",
+  "started_at": "2026-11-05T09:42:59.755465+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 2 repairs: Expected nonempty DSL rules.",
+  "elapsed_seconds": 76.913,
+  "tokens_this_run": 29275,
+  "finished_at": "2026-11-05T09:44:16.669008+00:00"
+}

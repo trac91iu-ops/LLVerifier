@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "context_id": "1ee057918d62852268fcb20bfa721dfed663a22a7c68c3315a06de99a76540d8",
+  "answers": {},
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:330cf42e54031dda42fdae755b7fa9531e59bba61db10daef8c65d4fc341d98a"
+    },
+    {
+      "attempt": 0,
+      "output": "< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n\n< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n\n< deviceB | 'owner' : nils , 'online' : false , 'buttonPressed' : OldPressed , 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'owner' : nils , 'online' : true , 'buttonPressed' : true , 'key' : Key , ... > $ deviceB 'sendKey' UserX | Key .\n\n< UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | Key\n=> < UserX | 'key' : Key , ... > .\n\n< cloudA | deviceB : ('owner' : nils , 'key' : Key , ...) , ... >\n< deviceB | 'owner' : nils , 'online' : true , 'key' : Key , ... >\n$ UserX 'callAPI:bind' cloudA | (deviceB ; Key)\n=> < cloudA | deviceB : ('owner' : UserX , 'key' : Key , ...) , ... >\n< deviceB | 'owner' : UserX , 'online' : true , 'key' : Key , ... > .\n\n< cloudA | deviceB : ('owner' : UserX , ...) , ... >\n$ UserX 'callAPI:reset' cloudA | deviceB\n=> < cloudA | deviceB : ('owner' : nils , ...) , ... >\n$ cloudA 'reset' deviceB .\n\n< deviceB | 'online' : true , 'owner' : UserY , ... > $ cloudA 'reset' deviceB\n=> < deviceB | 'online' : false , 'owner' : nils , ... > .",
+      "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near"
+    }
+  ]
+}

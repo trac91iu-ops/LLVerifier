@@ -1,0 +1,33 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var FreshR : Qid .
+  var Key : Qid .
+  var Message : Item .
+  var OldMessage : Item .
+  var Owner : Item .
+  var Owners : Set .
+  var R : Qid .
+  var UserX : User .
+  eq init = idle @ < system | ('counter' : 0) > < userA | ('message' : nils, 'near' : deviceB) > < userC | ('message' : nils, 'near' : nils) > < deviceB | ('key' : 'deviceKey') > < cloudA | (userA : ('owner' : nils), userC : ('owner' : nils), deviceB : ('owners' : nils, 'key' : 'deviceKey')) > .
+  eq < UserX | ('near' : nils, ..) > $ UserX 'approach' deviceA = < UserX | ('near' : deviceA, ..) > .
+  eq < UserX | ('near' : deviceA, ..) > $ UserX 'leave' deviceA = < UserX | ('near' : nils, ..) > .
+  eq < system | ('counter' : N, ..) > < UserX | ('near' : deviceA, 'message' : nils, ...) > < deviceA | ('key' : Key, ....) > $ UserX 'pressButton' deviceA = < system | ('counter' : N + 1, ..) > < UserX | ('near' : deviceA, 'message' : nils, ...) > < deviceA | ('key' : Key, ....) > $ deviceA 'sendMessage' UserX | (encrypt (randomStr ('R', N), Key)) .
+  eq < UserX | ('message' : nils, ..) > $ deviceA 'sendMessage' UserX | (Message) = < UserX | ('message' : Message, ..) > .
+  eq < UserX | ('message' : OldMessage, ..) > $ deviceA 'sendMessage' UserX | (Message) = < UserX | ('message' : OldMessage, ..) > .
+  eq < UserX | ('message' : encrypt (R, Key), ..) > < cloudA | (deviceA : ('key' : Key, ...), deviceA : ('owners' : Owners, ....), .....) > $ UserX 'bind' cloudA | (deviceA ; encrypt (R, Key)) = < UserX | ('message' : encrypt (R, Key), ..) > < cloudA | (deviceA : ('key' : Key, ....), deviceA : ('owners' : (UserX, Owners), ....), .....) > .
+  eq < UserX | ('message' : encrypt (R, Key), ..) > < cloudA | (deviceA : ('key' : Key, ...), deviceA : ('owners' : (UserX, Owners), ....), .....) > $ UserX 'bind' cloudA | (deviceA ; encrypt (R, Key)) = < UserX | ('message' : encrypt (R, Key), ..) > < cloudA | (deviceA : ('key' : Key, ....), deviceA : ('owners' : (UserX, Owners), ....), .....) > .
+  eq < cloudA | (deviceA : ('owners' : Owners, ..), UserX : ('owner' : Owner, ...), ....) > $ UserX 'reset' cloudA | (deviceA) = < cloudA | (deviceA : ('owners' : Owners, ..), UserX : ('owner' : nils, ...), ....) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (30303 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _:_('owner', nils)), _:_(userC, _:_('owner', nils)), _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owners', nils))))), <_|_>(userA, _`,_(_:_('message', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('message', nils), _:_('near', nils))), <_|_>(deviceB, _:_('key', 'deviceKey'))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userC, 'approach', deviceA), __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _:_('owner', nils)), _:_(userC, _:_('owner', nils)), _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owners', nils))))), <_|_>(userA, _`,_(_:_('message', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('message', nils), _:_('near', deviceA))), <_|_>(deviceB, _:_('key', 'deviceKey'))))
+Bye.

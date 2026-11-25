@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-05T08:17:11.723Z",
+  "model": "67d840285858",
+  "note": "",
+  "protocol": "CloudEdgeCAC",
+  "runs": [
+    "nr-run3",
+    "nr-run5"
+  ],
+  "verdict": "present"
+}

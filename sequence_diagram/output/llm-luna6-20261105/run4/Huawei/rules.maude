@@ -1,0 +1,74 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < cloudA | (userA : ('members' : nils , 'device' : deviceB) , userC : ('members' : nils , 'device' : nils)) > < deviceB | ('on' : false , 'key' : 'keyA') > < userA | ('key' : nils) > < userC | ('key' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Device : Device .
+vars Key : Qid .
+vars Members : Set .
+vars OldKey : Qid .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < cloudA | (UserX : ('members' : Members , ..) , ...) > $ UserX 'invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : (UserY , Members) , ..) , ...) > .
+eq < cloudA | (UserX : ('device' : Device , ..) , UserY : ('device' : nils , ...) , ....) > 
+= < cloudA | (UserX : ('device' : Device , ..) , UserY : ('device' : Device , ...) , ....) > .
+eq < cloudA | (UserX : ('device' : Device , ..) , ...) > < deviceA | ('key' : Key , ....) > $ UserX 'requestKey' cloudA | (Device) 
+= < cloudA | (UserX : ('device' : Device , ..) , ...) > < deviceA | ('key' : Key , ....) > $ cloudA 'sendKey' UserX | (Device ; Key) .
+eq < UserX | ('key' : nils , ..) > $ cloudA 'sendKey' UserX | (Device ; Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < UserX | ('key' : OldKey , ..) > $ cloudA 'sendKey' UserX | (Device ; Key) 
+= < UserX | ('key' : OldKey , ..) > .
+eq < deviceA | ('key' : Key , 'on' : false , ..) > $ UserX 'turnOnWithKey' deviceA | (Key) 
+= < deviceA | ('key' : Key , 'on' : true , ..) > .
+eq < cloudA | (UserX : ('device' : deviceA , ..) , ...) > < deviceA | ('on' : false , ....) > $ UserX 'turnOn' cloudA | (deviceA) 
+= < cloudA | (UserX : ('device' : deviceA , ..) , ...) > < deviceA | ('on' : true , ....) > .
+eq < cloudA | (UserX : ('members' : (UserY) , ..) , UserY : ('device' : Device , ...) , ....) > $ UserX 'removeMember' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : nils , ..) , UserY : ('device' : nils , ...) , ....) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Device : Device .
+vars Key : Qid .
+vars Members : Set .
+vars OldKey : Qid .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+vars DeviceKey : Qid .
+vars On : Bool .
+*** events type declaration
+ops ev1 : User User -> Event .
+ops ev2 : User Device -> Event .
+ops ev3 : User Qid -> Event .
+ops ev4 : User -> Event .
+ops ev5 : User User -> Event .
+*** events
+eq ev1(UserX, UserY) = $ UserX 'invite' cloudA | (UserY) .
+eq ev2(UserX, Device) = $ UserX 'requestKey' cloudA | (Device) .
+eq ev3(UserX, Key) = $ UserX 'turnOnWithKey' deviceA | (Key) .
+eq ev4(UserX) = $ UserX 'turnOn' cloudA | (deviceA) .
+eq ev5(UserX, UserY) = $ UserX 'removeMember' cloudA | (UserY) .
+*** transitions
+rl [rev1]: E @ S < cloudA | (UserX : ('members' : Members , 'device' : Device , ..) , ...) > < UserY | ('key' : Key , ....) > 
+=> ep: ev1(UserX, UserY) @ S < cloudA | (UserX : ('members' : Members , 'device' : Device , ..) , ...) > < UserY | ('key' : Key , ....) > .
+rl [rev2]: E @ S < cloudA | (UserX : ('device' : Device , ..) , ...) > < Device | ('on' : On , 'key' : Key , ....) > 
+=> ep: ev2(UserX, Device) @ S < cloudA | (UserX : ('device' : Device , ..) , ...) > < Device | ('on' : On , 'key' : Key , ....) > .
+rl [rev3]: E @ S < UserX | ('key' : Key , ..) > < deviceA | ('on' : On , 'key' : DeviceKey , ...) > 
+=> ep: ev3(UserX, Key) @ S < UserX | ('key' : Key , ..) > < deviceA | ('on' : On , 'key' : DeviceKey , ...) > .
+rl [rev4]: E @ S < cloudA | (UserX : ('device' : Device , ..) , ...) > < deviceA | ('on' : On , 'key' : Key , ....) > 
+=> ep: ev4(UserX) @ S < cloudA | (UserX : ('device' : Device , ..) , ...) > < deviceA | ('on' : On , 'key' : Key , ....) > .
+rl [rev5]: E @ S < cloudA | (UserX : ('members' : (UserY) , 'device' : Device , ..) , UserY : ('device' : Device , ...) , ....) > 
+=> ep: ev5(UserX, UserY) @ S < cloudA | (UserX : ('members' : (UserY) , 'device' : Device , ..) , UserY : ('device' : Device , ...) , ....) > .
+
+endm

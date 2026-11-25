@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-05T08:20:31.777Z",
+  "model": "26f1b3a0718b",
+  "note": "",
+  "protocol": "Switchbot",
+  "runs": [
+    "nr-run4",
+    "nr-run5"
+  ],
+  "verdict": "present"
+}

@@ -1,8 +1,0 @@
-idle
-$ userA 'press' deviceB
-$ userC 'approaches' deviceB
-$ userC 'callAPI:setKey' deviceB | 'secretC'
-$ userC 'press' deviceB
-$ userC 'leaves' deviceB
-$ userA 'callAPI:discover' deviceB
-

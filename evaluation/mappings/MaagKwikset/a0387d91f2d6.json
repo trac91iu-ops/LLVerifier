@@ -1,0 +1,117 @@
+{
+  "protocol": "MaagKwikset",
+  "model_sha256": "a0387d91f2d6ee3b12d0700dfd492fc4c563b2c7f36ff5275e8c4b9827ce5e2c",
+  "runs": [
+    "a2-run2"
+  ],
+  "generated": "sequence_diagram/output/ablation-norepair-20261104/run2/MaagKwikset/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/MaagKwikset/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'approach'": "'approaches'",
+      "'bind'": "'callAPI:bind'",
+      "'leave'": "'leaves'",
+      "'requestKey'": "'callAPI:getKey'",
+      "'revokeAccess'": "'callAPI:revoke'",
+      "'shareAccess'": "'callAPI:share'",
+      "'signKey'": "'callAPI:signKey'",
+      "'signedKey'": "'send'"
+    },
+    "attributes": {
+      "'counter'": "'counter'",
+      "'key'": "'key'",
+      "'near'": "'localTo'",
+      "'secret'": null,
+      "'signedKey'": "'signedKey'",
+      "'trusted'": "'trust'"
+    },
+    "principals": {
+      "cloudA": "cloudA",
+      "deviceB": "deviceB",
+      "system": "system",
+      "userA": "userA",
+      "userC": "userC"
+    },
+    "constants": {
+      "''": "''",
+      "'Key'": "'KeyA'"
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'approaches'",
+      "'callAPI:bind'",
+      "'callAPI:getKey'",
+      "'callAPI:revoke'",
+      "'callAPI:share'",
+      "'callAPI:signKey'",
+      "'leaves'",
+      "'send'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'key'",
+      "'localTo'",
+      "'signedKey'",
+      "'trust'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "''",
+      "'KeyA'",
+      "'secret'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'approach'",
+      "'bind'",
+      "'leave'",
+      "'requestKey'",
+      "'revokeAccess'",
+      "'shareAccess'",
+      "'signKey'",
+      "'signedKey'"
+    ],
+    "attributes": [
+      "'counter'",
+      "'key'",
+      "'near'",
+      "'secret'",
+      "'signedKey'",
+      "'trusted'"
+    ],
+    "principals": [
+      "cloudA",
+      "deviceB",
+      "system",
+      "userA",
+      "userC"
+    ],
+    "constants": [
+      "''",
+      "'Key'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T04:14:06+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2305,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'approach'\": \"'approaches'\",\n    \"'bind'\": \"'callAPI:bind'\",\n    \"'leave'\": \"'leaves'\",\n    \"'requestKey'\": \"'callAPI:getKey'\",\n    \"'revokeAccess'\": \"'callAPI:revoke'\",\n    \"'shareAccess'\": \"'callAPI:share'\",\n    \"'signKey'\": \"'callAPI:signKey'\",\n    \"'signedKey'\": \"'send'\"\n  },\n  \"attributes\": {\n    \"'counter'\": \"'counter'\",\n    \"'key'\": \"'key'\",\n    \"'near'\": \"'localTo'\",\n    \"'secret'\": null,\n    \"'signedKey'\": \"'signedKey'\",\n    \"'trusted'\": \"'trust'\"\n  },\n  \"principals\": {\n    \"cloudA\": \"cloudA\",\n    \"deviceB\": \"deviceB\",\n    \"system\": \"system\",\n    \"userA\": \"userA\",\n    \"userC\": \"userC\"\n  },\n  \"constants\": {\n    \"''\": \"''\",\n    \"'Key'\": \"'KeyA'\"\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        9,
+        13
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        0,
+        1,
+        2
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        14,
+        21
+      ],
+      "head": "alt The user is near the device and holds only key Kuser",
+      "state_rules": [
+        3,
+        4
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        22,
+        28
+      ],
+      "head": "alt The user holds both Kdevice and Kuser",
+      "state_rules": [
+        5
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        29,
+        32
+      ],
+      "head": "alt The user is away and the device exists",
+      "state_rules": [
+        6
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        33,
+        36
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        7
+      ],
+      "event_rules": [
+        4
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < deviceA | ('key' : Kdevice , ..) > $ UserX 'pressButton' deviceA \n= < deviceA | ('key' : Kdevice , ..) > $ deviceA 'sendDeviceKey' UserX | (Kdevice) ."
+    },
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('keys' : nils , ..) > $ deviceA 'sendDeviceKey' UserX | (Kdevice) \n= < UserX | ('keys' : (Kdevice) , ..) > ."
+    },
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('keys' : (Kdevice , Rest) , ..) > $ deviceA 'sendDeviceKey' UserX | (Kdevice) \n= < UserX | ('keys' : (Kdevice , Rest) , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < deviceA | ('key' : Kdevice , ..) > $ UserX 'bindDevice' deviceA | (Kuser) \n= < deviceA | ('key' : Kdevice , ..) > $ deviceA 'bindCloud' cloudA | (Kdevice ; Kuser) ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < cloudA | (deviceA : ('key' : Kdevice , 'owner' : nils , ..) , UserY : ('key' : Kuser , ...) , ....) > $ deviceA 'bindCloud' cloudA | (Kdevice ; Kuser) \n= < cloudA | (deviceA : ('key' : Kdevice , 'owner' : UserY , ..) , UserY : ('key' : Kuser , ...) , ....) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < cloudA | (deviceA : ('key' : Kdevice , 'owner' : nils , ..) , UserY : ('key' : Kuser , ...) , ....) > $ UserX 'bindDevice' cloudA | (Kdevice ; Kuser) \n= < cloudA | (deviceA : ('key' : Kdevice , 'owner' : UserY , ..) , UserY : ('key' : Kuser , ...) , ....) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceA \n= < UserX | ('near' : deviceA , ..) > ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < UserX | ('near' : deviceA , ..) > $ UserX 'leave' deviceA \n= < UserX | ('near' : nils , ..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | ('near' : deviceA , ..) > \n=> ep: ev1(UserX) @ S < UserX | ('near' : deviceA , ..) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | ('near' : deviceA , 'keys' : (Kuser) , ..) > \n=> ep: ev2(UserX, Kuser) @ S < UserX | ('near' : deviceA , 'keys' : (Kuser) , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | ('keys' : (Kdevice , Kuser , Rest) , ..) > \n=> ep: ev4(UserX, Kdevice, Kuser) @ S < UserX | ('keys' : (Kdevice , Kuser , Rest) , ..) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > \n=> ep: ev5(UserX) @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev6",
+      "rule": "rl [rev6]: E @ S < UserX | ('near' : deviceA , ..) > \n=> ep: ev6(UserX) @ S < UserX | ('near' : deviceA , ..) > ."
+    }
+  ],
+  "coverage_issues": []
+}

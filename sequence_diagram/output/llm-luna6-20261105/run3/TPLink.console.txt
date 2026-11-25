@@ -1,0 +1,99 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] AttributeError: 'NoneType' object has no attribute 'v'
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4723
+--------------------------------------------------
+```text
+[B1] < deviceA | 'buttonPressed' : false , ... > $ UserX 'pressButton' deviceA
+=> < deviceA | 'buttonPressed' : true , ... > .
+[B2] < cloudA | UserX : ('accountKey' : Key , ...) , ... > < deviceA | 'buttonPressed' : true , 'key' : nils , ... > $ UserX 'sendKey' deviceA | (Key)
+=> < cloudA | UserX : ('accountKey' : Key , ...) , ... > < deviceA | 'buttonPressed' : false , 'key' : Key , ... > .
+[B3] < deviceA | 'key' : Key , ... > $ UserX 'discover' deviceA
+=> < deviceA | 'key' : Key , ... > $ deviceA 'bind' cloudA | (Key) .
+[B3] < cloudA | UserY : ('accountKey' : Key , ...) , ... > < deviceA | 'owner' : nils , ... > $ deviceA 'bind' cloudA | (Key)
+=> < cloudA | UserY : ('accountKey' : Key , ...) , ... > < deviceA | 'owner' : UserY , ... > .
+[B4] < UserX | 'near' : false , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : true , ... > .
+[B5] < UserX | 'near' : true , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : false , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2566
+--------------------------------------------------
+```json
+{
+  "Key": "Qid",
+  "UserX": "User",
+  "UserY": "User"
+}
+```
+==================================================
+{'Key': 'Qid', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< deviceA | ('owner' : [User] , 'buttonPressed' : [Bool] , 'key' : [Qid]) > < cloudA | ([User] : ('accountKey' : [Qid])) > < userA | ('near' : [Bool]) > < userC | ('near' : [Bool]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < deviceA | ('buttonPressed' : false , ..) > $ UserX 'pressButton' deviceA 
+= < deviceA | ('buttonPressed' : true , ..) > .
+eq < cloudA | (UserX : ('accountKey' : Key , ..) , ...) > < deviceA | ('buttonPressed' : true , 'key' : nils , ....) > $ UserX 'sendKey' deviceA | (Key) 
+= < cloudA | (UserX : ('accountKey' : Key , ..) , ...) > < deviceA | ('buttonPressed' : false , 'key' : Key , ....) > .
+eq < deviceA | ('key' : Key , ..) > $ UserX 'discover' deviceA 
+= < deviceA | ('key' : Key , ..) > $ deviceA 'bind' cloudA | (Key) .
+eq < cloudA | (UserY : ('accountKey' : Key , ..) , ...) > < deviceA | ('owner' : nils , ....) > $ deviceA 'bind' cloudA | (Key) 
+= < cloudA | (UserY : ('accountKey' : Key , ..) , ...) > < deviceA | ('owner' : UserY , ....) > .
+eq < UserX | ('near' : false , ..) > $ UserX 'approach' deviceA 
+= < UserX | ('near' : true , ..) > .
+eq < UserX | ('near' : true , ..) > $ UserX 'leave' deviceA 
+= < UserX | ('near' : false , ..) > .
+$ UserX 'pressButton' deviceA
+$ UserX 'sendKey' deviceA | (Key)
+$ UserX 'discover' deviceA
+$ deviceA 'bind' cloudA | (Key)
+$ UserX 'approach' deviceA
+$ UserX 'leave' deviceA
+[*] Total token: 1696
+--------------------------------------------------
+```text
+[1, 2, 3, 5, 6]
+```
+==================================================
+[1, 2, 3, 5, 6]
+[$ UserX 'pressButton' deviceA, $ UserX 'sendKey' deviceA | (Key), $ UserX 'discover' deviceA, $ UserX 'approach' deviceA, $ UserX 'leave' deviceA]
+[eq ev1(UserX) = $ UserX 'pressButton' deviceA ., eq ev2(UserX, Key) = $ UserX 'sendKey' deviceA | (Key) ., eq ev3(UserX) = $ UserX 'discover' deviceA ., eq ev4(UserX) = $ UserX 'approach' deviceA ., eq ev5(UserX) = $ UserX 'leave' deviceA .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3011
+--------------------------------------------------
+```text
+< deviceB | ('owner' : nils , 'buttonPressed' : false , 'key' : nils) > < cloudA | (userA : ('accountKey' : 'accountKeyA') , userC : ('accountKey' : 'accountKeyC')) > < userA | ('near' : true) > < userC | ('near' : false) >
+```
+==================================================
+< deviceB | ('owner' : nils , 'buttonPressed' : false , 'key' : nils) > < cloudA | (userA : ('accountKey' : 'accountKeyA') , userC : ('accountKey' : 'accountKeyC')) > < userA | ('near' : true) > < userC | ('near' : false) >
+[*] Generating event rules with LLM...
+[*] Total token: 3834
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : true > => ev1(UserX) .
+[B2] < UserX | 'near' : true > < cloudA | UserX : ('accountKey' : Key) > => ev2(UserX, Key) .
+[B3] < UserX | 'near' : true > => ev3(UserX) .
+[B4] < UserX | 'near' : false > < deviceA | > => ev4(UserX) .
+[B5] < UserX | 'near' : true > => ev5(UserX) .
+```
+==================================================
+< UserX | 'near' : true > => ev1(UserX) .
+< UserX | 'near' : true > < cloudA | UserX : ('accountKey' : Key) > => ev2(UserX, Key) .
+< UserX | 'near' : true > => ev3(UserX) .
+< UserX | 'near' : false > < deviceA | > => ev4(UserX) .
+< UserX | 'near' : true > => ev5(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST

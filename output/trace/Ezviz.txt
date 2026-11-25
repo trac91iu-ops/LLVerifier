@@ -1,7 +1,0 @@
-idle
-$ userA 'leaves' deviceB
-$ userA 'approaches' deviceB
-$ userC 'approaches' deviceB
-$ userC 'pressButton' deviceB
-$ userC 'leaves' deviceB
-

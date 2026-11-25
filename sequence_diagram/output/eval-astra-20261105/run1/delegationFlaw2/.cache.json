@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "context_id": "4522bd5b486ae2ad67cd559bd890e524944aa75561777c93a16b0e2c1c2789c3",
+  "answers": {
+    "genPolicy:aa9864a5e5bf623f68b285210d47c69085ae9d60197a501fc9fc474947575ef9": "[B1] < CloudX | DeviceX : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ UserX 'requestKey' CloudX\n=> < CloudX | DeviceX : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ CloudX 'sendKey' UserX | Key if Key =/= nils .\n[B1] < UserX | 'key' : nils , ... > $ CloudX 'sendKey' UserX | Key\n=> < UserX | 'key' : Key , ... > .\n[B2] < CloudX | DeviceX : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'delegateAccess' CloudX | (DeviceX ; UserY)\n=> < CloudX | DeviceX : ('trusted' : (UserX , UserY , Rest) , ...) , ... > .\n[B3] < CloudX | DeviceX : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revokeAccess' CloudX | (DeviceX ; UserY)\n=> < CloudX | DeviceX : ('trusted' : (UserX , Rest) , ...) , ... > .\n[B4] < cloudSmartThing | DeviceX : ('key' : Key , 'on' : false , ...) , ... > $ UserX 'turnOnWithKey' cloudSmartThing | (DeviceX ; Key)\n=> < cloudSmartThing | DeviceX : ('key' : Key , 'on' : true , ...) , ... > $ cloudSmartThing 'turnOn' DeviceX .\n[B5] < DeviceX | ... > $ UserX 'turnOn' DeviceX\n=> < DeviceX | ... > .\n[B6] < CloudX | DeviceX : ('on' : false , 'trusted' : (P , Rest) , ...) , ... > $ P 'turnOn' DeviceX\n=> < CloudX | DeviceX : ('on' : true , 'trusted' : (P , Rest) , ...) , ... > $ CloudX 'turnOn' DeviceX .\n[B7] < cloudSmartThing | DeviceX : ('boundTo' : B , ...) , ... > $ cloudSmartThing 'turnOn' DeviceX\n=> < cloudSmartThing | DeviceX : ('boundTo' : B , ...) , ... > $ cloudSmartThing 'turnOn' B .\n[B8] < deviceLock | 'trusted' : (P , Rest) , 'on' : false , ... > $ P 'turnOn' deviceLock\n=> < deviceLock | 'trusted' : (P , Rest) , 'on' : true , ... > .",
+    "genPolicyVars:860b9a73ce75c9eef8d7548c2358b48a40975b1e407aa694232eeee151dad1a8": "{\n  \"B\": \"Device\",\n  \"CloudX\": \"Cloud\",\n  \"DeviceX\": \"Device\",\n  \"Key\": \"Qid\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "filterEvents:e97f4cb51af461d8f2ce37eac02cacf7ae6e098af6de522b53be98c326bdf2ae": "[1, 3, 4, 5, 7, 8, 10]",
+    "genInit:8fe843430f343fb6f188b54f450d6b918f262d5adabf4f0ddee03eb15ce66bf2": "< cloudB | deviceLock : ('on' : false , 'trusted' : (cloudSmartThing) , 'key' : 'key') >\n< userA | 'key' : nils >\n< userC | 'key' : nils >\n< cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock , 'key' : 'key' , 'on' : false , 'trusted' : (userA)) >\n< deviceSwitch | nils >\n< deviceLock | 'trusted' : (cloudB) , 'on' : false >",
+    "genRRLs:1f3136f0d2c19933c71211fde71af970dde9af50cb909329ed6b82bc44870a0c": "[B1] < UserX | ... > < CloudX | ... > => ev1(UserX, CloudX) .\n[B2] < UserX | ... > < UserY | ... > < CloudX | ... > < DeviceX | ... > => ev2(UserX, CloudX, DeviceX, UserY) .\n[B3] < UserX | ... > < UserY | ... > < CloudX | ... > < DeviceX | ... > => ev3(UserX, CloudX, DeviceX, UserY) .\n[B4] < UserX | 'key' : Key , ... > < DeviceX | ... > => ev4(UserX, DeviceX, Key) .\n[B5] < UserX | ... > < DeviceX | ... > => ev5(UserX, DeviceX) .",
+    "genSlots:4bb30a17840b430dac994ed05791a8ddeb8236af4e3f07a50125503f823a9a7e": "deviceOn =| < deviceLock | 'on' : true , ... > .\nattackerAuthorized =| < cloudB | deviceLock : ('trusted' : (userC , Rest) , ...) , ... > .",
+    "genPropVars:952a082143a5e6abe14dcd237a1a1856e17db1b9acdf0477e28ff6ba09f13952": "{\n  \"Rest\": \"Set\"\n}"
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:aa9864a5e5bf623f68b285210d47c69085ae9d60197a501fc9fc474947575ef9"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < CloudX | DeviceX : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ UserX 'requestKey' CloudX\n=> < CloudX | DeviceX : ('trusted' : (UserX , Rest) , 'key' : Key , ...) , ... > $ CloudX 'sendKey' UserX | Key if Key =/= nils .\n[B1] < UserX | 'key' : nils , ... > $ CloudX 'sendKey' UserX | Key\n=> < UserX | 'key' : Key , ... > .\n[B2] < CloudX | DeviceX : ('trusted' : (UserX , Rest) , ...) , ... > $ UserX 'delegateAccess' CloudX | (DeviceX ; UserY)\n=> < CloudX | DeviceX : ('trusted' : (UserX , UserY , Rest) , ...) , ... > .\n[B3] < CloudX | DeviceX : ('trusted' : (UserX , UserY , Rest) , ...) , ... > $ UserX 'revokeAccess' CloudX | (DeviceX ; UserY)\n=> < CloudX | DeviceX : ('trusted' : (UserX , Rest) , ...) , ... > .\n[B4] < cloudSmartThing | DeviceX : ('key' : Key , 'on' : false , ...) , ... > $ UserX 'turnOnWithKey' cloudSmartThing | (DeviceX ; Key)\n=> < cloudSmartThing | DeviceX : ('key' : Key , 'on' : true , ...) , ... > $ cloudSmartThing 'turnOn' DeviceX .\n[B5] < DeviceX | ... > $ UserX 'turnOn' DeviceX\n=> < DeviceX | ... > .\n[B6] < CloudX | DeviceX : ('on' : false , 'trusted' : (P , Rest) , ...) , ... > $ P 'turnOn' DeviceX\n=> < CloudX | DeviceX : ('on' : true , 'trusted' : (P , Rest) , ...) , ... > $ CloudX 'turnOn' DeviceX .\n[B7] < cloudSmartThing | DeviceX : ('boundTo' : B , ...) , ... > $ cloudSmartThing 'turnOn' DeviceX\n=> < cloudSmartThing | DeviceX : ('boundTo' : B , ...) , ... > $ cloudSmartThing 'turnOn' B .\n[B8] < deviceLock | 'trusted' : (P , Rest) , 'on' : false , ... > $ P 'turnOn' deviceLock\n=> < deviceLock | 'trusted' : (P , Rest) , 'on' : true , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:860b9a73ce75c9eef8d7548c2358b48a40975b1e407aa694232eeee151dad1a8"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"B\": \"Device\",\n  \"CloudX\": \"Cloud\",\n  \"DeviceX\": \"Device\",\n  \"Key\": \"Qid\",\n  \"P\": \"Principal\",\n  \"Rest\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:e97f4cb51af461d8f2ce37eac02cacf7ae6e098af6de522b53be98c326bdf2ae"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 3, 4, 5, 7, 8, 10]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:8fe843430f343fb6f188b54f450d6b918f262d5adabf4f0ddee03eb15ce66bf2"
+    },
+    {
+      "attempt": 0,
+      "output": "< cloudB | deviceLock : ('on' : false , 'trusted' : (cloudSmartThing) , 'key' : 'key') >\n< userA | 'key' : nils >\n< userC | 'key' : nils >\n< cloudSmartThing | deviceSwitch : ('boundTo' : deviceLock , 'key' : 'key' , 'on' : false , 'trusted' : (userA)) >\n< deviceSwitch | nils >\n< deviceLock | 'trusted' : (cloudB) , 'on' : false >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:1f3136f0d2c19933c71211fde71af970dde9af50cb909329ed6b82bc44870a0c"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | ... > < CloudX | ... > => ev1(UserX, CloudX) .\n[B2] < UserX | ... > < UserY | ... > < CloudX | ... > < DeviceX | ... > => ev2(UserX, CloudX, DeviceX, UserY) .\n[B3] < UserX | ... > < UserY | ... > < CloudX | ... > < DeviceX | ... > => ev3(UserX, CloudX, DeviceX, UserY) .\n[B4] < UserX | 'key' : Key , ... > < DeviceX | ... > => ev4(UserX, DeviceX, Key) .\n[B5] < UserX | ... > < DeviceX | ... > => ev5(UserX, DeviceX) .",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:4bb30a17840b430dac994ed05791a8ddeb8236af4e3f07a50125503f823a9a7e"
+    },
+    {
+      "attempt": 0,
+      "output": "deviceOn =| < deviceLock | 'on' : true , ... > .\nattackerAuthorized =| < cloudB | deviceLock : ('trusted' : (userC , Rest) , ...) , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPropVars",
+      "prompt_hash": "genPropVars:952a082143a5e6abe14dcd237a1a1856e17db1b9acdf0477e28ff6ba09f13952"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Rest\": \"Set\"\n}",
+      "error": null
+    }
+  ]
+}

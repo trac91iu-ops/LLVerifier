@@ -1,0 +1,59 @@
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    nils, 'localTo' : deviceB > < userC | 'key' : nils, 'localTo' : nils > <
+    deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton' deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : deviceB > < userC | 'key' : nils, 'localTo' : nils >
+    < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'leaves' deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : nils > < userC | 'key' : nils, 'localTo' : nils > <
+    deviceB | 'key' : 'secret' >, 'rev4} {$ userA 'approaches' deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : deviceB > < userC | 'key' : nils, 'localTo' : nils >
+    < deviceB | 'key' : 'secret' >, 'rev4} {$ userC 'approaches' deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : deviceB > < userC | 'key' : nils, 'localTo' : deviceB
+    > < deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton' deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : deviceB > < userC | 'key' : nils, 'localTo' : deviceB
+    > < deviceB | 'key' : 'secret' >, 'rev1} {$ userC 'pressButton' deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : deviceB > < userC | 'key' : 'secret', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev1} {$ userA 'pressButton'
+    deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : deviceB > < userC | 'key' : 'secret', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev3} {$ userA 'leaves' deviceB
+    @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : nils > < userC | 'key' : 'secret', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev1} {$ userC 'pressButton'
+    deviceB @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : nils > < userC | 'key' : 'secret', 'localTo' :
+    deviceB > < deviceB | 'key' : 'secret' >, 'rev3} {$ userC 'leaves' deviceB
+    @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : nils) > < userA | 'key' :
+    'secret', 'localTo' : nils > < userC | 'key' : 'secret', 'localTo' : nils >
+    < deviceB | 'key' : 'secret' >, 'rev2} {$ userC 'callAPI:bind' cloudA | (
+    deviceB ; 'secret') @
+< cloudA | deviceB : ('key' : 'secret', 'owner' : userC) > < userA | 'key' :
+    'secret', 'localTo' : nils > < userC | 'key' : 'secret', 'localTo' : nils >
+    < deviceB | 'key' : 'secret' >, 'rev2}
+idle
+$ userA 'pressButton' deviceB
+$ userA 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+$ userC 'pressButton' deviceB
+$ userA 'leaves' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:bind' cloudA | (deviceB ; 'secret')
+rewrites: 1667 in 5ms cpu (6ms real) (281683 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userA 'leaves' deviceB ^ ($ userA 'approaches' deviceB ^ ($ userC
+    'approaches' deviceB ^ ($ userC 'pressButton' deviceB ^ ($ userA 'leaves'
+    deviceB ^ ($ userC 'leaves' deviceB ^ ($ userC 'callAPI:bind' cloudA | (
+    deviceB ; 'secret') ^ nile))))))))

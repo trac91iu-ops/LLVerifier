@@ -1,0 +1,436 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.5.1 built: Jul 16 2025 12:00:00
+	     Copyright 1997-2025 SRI International
+		   Sun Oct 25 23:37:14 2026
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+{idle @
+< system | 'counter' : 0, 'time' : 0 > < cloudA | deviceB : ('owner' : nils,
+    'tickets' : nils) > < userA | 'knowledge' : nils, 'localTo' : deviceB > <
+    userC | 'knowledge' : nils, 'localTo' : nils > < deviceB | nils >, 'rev1} {
+    $ userA 'pressButton' deviceB @
+< system | 'counter' : 1, 'time' : 0 > < cloudA | deviceB : ('owner' : nils,
+    'tickets' : ('key' : 'Secret'2357136044, 'time' : 0)) > < userA |
+    'knowledge' : nils, 'localTo' : deviceB > < userC | 'knowledge' : nils,
+    'localTo' : nils > < deviceB | nils >, 'rev1} {$ userA 'pressButton'
+    deviceB @
+< system | 'counter' : 2, 'time' : 0 > < cloudA | deviceB : ('owner' : nils,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'time'
+    : 0)) > < userA | 'knowledge' : nils, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : nils > < deviceB | nils >, 'rev1} {$ userA
+    'pressButton' deviceB @
+< system | 'counter' : 3, 'time' : 0 > < cloudA | deviceB : ('owner' : nils,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'time' : 0)) > < userA | 'knowledge' : nils,
+    'localTo' : deviceB > < userC | 'knowledge' : nils, 'localTo' : nils > <
+    deviceB | nils >, 'rev1} {$ userA 'pressButton' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : nils,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : nils, 'localTo' : deviceB > < userC | 'knowledge' : nils,
+    'localTo' : nils > < deviceB | nils >, 'rev2} {$ userA 'callAPI:getKey'
+    cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : nils,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : nils > < deviceB | nils >, 'rev3} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : nils > < deviceB | nils >, 'rev2} {$ userA
+    'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : nils > < deviceB | nils >, 'rev4} {$ userA
+    'callAPI:join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : nils > < deviceB | nils >, 'rev5} {$ userA
+    'leaves' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : nils, 'localTo' : nils > < deviceB | nils >, 'rev3} {$ userA
+    'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : nils, 'localTo' : nils > < deviceB | nils >, 'rev4} {$ userA
+    'callAPI:join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : nils, 'localTo' : nils > < deviceB | nils >, 'rev6} {$ userA 'approaches'
+    deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : nils > < deviceB | nils >, 'rev6} {$ userC
+    'approaches' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : deviceB > < deviceB | nils >, 'rev2} {$
+    userA 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : nils, 'localTo' : deviceB > < deviceB | nils >, 'rev2} {$
+    userC 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >,
+    'rev2} {$ userA 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >,
+    'rev3} {$ userA 'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >,
+    'rev3} {$ userC 'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >,
+    'rev4} {$ userA 'callAPI:join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < userC |
+    'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >,
+    'rev5} {$ userA 'leaves' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >, 'rev2} {$
+    userC 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >, 'rev3} {$
+    userA 'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >, 'rev3} {$
+    userC 'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >, 'rev4} {$
+    userA 'callAPI:join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : 'Secret'2357136044, 'localTo' : deviceB > < deviceB | nils >, 'rev5} {$
+    userC 'leaves' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : userA,
+    'tickets' : ('key' : 'Secret'2357136044, 'key' : 'Secret'2546248239, 'key'
+    : 'Secret'3071714933, 'key' : 'Secret'362609376e, 'time' : 0)) > < userA |
+    'knowledge' : 'Secret'2357136044, 'localTo' : nils > < userC | 'knowledge'
+    : 'Secret'2357136044, 'localTo' : nils > < deviceB | nils >, 'rev4} {$
+    userC 'callAPI:join' cloudA | (deviceB ; 'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev3} {$ userA 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev3} {$ userC 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev4} {$ userA 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev6} {$ userA 'approaches' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev2} {$ userA 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev3} {$ userA 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev3} {$ userC 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev4} {$ userA 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev4} {$ userC 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev5} {$ userA 'leaves' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev6} {$ userC 'approaches' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev2} {$ userC 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev3} {$ userA 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev3} {$ userC 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev4} {$ userA 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev4} {$ userC 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev5} {$ userC 'leaves' deviceB @
+< system | 'counter' : 4, 'time' : 0 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rtp} {timepass @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev3} {$ userA 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev3} {$ userC 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev4} {$ userA 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev4} {$ userC 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev6} {$ userA 'approaches' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev2} {$ userA 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev3} {$ userA 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev3} {$ userC 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev4} {$ userA 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev4} {$ userC 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' :
+    deviceB > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > <
+    deviceB | nils >, 'rev5} {$ userA 'leaves' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev6} {$ userC 'approaches' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev2} {$ userC 'callAPI:getKey' cloudA | deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev3} {$ userA 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev3} {$ userC 'callAPI:bind' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev4} {$ userA 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev4} {$ userC 'callAPI:join' cloudA | (deviceB ;
+    'Secret'2357136044) @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : deviceB > <
+    deviceB | nils >, 'rev5} {$ userC 'leaves' deviceB @
+< system | 'counter' : 4, 'time' : 1 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rtp} {timepass @
+< system | 'counter' : 4, 'time' : 2 > < cloudA | deviceB : ('owner' : (userA,
+    userC), 'tickets' : ('key' : 'Secret'2357136044, 'key' :
+    'Secret'2546248239, 'key' : 'Secret'3071714933, 'key' : 'Secret'362609376e,
+    'time' : 0)) > < userA | 'knowledge' : 'Secret'2357136044, 'localTo' : nils
+    > < userC | 'knowledge' : 'Secret'2357136044, 'localTo' : nils > < deviceB
+    | nils >, 'rev3}
+idle
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'callAPI:getKey' cloudA | deviceB
+$ userA 'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044)
+$ userA 'leaves' deviceB
+$ userA 'approaches' deviceB
+$ userC 'approaches' deviceB
+$ userC 'callAPI:getKey' cloudA | deviceB
+$ userA 'leaves' deviceB
+$ userC 'leaves' deviceB
+$ userC 'callAPI:join' cloudA | (deviceB ; 'Secret'2357136044)
+rewrites: 27744 in 79ms cpu (80ms real) (348994 rewrites/second)
+result [Action,RuleName,Key,Rat,FindResult,Attributes,Arguments,
+    ModelCheckResult,Soup,PPResult]: idle ^ ($ userA 'pressButton' deviceB ^ ($
+    userA 'pressButton' deviceB ^ ($ userA 'pressButton' deviceB ^ ($ userA
+    'pressButton' deviceB ^ ($ userA 'callAPI:getKey' cloudA | deviceB ^ ($
+    userA 'callAPI:bind' cloudA | (deviceB ; 'Secret'2357136044) ^ ($ userA
+    'leaves' deviceB ^ ($ userA 'approaches' deviceB ^ ($ userC 'approaches'
+    deviceB ^ ($ userC 'callAPI:getKey' cloudA | deviceB ^ ($ userA 'leaves'
+    deviceB ^ ($ userC 'leaves' deviceB ^ ($ userC 'callAPI:join' cloudA | (
+    deviceB ; 'Secret'2357136044) ^ nile)))))))))))))
+Bye.

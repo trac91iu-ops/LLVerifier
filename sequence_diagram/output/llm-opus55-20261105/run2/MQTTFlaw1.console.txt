@@ -1,0 +1,104 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 3 blocks
+[*] Generating policy with LLM...
+[*] Total token: 6719
+--------------------------------------------------
+```
+[B1] < cloudB | 'buffer' : nils , 'permission' : (UserX , Rest) , ... > $ UserX 'requestPublish' cloudB | ('toggle')
+=> < cloudB | 'buffer' : 'toggle' , 'permission' : (UserX , Rest) , ... > $ cloudB 'ack' UserX | ('toggle') .
+[B2] < cloudB | 'permission' : (UserX , Rest) , ... >
+=> < cloudB | 'permission' : Rest , ... > .
+[B3] < cloudB | 'buffer' : Msg , 'permission' : (deviceA , Rest) , ... > $ UserX 'release' cloudB
+=> < cloudB | 'buffer' : nils , 'permission' : (deviceA , Rest) , ... > $ cloudB 'publish' deviceA | (Msg) .
+[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | ('toggle')
+=> < deviceA | 'on' : true , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3651
+--------------------------------------------------
+```
+{"Msg": "Qid", "Rest": "Set", "UserX": "User"}
+```
+==================================================
+{'Msg': 'Qid', 'Rest': 'Set', 'UserX': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< cloudB | ('permission' : {[Set] , [Principal] , [User]} , 'buffer' : {'toggle' , [Qid]}) > < deviceA | ('on' : [Bool]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < cloudB | ('buffer' : nils , 'permission' : (UserX , Rest) , ..) > $ UserX 'requestPublish' cloudB | ('toggle') 
+= < cloudB | ('buffer' : 'toggle' , 'permission' : (UserX , Rest) , ..) > $ cloudB 'ack' UserX | ('toggle') .
+eq < cloudB | ('permission' : (UserX , Rest) , ..) > 
+= < cloudB | ('permission' : Rest , ..) > .
+eq < cloudB | ('buffer' : Msg , 'permission' : (deviceA , Rest) , ..) > $ UserX 'release' cloudB 
+= < cloudB | ('buffer' : nils , 'permission' : (deviceA , Rest) , ..) > $ cloudB 'publish' deviceA | (Msg) .
+eq < deviceA | ('on' : false , ..) > $ cloudB 'publish' deviceA | ('toggle') 
+= < deviceA | ('on' : true , ..) > .
+$ UserX 'requestPublish' cloudB | ('toggle')
+$ cloudB 'ack' UserX | ('toggle')
+$ UserX 'release' cloudB
+$ cloudB 'publish' deviceA | (Msg)
+$ cloudB 'publish' deviceA | ('toggle')
+[*] Total token: 2486
+--------------------------------------------------
+```
+[1, 3]
+```
+==================================================
+[1, 3]
+[$ UserX 'requestPublish' cloudB | ('toggle'), $ UserX 'release' cloudB]
+[eq ev1(UserX) = $ UserX 'requestPublish' cloudB | ('toggle') ., eq ev2(UserX) = $ UserX 'release' cloudB .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 4128
+--------------------------------------------------
+```
+< cloudB | ('permission' : (userA , deviceA) , 'buffer' : nils) > < deviceA | ('on' : false) >
+```
+==================================================
+< cloudB | ('permission' : (userA , deviceA) , 'buffer' : nils) > < deviceA | ('on' : false) >
+[*] Generating event rules with LLM...
+[*] Total token: 5142
+--------------------------------------------------
+```
+[B1] < UserX | ... > => ev1(UserX) .
+[B3] < UserX | ... > => ev2(UserX) .
+```
+==================================================
+< UserX | ... > => ev1(UserX) .
+< UserX | ... > => ev2(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | (..) > 
+=> ep: ev1(UserX) @ S < UserX | (..) > .
+rl [rev2]: E @ S < UserX | (..) > 
+=> ep: ev2(UserX) @ S < UserX | (..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 2934
+--------------------------------------------------
+```
+deviceOn =| < deviceA | 'on' : true , ... > .
+attackerAuthorized =| < cloudB | 'permission' : (userA , Rest) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2415
+--------------------------------------------------
+```
+{"Rest": "Set"}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check CTRL-revoked: holds (0 events)
+[+] Model written: sequence_diagram/output/llm-opus55-20261105/run2/MQTTFlaw1/rules.maude; status: validated

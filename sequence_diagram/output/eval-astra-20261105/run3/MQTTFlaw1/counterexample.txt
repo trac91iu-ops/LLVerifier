@@ -1,0 +1,3 @@
+$ userA 'publish' cloudB | 'toggle'
+$ cloudB 'revokePermission' cloudB | userA
+$ userA 'release' cloudB

@@ -1,0 +1,28 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4173
+--------------------------------------------------
+```
+< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+
+< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+
+< deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB
+=> < deviceB | 'key' : Key , ... > $ deviceB 'sendMessage' UserX | encrypt(FreshR,Key) .
+
+< UserX | 'message' : nils , ... > $ deviceB 'sendMessage' UserX | Message
+=> < UserX | 'message' : Message , ... > .
+
+< cloudA | deviceB : ('key' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; encrypt(R,Key))
+=> < cloudA | deviceB : ('key' : Key , 'owners' : (UserX,Owners) , ...) , ... > .
+
+< cloudA | deviceB : ('owners' : (UserX,Owners) , ...) , ... > $ UserX 'resetDevice' cloudA | deviceB
+=> < cloudA | deviceB : ('owners' : (nils,Owners) , ...) , ... > .
+```
+==================================================

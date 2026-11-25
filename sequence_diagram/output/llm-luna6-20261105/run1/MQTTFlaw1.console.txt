@@ -1,0 +1,131 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 2 repairs: No terminal matches ')' in the current parser context, at line 2 col 57
+
+ : ('permission' : true) , ... > => ev2() .
+                                        ^
+Expected one of: 'device[A-Z][a-zA-Z0-9]*', '[0-9]+', '(?:false|true)', 'user[A-Z][a-zA-Z0-9]*', 'server[A-Z][a-zA-Z0-9]*', '(?:encrypt|decrypt)', 'cloud[A-Z][a-zA-Z0-9]*', 'app[A-Z][a-zA-Z0-9]*', 'nils', '\\.\\.\\.(?:\\.)*', 'client[A-Z][a-zA-Z0-9]*', '\\(', 'list', '[A-Z](?:[a-zA-Z0-9_])*'
+[*] Diagram split into 3 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4659
+--------------------------------------------------
+```text
+[B1] < UserX > < cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX 'requestToggle' cloudB
+=> < UserX > < cloudB | 'buffer' : 'toggle' , UserX : ('permission' : true , ...) , ... > $ cloudB 'acknowledge' UserX .
+[B2] < cloudB | UserX : ('permission' : true , ...) , ... > $ cloudB 'revokePermission' cloudB
+=> < cloudB | UserX : ('permission' : false , ...) , ... > .
+[B3] < UserX > < cloudB | 'buffer' : Message , deviceA : ('permission' : true , ...) , ... > $ UserX 'requestRelease' cloudB
+=> < UserX > < cloudB | 'buffer' : nils , deviceA : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceA | (Message) .
+[B3] < UserX > < cloudB | 'buffer' : nils , ... > $ UserX 'requestRelease' cloudB
+=> < UserX > < cloudB | 'buffer' : nils , ... > .
+[B3] < UserX > < cloudB | 'buffer' : Message , deviceA : ('permission' : false , ...) , ... > $ UserX 'requestRelease' cloudB
+=> < UserX > < cloudB | 'buffer' : Message , deviceA : ('permission' : false , ...) , ... > .
+[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | ('toggle')
+=> < deviceA | 'on' : true , ... > .
+[B3] < deviceA | 'on' : On , ... > $ cloudB 'publish' deviceA | (Message)
+=> < deviceA | 'on' : On , ... > .
+```
+==================================================
+[*] Total token: 4752
+--------------------------------------------------
+```text
+[B1] < UserX | ... > < cloudB | 'buffer' : nils , UserX : ('permission' : true , ...) , ... > $ UserX 'requestToggle' cloudB
+=> < UserX | ... > < cloudB | 'buffer' : 'toggle' , UserX : ('permission' : true , ...) , ... > $ cloudB 'acknowledge' UserX .
+[B2] < cloudB | UserX : ('permission' : true , ...) , ... > $ cloudB 'revokePermission' cloudB
+=> < cloudB | UserX : ('permission' : false , ...) , ... > .
+[B3] < UserX | ... > < cloudB | 'buffer' : Message , deviceA : ('permission' : true , ...) , ... > $ UserX 'requestRelease' cloudB
+=> < UserX | ... > < cloudB | 'buffer' : nils , deviceA : ('permission' : true , ...) , ... > $ cloudB 'publish' deviceA | (Message) .
+[B3] < UserX | ... > < cloudB | 'buffer' : nils , ... > $ UserX 'requestRelease' cloudB
+=> < UserX | ... > < cloudB | 'buffer' : nils , ... > .
+[B3] < UserX | ... > < cloudB | 'buffer' : Message , deviceA : ('permission' : false , ...) , ... > $ UserX 'requestRelease' cloudB
+=> < UserX | ... > < cloudB | 'buffer' : Message , deviceA : ('permission' : false , ...) , ... > .
+[B3] < deviceA | 'on' : false , ... > $ cloudB 'publish' deviceA | ('toggle')
+=> < deviceA | 'on' : true , ... > .
+[B3] < deviceA | 'on' : On , ... > $ cloudB 'publish' deviceA | (Message)
+=> < deviceA | 'on' : On , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2721
+--------------------------------------------------
+```json
+{
+  "Message": "Qid",
+  "On": "Bool",
+  "UserX": "User"
+}
+```
+==================================================
+{'Message': 'Qid', 'On': 'Bool', 'UserX': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< userA | nils > < userC | nils > < cloudB | ('buffer' : {[Qid] , 'toggle'} , [Principal] : ('permission' : [Bool]) , [User] : ('permission' : [Bool])) > < deviceA | ('on' : [Bool]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < UserX | (..) > < cloudB | ('buffer' : nils , UserX : ('permission' : true , ...) , ....) > $ UserX 'requestToggle' cloudB 
+= < UserX | (..) > < cloudB | ('buffer' : 'toggle' , UserX : ('permission' : true , ...) , ....) > $ cloudB 'acknowledge' UserX .
+eq < cloudB | (UserX : ('permission' : true , ..) , ...) > $ cloudB 'revokePermission' cloudB 
+= < cloudB | (UserX : ('permission' : false , ..) , ...) > .
+eq < UserX | (..) > < cloudB | ('buffer' : Message , deviceA : ('permission' : true , ...) , ....) > $ UserX 'requestRelease' cloudB 
+= < UserX | (..) > < cloudB | ('buffer' : nils , deviceA : ('permission' : true , ...) , ....) > $ cloudB 'publish' deviceA | (Message) .
+eq < UserX | (..) > < cloudB | ('buffer' : nils , ...) > $ UserX 'requestRelease' cloudB 
+= < UserX | (..) > < cloudB | ('buffer' : nils , ...) > .
+eq < UserX | (..) > < cloudB | ('buffer' : Message , deviceA : ('permission' : false , ...) , ....) > $ UserX 'requestRelease' cloudB 
+= < UserX | (..) > < cloudB | ('buffer' : Message , deviceA : ('permission' : false , ...) , ....) > .
+eq < deviceA | ('on' : false , ..) > $ cloudB 'publish' deviceA | ('toggle') 
+= < deviceA | ('on' : true , ..) > .
+eq < deviceA | ('on' : On , ..) > $ cloudB 'publish' deviceA | (Message) 
+= < deviceA | ('on' : On , ..) > .
+$ UserX 'requestToggle' cloudB
+$ cloudB 'acknowledge' UserX
+$ cloudB 'revokePermission' cloudB
+$ UserX 'requestRelease' cloudB
+$ cloudB 'publish' deviceA | (Message)
+$ cloudB 'publish' deviceA | ('toggle')
+[*] Total token: 1605
+--------------------------------------------------
+```
+[1, 3, 4]
+```
+==================================================
+[1, 3, 4]
+[$ UserX 'requestToggle' cloudB, $ cloudB 'revokePermission' cloudB, $ UserX 'requestRelease' cloudB]
+[eq ev1(UserX) = $ UserX 'requestToggle' cloudB ., eq ev2 = $ cloudB 'revokePermission' cloudB ., eq ev3(UserX) = $ UserX 'requestRelease' cloudB .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3018
+--------------------------------------------------
+```text
+< userA | nils > < userC | nils > < cloudB | ('buffer' : nils , deviceA : ('permission' : true) , userA : ('permission' : true) , userC : ('permission' : false)) > < deviceA | ('on' : false) >
+```
+==================================================
+< userA | (nils) > < userC | (nils) > < cloudB | ('buffer' : nils , deviceA : ('permission' : true) , userA : ('permission' : true) , userC : ('permission' : false)) > < deviceA | ('on' : false) >
+[*] Generating event rules with LLM...
+[*] Total token: 3766
+--------------------------------------------------
+```text
+[B1] < UserX | nils > => ev1(UserX) .
+[B2] < cloudB | UserX : ('permission' : true) , ... > => ev2 .
+[B3] < UserX | nils > => ev3(UserX) .
+```
+==================================================
+[*] Total token: 3954
+--------------------------------------------------
+```text
+[B1] < UserX | ... > => ev1(UserX) .
+[B2] < cloudB | UserX : ('permission' : true) > => ev2 .
+[B3] < UserX | ... > => ev3(UserX) .
+```
+==================================================
+[*] Total token: 4255
+--------------------------------------------------
+```text
+[B1] < UserX | ... > => ev1(UserX) .
+[B2] < cloudB | UserX : ('permission' : true) , ... > => ev2() .
+[B3] < UserX | ... > => ev3(UserX) .
+```
+==================================================

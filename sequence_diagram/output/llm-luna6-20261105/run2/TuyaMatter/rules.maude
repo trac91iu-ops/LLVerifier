@@ -1,0 +1,89 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < system | ('counter' : 0) > < cloudA | (userA : ('members' : nils , 'device' : (deviceB)) , userC : ('members' : nils , 'device' : nils)) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceB | ('trusted' : (cloudA) , 'on' : false , 'key' : nils) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars Association : Set .
+vars ExistingKey : Qid .
+vars FreshKeyA : Qid .
+vars Key : Qid .
+vars Members : Set .
+vars Trusted : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < cloudA | (UserX : ('members' : Members , 'device' : Association , ..) , ...) > $ UserX 'invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : (UserY , Members) , 'device' : Association , ..) , ...) > .
+eq < cloudA | (UserX : ('members' : Members , 'device' : deviceA , ..) , UserY : ('device' : nils , ...) , ....) > 
+= < cloudA | (UserX : ('members' : Members , 'device' : deviceA , ..) , UserY : ('device' : deviceA , ...) , ....) > .
+eq < system | ('counter' : N , ..) > < UserX | ('key' : nils , ...) > < cloudA | (UserX : ('device' : deviceA , ....) , .....) > $ UserX 'openWindow' cloudA | (deviceA) 
+= < system | ('counter' : N + 1 , ..) > < UserX | ('key' : randomStr('KeyA', N) , ...) > < cloudA | (UserX : ('device' : deviceA , ....) , .....) > $ cloudA 'openWindow' deviceA | (randomStr('KeyA', N)) .
+eq < deviceA | ('key' : nils , ..) > $ cloudA 'openWindow' deviceA | (Key) 
+= < deviceA | ('key' : Key , ..) > .
+eq < deviceA | ('key' : ExistingKey , ..) > $ cloudA 'openWindow' deviceA | (Key) 
+= < deviceA | ('key' : ExistingKey , ..) > .
+eq < UserX | ('key' : Key , ..) > < deviceA | ('key' : Key , 'trusted' : Trusted , ...) > $ UserX 'bind' deviceA | (Key) 
+= < UserX | ('key' : Key , ..) > < deviceA | ('key' : Key , 'trusted' : (UserX , Trusted) , ...) > .
+eq < deviceA | ('trusted' : Trusted , 'on' : false , ..) > $ UserX 'turnOn' deviceA 
+= < deviceA | ('trusted' : (UserX , Trusted) , 'on' : true , ..) > .
+eq < cloudA | (UserX : ('device' : deviceA , ..) , ...) > $ UserX 'turnOnCloud' cloudA | (deviceA) 
+= < cloudA | (UserX : ('device' : deviceA , ..) , ...) > $ cloudA 'turnOn' deviceA .
+eq < deviceA | ('trusted' : Trusted , 'on' : false , ..) > $ cloudA 'turnOn' deviceA 
+= < deviceA | ('trusted' : Trusted , 'on' : true , ..) > .
+eq < cloudA | (UserX : ('members' : (UserY , Members) , 'device' : deviceA , ..) , UserY : ('device' : deviceA , ...) , ....) > $ UserX 'removeMember' cloudA | (UserY) 
+= < cloudA | (UserX : ('members' : Members , 'device' : deviceA , ..) , UserY : ('device' : nils , ...) , ....) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars Association : Set .
+vars ExistingKey : Qid .
+vars FreshKeyA : Qid .
+vars Key : Qid .
+vars Members : Set .
+vars Trusted : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+vars Rest : Set .
+*** events type declaration
+ops ev1 : User User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : Nat -> Event .
+ops ev4 : Qid -> Event .
+ops ev5 : User Qid -> Event .
+ops ev6 : User -> Event .
+ops ev7 : User -> Event .
+ops ev8 : User User -> Event .
+*** events
+eq ev1(UserX, UserY) = $ UserX 'invite' cloudA | (UserY) .
+eq ev2(UserX) = $ UserX 'openWindow' cloudA | (deviceA) .
+eq ev3(N) = $ cloudA 'openWindow' deviceA | (randomStr('KeyA', N)) .
+eq ev4(Key) = $ cloudA 'openWindow' deviceA | (Key) .
+eq ev5(UserX, Key) = $ UserX 'bind' deviceA | (Key) .
+eq ev6(UserX) = $ UserX 'turnOn' deviceA .
+eq ev7(UserX) = $ UserX 'turnOnCloud' cloudA | (deviceA) .
+eq ev8(UserX, UserY) = $ UserX 'removeMember' cloudA | (UserY) .
+*** transitions
+rl [rev1]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev1(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev2]: E @ S < UserX | (..) > < deviceA | (...) > 
+=> ep: ev2(UserX) @ S < UserX | (..) > < deviceA | (...) > .
+rl [rev5]: E @ S < UserX | ('key' : Key , ..) > < deviceA | (...) > 
+=> ep: ev5(UserX, Key) @ S < UserX | ('key' : Key , ..) > < deviceA | (...) > .
+rl [rev6]: E @ S < UserX | (..) > < deviceA | (...) > 
+=> ep: ev6(UserX) @ S < UserX | (..) > < deviceA | (...) > .
+rl [rev7]: E @ S < UserX | (..) > 
+=> ep: ev7(UserX) @ S < UserX | (..) > .
+rl [rev8]: E @ S < cloudA | (UserX : ('members' : (UserY , Rest) , ..) , ...) > < UserY | (....) > 
+=> ep: ev8(UserX, UserY) @ S < cloudA | (UserX : ('members' : (UserY , Rest) , ..) , ...) > < UserY | (....) > .
+
+endm

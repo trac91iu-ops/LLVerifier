@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:42:11.726Z",
+  "model": "4b39f9b09f57",
+  "note": "",
+  "protocol": "Huawei",
+  "runs": [
+    "luna6-run2"
+  ],
+  "verdict": "absent"
+}

@@ -1,0 +1,14 @@
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userC 'approach' deviceB
+$ userA 'leave' deviceB
+$ userC 'leave' deviceB
+$ userC 'approach' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'leave' deviceB
+$ userC 'bind' cloudA | (deviceB ; 'key1')

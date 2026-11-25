@@ -1,0 +1,82 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < cloudB | (deviceLock : ('on' : false , 'trust' : (cloudSmartThing) , 'key' : 'key')) > < userA | ('key' : nils) > < userC | ('key' : nils) > < cloudSmartThing | (deviceSwitch : ('bound' : deviceLock , 'on' : false , 'key' : 'key' , 'trust' : (userA))) > < deviceSwitch | (nils) > < deviceLock | ('trust' : (cloudB) , 'on' : false) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars B : Device .
+vars CloudX : Cloud .
+vars DeviceX : Device .
+vars Key : Qid .
+vars P : Principal .
+vars Rest : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+ceq < CloudX | (DeviceX : ('trust' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ UserX 'requestKey' CloudX 
+= < CloudX | (DeviceX : ('trust' : (UserX , Rest) , 'key' : Key , ..) , ...) > $ CloudX 'sendKey' UserX | (Key) if Key =/= nils .
+eq < UserX | ('key' : nils , ..) > $ CloudX 'sendKey' UserX | (Key) 
+= < UserX | ('key' : Key , ..) > .
+eq < CloudX | (DeviceX : ('trust' : (UserX , Rest) , ..) , ...) > $ UserX 'delegateAccess' CloudX | (DeviceX ; UserY) 
+= < CloudX | (DeviceX : ('trust' : (UserX , UserY , Rest) , ..) , ...) > .
+eq < CloudX | (DeviceX : ('trust' : (UserX , UserY , Rest) , ..) , ...) > $ UserX 'revokeAccess' CloudX | (DeviceX ; UserY) 
+= < CloudX | (DeviceX : ('trust' : (UserX , Rest) , ..) , ...) > .
+eq < cloudSmartThing | (DeviceX : ('key' : Key , 'on' : false , ..) , ...) > $ UserX 'turnOnWithKey' cloudSmartThing | (DeviceX ; Key) 
+= < cloudSmartThing | (DeviceX : ('key' : Key , 'on' : true , ..) , ...) > $ cloudSmartThing 'turnOn' DeviceX .
+eq < DeviceX | (..) > $ UserX 'turnOn' DeviceX 
+= < DeviceX | (..) > .
+eq < CloudX | (DeviceX : ('on' : false , 'trust' : (P , Rest) , ..) , ...) > $ P 'turnOn' DeviceX 
+= < CloudX | (DeviceX : ('on' : true , 'trust' : (P , Rest) , ..) , ...) > $ CloudX 'turnOn' DeviceX .
+eq < cloudSmartThing | (DeviceX : ('bound' : B , ..) , ...) > $ cloudSmartThing 'turnOn' DeviceX 
+= < cloudSmartThing | (DeviceX : ('bound' : B , ..) , ...) > $ cloudSmartThing 'turnOn' B .
+eq < deviceLock | ('trust' : (P , Rest) , 'on' : false , ..) > $ P 'turnOn' deviceLock 
+= < deviceLock | ('trust' : (P , Rest) , 'on' : true , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars B : Device .
+vars CloudX : Cloud .
+vars DeviceX : Device .
+vars Key : Qid .
+vars P : Principal .
+vars Rest : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User Cloud -> Event .
+ops ev2 : User Cloud Device User -> Event .
+ops ev3 : User Cloud Device User -> Event .
+ops ev4 : User Device Qid -> Event .
+ops ev5 : User Device -> Event .
+ops ev6 : Principal Device -> Event .
+ops ev7 : Principal -> Event .
+*** events
+eq ev1(UserX, CloudX) = $ UserX 'requestKey' CloudX .
+eq ev2(UserX, CloudX, DeviceX, UserY) = $ UserX 'delegateAccess' CloudX | (DeviceX ; UserY) .
+eq ev3(UserX, CloudX, DeviceX, UserY) = $ UserX 'revokeAccess' CloudX | (DeviceX ; UserY) .
+eq ev4(UserX, DeviceX, Key) = $ UserX 'turnOnWithKey' cloudSmartThing | (DeviceX ; Key) .
+eq ev5(UserX, DeviceX) = $ UserX 'turnOn' DeviceX .
+eq ev6(P, DeviceX) = $ P 'turnOn' DeviceX .
+eq ev7(P) = $ P 'turnOn' deviceLock .
+*** transitions
+rl [rev1]: E @ S < UserX | (..) > < CloudX | (...) > 
+=> ep: ev1(UserX, CloudX) @ S < UserX | (..) > < CloudX | (...) > .
+rl [rev2]: E @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | (.....) > 
+=> ep: ev2(UserX, CloudX, DeviceX, UserY) @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | (.....) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | (.....) > 
+=> ep: ev3(UserX, CloudX, DeviceX, UserY) @ S < UserX | (..) > < UserY | (...) > < CloudX | (....) > < DeviceX | (.....) > .
+rl [rev4]: E @ S < UserX | ('key' : Key , ..) > < DeviceX | (...) > 
+=> ep: ev4(UserX, DeviceX, Key) @ S < UserX | ('key' : Key , ..) > < DeviceX | (...) > .
+rl [rev5]: E @ S < UserX | (..) > < DeviceX | (...) > 
+=> ep: ev5(UserX, DeviceX) @ S < UserX | (..) > < DeviceX | (...) > .
+
+endm

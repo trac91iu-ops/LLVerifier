@@ -1,0 +1,85 @@
+###test###
+PROVIDERS:
+  # ChatGPT/Codex subscription via LiteLLM (configs/litellm.yaml) -> OpenCodex.
+  # Start the gateway with scripts/start_gateway.sh; check it with scripts/check_gateway.py.
+  codex:
+    base_url: "http://127.0.0.1:4001/v1/"
+    api_key: "YOUR_API_KEY" # LiteLLM master_key in configs/litellm.yaml
+    models:
+      - "codex-main" # gpt-6-astra, reasoning_effort=medium
+      - "codex-mini" # gpt-5.6-luna, reasoning_effort=medium
+      - "codex-sol" # gpt-6.1-sol, reasoning_effort=medium
+  openrouter:
+    base_url: "https://openrouter.ai/api/v1/"
+    api_key: "YOUR_API_KEY"
+    models: 
+      - "deepseek/deepseek-r1:free"
+      - "tngtech/deepseek-r1t-chimera:free" #164K
+      - "deepseek/deepseek-r1-zero:free" #164K
+      - "google/gemini-2.5-pro-exp-03-25" #1M
+      - "deepseek/deepseek-chat-v3-0324:free" #164K
+      - "google/gemma-3-12b-it:free" #131K
+      - "google/gemini-2.5-pro-preview" #1.05M
+      - "deepseek/deepseek-r1-0528" #164K
+      - "anthropic/claude-sonnet-4" #200K
+  ollama:
+    base_url: "http://localhost:11434/v1"
+    api_key: "unused"
+    models:
+      - "qwen2.5:7b-instruct"
+  Xai:
+    base_url: "https://api.x.ai/v1"
+    api_key: "YOUR_API_KEY"
+    models:
+      - "grok-3-mini-beta" #131K
+      - "grok-3-mini" #131K
+      - "grok-3" #131K
+    proxy: "http://127.0.0.1:20171" #optional
+  Cloudflare:
+    base_url: "https://api.cloudflare.com/client/v4/accounts/XXXXXXXXXXX/ai/v1"
+    api_key: "YOUR_API_KEY"
+    models:
+      - "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+      - "@cf/meta/llama-4-scout-17b-16e-instruct"
+      - "@cf/meta/llama-3-8b-instruct"
+STRATEGIES:
+  preprocess: 
+    provider: ["codex", "codex-main"]
+  genPolicy: 
+    provider: ["codex", "codex-main"]
+  genPolicyVars:
+    provider: ["codex", "codex-main"]
+  genEventVars:
+    provider: ["codex", "codex-main"]
+  genPropVars:
+    provider: ["codex", "codex-main"]
+  revise:  
+    provider: ["codex", "codex-main"]
+    temperature: 1
+    top_p: 0.3
+  genRRLs:
+    provider: ["codex", "codex-main"]
+  genAP:
+    provider: ["codex", "codex-main"]
+  extractNAP:
+    provider: ["codex", "codex-main"]
+  genFairness:
+    provider: ["codex", "codex-main"]
+  default: 
+    provider: ["codex", "codex-main"]
+MODE: "useapi"
+LOG: true
+DEBUG: false
+TIMEOUT_RETRY: 2
+TOTAL_RETRY: 3
+ERROR_RETRY: 2
+VERBOSE: 5
+LOGDIR: "logs"
+LOGFILE: "log.txt"
+OUTDIR: "output"
+LIBDIR: "lib"
+TEST: false
+VERSION: "beta"
+RULES_NAME: "rules.maude"
+CHECKER_NAME: "checker.maude"
+N_CHOICES: 1

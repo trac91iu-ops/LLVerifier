@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:23:29.952Z",
+  "model": "3ccf9c194ae0",
+  "note": "",
+  "protocol": "Aqara",
+  "runs": [
+    "luna6-run5"
+  ],
+  "verdict": "absent"
+}

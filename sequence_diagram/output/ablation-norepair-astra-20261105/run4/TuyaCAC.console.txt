@@ -1,0 +1,30 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA |
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4351
+--------------------------------------------------
+```
+< cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA | UserY
+=> < cloudA | UserX : ('members' : (UserY , Members) , ...) , ... > .
+
+< cloudA | UserX : ('device' : deviceB , 'members' : (UserY , Members) , ...) , UserY : ('device' : nils , ...) , ... >
+=> < cloudA | UserX : ('device' : deviceB , 'members' : (UserY , Members) , ...) , UserY : ('device' : deviceB , ...) , ... > .
+
+< cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'key' : Key , ... > $ UserX 'requestKey' cloudA | deviceB
+=> < cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'key' : Key , ... > $ cloudA 'sendKey' UserX | (deviceB ; Key) .
+
+< UserX | 'key' : nils , ... > $ cloudA 'sendKey' UserX | (deviceB ; Key)
+=> < UserX | 'key' : Key , ... > .
+
+< deviceB | 'key' : Key , 'on' : false , ... > $ UserX 'turnOn' deviceB | Key
+=> < deviceB | 'key' : Key , 'on' : true , ... > .
+
+< cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'on' : false , ... > $ UserX 'turnOn' cloudA | deviceB
+=> < cloudA | UserX : ('device' : deviceB , ...) , ... > < deviceB | 'on' : true , ... > .
+
+< cloudA | UserX : ('members' : (UserY , Members) , ...) , UserY : ('device' : deviceB , ...) , ... > $ UserX 'removeMember' cloudA | UserY
+=> < cloudA | UserX : ('members' : Members , ...) , UserY : ('device' : nils , ...) , ... > .
+```
+==================================================

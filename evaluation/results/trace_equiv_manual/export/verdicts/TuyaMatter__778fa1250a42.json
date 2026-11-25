@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:14:43.394Z",
+  "model": "778fa1250a42",
+  "note": "",
+  "protocol": "TuyaMatter",
+  "runs": [
+    "run3"
+  ],
+  "verdict": "present"
+}

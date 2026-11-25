@@ -1,0 +1,173 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        10,
+        13
+      ],
+      "head": "alt Either user invites the other user",
+      "state_rules": [
+        0,
+        1
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        16,
+        27
+      ],
+      "head": "alt Any existing UserX and Device",
+      "state_rules": [
+        2,
+        3,
+        4
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        29,
+        35
+      ],
+      "head": "alt UserX has key and the device exists",
+      "state_rules": [
+        5
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        37,
+        42
+      ],
+      "head": "alt Any existing UserX and Device",
+      "state_rules": [
+        6
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        44,
+        52
+      ],
+      "head": "alt Any existing UserX",
+      "state_rules": [
+        7,
+        8
+      ],
+      "event_rules": [
+        4
+      ]
+    },
+    {
+      "id": "B6",
+      "kind": "action",
+      "lines": [
+        54,
+        60
+      ],
+      "head": "alt The cloud has a membership record for UserX and UserY exists",
+      "state_rules": [
+        9
+      ],
+      "event_rules": [
+        5
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < cloudA | (UserX : ('members' : Members , ..) , ...) > $ UserX 'invite' cloudA | (UserY) \n= < cloudA | (UserX : ('members' : (Members , UserY) , ..) , ...) > ."
+    },
+    {
+      "block": "B1",
+      "rule": "eq < cloudA | (UserX : ('device' : Device , ..) , UserY : ('device' : nils , ...) , UserX : ('members' : Members , ....) , .....) > \n= < cloudA | (UserX : ('device' : Device , ....) , UserY : ('device' : Device , ...) , UserX : ('members' : Members , ....) , .....) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < system | ('counter' : N , ..) > < UserX | ('key' : nils , ...) > < cloudA | (UserX : ('device' : Device , ....) , .....) > $ UserX 'openWindow' cloudA | (Device) \n= < system | ('counter' : N + 1 , ..) > < UserX | ('key' : randomStr('KeyA', N) , ...) > < cloudA | (UserX : ('device' : Device , ....) , .....) > $ cloudA 'openWindow' Device | (randomStr('KeyA', N)) ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < deviceA | ('key' : nils , ..) > $ cloudA 'openWindow' deviceA | (Key) \n= < deviceA | ('key' : Key , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < deviceA | ('key' : ExistingKey , ..) > $ cloudA 'openWindow' deviceA | (Key) \n= < deviceA | ('key' : ExistingKey , ..) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < UserX | ('key' : Key , ..) > < deviceA | ('key' : Key , 'trusted' : Trusted , ...) > $ UserX 'bind' deviceA | (Key) \n= < UserX | ('key' : Key , ..) > < deviceA | ('key' : Key , 'trusted' : (Trusted , UserX) , ...) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < deviceA | ('trusted' : Trusted , 'power' : 'off' , ..) > $ UserX 'turnOn' deviceA \n= < deviceA | ('trusted' : Trusted , 'power' : 'on' , ..) > ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < cloudA | (UserX : ('device' : deviceA , ..) , ...) > $ UserX 'turnOn' cloudA | (deviceA) \n= < cloudA | (UserX : ('device' : deviceA , ..) , ...) > $ cloudA 'turnOn' deviceA ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < deviceA | ('trusted' : Trusted , 'power' : 'off' , ..) > $ cloudA 'turnOn' deviceA \n= < deviceA | ('trusted' : Trusted , 'power' : 'on' , ..) > ."
+    },
+    {
+      "block": "B6",
+      "rule": "eq < cloudA | (UserX : ('members' : (UserY , RemainingMembers) , ..) , UserY : ('device' : deviceA , ...) , UserX : ('device' : deviceA , ....) , .....) > $ UserX 'removeMember' cloudA | (UserY) \n= < cloudA | (UserX : ('members' : RemainingMembers , ....) , UserY : ('device' : nils , ...) , UserX : ('device' : deviceA , ....) , .....) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | (..) > < UserY | (...) > < cloudA | (UserX : ('members' : Members , ....) , .....) > \n=> ep: ev1(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > < cloudA | (UserX : ('members' : Members , ....) , .....) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | (..) > < Device | (...) > \n=> ep: ev2(UserX, Device) @ S < UserX | (..) > < Device | (...) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | ('key' : Key , ..) > < deviceA | (...) > \n=> ep: ev3(UserX, Key) @ S < UserX | ('key' : Key , ..) > < deviceA | (...) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | (..) > < deviceA | (...) > \n=> ep: ev4(UserX) @ S < UserX | (..) > < deviceA | (...) > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | (..) > \n=> ep: ev5(UserX) @ S < UserX | (..) > ."
+    },
+    {
+      "block": "B6",
+      "label": "rev6",
+      "rule": "rl [rev6]: E @ S < UserY | (..) > < cloudA | (UserX : ('members' : Members , ...) , ....) > \n=> ep: ev6(UserX, UserY) @ S < UserY | (..) > < cloudA | (UserX : ('members' : Members , ...) , ....) > ."
+    }
+  ],
+  "coverage_issues": []
+}

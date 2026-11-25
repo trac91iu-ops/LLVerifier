@@ -99,10 +99,13 @@ def fairnessPromptTemplate(ipt1,ipt2):
     trainings = [(fairness_shot_q1,fairness_shot_a1)]
     return (genConversation(fairness_system,trainings))(ipt)
 
-def initPromptTemplate(ipt1,ipt2):
+def initPromptTemplate(ipt1,ipt2,threat):
     ipt = f'''\
 [template]
 {ipt1}
+
+[threat model]
+{threat}
 
 [description]
 {ipt2}\
@@ -145,10 +148,6 @@ def apPromptTemplate(ipt1,ipt2,ipt3):
 def napPromptTemplate(ipt):
     trainings = [(nap_shot_q1,nap_shot_a1)]
     return (genConversation(nap_system,trainings))(ipt)
-
-def splitPromptTemplate(ipt):
-    trainings = [(split_shot_q1,split_shot_a1)]
-    return (genConversation(split_system,trainings))(ipt)
 
 def filterPromptTemplate(ipt1,ipt2):
     ipt = f'''\
@@ -205,3 +204,21 @@ def policyRevisor(ipt):
                  (revisor_shot_q5,revisor_shot_a5)
                  ]
     return (genConversation(revisor_system,trainings))(ipt)
+
+def slotsPromptTemplate(template, init, rules, roles, slots):
+    ipt = f'''\
+[state template]
+{template}
+
+[initial state]
+{init}
+
+[state rules]
+{rules}
+
+[roles]
+{roles}
+
+[slots]
+{slots}'''
+    return (genConversation(slots_system, [(slots_shot_q1, slots_shot_a1)]))(ipt)

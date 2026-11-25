@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-05T08:20:05.530Z",
+  "model": "f63e307565f6",
+  "note": "",
+  "protocol": "TPLink",
+  "runs": [
+    "nr-run1",
+    "nr-run4"
+  ],
+  "verdict": "present"
+}

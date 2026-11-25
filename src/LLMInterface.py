@@ -9,6 +9,9 @@ import pdb
 import os
 import time
 import inspect
+import ast as python_ast
+import hashlib
+from copy import deepcopy
 from utils import *
 from Config import *
 from prompts import *
@@ -52,7 +55,7 @@ def adjustLLMParams(req:dict, model:str):
     return req
 
 class LLMSession():
-    def __init__(self, config = CONFIG, output = None, err = None):
+    def __init__(self, config = CONFIG, output = None, err = None, context_id=None):
         self.output = output
         self.err = err
         self.config = config
@@ -62,6 +65,9 @@ class LLMSession():
         self.cache = {}
         self.secondRevise = False
         self.tokens = 0
+        self.context_id = context_id
+        self.source_context = ''
+        self.stage_records = []
         self.autoRevisors = {'extractNAP': self.autoReviseByLLM(napRevisor)}
         self.checkers = {'genPolicy':checkers.checkPolicy,
                          'genRRLs':checkers.checkTransitions,
@@ -77,7 +83,9 @@ class LLMSession():
         openai.api_key = provider.api_key
         os.environ['OPENAI_API_KEY'] = provider.api_key
         params = {'base_url':provider.base_url,
-                  'api_key':provider.api_key}
+                  'api_key':provider.api_key,
+                  'timeout': self.config.REQUEST_TIMEOUT,
+                  'max_retries': 0}
         if provider.proxy:
             params['http_client'] = httpx.Client(proxy=provider.proxy)
         self.client = openai.OpenAI(**params)
@@ -86,15 +94,24 @@ class LLMSession():
         return os.path.exists(self.cacheFile)
 
     def deleteCache(self):
-        return os.remove(self.cacheFile)
+        if os.path.exists(self.cacheFile):
+            os.remove(self.cacheFile)
 
     def loadCache(self):
         with open(self.cacheFile,'r') as f:
-            self.cache = json.load(f)
+            saved = json.load(f)
+        if saved.get('schema_version') != 2 or saved.get('context_id') != self.context_id:
+            raise ValueError('Cache does not match this input, configuration, and pipeline version. Use a new output directory.')
+        self.cache = saved['answers']
+        self.stage_records = saved.get('stages', [])
 
     def saveCache(self):
-        with open(self.cacheFile,'w') as f:
-            json.dump(self.cache,f,indent=2)
+        os.makedirs(os.path.dirname(os.path.abspath(self.cacheFile)), exist_ok=True)
+        temporary = self.cacheFile + '.tmp'
+        with open(temporary,'w') as f:
+            json.dump({'schema_version': 2, 'context_id': self.context_id,
+                       'answers': self.cache, 'stages': self.stage_records},f,indent=2)
+        os.replace(temporary, self.cacheFile)
 
     def cacheAnswer(self,name:str,r):
         self.cache[name] = r
@@ -151,7 +168,9 @@ class LLMSession():
         #if CONFIG.DEBUG:
         #    print(msg)
         l = []
+        completion = None
         for i in range(self.config.TOTAL_RETRY):
+            l = []
             try:
                 completion = self.client.chat.completions.create(**req)
             except openai.RateLimitError as e:
@@ -161,7 +180,7 @@ class LLMSession():
                     continue#retry
                 else:
                     raise e
-            except openai.APIConnectionError as e:
+            except (openai.APIConnectionError, openai.APITimeoutError) as e:
                 if i < self.config.TIMEOUT_RETRY:
                     print(f"[-] Connection error, wait {(i+1)*10} seconds then try")
                     time.sleep((i + 1) * 5)
@@ -180,6 +199,7 @@ class LLMSession():
                 else:
                     continue#retry
             retry = False
+            l = []
             for choice in completion.choices:
                 if choice.finish_reason == 'stop':
                     l.append(choice.message.content)
@@ -187,7 +207,6 @@ class LLMSession():
                     l.append(choice.message.tool_calls[0].function.arguments)
                 elif choice.finish_reason == 'length':
                     print('ERROR: exceed length!')
-                    l.append(choice.message.content)
                     retry = True
                 else:
                     print('ERROR:',choice.finish_reason)
@@ -197,13 +216,13 @@ class LLMSession():
                         pdb.set_trace()
                     else:
                         retry = True
-            print('[*] Total token:',completion.usage.total_tokens)
-            self.tokens += completion.usage.total_tokens
+            usage = completion.usage.total_tokens if completion.usage else 0
+            print('[*] Total token:',usage)
+            self.tokens += usage
             if not retry:
                 break
-        if len(l) < 0:
-            print('[-] Failed to get answer from LLM')
-            exit(1)
+        if not l:
+            raise RuntimeError('No complete LLM response was received; no partial answer was cached.')
         
         chooseBestAnswer = lambda l:l[0]#adhoc
         result = chooseBestAnswer(l)
@@ -227,11 +246,10 @@ class LLMSession():
             print('result',result)
         result = self.eliminateThink(result)
         if '```' in result:
-            try:
-                result = re.findall(r'```[^\n]*\n([^`]*)\n```', result)[0]
-            except Exception as e:
-                print('Error:',e)
-                pdb.set_trace()
+            blocks = re.findall(r'```[^\n]*\n(.*?)```', result, re.S)
+            if len(blocks) != 1:
+                raise ValueError('Expected exactly one complete output code block.')
+            result = blocks[0]
         if self.config.LOG:
             log(dumpMessages(self.msg),result)
         if result.strip().replace('\n','').replace('\r','').replace(' ','').upper() == 'OK':
@@ -331,31 +349,40 @@ class LLMSession():
 
     def askWithErrorHandling(self, msg:list[dict], errorChecker:Callable[[str],str|None], reviseWithError:Callable[[str],str]|None = None, strategy:tuple[str,str]|None = None):
         if reviseWithError is None: reviseWithError = self.reviseWithError1
+        self.secondRevise = False
         output = self.dispatchRequst(msg, strategy = strategy)
-        err = None
-        n = 0
-        while err := errorChecker(output):
-            n += 1
+        for n in range(self.config.ERROR_RETRY + 1):
+            err = errorChecker(output)
+            self.stage_records.append({'attempt': n, 'output': output, 'error': err})
+            self.saveCache()
+            if not err:
+                return output
+            if n == self.config.ERROR_RETRY:
+                raise ValueError(f'Validation failed after {n} repairs: {err}')
+            self.output = output
             output = reviseWithError(err)
-            if n > self.config.ERROR_RETRY:
-                break
-        return output
 
     def askWithLLMCheckRevise(self, msg:list[dict], revisor:Callable[[str],str|None],strategy:tuple[str,str]|None = None):
         return self.askWithErrorHandling(msg,revisor,lambda x:x, strategy)
 
     def generalAskWithAutoCheck(self,name:str,prompt:list[dict], strategy:tuple[str,str]|None = None)->str:
         #automatically chooce cache and strategy 
-        if name in self.cache: return self.cache[name]
+        prompt = deepcopy(prompt)
+        if self.source_context and not any(self.source_context in m['content'] for m in prompt):
+            prompt.append(user('[Original protocol input: preserve these facts during generation and repair]\n' + self.source_context))
         if name == 'genPolicy':
             revisor = self.reviseWithErrorDetail
         else:
-            revisor = self.reviseWithError1
+            revisor = self.reviseWithErrorDetail
         if not strategy:
             if name in self.strategies:
                 strategy = self.strategies[name]
             else:
                 strategy = self.strategies['default']
+        cache_key = name + ':' + hashlib.sha256(json.dumps([prompt, strategy.model_dump()],sort_keys=True).encode()).hexdigest()
+        if cache_key in self.cache:
+            return self.cache[cache_key]
+        self.stage_records.append({'stage': name, 'prompt_hash': cache_key})
         if name in self.checkers:
             r = self.askWithErrorHandling(prompt, errorChecker = self.checkers[name], reviseWithError = revisor, strategy=strategy)
         elif name in self.autoRevisors:
@@ -363,55 +390,8 @@ class LLMSession():
         else:
             r =  self.dispatchRequst(prompt,strategy=strategy)
 
-        self.cacheAnswer(name,r)
+        self.cacheAnswer(cache_key,r)
         return r
-
-    def splitPolicy(self,protocol_desc:str)->tuple[str,str,str,str]:
-        #add init to state changes version
-        #return EQdes,RRLdes,initial state,property
-        # TODO: separate threat model to another file
-        name = inspect.currentframe().f_code.co_name
-        if name in self.cache: return self.cache[name]
-        threatModel = protocol_desc.split('\n\n')[-1]
-        txt = protocol_desc.replace(threatModel,'')
-        combine = lambda i,s : f'[Initial States]\n{i}\n[State Changes]\n{s}\n'
-        if r := preprocess(txt):
-            answer = combine(r[0],r[1]),r[2],r[0],threatModel
-        else:
-            prompt = splitPromptTemplate(txt)
-            txt = self.dispatchRequst(prompt, strategy = self.strategies['preprocess'])
-            print('*',txt)
-            if r := preprocess(txt):
-                answer = combine(r[0],r[1]),r[2],r[0],threatModel
-            else:
-                print('[-] Error, r=', r)
-                pdb.set_trace()
-            if threatModel == '':
-                print('[-] Error when spliting policy, there are no properties! Please check the input format.')
-                exit(1)
-        self.cacheAnswer(name, answer)
-        return answer
-
-    def splitPolicyBak(self,protocol_desc:str)->tuple[str,str,str,str]:
-        #return EQdes,RRLdes,initial state,property
-        # TODO: separate threat model to another file
-        name = inspect.currentframe().f_code.co_name
-        if name in self.cache: return self.cache[name]
-        threatModel = protocol_desc.split('\n\n')[-1]
-        txt = protocol_desc.replace(threatModel,'')
-        if r := preprocess(txt):
-            answer = r[1],r[2],r[0],threatModel
-        else:
-            prompt = splitPromptTemplate(txt)
-            txt = self.dispatchRequst(prompt, strategy = self.strategies['preprocess'])
-            print('*',txt)
-            if r := preprocess(txt):
-                answer = r[1],r[2],r[0],threatModel
-            else:
-                print('[-] Error, r=', r)
-                pdb.set_trace()
-        self.cacheAnswer(name, answer)
-        return answer
 
     def genPolicy(self, protocol_desc:str)->str:
         name = inspect.currentframe().f_code.co_name
@@ -423,34 +403,57 @@ class LLMSession():
         prompt = eventsPromptTemplate(policy, description)
         return self.generalAskWithAutoCheck(name, prompt)
 
-    def filterEvents(self,events:str, description:str)->list:
-        name = inspect.currentframe().f_code.co_name
-        prompt = filterPromptTemplate(events,description)
-        return eval(self.generalAskWithAutoCheck(name, prompt))#INSECURE
+    def filterEvents(self, events: str, description: str) -> list:
+        count = len(events.splitlines())
+        def validate(answer):
+            try:
+                ids = python_ast.literal_eval(answer)
+                if not isinstance(ids, list) or not ids:
+                    return 'Return a nonempty Python list of 1-based event IDs.'
+                if any(type(i) is not int or not 1 <= i <= count for i in ids):
+                    return f'Each event ID must be an integer between 1 and {count}.'
+            except (ValueError, SyntaxError, TypeError):
+                return 'Return only a Python list of integer event IDs.'
+            return None
+        self.checkers['filterEvents'] = validate
+        result = self.generalAskWithAutoCheck('filterEvents', filterPromptTemplate(events, description))
+        return python_ast.literal_eval(result)
 
-    def genPolicyVars(self, desc:str, formal:str, variables:list)->dict[str,str]:
-        name = inspect.currentframe().f_code.co_name
-        prompt = policyVarsPromptTemplate(desc, formal, variables)
-        return dict(eval(self.generalAskWithAutoCheck(name, prompt)))
+    def _variableTypes(self, name, prompt, variables):
+        allowed = {'User', 'Device', 'Server', 'Client', 'App', 'Principal', 'Cloud',
+                   'Nat', 'Qid', 'Set', 'List', 'Item', 'Bool', 'Action', 'Arguments', 'Attributes', 'Key'}
+        def validate(answer):
+            try:
+                pairs = python_ast.literal_eval(answer)
+                mapping = dict(pairs)
+                if set(mapping) != set(variables):
+                    return f'Return exactly these variable names: {variables}.'
+                if any(t not in allowed for t in mapping.values()):
+                    return f'Use only these existing sorts: {sorted(allowed)}.'
+            except (ValueError, SyntaxError, TypeError):
+                return 'Return a Python dictionary or list of (variable, sort) pairs.'
+            return None
+        self.checkers[name] = validate
+        result = self.generalAskWithAutoCheck(name, prompt)
+        return dict(python_ast.literal_eval(result))
 
-    def genEventVars(self, desc:str, formal:str, variables:list)->dict[str,str]:
-        name = inspect.currentframe().f_code.co_name
-        prompt = eventVarsPromptTemplate(desc, formal, variables)
-        return dict(eval(self.generalAskWithAutoCheck(name, prompt)))
+    def genPolicyVars(self, desc, formal, variables):
+        return self._variableTypes('genPolicyVars', policyVarsPromptTemplate(desc, formal, variables), variables)
 
-    def genPropVars(self, desc:str, formal:str, variables:list)->dict[str,str]:
-        name = inspect.currentframe().f_code.co_name
-        prompt = propVarsPromptTemplate(desc, formal, variables)
-        return dict(eval(self.generalAskWithAutoCheck(name, prompt)))
+    def genEventVars(self, desc, formal, variables):
+        return self._variableTypes('genEventVars', eventVarsPromptTemplate(desc, formal, variables), variables)
+
+    def genPropVars(self, desc, formal, variables):
+        return self._variableTypes('genPropVars', propVarsPromptTemplate(desc, formal, variables), variables)
 
     def genFairness(self,ap:str,description:str)->str:
         name = inspect.currentframe().f_code.co_name
         prompt = fairnessPromptTemplate(ap,description)
         return self.generalAskWithAutoCheck(name, prompt)
 
-    def genInit(self, init_template:str, init_desc:str)->str:
+    def genInit(self, init_template:str, init_desc:str, threat:str)->str:
         name = inspect.currentframe().f_code.co_name
-        prompt = initPromptTemplate(init_template,init_desc)
+        prompt = initPromptTemplate(init_template,init_desc,threat)
         return self.generalAskWithAutoCheck(name, prompt)
 
     def genRRLs(self,state_template:str, events:str, description:str)->str:
@@ -463,6 +466,11 @@ class LLMSession():
         prompt = napPromptTemplate(description)
         return self.generalAskWithAutoCheck(name, prompt)
 
+    def genSlots(self, template:str, init:str, rules:str, roles:str, slots:dict[str,str])->str:
+        self.mountChecker('genSlots', checkers.slots(list(slots), template + '\n' + init + '\n' + rules))
+        slotText = '\n'.join(f'{name} : {description}' for name, description in slots.items())
+        return self.generalAskWithAutoCheck('genSlots', slotsPromptTemplate(template, init, rules, roles, slotText))
+
     def genAP(self,state_template:str,events:str,description:str)->str:
         name = inspect.currentframe().f_code.co_name
         prompt = apPromptTemplate(state_template, events, description)
@@ -473,11 +481,6 @@ class LLMSession():
     #    prompt = policyReviseAttributes(self.protocol, choices)
     #    return eval(self.generalAskWithAutoCheck(name, prompt , strategy = self.strategies['revise']))
          
-
-def preprocess(protocol_desc):
-    regexp = r'\[[\w\s\(\))]*\]([\S\s]+?)\[[\w\s\(\))]*\]([\S\s]+?)\[[\w\s\(\))]*\]([\S\s]+?)$'
-    if r := re.findall(regexp,protocol_desc):
-        return r[0]
 
 def debugInterface(txt):
     if CONFIG.VERBOSE > 1:

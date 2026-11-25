@@ -1,0 +1,36 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA |
+[*] Diagram split into 6 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4572
+--------------------------------------------------
+``` 
+< cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA | UserY
+=> < cloudA | UserX : ('members' : (UserY , Members) , ...) , ... > .
+
+< cloudA | UserX : ('device' : DeviceX , 'members' : (UserY , Members) , ...) , UserY : ('device' : nils , ...) , ... >
+=> < cloudA | UserX : ('device' : DeviceX , 'members' : (UserY , Members) , ...) , UserY : ('device' : DeviceX , ...) , ... > .
+
+< UserX | 'key' : nils , ... > < cloudA | UserX : ('device' : DeviceX , ...) , ... > $ UserX 'openWindow' cloudA | DeviceX
+=> < UserX | 'key' : FreshKey , ... > < cloudA | UserX : ('device' : DeviceX , ...) , ... > $ cloudA 'openWindow' DeviceX | FreshKey .
+
+< DeviceX | 'key' : nils , ... > $ cloudA 'openWindow' DeviceX | Key
+=> < DeviceX | 'key' : Key , ... > .
+
+< DeviceX | 'key' : Key , 'trusted' : Trusted , ... > $ UserX 'bind' DeviceX | Key
+=> < DeviceX | 'key' : Key , 'trusted' : (UserX , Trusted) , ... > .
+
+< DeviceX | 'trusted' : (UserX , Trusted) , 'on' : false , ... > $ UserX 'turnOn' DeviceX
+=> < DeviceX | 'trusted' : (UserX , Trusted) , 'on' : true , ... > .
+
+< cloudA | UserX : ('device' : DeviceX , ...) , ... > $ UserX 'turnOn' cloudA
+=> < cloudA | UserX : ('device' : DeviceX , ...) , ... > $ cloudA 'turnOn' DeviceX .
+
+< DeviceX | 'trusted' : (cloudA , Trusted) , 'on' : false , ... > $ cloudA 'turnOn' DeviceX
+=> < DeviceX | 'trusted' : (cloudA , Trusted) , 'on' : true , ... > .
+
+< cloudA | UserX : ('members' : (UserY , Members) , 'device' : DeviceX , ...) , UserY : ('device' : DeviceX , ...) , ... > $ UserX 'removeMember' cloudA | UserY
+=> < cloudA | UserX : ('members' : Members , 'device' : DeviceX , ...) , UserY : ('device' : nils , ...) , ... > .
+```
+==================================================

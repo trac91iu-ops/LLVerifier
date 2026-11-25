@@ -1,0 +1,6 @@
+# name  run directory (relative to the repository root); ablation without guardrail repair, every stage on GPT-6 Astra (configs/config-norepair.yaml)
+nr-run1 sequence_diagram/output/ablation-norepair-astra-20261105/run1
+nr-run2 sequence_diagram/output/ablation-norepair-astra-20261105/run2
+nr-run3 sequence_diagram/output/ablation-norepair-astra-20261105/run3
+nr-run4 sequence_diagram/output/ablation-norepair-astra-20261105/run4
+nr-run5 sequence_diagram/output/ablation-norepair-astra-20261105/run5

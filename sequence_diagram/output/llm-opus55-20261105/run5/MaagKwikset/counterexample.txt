@@ -1,0 +1,69 @@
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userA 'requestKey' deviceA
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userA 'signKey' cloudA | (deviceA ; 'Key'2357136044)
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userA 'share' cloudA | (deviceA ; userC)
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'revoke' cloudA | (deviceA ; userA)
+$ userC 'approach' deviceA
+$ userA 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userC 'share' cloudA | (deviceA ; userA)
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'revoke' cloudA | (deviceA ; userC)
+$ userC 'approach' deviceA
+$ userC 'requestKey' deviceA
+$ userA 'approach' deviceA
+$ userA 'leave' deviceA
+$ userC 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userC 'approach' deviceA
+$ userA 'share' cloudA | (deviceA ; userC)
+$ userA 'approach' deviceA
+$ userA 'leave' deviceA
+$ userC 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userC 'approach' deviceA
+$ userC 'signKey' cloudA | (deviceA ; 'Key'2546248239)
+$ userA 'approach' deviceA
+$ userA 'leave' deviceA
+$ userC 'leave' deviceA
+$ userA 'approach' deviceA
+$ userC 'approach' deviceA
+$ userC 'leave' deviceA
+$ userA 'leave' deviceA
+$ userC 'approach' deviceA
+$ userA 'revoke' cloudA | (deviceA ; userC)
+$ userC 'bind' deviceA | encrypt('Key'2546248239, 'secret')

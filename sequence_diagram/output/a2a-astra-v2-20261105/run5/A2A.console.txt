@@ -1,0 +1,127 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 2 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: The parser requires at least one argument, but the supplied declarations define 
+[*] Diagram split into 4 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4626
+--------------------------------------------------
+``` 
+[B1] < serverA | 'contexts' : nils , ... > $ clientA 'sendWithoutContext' serverA | 'msgA'
+=> < serverA | 'contexts' : ('ctxX' : ('msgA')) , ... > $ serverA 'returnInitialHistory' clientA | ('ctxX' ; ('msgA')) .
+
+[B1] < clientA | 'knowCtx' : nils , 'receivedHistory' : nils , ... > $ serverA 'returnInitialHistory' clientA | (Ctx ; Hist)
+=> < clientA | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > .
+
+[B1] < clientA | 'knowCtx' : Ctx , 'receivedHistory' : OldHist , ... > $ serverA 'returnInitialHistory' clientA | (ReturnedCtx ; Hist)
+=> < clientA | 'knowCtx' : Ctx , 'receivedHistory' : Hist , ... > if Ctx =/= nils .
+
+[B1] < clientA | 'knowCtx' : nils , 'receivedHistory' : OldHist , ... > $ serverA 'returnInitialHistory' clientA | (Ctx ; Hist)
+=> < clientA | 'knowCtx' : nils , 'receivedHistory' : Hist , ... > if OldHist =/= nils .
+
+[B2] < clientB | 'authenticated' : true , 'knowCtx' : nils , ... > < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ clientB 'snoop' serverA | 'ctxX'
+=> < clientB | 'authenticated' : true , 'knowCtx' : 'ctxX' , ... > < serverA | 'contexts' : ('ctxX' : Hist) , ... > .
+
+[B3] < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+=> < serverA | 'contexts' : ('ctxX' : ('msgB' , Hist)) , ... > $ serverA 'returnHistory' clientB | ('ctxX' ; ('msgB' , Hist)) .
+
+[B3] < clientB | 'receivedHistory' : OldHist , ... > $ serverA 'returnHistory' clientB | (Ctx ; Hist)
+=> < clientB | 'receivedHistory' : Hist , ... > .
+
+[B4] < serverA | 'contexts' : ('ctxX' : Hist) , ... > $ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2')
+=> < serverA | 'contexts' : ('ctxX' : ('msgA2' , Hist)) , ... > $ serverA 'returnHistory' clientA | ('ctxX' ; ('msgA2' , Hist)) .
+
+[B4] < clientA | 'receivedHistory' : OldHist , ... > $ serverA 'returnHistory' clientA | (Ctx ; Hist)
+=> < clientA | 'receivedHistory' : Hist , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3087
+--------------------------------------------------
+```json
+{
+  "Ctx": "Qid",
+  "Hist": "Set",
+  "OldHist": "Set",
+  "ReturnedCtx": "Qid"
+}
+```
+==================================================
+{'Ctx': 'Qid', 'Hist': 'Set', 'OldHist': 'Set', 'ReturnedCtx': 'Qid'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< serverA | ('contexts' : 'ctxX' : {[Set] , 'msgA2' , 'msgB' , 'msgA'}) > < clientA | ('receivedHistory' : [Set] , 'knowCtx' : [Qid]) > < clientB | ('receivedHistory' : [Set] , 'knowCtx' : 'ctxX' , 'authenticated' : [Bool]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < serverA | ('contexts' : nils , ..) > $ clientA 'sendWithoutContext' serverA | ('msgA') 
+= < serverA | ('contexts' : ('ctxX' : ('msgA') , ..) , ..) > $ serverA 'returnInitialHistory' clientA | ('ctxX' ; ('msgA')) .
+eq < clientA | ('knowCtx' : nils , 'receivedHistory' : nils , ..) > $ serverA 'returnInitialHistory' clientA | (Ctx ; Hist) 
+= < clientA | ('knowCtx' : Ctx , 'receivedHistory' : Hist , ..) > .
+ceq < clientA | ('knowCtx' : Ctx , 'receivedHistory' : OldHist , ..) > $ serverA 'returnInitialHistory' clientA | (ReturnedCtx ; Hist) 
+= < clientA | ('knowCtx' : Ctx , 'receivedHistory' : Hist , ..) > if Ctx =/= nils .
+ceq < clientA | ('knowCtx' : nils , 'receivedHistory' : OldHist , ..) > $ serverA 'returnInitialHistory' clientA | (Ctx ; Hist) 
+= < clientA | ('knowCtx' : nils , 'receivedHistory' : Hist , ..) > if OldHist =/= nils .
+eq < clientB | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('contexts' : ('ctxX' : Hist , ...) , ....) > $ clientB 'snoop' serverA | ('ctxX') 
+= < clientB | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > < serverA | ('contexts' : ('ctxX' : Hist , ...) , ....) > .
+eq < serverA | ('contexts' : ('ctxX' : Hist , ..) , ...) > $ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB') 
+= < serverA | ('contexts' : ('ctxX' : ('msgB' , Hist) , ..) , ...) > $ serverA 'returnHistory' clientB | ('ctxX' ; ('msgB' , Hist)) .
+eq < clientB | ('receivedHistory' : OldHist , ..) > $ serverA 'returnHistory' clientB | (Ctx ; Hist) 
+= < clientB | ('receivedHistory' : Hist , ..) > .
+eq < serverA | ('contexts' : ('ctxX' : Hist , ..) , ...) > $ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2') 
+= < serverA | ('contexts' : ('ctxX' : ('msgA2' , Hist) , ..) , ...) > $ serverA 'returnHistory' clientA | ('ctxX' ; ('msgA2' , Hist)) .
+eq < clientA | ('receivedHistory' : OldHist , ..) > $ serverA 'returnHistory' clientA | (Ctx ; Hist) 
+= < clientA | ('receivedHistory' : Hist , ..) > .
+$ clientA 'sendWithoutContext' serverA | ('msgA')
+$ serverA 'returnInitialHistory' clientA | ('ctxX' ; ('msgA'))
+$ serverA 'returnInitialHistory' clientA | (Ctx ; Hist)
+$ clientB 'snoop' serverA | ('ctxX')
+$ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB')
+$ serverA 'returnHistory' clientB | ('ctxX' ; ('msgB' , Hist))
+$ serverA 'returnHistory' clientB | (Ctx ; Hist)
+$ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2')
+$ serverA 'returnHistory' clientA | ('ctxX' ; ('msgA2' , Hist))
+$ serverA 'returnHistory' clientA | (Ctx ; Hist)
+[*] Total token: 2019
+--------------------------------------------------
+```
+[1, 4, 5, 8]
+```
+==================================================
+[1, 4, 5, 8]
+[$ clientA 'sendWithoutContext' serverA | ('msgA'), $ clientB 'snoop' serverA | ('ctxX'), $ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB'), $ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2')]
+[eq ev1 = $ clientA 'sendWithoutContext' serverA | ('msgA') ., eq ev2 = $ clientB 'snoop' serverA | ('ctxX') ., eq ev3 = $ clientB 'sendWithContext' serverA | ('ctxX' ; 'msgB') ., eq ev4 = $ clientA 'sendWithContext' serverA | ('ctxX' ; 'msgA2') .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 3066
+--------------------------------------------------
+```
+< serverA | ('contexts' : nils) >
+< clientA | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >
+< clientB | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >
+```
+==================================================
+< serverA | ('contexts' : nils) > < clientA | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) > < clientB | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) >
+[*] Generating event rules with LLM...
+[*] Total token: 3706
+--------------------------------------------------
+```
+[B2] < clientB | 'knowCtx' : nils , 'authenticated' : true , ... > < serverA | 'contexts' : 'ctxX' : Hist , ... > => ev2 .
+[B3] < clientB | 'knowCtx' : 'ctxX' , 'authenticated' : true , ... > => ev3 .
+```
+==================================================
+[*] Total token: 3925
+--------------------------------------------------
+```
+[B2] < clientB | 'knowCtx' : nils , 'authenticated' : true , ... > < serverA | 'contexts' : 'ctxX' : Hist , ... > => ev2() .
+[B3] < clientB | 'knowCtx' : 'ctxX' , 'authenticated' : true , ... > => ev3() .
+```
+==================================================
+[*] Total token: 4303
+--------------------------------------------------
+The parser requires at least one argument, but the supplied declarations define `ev2` and `ev3` with zero arguments. Adding `nils` or another argument would violate the requirement to preserve their arity.
+
+A valid revision requires either allowing zero-argument event names in the grammar or updating the event declarations to specify arguments. Neither `ev2` nor `ev2()` is accepted by the current grammar.
+==================================================

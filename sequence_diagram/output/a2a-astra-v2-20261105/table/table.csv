@@ -1,0 +1,2 @@
+protocol,property,runs,load,counterexample,golden_match,pass_at_1,first_try,retries,coverage_warnings,events,golden_events,time_s,tokens_k
+A2A,CTX-isolation,5,2,2,2,40.0,2,11,0,6.0,4,71.0,25.7

@@ -1,0 +1,57 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | ('key' : nils , 'near' : deviceB) > < userC | ('key' : nils , 'near' : nils) > < deviceB | ('key' : 'keyB') > < cloudA | (deviceB : ('key' : 'keyB' , 'owner' : nils)) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars K : Qid .
+vars Near : Set .
+vars UserX : User .
+*** policy
+eq < UserX | ('near' : Near , 'key' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , 'key' : nils , ..) > .
+eq < UserX | ('near' : Near , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+eq < deviceB | ('key' : K , ..) > $ UserX 'pressButton' deviceB 
+= < deviceB | ('key' : K , ..) > $ deviceB 'sendKey' UserX | (K) .
+eq < UserX | ('key' : nils , ..) > $ deviceB 'sendKey' UserX | (K) 
+= < UserX | ('key' : K , ..) > .
+eq < cloudA | (deviceB : ('key' : K , 'owner' : nils , ..) , ...) > $ UserX 'bind' cloudA | (deviceB ; K) 
+= < cloudA | (deviceB : ('key' : K , 'owner' : UserX , ..) , ...) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars K : Qid .
+vars Near : Set .
+vars UserX : User .
+vars MessageA : Qid .
+vars Rest : Set .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User -> Event .
+ops ev4 : User Qid -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'approach' deviceB .
+eq ev2(UserX) = $ UserX 'leave' deviceB .
+eq ev3(UserX) = $ UserX 'pressButton' deviceB .
+eq ev4(UserX, K) = $ UserX 'bind' cloudA | (deviceB ; K) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : (deviceB , Rest) , ..) > 
+=> ep: ev2(UserX) @ S < UserX | ('near' : (deviceB , Rest) , ..) > .
+rl [rev3]: E @ S < UserX | ('near' : (deviceB , Rest) , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : (deviceB , Rest) , ..) > .
+rl [rev4]: E @ S < UserX | ('key' : K , ..) > < deviceB | (...) > 
+=> ep: ev4(UserX, K) @ S < UserX | ('key' : K , ..) > < deviceB | (...) > .
+
+endm

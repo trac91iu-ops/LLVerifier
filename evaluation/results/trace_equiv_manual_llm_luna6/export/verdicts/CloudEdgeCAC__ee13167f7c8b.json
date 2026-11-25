@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:40:17.927Z",
+  "model": "ee13167f7c8b",
+  "note": "",
+  "protocol": "CloudEdgeCAC",
+  "runs": [
+    "luna6-run2"
+  ],
+  "verdict": "present"
+}

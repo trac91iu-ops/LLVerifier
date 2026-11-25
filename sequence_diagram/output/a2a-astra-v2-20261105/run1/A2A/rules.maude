@@ -1,0 +1,70 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < serverA | ('history' : nils , 'context' : nils) > < clientA | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) > < clientB | ('receivedHistory' : nils , 'knowCtx' : nils , 'authenticated' : true) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars ClientX : Client .
+vars ClientY : Client .
+vars Ctx : Qid .
+vars Hist : Set .
+vars History : Set .
+vars OldHistory : Set .
+*** policy
+eq < serverA | ('context' : nils , 'history' : OldHistory , ..) > $ ClientX 'sendWithoutContext' serverA | ('msgA') 
+= < serverA | ('context' : 'ctxX' , 'history' : ('msgA') , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; ('msgA')) .
+eq < ClientX | ('knowCtx' : nils , 'receivedHistory' : nils , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) 
+= < ClientX | ('knowCtx' : 'ctxX' , 'receivedHistory' : History , ..) > .
+ceq < ClientX | ('knowCtx' : Ctx , 'receivedHistory' : OldHistory , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) 
+= < ClientX | ('knowCtx' : Ctx , 'receivedHistory' : History , ..) > if Ctx =/= nils .
+ceq < ClientX | ('knowCtx' : nils , 'receivedHistory' : OldHistory , ..) > $ serverA 'returnInitialContext' ClientX | ('ctxX' ; History) 
+= < ClientX | ('knowCtx' : nils , 'receivedHistory' : History , ..) > if OldHistory =/= nils .
+ceq < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > $ ClientY 'snoop' serverA | (Ctx) 
+= < ClientY | ('authenticated' : true , 'knowCtx' : Ctx , ..) > < serverA | ('context' : Ctx , ...) > if Ctx =/= nils .
+eq < serverA | ('context' : 'ctxX' , 'history' : Hist , ..) > $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB') 
+= < serverA | ('context' : 'ctxX' , 'history' : ('msgB' , Hist) , ..) > $ serverA 'returnHistory' ClientY | ('ctxX' ; ('msgB' , Hist)) .
+eq < ClientY | ('receivedHistory' : OldHistory , ..) > $ serverA 'returnHistory' ClientY | ('ctxX' ; History) 
+= < ClientY | ('receivedHistory' : History , ..) > .
+eq < serverA | ('context' : 'ctxX' , 'history' : Hist , ..) > $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2') 
+= < serverA | ('context' : 'ctxX' , 'history' : ('msgA2' , Hist) , ..) > $ serverA 'returnHistory' ClientX | ('ctxX' ; ('msgA2' , Hist)) .
+eq < ClientX | ('receivedHistory' : OldHistory , ..) > $ serverA 'returnHistory' ClientX | ('ctxX' ; History) 
+= < ClientX | ('receivedHistory' : History , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars ClientX : Client .
+vars ClientY : Client .
+vars Ctx : Qid .
+vars Hist : Set .
+vars History : Set .
+vars OldHistory : Set .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : Client -> Event .
+ops ev2 : Client Qid -> Event .
+ops ev3 : Client -> Event .
+ops ev4 : Client -> Event .
+*** events
+eq ev1(ClientX) = $ ClientX 'sendWithoutContext' serverA | ('msgA') .
+eq ev2(ClientY, Ctx) = $ ClientY 'snoop' serverA | (Ctx) .
+eq ev3(ClientY) = $ ClientY 'sendWithContext' serverA | ('ctxX' ; 'msgB') .
+eq ev4(ClientX) = $ ClientX 'sendWithContext' serverA | ('ctxX' ; 'msgA2') .
+*** transitions
+rl [rev1]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > 
+=> ep: ev1(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : nils , ..) > .
+rl [rev2]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > 
+=> ep: ev2(ClientY, Ctx) @ S < ClientY | ('authenticated' : true , 'knowCtx' : nils , ..) > < serverA | ('context' : Ctx , ...) > .
+rl [rev3]: E @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > 
+=> ep: ev3(ClientY) @ S < ClientY | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > .
+rl [rev4]: E @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > 
+=> ep: ev4(ClientX) @ S < ClientX | ('authenticated' : true , 'knowCtx' : 'ctxX' , ..) > .
+
+endm

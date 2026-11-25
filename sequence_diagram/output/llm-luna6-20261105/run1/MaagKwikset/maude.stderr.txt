@@ -1,0 +1,5 @@
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.
+Warning: "rules.maude", line 32 (mod SYSTEM): variable Secret is used before it is bound in equation:
+ceq < deviceB | ..., 'key' : DeviceKey, 'trusted' : OldTrusted > < UserX | .., 'near' : deviceB, 'signedKey' : M > = < deviceB | 'key' : DeviceKey, ..., 'trusted' : (UserX, OldTrusted) > < UserX | 'near' : deviceB, .., 'signedKey' : M > if encrypt(DeviceKey, Secret) == M = true .

@@ -1,0 +1,17 @@
+$ userA 'pressButton' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'invite' cloudA | userC
+$ userC 'invite' cloudA | userA
+$ userC 'approach' deviceB
+$ userC 'pressButton' deviceB
+$ userC 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'leave' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userC 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'approach' deviceB
+$ userC 'leave' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userC 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userC 'approach' deviceB
+$ userC 'bind' cloudA | (deviceB ; 'deviceKey')

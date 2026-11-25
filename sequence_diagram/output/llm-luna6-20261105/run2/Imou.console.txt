@@ -1,0 +1,63 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[-] ValueError: Validation failed after 2 repairs: No terminal matches '.' in the current parser context, at line 7 col 69
+
+... > $ deviceB 'sendKey' UserX | (Key) .
+                                        ^
+Expected one of: '<'
+[*] Diagram split into 4 blocks
+[*] Generating policy with LLM...
+[*] Total token: 4519
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : deviceB , ... > $ UserX 'leaveDevice' deviceB
+=> < UserX | 'near' : nils , ... > .
+[B2] < deviceB | 'key' : Key , 'online' : false , ... > $ UserX 'buttonPress' deviceB
+=> < deviceB | 'key' : Key , 'online' : true , ... > $ deviceB 'sendKey' UserX | (Key) .
+[B2] < UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | (Key)
+=> < UserX | 'key' : Key , ... > .
+[B2] < UserX | 'key' : UserKey , ... > $ deviceB 'sendKey' UserX | (Key) .
+[B2] < deviceB | 'key' : Key , 'online' : true , ... > $ UserX 'buttonPress' deviceB
+=> < deviceB | 'key' : Key , 'online' : true , ... > .
+[B3] < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'online' : true , ... > < cloudA | deviceB : ('bindingKey' : Key , 'owner' : nils , ...) , ... > $ UserX 'bindDevice' cloudA | (deviceB ; Key)
+=> < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'online' : true , ... > < cloudA | deviceB : ('bindingKey' : Key , 'owner' : UserX , ...) , ... > .
+[B4] < UserX | 'near' : deviceB , ... > < cloudA | deviceB : ('owner' : UserX , ...) , ... > $ UserX 'resetDevice' cloudA | (deviceB)
+=> < UserX | 'near' : deviceB , ... > < cloudA | deviceB : ('owner' : nils , ...) , ... > .
+```
+==================================================
+[*] Total token: 4959
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : deviceB , ... > $ UserX 'leaveDevice' deviceB
+=> < UserX | 'near' : nils , ... > .
+[B2] < deviceB | 'key' : Key , 'online' : false , ... > $ UserX 'buttonPress' deviceB
+=> < deviceB | 'key' : Key , 'online' : true , ... > $ deviceB 'sendKey' UserX | (Key) < deviceB | 'key' : Key , 'online' : true , ... > .
+[B2] < UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | (Key)
+=> < UserX | 'key' : Key , ... > .
+[B2] < UserX | 'key' : UserKey , ... > $ deviceB 'sendKey' UserX | (Key) .
+[B2] < deviceB | 'key' : Key , 'online' : true , ... > $ UserX 'buttonPress' deviceB
+=> < deviceB | 'key' : Key , 'online' : true , ... > .
+[B3] < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'online' : true , ... > < cloudA | deviceB : ('bindingKey' : Key , 'owner' : nils , ...) , ... > $ UserX 'bindDevice' cloudA | (deviceB ; Key)
+=> < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'online' : true , ... > < cloudA | deviceB : ('bindingKey' : Key , 'owner' : UserX , ...) , ... > .
+[B4] < UserX | 'near' : deviceB , ... > < deviceB | 'online' : false , ... > < cloudA | deviceB : ('owner' : UserX , ...) , ... > $ UserX 'resetDevice' cloudA | (deviceB)
+=> < UserX | 'near' : deviceB , ... > < deviceB | 'online' : false , ... > < cloudA | deviceB : ('owner' : nils , ...) , ... > .
+```
+==================================================
+[*] Total token: 5254
+--------------------------------------------------
+```text
+[B1] < UserX | 'near' : deviceB , ... > $ UserX 'leaveDevice' deviceB
+=> < UserX | 'near' : nils , ... > .
+[B2] < deviceB | 'key' : Key , 'online' : false , ... > $ UserX 'buttonPress' deviceB
+=> < deviceB | 'key' : Key , 'online' : true , ... > $ deviceB 'sendKey' UserX | (Key) < deviceB | 'key' : Key , 'online' : true , ... > .
+[B2] < UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | (Key)
+=> < UserX | 'key' : Key , ... > .
+[B2] < UserX | 'key' : UserKey , ... > $ deviceB 'sendKey' UserX | (Key) .
+[B2] < deviceB | 'key' : Key , 'online' : true , ... > $ UserX 'buttonPress' deviceB
+=> < deviceB | 'key' : Key , 'online' : true , ... > .
+[B3] < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'online' : true , ... > < cloudA | deviceB : ('bindingKey' : Key , 'owner' : nils , ...) , ... > $ UserX 'bindDevice' cloudA | (deviceB ; Key)
+=> < UserX | 'key' : Key , ... > < deviceB | 'key' : DeviceKey , 'online' : true , ... > < cloudA | deviceB : ('bindingKey' : Key , 'owner' : UserX , ...) , ... > .
+[B4] < UserX | 'near' : deviceB , ... > < deviceB | 'online' : false , ... > < cloudA | deviceB : ('owner' : UserX , ...) , ... > $ UserX 'resetDevice' cloudA | (deviceB)
+=> < UserX | 'near' : deviceB , ... > < deviceB | 'online' : false , ... > < cloudA | deviceB : ('owner' : nils , ...) , ... > .
+```
+==================================================

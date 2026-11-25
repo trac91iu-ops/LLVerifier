@@ -1,0 +1,11 @@
+[
+  {
+    "stage": "genPolicy",
+    "prompt_hash": "genPolicy:d7ba2f0a2c5e59ef9cba0e0040ead34be0c130e73f7f11c9db51d60be5dfca81"
+  },
+  {
+    "attempt": 0,
+    "output": "< deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : Key , ... > $ deviceB 'sendDeviceKey' UserX | Key .\n\n< UserX | 'key' : nils , ... > $ deviceB 'sendDeviceKey' UserX | Key\n=> < UserX | 'key' : Key , ... > .\n\n< cloudA | deviceB : ('bindingKey' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bindDevice' cloudA | (deviceB ; Key)\n=> < cloudA | deviceB : ('bindingKey' : Key , 'owners' : (UserX , Owners) , ...) , ... > .\n\n< cloudA | UserX : ('devices' : nils , 'members' : Members , ...) , ... > $ UserX 'invite' cloudA | UserY\n=> < cloudA | UserX : ('devices' : nils , 'members' : (UserY , Members) , ...) , ... > .\n\n< cloudA | UserX : ('devices' : nils , 'members' : (UserY , Members) , ...) , ... > $ UserX 'removeMember' cloudA | UserY\n=> < cloudA | UserX : ('devices' : nils , 'members' : Members , ...) , ... > .\n\n< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n\n< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .",
+    "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'ke"
+  }
+]

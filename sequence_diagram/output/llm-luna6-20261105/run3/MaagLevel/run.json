@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/MaagLevel/diagram.md",
+  "input_sha256": "3b3c393483c1a82fe354f57c8444a2de6bf0f7f3696df03386654baec1c01700",
+  "pipeline_id": "2e114202ef5d4e1c96dec922194d8998f222b6077f242559eb7978c46b4af3e4",
+  "mode": "check",
+  "started_at": "2026-11-05T05:07:51.883406+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Expected exactly one complete output code block.",
+  "elapsed_seconds": 200.513,
+  "tokens_this_run": 19465,
+  "finished_at": "2026-11-05T05:11:12.398602+00:00"
+}

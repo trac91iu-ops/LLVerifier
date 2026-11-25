@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "context_id": "d6a68f526a49b906674d06836d4f67dc431194b3c546ddeed5b5bc6e81fb537f",
+  "answers": {},
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:6ff8d32dbb32232d42fbc2e4f9524470c3054c05fbcd46e41351df0ec087be40"
+    },
+    {
+      "attempt": 0,
+      "output": "< UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n\n< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n\n< deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : Key , ... > $ deviceB 'sendMessage' UserX | encrypt(FreshR,Key) .\n\n< UserX | 'message' : nils , ... > $ deviceB 'sendMessage' UserX | Message\n=> < UserX | 'message' : Message , ... > .\n\n< cloudA | deviceB : ('key' : Key , 'owners' : Owners , ...) , ... > $ UserX 'bind' cloudA | (deviceB ; encrypt(R,Key))\n=> < cloudA | deviceB : ('key' : Key , 'owners' : (UserX,Owners) , ...) , ... > .\n\n< cloudA | deviceB : ('owners' : (UserX,Owners) , ...) , ... > $ UserX 'resetDevice' cloudA | deviceB\n=> < cloudA | deviceB : ('owners' : (nils,Owners) , ...) , ... > .",
+      "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near"
+    }
+  ]
+}

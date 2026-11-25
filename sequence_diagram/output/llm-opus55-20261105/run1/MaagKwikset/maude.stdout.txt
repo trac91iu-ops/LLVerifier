@@ -1,0 +1,35 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var DeviceX : Device .
+  var FreshKey : Qid .
+  var K : Qid .
+  var Key : Qid .
+  var M : Item .
+  var OldKey : Qid .
+  var Secret : Qid .
+  var UserX : User .
+  var UserY : User .
+  var Users : Set .
+  eq init = idle @ < system | ('counter' : 0) > < userA | ('signedKey' : nils, 'key' : nils, 'near' : deviceB) > < userC | ('signedKey' : nils, 'key' : nils, 'near' : nils) > < deviceB | ('key' : '', 'secret' : 'secret', 'trustedUsers' : (userA)) > < cloudA | (deviceB : ('trustedUsers' : (userA)), 'secret' : 'secret') > .
+  eq < UserX | ('near' : nils, ..) > < DeviceX | (...) > $ UserX 'approach' DeviceX = < UserX | ('near' : DeviceX, ..) > < DeviceX | (...) > .
+  eq < UserX | ('near' : DeviceX, ..) > $ UserX 'leave' DeviceX = < UserX | ('near' : nils, ..) > .
+  eq < system | ('counter' : N, ..) > < UserX | ('key' : nils, ...) > < DeviceX | ('key' : OldKey, ....) > $ UserX 'requestKey' DeviceX = < system | ('counter' : N + 1, ..) > < UserX | ('key' : randomStr ('Key', N), ...) > < DeviceX | ('key' : randomStr ('Key', N), ....) > .
+  eq < cloudA | ('secret' : Secret, DeviceX : ('trustedUsers' : (UserX, Users), ..), ...) > $ UserX 'signKey' cloudA | (DeviceX ; Key) = < cloudA | ('secret' : Secret, DeviceX : ('trustedUsers' : (UserX, Users), ..), ...) > $ cloudA 'sendSignedKey' UserX | (DeviceX ; encrypt (Key, Secret)) .
+  eq < UserX | ('signedKey' : nils, ..) > $ cloudA 'sendSignedKey' UserX | (DeviceX ; M) = < UserX | ('signedKey' : M, ..) > .
+  eq < UserX | ('signedKey' : encrypt (K, Secret), ..) > < DeviceX | ('key' : K, 'secret' : Secret, 'trustedUsers' : Users, ...) > $ UserX 'bind' DeviceX | (encrypt (K, Secret)) = < UserX | ('signedKey' : encrypt (K, Secret), ..) > < DeviceX | ('key' : K, 'secret' : Secret, 'trustedUsers' : (UserX, Users), ...) > .
+  eq < cloudA | (DeviceX : ('trustedUsers' : Users, ..), ...) > $ UserX 'share' cloudA | (DeviceX ; UserY) = < cloudA | (DeviceX : ('trustedUsers' : (UserY, Users), ..), ...) > .
+  eq < cloudA | (DeviceX : ('trustedUsers' : (UserX, UserY, Users), ..), ...) > $ UserX 'revoke' cloudA | (DeviceX ; UserY) = < cloudA | (DeviceX : ('trustedUsers' : (UserX, Users), ..), ...) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (32258 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_('secret', 'secret'), _:_(deviceB, _:_('trustedUsers', userA)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB), _:_('signedKey', nils))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils), _:_('signedKey', nils))), <_|_>(deviceB, _`,_(_:_('key', ''), _:_('secret', 'secret'), _:_('trustedUsers', userA)))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 5 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userC, 'approach', deviceB), __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_('secret', 'secret'), _:_(deviceB, _:_('trustedUsers', userA)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB), _:_('signedKey', nils))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', deviceB), _:_('signedKey', nils))), <_|_>(deviceB, _`,_(_:_('key', ''), _:_('secret', 'secret'), _:_('trustedUsers', userA)))))
+Bye.

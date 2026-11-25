@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-05T07:53:19.493Z",
+  "model": "d7b0ec50336a",
+  "note": "",
+  "protocol": "Midea",
+  "runs": [
+    "opus55-run3",
+    "opus55-run5"
+  ],
+  "verdict": "present"
+}

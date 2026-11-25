@@ -1,0 +1,225 @@
+{
+  "blocks": [
+    {
+      "id": "B1",
+      "kind": "action",
+      "lines": [
+        9,
+        12
+      ],
+      "head": "alt The user is not near any device",
+      "state_rules": [
+        0
+      ],
+      "event_rules": [
+        0
+      ]
+    },
+    {
+      "id": "B2",
+      "kind": "action",
+      "lines": [
+        13,
+        16
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        1
+      ],
+      "event_rules": [
+        1
+      ]
+    },
+    {
+      "id": "B3",
+      "kind": "action",
+      "lines": [
+        17,
+        20
+      ],
+      "head": "alt The user is near the device",
+      "state_rules": [
+        2
+      ],
+      "event_rules": [
+        2
+      ]
+    },
+    {
+      "id": "B4",
+      "kind": "action",
+      "lines": [
+        21,
+        26
+      ],
+      "head": "alt The user is near deviceB, the only device",
+      "state_rules": [
+        3
+      ],
+      "event_rules": [
+        3
+      ]
+    },
+    {
+      "id": "B5",
+      "kind": "action",
+      "lines": [
+        27,
+        32
+      ],
+      "head": "alt The user has key and is near a device",
+      "state_rules": [
+        4
+      ],
+      "event_rules": [
+        4
+      ]
+    },
+    {
+      "id": "B6",
+      "kind": "action",
+      "lines": [
+        33,
+        38
+      ],
+      "head": "alt The user has key and the device exists",
+      "state_rules": [
+        5
+      ],
+      "event_rules": [
+        5
+      ]
+    },
+    {
+      "id": "B7",
+      "kind": "action",
+      "lines": [
+        39,
+        44
+      ],
+      "head": "alt userC acts on userA",
+      "state_rules": [
+        6
+      ],
+      "event_rules": [
+        6
+      ]
+    },
+    {
+      "id": "B8",
+      "kind": "action",
+      "lines": [
+        45,
+        50
+      ],
+      "head": "alt userC acts on userA",
+      "state_rules": [
+        7
+      ],
+      "event_rules": [
+        7
+      ]
+    },
+    {
+      "id": "B9",
+      "kind": "action",
+      "lines": [
+        51,
+        58
+      ],
+      "head": "alt UserY has a key and the device exists",
+      "state_rules": [
+        8
+      ],
+      "event_rules": [
+        8
+      ]
+    }
+  ],
+  "state_rules": [
+    {
+      "block": "B1",
+      "rule": "eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB \n= < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B2",
+      "rule": "eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB \n= < UserX | ('near' : nils , ..) > ."
+    },
+    {
+      "block": "B3",
+      "rule": "eq < system | ('counter' : N , ..) > < deviceB | ('key' : OldKey , ...) > $ UserX 'pressButton' deviceB \n= < system | ('counter' : N + 1 , ..) > < deviceB | ('key' : randomStr('Key', N) , ...) > ."
+    },
+    {
+      "block": "B4",
+      "rule": "eq < UserX | ('key' : nils , ..) > < deviceB | ('locked' : false , 'key' : K , ...) > $ UserX 'retrieveKey' deviceB \n= < UserX | ('key' : K , ..) > < deviceB | ('locked' : false , 'key' : K , ...) > ."
+    },
+    {
+      "block": "B5",
+      "rule": "eq < deviceB | ('locked' : false , 'key' : K , ..) > $ UserX 'lockDevice' deviceB | (K) \n= < deviceB | ('locked' : true , 'key' : K , ..) > ."
+    },
+    {
+      "block": "B6",
+      "rule": "eq < deviceB | ('key' : K , ..) > < cloudA | (deviceB : ('owners' : Owners , ...) , ....) > $ UserX 'bindDevice' cloudA | (deviceB ; K) \n= < deviceB | ('key' : K , ..) > < cloudA | (deviceB : ('owners' : (UserX , Owners) , ...) , ....) > ."
+    },
+    {
+      "block": "B7",
+      "rule": "eq < cloudA | (userC : ('devices' : nils , 'members' : Members , ..) , ...) > $ userC 'inviteUser' cloudA | (userA) \n= < cloudA | (userC : ('devices' : nils , 'members' : (userA , Members) , ..) , ...) > ."
+    },
+    {
+      "block": "B8",
+      "rule": "eq < cloudA | (userC : ('devices' : nils , 'members' : (userA , Members) , ..) , ...) > $ userC 'removeUser' cloudA | (userA) \n= < cloudA | (userC : ('devices' : nils , 'members' : Members , ..) , ...) > ."
+    },
+    {
+      "block": "B9",
+      "rule": "eq < cloudA | (..) > $ UserY 'retrieveCloudKey' cloudA | (deviceB) \n= < cloudA | (..) > ."
+    }
+  ],
+  "event_rules": [
+    {
+      "block": "B1",
+      "label": "rev1",
+      "rule": "rl [rev1]: E @ S < UserX | ('near' : nils , ..) > \n=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > ."
+    },
+    {
+      "block": "B2",
+      "label": "rev2",
+      "rule": "rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev2(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B3",
+      "label": "rev3",
+      "rule": "rl [rev3]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev3(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B4",
+      "label": "rev4",
+      "rule": "rl [rev4]: E @ S < UserX | ('near' : deviceB , ..) > \n=> ep: ev4(UserX) @ S < UserX | ('near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B5",
+      "label": "rev5",
+      "rule": "rl [rev5]: E @ S < UserX | ('key' : K , 'near' : deviceB , ..) > \n=> ep: ev5(UserX, K) @ S < UserX | ('key' : K , 'near' : deviceB , ..) > ."
+    },
+    {
+      "block": "B6",
+      "label": "rev6",
+      "rule": "rl [rev6]: E @ S < UserX | ('key' : K , ..) > < deviceB | (...) > \n=> ep: ev6(UserX, K) @ S < UserX | ('key' : K , ..) > < deviceB | (...) > ."
+    },
+    {
+      "block": "B7",
+      "label": "rev7",
+      "rule": "rl [rev7]: E @ S < userC | (..) > < userA | (...) > \n=> ep: ev7(userC, userA) @ S < userC | (..) > < userA | (...) > ."
+    },
+    {
+      "block": "B8",
+      "label": "rev8",
+      "rule": "rl [rev8]: E @ S < userC | (..) > < userA | (...) > \n=> ep: ev8(userC, userA) @ S < userC | (..) > < userA | (...) > ."
+    },
+    {
+      "block": "B9",
+      "label": "rev9",
+      "rule": "rl [rev9]: E @ S < UserY | ('key' : K , ..) > < deviceB | (...) > \n=> ep: ev9(UserY) @ S < UserY | ('key' : K , ..) > < deviceB | (...) > ."
+    }
+  ],
+  "coverage_issues": []
+}

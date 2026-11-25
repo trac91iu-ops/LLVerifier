@@ -1,0 +1,46 @@
+{
+  "input": "sequence_diagram/input/Broadlink/diagram.md",
+  "input_sha256": "b380723cff8d06c378360086e0e434873cc99bf4bc6bb05e5dff75ca6f51b6dd",
+  "pipeline_id": "ca037de3b91a49d168c3352a390b9f5fbb6cd77b6df5354cf9834e4d7ffa1df3",
+  "mode": "check",
+  "started_at": "2026-11-05T06:26:04.163888+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/eval-astra-20261105/run5/Broadlink/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(userC, _`,_(_:_('devices', nils), _:_('members', nils), _:_('owners', nils))), _:_(deviceB, _`,_(_:_('devices', nils), _:_('key', 'keyB'), _:_('members', nils), _:_('owners', nils))))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _`,_(_:_('key', 'keyB'), _:_('locked', false)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 9,
+    "coverage_issues": [
+      "B7 (action, line 39): no event rule for the initiated message",
+      "B8 (action, line 45): no event rule for the initiated message"
+    ]
+  },
+  "model_sha256": "7892ce3e0d34a5edeea4d1060b4cbbb34c8d561e30dd452b71a9823af8517700",
+  "check": {
+    "property": "OWN-remote",
+    "verdict": "counterexample",
+    "events": 53,
+    "at_init": {
+      "attackerLocal": false,
+      "attackerOwner": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 259.256,
+  "tokens_this_run": 30987,
+  "finished_at": "2026-11-05T06:30:23.421139+00:00"
+}

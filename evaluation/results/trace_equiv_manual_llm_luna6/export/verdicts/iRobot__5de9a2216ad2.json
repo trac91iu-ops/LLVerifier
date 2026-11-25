@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:45:43.872Z",
+  "model": "5de9a2216ad2",
+  "note": "",
+  "protocol": "iRobot",
+  "runs": [
+    "luna6-run2"
+  ],
+  "verdict": "present"
+}

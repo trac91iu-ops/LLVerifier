@@ -1,0 +1,134 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 6 blocks
+[*] Generating policy with LLM...
+[*] Total token: 7173
+--------------------------------------------------
+```
+[B1] < deviceB | 'key' : K , ... > $ UserX 'pressButton' deviceB
+=> < deviceB | 'key' : K , ... > $ deviceB 'sendKey' UserX | (K) .
+[B1] < UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | (K)
+=> < UserX | 'key' : K , ... > .
+[B2] < cloudA | deviceB : ('bindKey' : K , 'owners' : Owners , ...) > $ UserX 'bind' cloudA | (deviceB ; K)
+=> < cloudA | deviceB : ('bindKey' : K , 'owners' : (UserX , Owners) , ...) > .
+[B3] < cloudA | UserX : ('devices' : nils , 'members' : Members , ...) > $ UserX 'invite' cloudA | (UserY)
+=> < cloudA | UserX : ('devices' : nils , 'members' : (UserY , Members) , ...) > .
+[B4] < cloudA | UserX : ('devices' : nils , 'members' : (UserY , Members) , ...) > $ UserX 'removeMember' cloudA | (UserY)
+=> < cloudA | UserX : ('devices' : nils , 'members' : Members , ...) > .
+[B5] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceB
+=> < UserX | 'near' : deviceB , ... > .
+[B6] < UserX | 'near' : deviceB , ... > $ UserX 'leave' deviceB
+=> < UserX | 'near' : nils , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 4020
+--------------------------------------------------
+```
+{"K": "Qid", "Members": "Set", "Owners": "Set", "UserX": "User", "UserY": "User"}
+```
+==================================================
+{'K': 'Qid', 'Members': 'Set', 'Owners': 'Set', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< deviceB | ('key' : [Qid]) > < userA | ('near' : [Principal] , 'key' : [Qid]) > < userC | ('near' : [Principal] , 'key' : [Qid]) > < cloudA | ([User] : ('devices' : nils , 'members' : [Set]) , [Principal] : ('bindKey' : [Qid] , 'owners' : ([Set]))) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < deviceB | ('key' : K , ..) > $ UserX 'pressButton' deviceB 
+= < deviceB | ('key' : K , ..) > $ deviceB 'sendKey' UserX | (K) .
+eq < UserX | ('key' : nils , ..) > $ deviceB 'sendKey' UserX | (K) 
+= < UserX | ('key' : K , ..) > .
+eq < cloudA | (deviceB : ('bindKey' : K , 'owners' : Owners , ..) , ...) > $ UserX 'bind' cloudA | (deviceB ; K) 
+= < cloudA | (deviceB : ('bindKey' : K , 'owners' : (UserX , Owners) , ..) , ...) > .
+eq < cloudA | (UserX : ('devices' : nils , 'members' : Members , ..) , ...) > $ UserX 'invite' cloudA | (UserY) 
+= < cloudA | (UserX : ('devices' : nils , 'members' : (UserY , Members) , ..) , ...) > .
+eq < cloudA | (UserX : ('devices' : nils , 'members' : (UserY , Members) , ..) , ...) > $ UserX 'removeMember' cloudA | (UserY) 
+= < cloudA | (UserX : ('devices' : nils , 'members' : Members , ..) , ...) > .
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+$ UserX 'pressButton' deviceB
+$ deviceB 'sendKey' UserX | (K)
+$ UserX 'bind' cloudA | (deviceB ; K)
+$ UserX 'invite' cloudA | (UserY)
+$ UserX 'removeMember' cloudA | (UserY)
+$ UserX 'approach' deviceB
+$ UserX 'leave' deviceB
+[*] Total token: 2630
+--------------------------------------------------
+```
+[1, 3, 4, 5, 6, 7]
+```
+==================================================
+[1, 3, 4, 5, 6, 7]
+[$ UserX 'pressButton' deviceB, $ UserX 'bind' cloudA | (deviceB ; K), $ UserX 'invite' cloudA | (UserY), $ UserX 'removeMember' cloudA | (UserY), $ UserX 'approach' deviceB, $ UserX 'leave' deviceB]
+[eq ev1(UserX) = $ UserX 'pressButton' deviceB ., eq ev2(UserX, K) = $ UserX 'bind' cloudA | (deviceB ; K) ., eq ev3(UserX, UserY) = $ UserX 'invite' cloudA | (UserY) ., eq ev4(UserX, UserY) = $ UserX 'removeMember' cloudA | (UserY) ., eq ev5(UserX) = $ UserX 'approach' deviceB ., eq ev6(UserX) = $ UserX 'leave' deviceB .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 4622
+--------------------------------------------------
+```
+< deviceB | ('key' : 'keyB') > < userA | ('near' : deviceB , 'key' : nils) > < userC | ('near' : nils , 'key' : nils) > < cloudA | (userA : ('devices' : nils , 'members' : nils) , userC : ('devices' : nils , 'members' : nils) , deviceB : ('bindKey' : 'keyB' , 'owners' : nils)) >
+```
+==================================================
+< deviceB | ('key' : 'keyB') > < userA | ('near' : deviceB , 'key' : nils) > < userC | ('near' : nils , 'key' : nils) > < cloudA | (userA : ('devices' : nils , 'members' : nils) , userC : ('devices' : nils , 'members' : nils) , deviceB : ('bindKey' : 'keyB' , 'owners' : nils)) >
+[*] Generating event rules with LLM...
+[*] Total token: 5623
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : deviceB , ... > => ev1(UserX) .
+[B2] < UserX | 'key' : K , ... > < deviceB | ... > => ev2(UserX, K) .
+[B3] < UserX | ... > < UserY | ... > => ev3(UserX, UserY) .
+[B4] < UserX | ... > < UserY | ... > => ev4(UserX, UserY) .
+[B5] < UserX | 'near' : nils , ... > => ev5(UserX) .
+[B6] < UserX | 'near' : deviceB , ... > => ev6(UserX) .
+```
+==================================================
+< UserX | 'near' : deviceB , ... > => ev1(UserX) .
+< UserX | 'key' : K , ... > < deviceB | ... > => ev2(UserX, K) .
+< UserX | ... > < UserY | ... > => ev3(UserX, UserY) .
+< UserX | ... > < UserY | ... > => ev4(UserX, UserY) .
+< UserX | 'near' : nils , ... > => ev5(UserX) .
+< UserX | 'near' : deviceB , ... > => ev6(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev2]: E @ S < UserX | ('key' : K , ..) > < deviceB | (...) > 
+=> ep: ev2(UserX, K) @ S < UserX | ('key' : K , ..) > < deviceB | (...) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev3(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev4]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev4(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev5]: E @ S < UserX | ('near' : nils , ..) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : nils , ..) > .
+rl [rev6]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev6(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 3475
+--------------------------------------------------
+```
+attackerLocal =| < userC | 'near' : deviceB , ... > .
+attackerOwner =| < cloudA | deviceB : ('owners' : (userC , Rest) , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 2570
+--------------------------------------------------
+```
+{"Rest": "Set"}
+```
+==================================================
+{'Rest': 'Set'}
+[*] Add varable types to AST
+[+] Check OWN-remote: counterexample (20 events)
+[+] Model written: sequence_diagram/output/llm-opus55-20261105/run4/Switchbot/rules.maude; status: validated

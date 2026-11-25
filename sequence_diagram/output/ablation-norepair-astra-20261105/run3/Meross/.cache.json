@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "context_id": "31326de9cb0d280e8609836e2db168543d910323b7286faa2f8915bcd1c8b471",
+  "answers": {
+    "genPolicy:1e9a27d61f3c0efdded47608efc937caea10aa1cb911186830edd300fda5b210": "[B1] < deviceB | 'key' : Kdevice , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : Kdevice , ... > $ deviceB 'sendDeviceKey' UserX | Kdevice .\n[B1] < UserX | 'keys' : Keys , ... > $ deviceB 'sendDeviceKey' UserX | Kdevice\n=> < UserX | 'keys' : (Kdevice , Keys) , ... > .\n[B2] < deviceB | 'key' : Kdevice , ... > $ UserX 'bindDevice' deviceB | Kuser\n=> < deviceB | 'key' : Kdevice , ... > $ deviceB 'bindCloud' cloudA | (deviceB ; Kdevice ; Kuser) .\n[B2] < cloudA | deviceB : ('key' : Kdevice , 'owner' : nils , ...) , UserY : ('key' : Kuser , ...) , ... > $ deviceB 'bindCloud' cloudA | (deviceB ; Kdevice ; Kuser)\n=> < cloudA | deviceB : ('key' : Kdevice , 'owner' : UserY , ...) , UserY : ('key' : Kuser , ...) , ... > .\n[B3] < cloudA | deviceB : ('key' : Kdevice , 'owner' : nils , ...) , UserY : ('key' : Kuser , ...) , ... > $ UserX 'bindCloud' cloudA | (deviceB ; Kdevice ; Kuser)\n=> < cloudA | deviceB : ('key' : Kdevice , 'owner' : UserY , ...) , UserY : ('key' : Kuser , ...) , ... > .\n[B4] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B5] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .",
+    "genPolicyVars:2a7487137f14a288e46f64670516a151d62a6297a339a9eba0ddf5ad8007667b": "{\n  \"Kdevice\": \"Qid\",\n  \"Keys\": \"Set\",\n  \"Kuser\": \"Qid\",\n  \"OldNear\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+    "filterEvents:0c157082c65df8edf5c627de33e0ef662152e46f669422f01b31c616f119e1d6": "[1, 3, 5, 6, 7]",
+    "genInit:45043c7ed626f16bd84760b73990ddf30c875cb8e2e932284a1e2765dcec9df5": "< deviceB | ('key' : 'deviceKeyB') >\n< userA | ('near' : deviceB , 'keys' : ('userKeyA')) >\n< userC | ('near' : nils , 'keys' : ('userKeyC')) >\n< cloudA | (deviceB : ('key' : 'deviceKeyB' , 'owner' : nils) , userA : ('key' : 'userKeyA') , userC : ('key' : 'userKeyC')) >",
+    "genRRLs:2041e0860b0ceba21076ea80c254f8b08efee02689afaec2d95c45d63d8223f9": "[B1] < UserX | 'near' : (deviceB, RestNear), ... > => ev1(UserX) .\n[B2] < UserX | 'near' : (deviceB, RestNear), 'keys' : (Kuser), ... > => ev2(UserX, Kuser) .\n[B3] < UserX | 'keys' : (Kdevice, Kuser, RestKeys), ... > => ev3(UserX, Kdevice, Kuser) .\n[B3] < UserX | 'keys' : (K, RestKeys), ... > => ev3(UserX, K, K) .\n[B4] < UserX | 'near' : nils, ... > < deviceB | ... > => ev4(UserX) .\n[B5] < UserX | 'near' : (deviceB, RestNear), ... > => ev5(UserX) .",
+    "genEventVars:8aa7ce27e068e1ee3909d55468706256edd55b9d5f383db24794b98b77fc7a8b": "{\n  \"K\": \"Qid\",\n  \"RestKeys\": \"Set\",\n  \"RestNear\": \"Set\"\n}",
+    "genSlots:55cef587e445361b243745a23e5f80df5cb1ea67f10a0e115fe4edfc1c3522c5": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owner' : userC , ...) , ... > ."
+  },
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:1e9a27d61f3c0efdded47608efc937caea10aa1cb911186830edd300fda5b210"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < deviceB | 'key' : Kdevice , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : Kdevice , ... > $ deviceB 'sendDeviceKey' UserX | Kdevice .\n[B1] < UserX | 'keys' : Keys , ... > $ deviceB 'sendDeviceKey' UserX | Kdevice\n=> < UserX | 'keys' : (Kdevice , Keys) , ... > .\n[B2] < deviceB | 'key' : Kdevice , ... > $ UserX 'bindDevice' deviceB | Kuser\n=> < deviceB | 'key' : Kdevice , ... > $ deviceB 'bindCloud' cloudA | (deviceB ; Kdevice ; Kuser) .\n[B2] < cloudA | deviceB : ('key' : Kdevice , 'owner' : nils , ...) , UserY : ('key' : Kuser , ...) , ... > $ deviceB 'bindCloud' cloudA | (deviceB ; Kdevice ; Kuser)\n=> < cloudA | deviceB : ('key' : Kdevice , 'owner' : UserY , ...) , UserY : ('key' : Kuser , ...) , ... > .\n[B3] < cloudA | deviceB : ('key' : Kdevice , 'owner' : nils , ...) , UserY : ('key' : Kuser , ...) , ... > $ UserX 'bindCloud' cloudA | (deviceB ; Kdevice ; Kuser)\n=> < cloudA | deviceB : ('key' : Kdevice , 'owner' : UserY , ...) , UserY : ('key' : Kuser , ...) , ... > .\n[B4] < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , ... > .\n[B5] < UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .",
+      "error": null
+    },
+    {
+      "stage": "genPolicyVars",
+      "prompt_hash": "genPolicyVars:2a7487137f14a288e46f64670516a151d62a6297a339a9eba0ddf5ad8007667b"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"Kdevice\": \"Qid\",\n  \"Keys\": \"Set\",\n  \"Kuser\": \"Qid\",\n  \"OldNear\": \"Set\",\n  \"UserX\": \"User\",\n  \"UserY\": \"User\"\n}",
+      "error": null
+    },
+    {
+      "stage": "filterEvents",
+      "prompt_hash": "filterEvents:0c157082c65df8edf5c627de33e0ef662152e46f669422f01b31c616f119e1d6"
+    },
+    {
+      "attempt": 0,
+      "output": "[1, 3, 5, 6, 7]",
+      "error": null
+    },
+    {
+      "stage": "genInit",
+      "prompt_hash": "genInit:45043c7ed626f16bd84760b73990ddf30c875cb8e2e932284a1e2765dcec9df5"
+    },
+    {
+      "attempt": 0,
+      "output": "< deviceB | ('key' : 'deviceKeyB') >\n< userA | ('near' : deviceB , 'keys' : ('userKeyA')) >\n< userC | ('near' : nils , 'keys' : ('userKeyC')) >\n< cloudA | (deviceB : ('key' : 'deviceKeyB' , 'owner' : nils) , userA : ('key' : 'userKeyA') , userC : ('key' : 'userKeyC')) >",
+      "error": null
+    },
+    {
+      "stage": "genRRLs",
+      "prompt_hash": "genRRLs:2041e0860b0ceba21076ea80c254f8b08efee02689afaec2d95c45d63d8223f9"
+    },
+    {
+      "attempt": 0,
+      "output": "[B1] < UserX | 'near' : (deviceB, RestNear), ... > => ev1(UserX) .\n[B2] < UserX | 'near' : (deviceB, RestNear), 'keys' : (Kuser), ... > => ev2(UserX, Kuser) .\n[B3] < UserX | 'keys' : (Kdevice, Kuser, RestKeys), ... > => ev3(UserX, Kdevice, Kuser) .\n[B3] < UserX | 'keys' : (K, RestKeys), ... > => ev3(UserX, K, K) .\n[B4] < UserX | 'near' : nils, ... > < deviceB | ... > => ev4(UserX) .\n[B5] < UserX | 'near' : (deviceB, RestNear), ... > => ev5(UserX) .",
+      "error": null
+    },
+    {
+      "stage": "genEventVars",
+      "prompt_hash": "genEventVars:8aa7ce27e068e1ee3909d55468706256edd55b9d5f383db24794b98b77fc7a8b"
+    },
+    {
+      "attempt": 0,
+      "output": "{\n  \"K\": \"Qid\",\n  \"RestKeys\": \"Set\",\n  \"RestNear\": \"Set\"\n}",
+      "error": null
+    },
+    {
+      "stage": "genSlots",
+      "prompt_hash": "genSlots:55cef587e445361b243745a23e5f80df5cb1ea67f10a0e115fe4edfc1c3522c5"
+    },
+    {
+      "attempt": 0,
+      "output": "attackerLocal =| < userC | 'near' : deviceB , ... > .\nattackerOwner =| < cloudA | deviceB : ('owner' : userC , ...) , ... > .",
+      "error": null
+    }
+  ]
+}

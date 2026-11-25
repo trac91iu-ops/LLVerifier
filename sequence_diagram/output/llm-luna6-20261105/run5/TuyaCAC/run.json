@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/TuyaCAC/diagram.md",
+  "input_sha256": "f13037fd9a22f5061e7916005f139b1ea8f5ad3cb2462d141c8a9a2301a3cc9c",
+  "pipeline_id": "95325a1290fbceade709614b5fba7552ab4c402193da3f53846f64fae4c5f7df",
+  "mode": "check",
+  "started_at": "2026-11-05T05:42:51.932929+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 2 repairs: No terminal matches '.' in the current parser context, at line 1 col 24\n\n< userA | ... > => ev1 .\n                       ^\nExpected one of: '\\\\('",
+  "elapsed_seconds": 367.936,
+  "tokens_this_run": 36858,
+  "finished_at": "2026-11-05T05:48:59.874231+00:00"
+}

@@ -1,0 +1,95 @@
+{
+  "protocol": "A2A",
+  "model_sha256": "0edb723dc7540e5b8cd9edf588511b6342b36437f7715be4651c9496256551e6",
+  "runs": [
+    "a2a-run1"
+  ],
+  "generated": "sequence_diagram/output/a2a-astra-20261105/run1/A2A/rules.maude",
+  "gold": "benchmark/golden_data/formalModels/A2A/rules.maude",
+  "reviewed": false,
+  "review_note": "",
+  "mapping": {
+    "actions": {
+      "'returnHistory'": "'response'",
+      "'returnInitialHistory'": "'response'",
+      "'sendWithContext'": null,
+      "'sendWithoutContext'": null,
+      "'snoop'": null
+    },
+    "attributes": {
+      "'authenticated'": null,
+      "'contexts'": null,
+      "'history'": null,
+      "'id'": null,
+      "'knowCtx'": null,
+      "'receivedHistory'": "'receivedHistory'"
+    },
+    "principals": {
+      "clientA": null,
+      "clientB": null,
+      "serverA": "serverA"
+    },
+    "constants": {
+      "'ctxX'": null,
+      "'msgA'": null,
+      "'msgA2'": null,
+      "'msgB'": null
+    },
+    "values": []
+  },
+  "gold_names": {
+    "actions": [
+      "'response'"
+    ],
+    "attributes": [
+      "'receivedHistory'"
+    ],
+    "principals": [
+      "serverA"
+    ],
+    "constants": [
+      "'contextId'",
+      "'history'"
+    ]
+  },
+  "generated_names": {
+    "actions": [
+      "'returnHistory'",
+      "'returnInitialHistory'",
+      "'sendWithContext'",
+      "'sendWithoutContext'",
+      "'snoop'"
+    ],
+    "attributes": [
+      "'authenticated'",
+      "'contexts'",
+      "'history'",
+      "'id'",
+      "'knowCtx'",
+      "'receivedHistory'"
+    ],
+    "principals": [
+      "clientA",
+      "clientB",
+      "serverA"
+    ],
+    "constants": [
+      "'ctxX'",
+      "'msgA'",
+      "'msgA2'",
+      "'msgB'"
+    ]
+  },
+  "proposed_by": {
+    "model": "codex-main",
+    "at": "2026-11-05T09:33:52+00:00",
+    "prompt_sha256": "6e521fdcd721",
+    "tokens": 2143,
+    "attempts": [
+      {
+        "response": "{\n  \"actions\": {\n    \"'returnHistory'\": \"'response'\",\n    \"'returnInitialHistory'\": \"'response'\",\n    \"'sendWithContext'\": null,\n    \"'sendWithoutContext'\": null,\n    \"'snoop'\": null\n  },\n  \"attributes\": {\n    \"'authenticated'\": null,\n    \"'contexts'\": null,\n    \"'history'\": null,\n    \"'id'\": null,\n    \"'knowCtx'\": null,\n    \"'receivedHistory'\": \"'receivedHistory'\"\n  },\n  \"principals\": {\n    \"clientA\": null,\n    \"clientB\": null,\n    \"serverA\": \"serverA\"\n  },\n  \"constants\": {\n    \"'ctxX'\": null,\n    \"'msgA'\": null,\n    \"'msgA2'\": null,\n    \"'msgB'\": null\n  },\n  \"values\": []\n}",
+        "error": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/TuyaCAC/diagram.md",
+  "input_sha256": "f13037fd9a22f5061e7916005f139b1ea8f5ad3cb2462d141c8a9a2301a3cc9c",
+  "pipeline_id": "967703c85b114296e57619c316e31b953bca5ac546b6a0d769189031d0bccad3",
+  "mode": "check",
+  "started_at": "2026-11-05T06:48:29.743214+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < cloudA | UserX : ('members' : Members , ...) , ... > $ UserX 'invite' cloudA |",
+  "elapsed_seconds": 38.239,
+  "tokens_this_run": 4424,
+  "finished_at": "2026-11-05T06:49:07.983738+00:00"
+}

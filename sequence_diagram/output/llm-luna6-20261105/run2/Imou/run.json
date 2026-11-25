@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/Imou/diagram.md",
+  "input_sha256": "bf883298e3cfdb15415558eca4c4f97ed3974846dcad128c2c7ac3e890763a05",
+  "pipeline_id": "58936281108c35eda8b28d25511cdd0c15c2063f630bb2a7f257b70106a255d5",
+  "mode": "check",
+  "started_at": "2026-11-05T04:51:07.895928+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 2 repairs: No terminal matches '.' in the current parser context, at line 7 col 69\n\n... > $ deviceB 'sendKey' UserX | (Key) .\n                                        ^\nExpected one of: '<'",
+  "elapsed_seconds": 99.348,
+  "tokens_this_run": 14732,
+  "finished_at": "2026-11-05T04:52:47.245731+00:00"
+}

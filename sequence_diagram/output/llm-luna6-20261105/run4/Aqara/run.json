@@ -1,0 +1,46 @@
+{
+  "input": "sequence_diagram/input/Aqara/diagram.md",
+  "input_sha256": "3588a540a6f5ac11ef574fb268d78d3872260663d48956f47691fe191a5aa63f",
+  "pipeline_id": "ac172d6e3950fc0eb4d10d34b210487cb9b7a7c3902d2c77b3d5902674749c42",
+  "mode": "check",
+  "started_at": "2026-11-05T05:18:17.716105+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/llm-luna6-20261105/run4/Aqara/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(system, _:_('counter', 0)), <_|_>(cloudA, _`,_(_:_(userA, _`,_(_:_('device', deviceB), _:_('members', nils))), _:_(userC, _`,_(_:_('device', nils), _:_('members', nils))))), <_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceB, _`,_(_:_('key', nils), _:_('on', false), _:_('trusted', cloudA)))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 6,
+    "coverage_issues": [
+      "B4 (action, line 37): no event rule for the initiated message",
+      "B6 (action, line 57): no event rule for the initiated message"
+    ]
+  },
+  "model_sha256": "35cda298461cf04ffae525e6ee600a6f5580d2a1eafc1e32cd6e965d7a25a519",
+  "check": {
+    "property": "CTRL-direct",
+    "verdict": "holds",
+    "events": 0,
+    "at_init": {
+      "deviceOn": false,
+      "attackerAuthorized": false
+    },
+    "true_at_init": [],
+    "errors": []
+  },
+  "elapsed_seconds": 302.386,
+  "tokens_this_run": 26094,
+  "finished_at": "2026-11-05T05:23:20.104858+00:00"
+}

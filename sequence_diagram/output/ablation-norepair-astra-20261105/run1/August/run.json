@@ -1,0 +1,17 @@
+{
+  "input": "sequence_diagram/input/August/diagram.md",
+  "input_sha256": "4d73929e29811c11b0af95411aed658c2d6ed76b5cf04f8c468f591ff56991aa",
+  "pipeline_id": "1ee057918d62852268fcb20bfa721dfed663a22a7c68c3315a06de99a76540d8",
+  "mode": "check",
+  "started_at": "2026-11-05T06:35:43.957770+00:00",
+  "status": "failed",
+  "validation": {
+    "status": "not_run"
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "error": "ValueError: Validation failed after 0 repairs: Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near",
+  "elapsed_seconds": 39.934,
+  "tokens_this_run": 4223,
+  "finished_at": "2026-11-05T06:36:23.892057+00:00"
+}

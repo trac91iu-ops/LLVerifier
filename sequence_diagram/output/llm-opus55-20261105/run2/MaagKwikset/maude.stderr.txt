@@ -1,0 +1,8 @@
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.
+Warning: "prelude.maude", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.
+Warning: "prelude.maude", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported.
+Warning: "rules.maude", line 47 (mod TRANSITION): redeclaration of variable alias S.
+Warning: "rules.maude", line 66 (mod TRANSITION): didn't expect token ):
+eq ev5 ( UserX , K , S ) <---*HERE*
+Warning: "rules.maude", line 66 (mod TRANSITION): no parse for statement
+eq ev5 (UserX, K, S) = $ UserX 'bind' deviceA | (encrypt (K, S)) .

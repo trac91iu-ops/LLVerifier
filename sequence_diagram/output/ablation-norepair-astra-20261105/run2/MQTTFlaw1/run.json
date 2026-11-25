@@ -1,0 +1,45 @@
+{
+  "input": "sequence_diagram/input/MQTTFlaw1/diagram.md",
+  "input_sha256": "4295ef0afe6c632063b1fe618e75daeead682e9c8c7c136063ae76b013a8103d",
+  "pipeline_id": "ffc16de89d39e50d3d34a99382bf9e1bd8c435e7599481898369abcf5aab80e1",
+  "mode": "check",
+  "started_at": "2026-11-05T06:45:41.648507+00:00",
+  "status": "validated",
+  "validation": {
+    "status": "valid",
+    "path": "sequence_diagram/output/ablation-norepair-astra-20261105/run2/MQTTFlaw1/rules.maude",
+    "maude_binary": "Maude-3.5.1-macos-arm64/maude",
+    "returncode": 0,
+    "warnings": [
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): failed to attach id-hook MetaLevelOpSymbol to metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2860 (fmod META-LEVEL): bad special for operator metaPrettyPrint.",
+      "Warning: \"prelude.maude\", line 2130 (fmod META-LEVEL): this module contains one or more errors that could not be patched up and thus it cannot be used or imported."
+    ],
+    "errors": [],
+    "initial_term": "_@_(idle, __(<_|_>(cloudB, _`,_(_:_('buffer', nils), _:_(userA, _:_('permission', true)), _:_(deviceB, _:_('permission', true)))), <_|_>(userA, nils), <_|_>(deviceB, _:_('on', false))))",
+    "has_successor": true
+  },
+  "model_file": "rules.maude",
+  "source_kind": "diagram",
+  "trace": {
+    "blocks": 3,
+    "coverage_issues": []
+  },
+  "model_sha256": "98554a195329a5ae4bdc8b7a6317f430301bd28b4b565c456647201fafbca4ae",
+  "check": {
+    "property": "CTRL-revoked",
+    "verdict": "counterexample",
+    "events": 3,
+    "at_init": {
+      "deviceOn": false,
+      "attackerAuthorized": true
+    },
+    "true_at_init": [
+      "attackerAuthorized"
+    ],
+    "errors": []
+  },
+  "elapsed_seconds": 127.631,
+  "tokens_this_run": 15925,
+  "finished_at": "2026-11-05T06:47:49.280312+00:00"
+}

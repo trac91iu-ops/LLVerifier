@@ -1,0 +1,21 @@
+{
+  "runs": {
+    "a2-run1": "sequence_diagram/output/ablation-norepair-20261104/run1",
+    "a2-run2": "sequence_diagram/output/ablation-norepair-20261104/run2",
+    "a2-run3": "sequence_diagram/output/ablation-norepair-20261104/run3",
+    "a2-run4": "sequence_diagram/output/ablation-norepair-20261104/run4",
+    "a2-run5": "sequence_diagram/output/ablation-norepair-20261104/run5"
+  },
+  "labels": {
+    "reproduced": 109,
+    "no counterexample (None)": 19,
+    "not reproduced": 10,
+    "no counterexample (holds)": 7
+  },
+  "mean_of_protocols": {
+    "acc": 92.3,
+    "rec": 75.2,
+    "protocols_with_counterexample": 26
+  },
+  "reproduced": 109
+}

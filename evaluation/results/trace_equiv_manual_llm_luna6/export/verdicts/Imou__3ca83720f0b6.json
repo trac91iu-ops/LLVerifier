@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T07:42:36.622Z",
+  "model": "3ca83720f0b6",
+  "note": "",
+  "protocol": "Imou",
+  "runs": [
+    "luna6-run1"
+  ],
+  "verdict": "present"
+}

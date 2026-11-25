@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:13:18.840Z",
+  "model": "a7ca3439a688",
+  "note": "",
+  "protocol": "Sunlogin",
+  "runs": [
+    "run2"
+  ],
+  "verdict": "present"
+}

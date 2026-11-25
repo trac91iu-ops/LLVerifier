@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:04:18.219Z",
+  "model": "7892ce3e0d34",
+  "note": "",
+  "protocol": "Broadlink",
+  "runs": [
+    "run5"
+  ],
+  "verdict": "present"
+}

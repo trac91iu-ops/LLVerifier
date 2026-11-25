@@ -1,0 +1,116 @@
+src/synthesize.py:111: SyntaxWarning: invalid escape sequence '\ '
+  '''
+[*] Diagram split into 5 blocks
+[*] Generating policy with LLM...
+[*] Total token: 6724
+--------------------------------------------------
+```
+[B1] < deviceA | 'pressed' : false , ... > $ UserX 'pressButton' deviceA
+=> < deviceA | 'pressed' : true , ... > .
+[B2] < deviceA | 'pressed' : true , 'key' : nils , ... > $ UserX 'sendKey' deviceA | (Key)
+=> < deviceA | 'pressed' : false , 'key' : Key , ... > .
+[B3] < deviceA | 'key' : Key , ... > $ UserX 'discover' deviceA
+=> < deviceA | 'key' : Key , ... > $ deviceA 'bind' cloudA | (Key) .
+[B3] < cloudA | UserY : ('key' : Key , ...) , deviceA : ('owner' : nils , ...) , ... > $ deviceA 'bind' cloudA | (Key)
+=> < cloudA | UserY : ('key' : Key , ...) , deviceA : ('owner' : UserY , ...) , ... > .
+[B4] < UserX | 'near' : nils , ... > $ UserX 'approach' deviceA
+=> < UserX | 'near' : deviceA , ... > .
+[B5] < UserX | 'near' : deviceA , ... > $ UserX 'leave' deviceA
+=> < UserX | 'near' : nils , ... > .
+```
+==================================================
+[*] Extract state rules variables
+[*] Extract variables
+[*] Find unresolved variables
+[*] Generating variable types with LLM...
+[*] Total token: 3785
+--------------------------------------------------
+```
+{"Key": "Qid", "UserX": "User", "UserY": "User"}
+```
+==================================================
+{'Key': 'Qid', 'UserX': 'User', 'UserY': 'User'}
+[*] Add varable types to AST
+[*] Calculating init state...
+[+] The init state template:
+< deviceA | ('key' : [Qid] , 'pressed' : [Bool]) > < cloudA | ([Principal] : ('owner' : [User]) , [User] : ('key' : [Qid])) > < userA | ('near' : [Principal]) > < userC | ('near' : [Principal]) >
+[*] Transform state rule AST to repair wellformedness...
+hasFresh False hasCurrentTime False
+eq < deviceA | ('pressed' : false , ..) > $ UserX 'pressButton' deviceA 
+= < deviceA | ('pressed' : true , ..) > .
+eq < deviceA | ('pressed' : true , 'key' : nils , ..) > $ UserX 'sendKey' deviceA | (Key) 
+= < deviceA | ('pressed' : false , 'key' : Key , ..) > .
+eq < deviceA | ('key' : Key , ..) > $ UserX 'discover' deviceA 
+= < deviceA | ('key' : Key , ..) > $ deviceA 'bind' cloudA | (Key) .
+eq < cloudA | (UserY : ('key' : Key , ..) , deviceA : ('owner' : nils , ...) , ....) > $ deviceA 'bind' cloudA | (Key) 
+= < cloudA | (UserY : ('key' : Key , ..) , deviceA : ('owner' : UserY , ...) , ....) > .
+eq < UserX | ('near' : nils , ..) > $ UserX 'approach' deviceA 
+= < UserX | ('near' : deviceA , ..) > .
+eq < UserX | ('near' : deviceA , ..) > $ UserX 'leave' deviceA 
+= < UserX | ('near' : nils , ..) > .
+$ UserX 'pressButton' deviceA
+$ UserX 'sendKey' deviceA | (Key)
+$ UserX 'discover' deviceA
+$ deviceA 'bind' cloudA | (Key)
+$ UserX 'approach' deviceA
+$ UserX 'leave' deviceA
+[*] Total token: 2486
+--------------------------------------------------
+```
+[1, 2, 3, 5, 6]
+```
+==================================================
+[1, 2, 3, 5, 6]
+[$ UserX 'pressButton' deviceA, $ UserX 'sendKey' deviceA | (Key), $ UserX 'discover' deviceA, $ UserX 'approach' deviceA, $ UserX 'leave' deviceA]
+[eq ev1(UserX) = $ UserX 'pressButton' deviceA ., eq ev2(UserX, Key) = $ UserX 'sendKey' deviceA | (Key) ., eq ev3(UserX) = $ UserX 'discover' deviceA ., eq ev4(UserX) = $ UserX 'approach' deviceA ., eq ev5(UserX) = $ UserX 'leave' deviceA .]
+[*] Calculating event type...
+[*] Generating init state with LLM...
+[*] Total token: 4276
+--------------------------------------------------
+```
+< deviceA | ('key' : nils , 'pressed' : false) > < cloudA | (deviceA : ('owner' : nils) , userA : ('key' : 'keyA') , userC : ('key' : 'keyC')) > < userA | ('near' : deviceA) > < userC | ('near' : nils) >
+```
+==================================================
+< deviceA | ('key' : nils , 'pressed' : false) > < cloudA | (deviceA : ('owner' : nils) , userA : ('key' : 'keyA') , userC : ('key' : 'keyC')) > < userA | ('near' : deviceA) > < userC | ('near' : nils) >
+[*] Generating event rules with LLM...
+[*] Total token: 5354
+--------------------------------------------------
+```
+[B1] < UserX | 'near' : deviceA , ... > => ev1(UserX) .
+[B2] < UserX | 'near' : deviceA , ... > < cloudA | UserX : ('key' : Key , ...) , ... > => ev2(UserX, Key) .
+[B3] < UserX | 'near' : deviceA , ... > => ev3(UserX) .
+[B4] < UserX | 'near' : nils , ... > < deviceA | ... > => ev4(UserX) .
+[B5] < UserX | 'near' : deviceA , ... > => ev5(UserX) .
+```
+==================================================
+< UserX | 'near' : deviceA , ... > => ev1(UserX) .
+< UserX | 'near' : deviceA , ... > < cloudA | UserX : ('key' : Key , ...) , ... > => ev2(UserX, Key) .
+< UserX | 'near' : deviceA , ... > => ev3(UserX) .
+< UserX | 'near' : nils , ... > < deviceA | ... > => ev4(UserX) .
+< UserX | 'near' : deviceA , ... > => ev5(UserX) .
+
+[*] Transform event rules AST...
+[*] Extract variables
+[*] Add varable types to AST
+rl [rev1]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceA , ..) > < cloudA | (UserX : ('key' : Key , ...) , ....) > 
+=> ep: ev2(UserX, Key) @ S < UserX | ('near' : deviceA , ..) > < cloudA | (UserX : ('key' : Key , ...) , ....) > .
+rl [rev3]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev3(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+rl [rev4]: E @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > 
+=> ep: ev4(UserX) @ S < UserX | ('near' : nils , ..) > < deviceA | (...) > .
+rl [rev5]: E @ S < UserX | ('near' : deviceA , ..) > 
+=> ep: ev5(UserX) @ S < UserX | ('near' : deviceA , ..) > .
+[*] Instantiating property slots with LLM...
+[*] Total token: 3187
+--------------------------------------------------
+```
+attackerLocal =| < userC | 'near' : deviceA , ... > .
+attackerOwner =| < cloudA | deviceA : ('owner' : userC , ...) , ... > .
+```
+==================================================
+[*] Extract variables
+[*] Add varable types to AST
+[+] Check OWN-remote: counterexample (8 events)
+[+] Model written: sequence_diagram/output/llm-opus55-20261105/run4/Wemo/rules.maude; status: validated

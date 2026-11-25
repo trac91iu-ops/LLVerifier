@@ -1,0 +1,34 @@
+{
+  "runs": {
+    "run1": "sequence_diagram/output/eval-astra-20261105/run1",
+    "run2": "sequence_diagram/output/eval-astra-20261105/run2",
+    "run3": "sequence_diagram/output/eval-astra-20261105/run3",
+    "run4": "sequence_diagram/output/eval-astra-20261105/run4",
+    "run5": "sequence_diagram/output/eval-astra-20261105/run5"
+  },
+  "mean_of_protocols": {
+    "effect_acc": 86.3,
+    "effect_rec": 87.4,
+    "exact_acc": 60.4,
+    "exact_rec": 78.2
+  },
+  "pooled_rules": {
+    "effect_acc": 84.7,
+    "effect_rec": 87.1,
+    "exact_acc": 60.1,
+    "exact_rec": 77.3
+  },
+  "mean_of_protocols_loaded_runs_only": {
+    "effect_acc": 86.3,
+    "effect_rec": 87.4,
+    "exact_acc": 60.4,
+    "exact_rec": 78.2
+  },
+  "pooled_rules_loaded_runs_only": {
+    "effect_acc": 85.2,
+    "effect_rec": 87.6,
+    "exact_acc": 60.5,
+    "exact_rec": 77.6
+  },
+  "unreviewed_mappings": 122
+}

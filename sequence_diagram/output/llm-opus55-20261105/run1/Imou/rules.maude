@@ -1,0 +1,54 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | ('key' : nils , 'near' : deviceB) > < userC | ('key' : nils , 'near' : nils) > < deviceB | ('online' : false , 'key' : 'keyB') > < cloudA | (deviceB : ('owner' : nils , 'bindKey' : 'keyB')) > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars K : Qid .
+vars UserX : User .
+*** policy
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+eq < deviceB | ('online' : false , 'key' : K , ..) > $ UserX 'pressButton' deviceB 
+= < deviceB | ('online' : true , 'key' : K , ..) > $ deviceB 'sendKey' UserX | (K) .
+eq < UserX | ('key' : nils , ..) > $ deviceB 'sendKey' UserX | (K) 
+= < UserX | ('key' : K , ..) > .
+eq < cloudA | (deviceB : ('bindKey' : K , 'owner' : nils , ..) , ...) > < deviceB | ('online' : true , ....) > $ UserX 'bind' cloudA | (K) 
+= < cloudA | (deviceB : ('bindKey' : K , 'owner' : UserX , ..) , ...) > < deviceB | ('online' : true , ....) > .
+eq < cloudA | (deviceB : ('owner' : UserX , ..) , ...) > < deviceB | ('online' : false , ....) > $ UserX 'reset' cloudA | (deviceB) 
+= < cloudA | (deviceB : ('owner' : nils , ..) , ...) > < deviceB | ('online' : false , ....) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars K : Qid .
+vars UserX : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User Qid -> Event .
+ops ev4 : User -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'leave' deviceB .
+eq ev2(UserX) = $ UserX 'pressButton' deviceB .
+eq ev3(UserX, K) = $ UserX 'bind' cloudA | (K) .
+eq ev4(UserX) = $ UserX 'reset' cloudA | (deviceB) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev2]: E @ S < UserX | (..) > < deviceB | (...) > 
+=> ep: ev2(UserX) @ S < UserX | (..) > < deviceB | (...) > .
+rl [rev3]: E @ S < UserX | ('key' : K , ..) > 
+=> ep: ev3(UserX, K) @ S < UserX | ('key' : K , ..) > .
+rl [rev4]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev4(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+
+endm

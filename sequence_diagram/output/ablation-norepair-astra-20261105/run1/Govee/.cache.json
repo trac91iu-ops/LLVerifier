@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "context_id": "5887eed3689cad5dfaaa8aa9ac7b14182607b5a96eeec8c0fca00c7e44a20409",
+  "answers": {},
+  "stages": [
+    {
+      "stage": "genPolicy",
+      "prompt_hash": "genPolicy:e95bfe7bc1e4f6bfa4582f69e4b38ee08a62e417f7a885ba8493bddd5d8abe6b"
+    },
+    {
+      "attempt": 0,
+      "output": "< UserX | 'near' : OldNear , 'key' : nils , ... > $ UserX 'approach' deviceB\n=> < UserX | 'near' : deviceB , 'key' : nils , ... > .\n\n< UserX | 'near' : OldNear , ... > $ UserX 'leave' deviceB\n=> < UserX | 'near' : nils , ... > .\n\n< deviceB | 'key' : Key , ... > $ UserX 'pressButton' deviceB\n=> < deviceB | 'key' : Key , ... > $ deviceB 'sendKey' UserX | Key .\n\n< UserX | 'key' : nils , ... > $ deviceB 'sendKey' UserX | Key\n=> < UserX | 'key' : Key , ... > .\n\n< cloudA | deviceB : ('owner' : nils , 'key' : Key , ...) > $ UserX 'bind' cloudA | (deviceB ; Key)\n=> < cloudA | deviceB : ('owner' : UserX , 'key' : Key , ...) > .",
+      "error": "Every rule must start with its block label such as `[B1]`; found unlabeled text: < UserX | 'near' : OldNear , 'key' : nils , ... > $ UserX 'approach' deviceB\n=> "
+    }
+  ]
+}

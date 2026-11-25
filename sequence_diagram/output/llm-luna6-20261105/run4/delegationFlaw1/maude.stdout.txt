@@ -1,0 +1,37 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var CloudX : Cloud .
+  var DeviceSwitch : Device .
+  var DeviceX : Device .
+  var Key : Qid .
+  var LockX : Device .
+  var P : Principal .
+  var Rest : Set .
+  var SmartThingsCloud : Cloud .
+  var Trusted : Set .
+  var UserX : User .
+  var UserY : User .
+  eq init = idle @ < cloudGoogle | (deviceSwitch : ('linkedLock' : nils, 'key' : 'keyA', 'state' : nils, 'trusted' : (userA)), cloudGoogle : ('trusted' : nils, 'key' : nils)) > < cloudSmartThing | (deviceSwitch : ('linkedLock' : deviceLock, 'key' : 'keyA', 'state' : nils, 'trusted' : (cloudGoogle)), cloudSmartThing : ('trusted' : nils, 'key' : nils)) > < userA | ('key' : nils) > < userC | ('key' : nils) > < deviceSwitch | ('trusted' : nils, 'state' : nils) > < deviceLock | ('trusted' : (cloudSmartThing), 'state' : nils) > .
+  eq < CloudX | (deviceSwitch : ('trusted' : (UserX, ..), 'key' : Key, ...), ....) > $ UserX 'requestKey' CloudX = < CloudX | (deviceSwitch : ('trusted' : (UserX, ..), 'key' : Key, ...), ....) > $ CloudX 'sendKey' UserX | (Key) .
+  eq < UserX | ('key' : nils, ..) > $ CloudX 'sendKey' UserX | (Key) = < UserX | ('key' : Key, ..) > .
+  eq < CloudX | (DeviceX : ('trusted' : (UserX, Rest), ..), ...) > $ UserX 'delegateAccess' CloudX | (DeviceX ; UserY) = < CloudX | (DeviceX : ('trusted' : (UserX, Rest, UserY), ..), ...) > .
+  eq < CloudX | (DeviceX : ('trusted' : (UserX, UserY, Rest), ..), ...) > $ UserX 'revokeAccess' CloudX | (DeviceX ; UserY) = < CloudX | (DeviceX : ('trusted' : (UserX, Rest), ..), ...) > .
+  eq < UserX | ('key' : Key, ..) > < CloudX | (DeviceX : ('key' : Key, 'trusted' : Trusted, ...), ....) > $ UserX 'provideKey' CloudX | (DeviceX ; Key) = < UserX | ('key' : Key, ..) > < CloudX | (DeviceX : ('key' : Key, 'trusted' : (Trusted, UserX), ...), ....) > .
+  eq < DeviceX | (..) > $ UserX 'turnOn' DeviceX = < DeviceX | (..) > .
+  eq < CloudX | (DeviceSwitch : ('state' : 'off', 'trusted' : (P, Rest), ..), ...) > $ P 'turnOn' deviceSwitch = < CloudX | (DeviceSwitch : ('state' : 'on', 'trusted' : (P, Rest), ..), ...) > $ CloudX 'turnOn' deviceSwitch .
+  eq < SmartThingsCloud | (DeviceSwitch : ('linkedLock' : LockX, ..), ...) > $ SmartThingsCloud 'turnOn' deviceSwitch = < SmartThingsCloud | (DeviceSwitch : ('linkedLock' : LockX, ..), ...) > $ SmartThingsCloud 'turnOn' LockX .
+  eq < LockX | ('trusted' : (P, Rest), 'state' : 'off', ..) > $ P 'turnOn' LockX = < LockX | ('trusted' : (P, Rest), 'state' : 'on', ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (32258 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(userA, _:_('key', nils)), <_|_>(userC, _:_('key', nils)), <_|_>(deviceLock, _`,_(_:_('state', nils), _:_('trusted', cloudSmartThing))), <_|_>(deviceSwitch, _`,_(_:_('state', nils), _:_('trusted', nils))), <_|_>(cloudGoogle, _`,_(_:_(deviceSwitch, _`,_(_:_('key', 'keyA'), _:_('linkedLock', nils), _:_('state', nils), _:_('trusted', userA))), _:_(cloudGoogle, _`,_(_:_('key', nils), _:_('trusted', nils))))), <_|_>(cloudSmartThing, _`,_(_:_(deviceSwitch, _`,_(_:_('key', 'keyA'), _:_('linkedLock', deviceLock), _:_('state', nils), _:_('trusted', cloudGoogle))), _:_(cloudSmartThing, _`,_(_:_('key', nils), _:_('trusted', nils)))))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'requestKey', cloudGoogle), __(<_|_>(userA, _:_('key', 'keyA')), <_|_>(userC, _:_('key', nils)), <_|_>(deviceLock, _`,_(_:_('state', nils), _:_('trusted', cloudSmartThing))), <_|_>(deviceSwitch, _`,_(_:_('state', nils), _:_('trusted', nils))), <_|_>(cloudGoogle, _`,_(_:_(deviceSwitch, _`,_(_:_('key', 'keyA'), _:_('linkedLock', nils), _:_('state', nils), _:_('trusted', userA))), _:_(cloudGoogle, _`,_(_:_('key', nils), _:_('trusted', nils))))), <_|_>(cloudSmartThing, _`,_(_:_(deviceSwitch, _`,_(_:_('key', 'keyA'), _:_('linkedLock', deviceLock), _:_('state', nils), _:_('trusted', cloudGoogle))), _:_(cloudSmartThing, _`,_(_:_('key', nils), _:_('trusted', nils)))))))
+Bye.

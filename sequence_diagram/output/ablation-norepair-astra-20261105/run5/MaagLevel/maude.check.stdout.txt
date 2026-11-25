@@ -1,0 +1,13 @@
+==========================================
+reduce in PostProcess : pp(modelCheck(init, spec)) .
+rewrites: 1748 in 6ms cpu (6ms real) (268015 rewrites/second)
+result Bool: true
+==========================================
+reduce in CHECK : init |= deviceTrustsAttacker .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+==========================================
+reduce in CHECK : init |= cloudRecordsTrust .
+rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
+result Bool: false
+Bye.

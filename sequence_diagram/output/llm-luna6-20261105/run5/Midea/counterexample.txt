@@ -1,0 +1,32 @@
+$ userA 'pressButton' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'reset' cloudA | deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userC 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'reset' cloudA | deviceB
+$ userA 'pressButton' deviceB
+$ userA 'leave' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'reset' cloudA | deviceB
+$ userC 'pressButton' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'reset' cloudA | deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'reset' cloudA | deviceB
+$ userA 'pressButton' deviceB
+$ userC 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userC 'reset' cloudA | deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'leave' deviceB
+$ userC 'leave' deviceB
+$ userA 'approach' deviceB
+$ userA 'pressButton' deviceB
+$ userA 'reset' cloudA | deviceB
+$ userC 'bind' cloudA | (deviceB ; 'deviceKey')
+$ userA 'pressButton' deviceB
+$ userC 'reset' cloudA | deviceB
+$ userA 'pressButton' deviceB
+$ userA 'bind' cloudA | (deviceB ; 'deviceKey')

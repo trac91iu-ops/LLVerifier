@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-05T08:06:16.669Z",
+  "model": "8363f3ffc221",
+  "note": "",
+  "protocol": "delegationFlaw1",
+  "runs": [
+    "run4"
+  ],
+  "verdict": "absent"
+}

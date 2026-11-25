@@ -1,0 +1,74 @@
+load ../lib/Iot .
+mod SYSTEM is
+protecting Iot .
+eq init = idle @ < userA | ('cachedCommand' : nils , 'near' : deviceB) > < userC | ('cachedCommand' : nils , 'near' : nils) > < deviceB | ('trusted' : (userA)) > < cloudA | (deviceB : ('trusted' : userA) , 'key' : 'secret') > .
+
+vars .. ... .... ..... ...... ....... : Set .
+
+*** variables
+vars N : Nat .
+vars CachingRelayUser : User .
+vars ImmediateRelayUser : User .
+vars L : List .
+vars RelayUser : User .
+vars TrustedUsers : Set .
+vars UserX : User .
+vars UserY : User .
+*** policy
+eq < UserX | ('near' : nils , ..) > < deviceB | (...) > $ UserX 'approach' deviceB 
+= < UserX | ('near' : deviceB , ..) > < deviceB | (...) > .
+eq < UserX | ('near' : deviceB , ..) > $ UserX 'leave' deviceB 
+= < UserX | ('near' : nils , ..) > .
+eq < cloudA | ('key' : 'secret' , deviceB : ('trusted' : (UserX) , ..) , ...) > < RelayUser | ('near' : deviceB , ....) > $ UserX 'shareAccess' cloudA | (deviceB ; UserY) 
+= < cloudA | ('key' : 'secret' , deviceB : ('trusted' : (UserX , UserY , ..) , ..) , ...) > < RelayUser | ('near' : deviceB , ....) > $ cloudA 'proxyCommand' RelayUser | (deviceB ; encrypt('auth', 'secret') ; 'share' ; UserY) .
+eq < cloudA | ('key' : 'secret' , deviceB : ('trusted' : (UserX , UserY , ..) , ...) , ....) > < RelayUser | ('near' : deviceB , .....) > $ UserX 'revokeAccess' cloudA | (deviceB ; UserY) 
+= < cloudA | ('key' : 'secret' , deviceB : ('trusted' : (UserX) , ...) , ....) > < RelayUser | ('near' : deviceB , .....) > $ cloudA 'proxyCommand' RelayUser | (deviceB ; encrypt('auth', 'secret') ; 'revoke' ; UserY) .
+eq < RelayUser | ('near' : deviceB , ..) > < ImmediateRelayUser | ('near' : deviceB , ...) > $ RelayUser 'forwardCommand' deviceB | (L) 
+= < RelayUser | ('near' : deviceB , ..) > < ImmediateRelayUser | ('near' : deviceB , ...) > $ RelayUser 'proxyCommand' deviceB | (L) .
+eq < CachingRelayUser | ('near' : deviceB , 'cachedCommand' : nils , ..) > $ cloudA 'proxyCommand' CachingRelayUser | (deviceB ; L) 
+= < CachingRelayUser | ('near' : deviceB , 'cachedCommand' : L , ..) > .
+eq < CachingRelayUser | ('near' : deviceB , 'cachedCommand' : L , ..) > 
+= < CachingRelayUser | ('near' : deviceB , 'cachedCommand' : nils , ..) > $ CachingRelayUser 'proxyCommand' deviceB | (L) .
+eq < deviceB | ('trusted' : TrustedUsers , ..) > $ RelayUser 'proxyCommand' deviceB | (deviceB ; encrypt('auth', 'secret') ; 'share' ; UserY) 
+= < deviceB | ('trusted' : (TrustedUsers , UserY) , ..) > .
+eq < deviceB | ('trusted' : (TrustedUsers , UserY) , ..) > $ RelayUser 'proxyCommand' deviceB | (deviceB ; encrypt('auth', 'secret') ; 'revoke' ; UserY) 
+= < deviceB | ('trusted' : TrustedUsers , ..) > .
+endm
+
+mod TRANSITION is
+including SYSTEM .
+var E : Event .
+var S : Soup .
+vars .. ... .... ..... ...... ....... : Set .
+vars N : Nat .
+vars CachingRelayUser : User .
+vars ImmediateRelayUser : User .
+vars L : List .
+vars RelayUser : User .
+vars TrustedUsers : Set .
+vars UserX : User .
+vars UserY : User .
+vars MessageA : Qid .
+*** events type declaration
+ops ev1 : User -> Event .
+ops ev2 : User -> Event .
+ops ev3 : User User -> Event .
+ops ev4 : User User -> Event .
+ops ev5 : User List -> Event .
+*** events
+eq ev1(UserX) = $ UserX 'approach' deviceB .
+eq ev2(UserX) = $ UserX 'leave' deviceB .
+eq ev3(UserX, UserY) = $ UserX 'shareAccess' cloudA | (deviceB ; UserY) .
+eq ev4(UserX, UserY) = $ UserX 'revokeAccess' cloudA | (deviceB ; UserY) .
+eq ev5(RelayUser, L) = $ RelayUser 'forwardCommand' deviceB | (L) .
+*** transitions
+rl [rev1]: E @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > 
+=> ep: ev1(UserX) @ S < UserX | ('near' : nils , ..) > < deviceB | (...) > .
+rl [rev2]: E @ S < UserX | ('near' : deviceB , ..) > 
+=> ep: ev2(UserX) @ S < UserX | ('near' : deviceB , ..) > .
+rl [rev3]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev3(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+rl [rev4]: E @ S < UserX | (..) > < UserY | (...) > 
+=> ep: ev4(UserX, UserY) @ S < UserX | (..) > < UserY | (...) > .
+
+endm

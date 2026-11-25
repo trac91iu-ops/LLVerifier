@@ -1,0 +1,26 @@
+mod SYSTEM is
+  protecting Iot .
+  vars .. ... .... ..... ...... ....... : Set .
+  var N : Nat .
+  var Cloud : Cloud .
+  var Device : Device .
+  var Key : Qid .
+  var UserX : User .
+  eq init = idle @ < userA | ('near' : deviceB, 'key' : nils) > < userC | ('near' : nils, 'key' : nils) > < deviceB | ('key' : 'deviceKey') > < cloudA | (deviceB : ('key' : 'deviceKey', 'owner' : nils)) > .
+  eq < UserX | ('near' : Device, ..) > < Device | ('key' : Key, ...) > $ UserX 'pressButton' Device = < UserX | ('near' : Device, ..) > < Device | ('key' : Key, ...) > $ Device 'sendKey' UserX | (Key) .
+  eq < UserX | ('key' : nils, ..) > $ Device 'sendKey' UserX | (Key) = < UserX | ('key' : Key, ..) > .
+  eq < UserX | ('key' : Key, ..) > < Device | (...) > < Cloud | (Device : ('key' : Key, 'owner' : nils, ....), .....) > $ UserX 'bind' Cloud | (Device ; Key) = < UserX | ('key' : Key, ..) > < Device | (...) > < Cloud | (Device : ('key' : Key, 'owner' : UserX, ....), .....) > .
+  eq < UserX | ('near' : nils, 'key' : nils, ..) > $ UserX 'approach' Device = < UserX | ('near' : Device, 'key' : nils, ..) > .
+  eq < UserX | ('near' : Device, ..) > $ UserX 'leave' Device = < UserX | ('near' : nils, ..) > .
+endm
+==========================================
+reduce in TRANSITION : init .
+rewrites: 1 in 0ms cpu (0ms real) (38461 rewrites/second)
+result Vertex: _@_(idle, __(<_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owner', nils)))), <_|_>(userA, _`,_(_:_('key', nils), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _:_('key', 'deviceKey'))))
+==========================================
+search [1] in TRANSITION : init =>1 V:Vertex .
+
+Solution 1 (state 1)
+states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+V:Vertex --> _@_($___(userA, 'pressButton', deviceB), __(<_|_>(cloudA, _:_(deviceB, _`,_(_:_('key', 'deviceKey'), _:_('owner', nils)))), <_|_>(userA, _`,_(_:_('key', 'deviceKey'), _:_('near', deviceB))), <_|_>(userC, _`,_(_:_('key', nils), _:_('near', nils))), <_|_>(deviceB, _:_('key', 'deviceKey'))))
+Bye.
