@@ -19,6 +19,7 @@ Table 1 from those runs.
 | `scripts/` | batch runner, run aggregation, gateway helpers |
 | `configs/` | LLM provider and per-stage model configuration |
 | `tests/` | unit tests |
+| `Vendor-Response/` | vendor replies to our reports (see below) |
 
 Run sets in `sequence_diagram/output/`:
 
@@ -89,4 +90,32 @@ venv/bin/python -B scripts/run_all_e2e.py out/run1 --jobs 4
 ```
 
 LLM output varies between runs, so new runs differ in detail from the recorded ones.
+
+## Vendor Response
+
+- Philips Hue RTE
+![](./Vendor-Response/hue_reply1.png)
+![](./Vendor-Response/hue_reply2.png)
+- Broadlink RTE
+![Broadlink RTE](./Vendor-Response/Broadlink_reply.png)
+- Imou RTE
+![Imou RTE](./Vendor-Response/Imou_reply.png)
+- Aqara (Flaw 8)
+![Aqara RTE](./Vendor-Response/aqara_reply.png)
+- Tuya (Flaw 9)
+![](./Vendor-Response/tuya_reply1.png)
+- Beurer RTE
+![Beurer RTE](./Vendor-Response/beurer_reply.png)
+- Govee RTE
+![Govee RTE](./Vendor-Response/govee_reply.png)
+- Meross RTE
+![](./Vendor-Response/meross_reply.png)
+- Oray RTE
+![](./Vendor-Response/oray_reply.png)
+- Switchbot RTE
+![](./Vendor-Response/switchbot_reply.png)
+- Wiz RTE
+![](./Vendor-Response/wiz_reply.png)
+- Xiaomi CAC
+![](./Vendor-Response/xiaomi_reply.png)
 
