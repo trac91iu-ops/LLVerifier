@@ -16,7 +16,7 @@ Table 1 from those runs.
 | `sequence_diagram/input/<protocol>/diagram.md` | the input diagrams used in the evaluation |
 | `sequence_diagram/output/` | the evaluation runs (five runs per protocol each) |
 | `evaluation/` | metric scripts, name mappings, manual review verdicts and computed results |
-| `scripts/` | batch runner, run aggregation, gateway helpers |
+| `scripts/` | batch runner, run aggregation |
 | `configs/` | LLM provider and per-stage model configuration |
 | `tests/` | unit tests |
 | `Vendor-Response/` | vendor replies to our reports (see below) |
@@ -66,30 +66,6 @@ venv/bin/python -B evaluation/make_table.py                              # write
 `evaluation/mappings/` (proposed by an LLM, then checked by hand); the manual verdicts on the counterexamples
 are in `evaluation/results/trace_equiv_manual/export/`. The other run sets are scored the same way with the run
 lists `evaluation/runs-*.txt`.
-
-## Running the pipeline (LLM needed)
-
-`configs/config.yaml` names an OpenAI-compatible provider for every stage. The evaluation used a local LiteLLM
-gateway (`configs/litellm.yaml`, started with `scripts/start_gateway.sh`) on `127.0.0.1:4001`. To use another
-endpoint, edit `base_url`, `api_key` and the model names under `PROVIDERS` and `STRATEGIES`, then test it:
-
-```
-venv/bin/python scripts/check_gateway.py
-```
-
-One protocol, generate the model and check the property of its gold checker:
-
-```
-venv/bin/python -B src/main.py sequence_diagram/input/iRobot/diagram.md check --property OWN-remote --out out/iRobot
-```
-
-All protocols, as in the evaluation (property and attacker per protocol from `scripts/validate_property_templates.py`):
-
-```
-venv/bin/python -B scripts/run_all_e2e.py out/run1 --jobs 4
-```
-
-LLM output varies between runs, so new runs differ in detail from the recorded ones.
 
 ## Vendor Response
 
